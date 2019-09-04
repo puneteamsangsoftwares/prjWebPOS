@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AVT1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="22790e02-561a-4ab9-8b06-84ffe9afa648">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<subDataset name="AVT!" uuid="c407696e-e45a-4111-8317-a65284d42444">
+		<parameter name="dateWise" class="java.lang.String"/>
+		<parameter name="decimalFormaterForDoubleValue" class="java.lang.String">
+			<parameterDescription><![CDATA[]]></parameterDescription>
+		</parameter>
+		<parameter name="decimalFormaterForIntegerValue" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[SELECT 1 FROM DUAL]]>
+		</queryString>
+		<field name="strPOSCode" class="java.lang.String"/>
+		<field name="dteBillDate" class="java.lang.String"/>
+		<field name="dblDiningAmt" class="java.lang.Double"/>
+		<field name="dblDiningNoBill" class="java.lang.Double"/>
+		<field name="dblDiningAvg" class="java.lang.Double"/>
+		<field name="dblHDAmt" class="java.lang.Double"/>
+		<field name="dblHDNoBill" class="java.lang.Double"/>
+		<field name="dblHdAvg" class="java.lang.Double"/>
+		<field name="dblTAAmt" class="java.lang.Double"/>
+		<field name="dblTANoBill" class="java.lang.Double"/>
+		<field name="dblTAAvg" class="java.lang.Double"/>
+		<field name="strPOSName" class="java.lang.String"/>
+		<variable name="SumDiningAmt" class="java.math.BigDecimal" calculation="Sum">
+			<variableExpression><![CDATA[$F{dblDiningAmt}]]></variableExpression>
+		</variable>
+		<variable name="sumNoBillDining" class="java.math.BigDecimal" calculation="Sum">
+			<variableExpression><![CDATA[$F{dblDiningNoBill}]]></variableExpression>
+		</variable>
+		<variable name="SumDeliveryAmt" class="java.math.BigDecimal" calculation="Sum">
+			<variableExpression><![CDATA[$F{dblHDAmt}]]></variableExpression>
+		</variable>
+		<variable name="SumNoDeliveryBill" class="java.math.BigDecimal" calculation="Sum">
+			<variableExpression><![CDATA[$F{dblHDNoBill}]]></variableExpression>
+		</variable>
+		<variable name="SumTakeAwayAmt" class="java.math.BigDecimal" calculation="Sum">
+			<variableExpression><![CDATA[$F{dblTAAmt}]]></variableExpression>
+		</variable>
+		<variable name="SumNoTakeAwayBill" class="java.math.BigDecimal" calculation="Sum">
+			<variableExpression><![CDATA[$F{dblTANoBill}]]></variableExpression>
+		</variable>
+		<variable name="SumDiningAvg" class="java.math.BigDecimal" calculation="Sum">
+			<variableExpression><![CDATA[$F{dblDiningAvg}]]></variableExpression>
+		</variable>
+		<variable name="SumDeliveryAvg" class="java.math.BigDecimal" calculation="Sum">
+			<variableExpression><![CDATA[$F{dblHdAvg}]]></variableExpression>
+		</variable>
+		<variable name="SumTakeAwayAvg" class="java.math.BigDecimal" calculation="Sum">
+			<variableExpression><![CDATA[$F{dblTAAvg}]]></variableExpression>
+		</variable>
+		<variable name="sumOfComplPAX" class="java.lang.Double" calculation="Sum">
+			<variableExpression><![CDATA[$F{dblHDNoBill}]]></variableExpression>
+		</variable>
+	</subDataset>
+	<parameter name="FromDate" class="java.lang.String"/>
+	<parameter name="ToDate" class="java.lang.String"/>
+	<parameter name="strUserName" class="java.lang.String"/>
+	<parameter name="strImagePath" class="java.lang.String"/>
+	<parameter name="fromDateToDisplay" class="java.lang.String"/>
+	<parameter name="toDateToDisplay" class="java.lang.String"/>
+	<parameter name="posName" class="java.lang.String"/>
+	<parameter name="shiftNo" class="java.lang.String"/>
+	<parameter name="dateWise" class="java.lang.String"/>
+	<parameter name="decimalFormaterForDoubleValue" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="decimalFormaterForIntegerValue" class="java.lang.String"/>
+	<parameter name="listOfData" class="java.util.List"/>
+	<parameter name="strClientName" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT 1 FROM DUAL]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="134" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="167" y="1" width="205" height="20" isRemoveLineWhenBlank="true" uuid="8a798358-a63f-4399-907a-d4a37f358c6e"/>
+				<textElement textAlignment="Center">
+					<font fontName="Trebuchet MS"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{strClientName}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement x="3" y="2" width="150" height="79" uuid="5ea12fd6-6cbd-47f0-87cd-263c311d7cfd"/>
+				<imageExpression><![CDATA[$P{strImagePath}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="205" y="62" width="60" height="15" uuid="783def7f-4ed2-4a9a-9496-a0e0d748e23a"/>
+				<text><![CDATA[POS Name :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="205" y="82" width="60" height="19" uuid="7c3b20ce-32d7-43e7-a45b-b60423cf792f"/>
+				<text><![CDATA[Shift No      :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="270" y="62" width="129" height="15" uuid="d463d55c-03a9-4972-b117-8d524d1b88e4"/>
+				<textElement>
+					<font fontName="Trebuchet MS"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{posName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="270" y="82" width="133" height="20" uuid="624f8810-212e-4198-8fb8-b8797ee4bdc0"/>
+				<textFieldExpression><![CDATA[$P{shiftNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="270" y="105" width="59" height="20" uuid="517a4341-5fe9-40c1-8df0-ae0208d72ee6"/>
+				<textFieldExpression><![CDATA[$P{fromDateToDisplay}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="205" y="105" width="60" height="20" uuid="ea85e451-6aab-4daf-9a2b-3d1b8e211a6b"/>
+				<text><![CDATA[From Date :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="387" y="105" width="59" height="20" uuid="5c638d94-b66b-40e8-b5b1-6e40f94bbb2e"/>
+				<textFieldExpression><![CDATA[$P{toDateToDisplay}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="339" y="105" width="45" height="20" uuid="3a6f5a84-5805-4f7f-8f42-523ad1d46b7d"/>
+				<text><![CDATA[To Date :]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="37" splitType="Stretch">
+			<staticText>
+				<reportElement x="150" y="0" width="208" height="31" uuid="1635d50d-af49-47d2-a534-d16d450f2345"/>
+				<textElement textAlignment="Center">
+					<font fontName="Trebuchet MS" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Average Per Cover]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="3"/>
+	</detail>
+	<pageFooter>
+		<band height="25">
+			<textField>
+				<reportElement x="86" y="0" width="100" height="20" uuid="77e2f112-7aa0-4fac-8e10-66e26d5e9cf5"/>
+				<textElement>
+					<font fontName="Trebuchet MS"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{strUserName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="0" width="83" height="20" uuid="415dabd5-fc70-4e92-acbb-53fefff88f37"/>
+				<textElement>
+					<font fontName="Trebuchet MS"/>
+				</textElement>
+				<text><![CDATA[Generated By :]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="80">
+			<componentElement>
+				<reportElement key="table 2" isPrintRepeatedValues="false" mode="Opaque" x="5" y="0" width="550" height="80" uuid="084a8444-1070-47d3-93c7-6714161bc6a9"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="AVT!" uuid="487f8e12-45b2-4b5e-b1cd-97251b1ca4bb">
+						<datasetParameter name="dateWise">
+							<datasetParameterExpression><![CDATA[$P{dateWise}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="decimalFormaterForDoubleValue">
+							<datasetParameterExpression><![CDATA[$P{decimalFormaterForDoubleValue}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{listOfData})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="186" uuid="38da51ad-3423-4f4b-b60f-8b17b15fd654">
+						<jr:columnHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="56" height="30" uuid="f15f0a1f-3bed-4d0d-bfa4-4e848441b558"/>
+								<textElement textAlignment="Left">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[POS Name]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter height="30" rowSpan="1"/>
+						<jr:detailCell height="20" rowSpan="1">
+							<textField isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="186" height="20" uuid="8846baa7-d07b-41fa-b0b1-b8af95322707"/>
+								<textFieldExpression><![CDATA[$F{strPOSName}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="442f0230-0042-4c02-b480-c990666fa004">
+						<jr:columnHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="27" height="30" isPrintInFirstWholeBand="true" uuid="1dc74208-0b47-487c-8ae5-3973f0a50a49"/>
+								<textElement textAlignment="Left">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[Date]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="bb3bec12-c31b-4fcf-9140-d8ac7804619a"/>
+								<textElement verticalAlignment="Middle">
+									<font isBold="true"/>
+									<paragraph lineSpacing="Single"/>
+								</textElement>
+								<text><![CDATA[Total]]></text>
+							</staticText>
+						</jr:columnFooter>
+						<jr:detailCell height="20" rowSpan="1">
+							<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="90" height="20" uuid="e92c1910-075c-4d85-9cb9-c329aaccd940"/>
+								<textFieldExpression><![CDATA[$F{dteBillDate}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="53" uuid="b490421f-8bad-4000-9065-49f40758f517">
+						<jr:columnHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="53" height="30" isPrintInFirstWholeBand="true" uuid="f3512935-dcef-483e-b411-e23025b337ee"/>
+								<textElement textAlignment="Right">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[Dining Amt]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="53" height="30" uuid="c57b58d2-332c-4d6b-9c0a-c9be674360ca"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{SumDiningAmt}]]></textFieldExpression>
+								<patternExpression><![CDATA[$P{decimalFormaterForDoubleValue}]]></patternExpression>
+							</textField>
+						</jr:columnFooter>
+						<jr:detailCell height="20" rowSpan="1">
+							<textField isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="53" height="20" uuid="1955c8d2-b1e5-4c73-ba71-836ee200a6d0"/>
+								<textElement textAlignment="Right"/>
+								<textFieldExpression><![CDATA[$F{dblDiningAmt}]]></textFieldExpression>
+								<patternExpression><![CDATA[$P{decimalFormaterForDoubleValue}]]></patternExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="50" uuid="65135122-55b0-40b9-99ff-72a9599b7b12">
+						<jr:columnHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="50" height="30" isPrintInFirstWholeBand="true" uuid="c259aa9c-7a71-42ab-bc8c-1d0933732985"/>
+								<textElement textAlignment="Right">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[Sale Pax]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter height="30" rowSpan="1">
+							<textField pattern="###0">
+								<reportElement x="0" y="0" width="50" height="30" uuid="b98435f5-c5fe-4568-b81d-61a10d71fcdf"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{sumNoBillDining}]]></textFieldExpression>
+							</textField>
+						</jr:columnFooter>
+						<jr:detailCell height="20" rowSpan="1">
+							<textField pattern="###0" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="50" height="20" uuid="001f0f2c-c9fb-4ee4-9537-10c609222985"/>
+								<textElement textAlignment="Right"/>
+								<textFieldExpression><![CDATA[$F{dblDiningNoBill}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="58" uuid="b833f00d-d216-448f-9f4d-f8101dc6f7fc">
+						<jr:columnHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="58" height="30" isPrintInFirstWholeBand="true" uuid="c259aa9c-7a71-42ab-bc8c-1d0933732985"/>
+								<textElement textAlignment="Right">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[Compl Pax]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter height="30" rowSpan="1">
+							<textField pattern="###0">
+								<reportElement x="0" y="0" width="58" height="30" uuid="b98435f5-c5fe-4568-b81d-61a10d71fcdf"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{sumOfComplPAX}]]></textFieldExpression>
+							</textField>
+						</jr:columnFooter>
+						<jr:detailCell height="20" rowSpan="1">
+							<textField pattern="###0" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="58" height="20" uuid="001f0f2c-c9fb-4ee4-9537-10c609222985"/>
+								<textElement textAlignment="Right"/>
+								<textFieldExpression><![CDATA[$F{dblHDNoBill}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="56" uuid="afd87d1b-f520-4a1d-8ae9-284e0547d54b">
+						<jr:columnHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="55" height="30" isPrintInFirstWholeBand="true" uuid="1820ae95-69bb-460d-afbb-b55256e8d492"/>
+								<textElement textAlignment="Right">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[Dining Avg]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter height="30" rowSpan="1"/>
+						<jr:detailCell height="20" rowSpan="1">
+							<textField isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="56" height="20" uuid="0dc4f60f-e9c3-4f47-9a6d-9f2658203c4c"/>
+								<textElement textAlignment="Right"/>
+								<textFieldExpression><![CDATA[$F{dblDiningAvg}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</summary>
+</jasperReport>
