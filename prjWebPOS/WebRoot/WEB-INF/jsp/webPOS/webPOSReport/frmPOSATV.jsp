@@ -88,7 +88,7 @@
 	<s:form name="POSAvgTicketValueReportForm" method="POST"
 		class="formoid-default-skyblue"
 		style="background-color:#FFFFFF;font-size:14px;font-family:'Open Sans','Helvetica Neue','Helvetica',Arial,Verdana,sans-serif;color:#666666;margin-top:2%;max-width:100%;min-width:150px;"
-		action="frmPOSATV.html?saddr=${urlHits}" target="_blank">
+		action="rptPOSAverageTicketValueReport.html?saddr=${urlHits}" target="_blank">
 
 		<br />
 		<br />

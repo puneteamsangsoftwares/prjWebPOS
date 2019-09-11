@@ -135,7 +135,7 @@ public class clsPOSMenuHeadWiseReportController
 			String toDate = hm.get("toDate").toString();
 			String strUserCode = hm.get("userName").toString();
 			String strPOSCode = posCode;
-			String shiftNo = "1";
+			String shiftNo = "ALL";
 			
 			List listOfMenuHead = objReportService.funProcessMenuHeadWiseReport(strPOSCode, fromDate, toDate, strUserCode, shiftNo);
 			JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(listOfMenuHead);

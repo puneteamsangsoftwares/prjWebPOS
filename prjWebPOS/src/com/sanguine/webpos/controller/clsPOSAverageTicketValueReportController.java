@@ -146,7 +146,7 @@ public class clsPOSAverageTicketValueReportController
 	}
 
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/frmPOSATV", method = RequestMethod.POST)
+	@RequestMapping(value = "/rptPOSAverageTicketValueReport", method = RequestMethod.POST)
 	public void funReport(@ModelAttribute("command") clsPOSReportBean objBean, HttpServletResponse resp, HttpServletRequest req, String source)
 	{
 		try
@@ -251,8 +251,12 @@ public class clsPOSAverageTicketValueReportController
 
 	public void funInsertData(String fromDate, String toDate, String posCode, String shiftNo, String enableShiftYN) throws Exception
 	{
+		String sql="truncate table tblatvreport";
+		objBaseService.funExecuteUpdate(sql, "sql");
+		
 		StringBuilder filter = new StringBuilder();
 		StringBuilder sb = new StringBuilder();
+		
 
 		if (!posCode.equalsIgnoreCase("All"))
 		{
@@ -287,7 +291,9 @@ public class clsPOSAverageTicketValueReportController
 			{
 				Object[] obj = (Object[]) list.get(i);
 				sb.setLength(0);
-				sb.append("update tblatvreport set dblDiningNoBill='" + obj[2].toString() + "' ,strPOSName='" + obj[3].toString() + "' " + "where dteDate = '" + obj[0].toString() + "'  and strPOSCode ='" + obj[1].toString() + "'");
+				String dteDate=obj[0].toString();
+				String[] date=dteDate.split(" ");
+				sb.append("update tblatvreport set dblDiningNoBill='" + obj[2].toString() + "' ,strPOSName='" + obj[3].toString() + "' " + "where dteDate = '" +date[0]+ "'  and strPOSCode ='" + obj[1].toString() + "'");
 				objBaseService.funExecuteUpdate(sb.toString(), "sql");
 			}
 		}
@@ -306,7 +312,9 @@ public class clsPOSAverageTicketValueReportController
 			{
 				Object[] obj = (Object[]) list.get(i);
 				sb.setLength(0);
-				sb.append("update tblatvreport set dblHDAmt='" + obj[2].toString() + "' " + " where dteDate = '" + obj[1].toString() + "'  and strPOSCode ='" + obj[0].toString() + "'");
+				String dteDate=obj[1].toString();
+				String[] date=dteDate.split(" ");
+				sb.append("update tblatvreport set dblHDAmt='" + obj[2].toString() + "' " + " where dteDate = '" + date[0] + "'  and strPOSCode ='" + obj[0].toString() + "'");
 				objBaseService.funExecuteUpdate(sb.toString(), "sql");
 			}
 		}
@@ -325,7 +333,9 @@ public class clsPOSAverageTicketValueReportController
 			{
 				Object[] obj = (Object[]) list.get(i);
 				sb.setLength(0);
-				sb.append("update tblatvreport set dblHDNoBill='" + obj[2].toString() + "' ,strPosName='" + obj[3].toString() + "' " + " where dteDate = '" + obj[0].toString() + "'  and strPOSCode ='" + obj[1].toString() + "'");
+				String dteDate=obj[0].toString();
+				String[] date=dteDate.split(" ");
+				sb.append("update tblatvreport set dblHDNoBill='" + obj[2].toString() + "' ,strPosName='" + obj[3].toString() + "' " + " where dteDate = '" + date[0]+ "'  and strPOSCode ='" + obj[1].toString() + "'");
 				objBaseService.funExecuteUpdate(sb.toString(), "sql");
 			}
 		}
@@ -344,7 +354,9 @@ public class clsPOSAverageTicketValueReportController
 			{
 				Object[] obj = (Object[]) list.get(i);
 				sb.setLength(0);
-				sb.append("update tblatvreport set dblTAAmt='" + obj[3].toString() + "',strPosName='" + obj[1].toString() + "' " + " where dteDate = '" + obj[2].toString() + "'  and strPOSCode ='" + obj[0].toString() + "'");
+				String dteDate=obj[2].toString();
+				String[] date=dteDate.split(" ");
+				sb.append("update tblatvreport set dblTAAmt='" + obj[3].toString() + "',strPosName='" + obj[1].toString() + "' " + " where dteDate = '" + date[0] + "'  and strPOSCode ='" + obj[0].toString() + "'");
 				objBaseService.funExecuteUpdate(sb.toString(), "sql");
 			}
 		}
@@ -363,7 +375,9 @@ public class clsPOSAverageTicketValueReportController
 			{
 				Object[] obj = (Object[]) list.get(i);
 				sb.setLength(0);
-				sb.append("update tblatvreport set dblTANoBill='" + obj[2].toString() + "' ,strPosName='" + obj[3].toString() + "'" + "where dteDate = '" + obj[0].toString() + "'  and strPOSCode ='" + obj[1].toString() + "'");
+				String dteDate=obj[0].toString();
+				String[] date=dteDate.split(" ");
+				sb.append("update tblatvreport set dblTANoBill='" + obj[2].toString() + "' ,strPosName='" + obj[3].toString() + "'" + "where dteDate = '" + date[0]+ "'  and strPOSCode ='" + obj[1].toString() + "'");
 				objBaseService.funExecuteUpdate(sb.toString(), "sql");
 			}
 		}

@@ -28,13 +28,13 @@
 
 /*On form Load It Reset form :Ritesh 22 Nov 2014*/
  $(function() 
-    			{		
+    	{		
     				/* $("#txtFromDate").datepicker({ dateFormat: 'dd-mm-yy' });
     				$("#txtFromDate" ).datepicker('setDate', 'today');
     				$("#txtToDate").datepicker({ dateFormat: 'dd-mm-yy' });
     				$("#txtToDate" ).datepicker('setDate', 'today'); */
     				
-	 var POSDate="${gPOSDate}"
+	        var POSDate="${gPOSDate}"
 		    var startDate="${gPOSDate}";
 		  	var Date = startDate.split(" ");
 			var arr = Date[0].split("-");
@@ -43,8 +43,21 @@
 			$("#txtFromDate" ).datepicker('setDate', Dat); 
 			$("#txtToDate").datepicker({ dateFormat: 'dd-mm-yy' });
 			$("#txtToDate" ).datepicker('setDate', Dat);  
+			
+			var gEnableShiftYN="${gEnableShiftYN}";
+			if(gEnableShiftYN=='Y')
+			{
+				document.getElementById("lblShift").style.visibility = "visible"; 
+				document.getElementById("txtShiftCode").style.visibility = "visible"; 
+			}
+			else
+			{
+				document.getElementById("lblShift").style.visibility = "hidden";
+				document.getElementById("txtShiftCode").style.visibility = "hidden"; 
+				
+			}
 	
-    			}); 
+    	}); 
 
 
 	/**
@@ -116,6 +129,17 @@
 				    	</s:select>
 					</div>
 			 </div>
+			 <div class="row" style="background-color: #fff;display:-webkit-box;">
+				<div class="element-input col-lg-6" style="width:28%">
+					<label class="title">Shift</label>
+				</div>
+				<div class="element-input col-lg-6" style="margin-bottom: 10px;width: 30%; ">
+					<s:select items="${shiftList}" id="txtShiftCode"
+						path="strShiftCode">
+
+					</s:select>
+				</div>
+			</div>
 					
 		</div>
 		

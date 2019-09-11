@@ -141,7 +141,8 @@ public class clsPOSMenuItemMasterController{
 		objMenuItemMasterBean.setStrUOM(objMenuItemMasterModel.getStrUOM());
 		objMenuItemMasterBean.setStrOperationalYN(objMenuItemMasterModel.getStrOperationalYN());
 		objMenuItemMasterBean.setStrRecipeUOM(objMenuItemMasterModel.getStrRecipeUOM());
-		objMenuItemMasterBean.setDblRecipeConversion(objMenuItemMasterModel.getDblRecipeConversion());
+		//objMenuItemMasterBean.setDblRecipeConversion(objMenuItemMasterModel.getDblRecipeConversion());
+		objMenuItemMasterBean.setDblReceivedConversion(objMenuItemMasterModel.getDblReceivedConversion());
 		objMenuItemMasterBean.setDblRecipeConversion(objMenuItemMasterModel.getDblRecipeConversion());
 		objMenuItemMasterBean.setStrHSNNo(objMenuItemMasterModel.getStrHSNNo());
 
@@ -154,7 +155,7 @@ public class clsPOSMenuItemMasterController{
 	public ModelAndView funAddUpdate(@ModelAttribute("command") @Valid clsPOSMenuItemMasterBean objBean,BindingResult result,HttpServletRequest req)
 	{
 		String urlHits="1";
-		
+		                                                                                                                                                                   
 		try
 		{
 			urlHits=req.getParameter("saddr").toString();
@@ -216,7 +217,7 @@ public class clsPOSMenuItemMasterController{
 		    objModel.setStrShortName(objBean.getStrShortName());
 		    objModel.setStrExternalCode(objBean.getStrExternalCode());
 		    objModel.setStrItemForSale(objGlobal.funIfNull(objBean.getStrItemForSale(),"N","Y"));
-		    objModel.setStrItemType(objBean.getStrItemType());
+		    objModel.setStrItemType(objGlobal.funIfNull(objBean.getStrItemType(),"Food", objBean.getStrItemType()));
 		    
 		    objModel.setStrSubGroupCode(hmSubGroupName.get(objBean.getStrSubGroupCode()));
 		    objModel.setStrRawMaterial(objGlobal.funIfNull(objBean.getStrRawMaterial(),"N","Y"));
@@ -251,12 +252,22 @@ public class clsPOSMenuItemMasterController{
 		    objModel.setStrUrgentOrder("N");
 		    objModel.setStrWSProdCode("NA");
 		    objModel.setStrUOM(objBean.getStrUOM());
-		    objModel.setStrOperationalYN(objGlobal.funIfNull(objBean.getStrOperationalYN(),"N","Y"));
+		    String strOperationalYN=objBean.getStrOperationalYN();
+		    if(strOperationalYN==null)
+		    {
+		    	strOperationalYN="N";
+		    }
+		    else
+		    {
+		    	strOperationalYN="Y";
+		    }
+		   
+		    objModel.setStrOperationalYN(strOperationalYN);
 		    objModel.setStrRecipeUOM(objBean.getStrRecipeUOM());
 		    objModel.setDblReceivedConversion(objBean.getDblReceivedConversion());
 		    objModel.setDblRecipeConversion(objBean.getDblRecipeConversion());
 		    objModel.setStrHSNNo(objBean.getStrHSNNo());
-
+     
 		    
 		    
 		    objModel.setImgImage("");

@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sanguine.base.service.clsBaseServiceImpl;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.service.clsGlobalFunctionsService;
 import com.sanguine.webpos.bean.clsPOSAreaMasterBean;
@@ -63,6 +64,8 @@ public class clsPOSItemModifierMasterController{
 	private clsPOSMasterService objMasterService;
 	@Autowired
 	private clsPOSUtilityController objUtilityController;
+	@Autowired
+	clsBaseServiceImpl objBaseServiceImpl;
 	
 	Map<String,String> hmModifierGroupName=new HashMap<>();
 	Map<String, Double>  mapSelectedItems = new HashMap<>();
@@ -225,7 +228,7 @@ public class clsPOSItemModifierMasterController{
 			String clientCode=req.getSession().getAttribute("gClientCode").toString();
 			String webStockUserCode=req.getSession().getAttribute("gUserCode").toString();
 			String modifierCode = "",modifierName="";
-			List<clsPOSMenuItemMasterBean> listItem=objBean.getListObjItemBean();
+			
 			modifierCode = objBean.getStrModifierCode();
 			
 			
@@ -279,50 +282,64 @@ public class clsPOSItemModifierMasterController{
 			{
 				modifierName=objBean.getStrModifierName();
 			}
-			
-			clsModifierMasterHdModel objModel = new clsModifierMasterHdModel(new clsModifierMasterModel_ID(modifierCode, clientCode));
-			objModel.setStrModifierName(modifierName);
-		    objModel.setDocCode(modifierCode);
-		    objModel.setStrModifierDesc(objBean.getStrModifierDescription());
-		    objModel.setStrModifierGroupCode(hmModifierGroupName.get(objBean.getStrModifierGroup()));
-		    objModel.setStrUserCreated(webStockUserCode);
-		    objModel.setStrUserEdited(webStockUserCode);
-		    objModel.setDteDateCreated(objGlobalFunctions.funGetCurrentDateTime("yyyy-MM-dd"));
-		    objModel.setDteDateEdited(objGlobalFunctions.funGetCurrentDateTime("yyyy-MM-dd"));
-		    objModel.setStrDataPostFlag("N");
-		    
-		    Set<clsItemModifierMasterModel> setItemModifierDtl = new HashSet<clsItemModifierMasterModel>();
-		    if(listItem!=null)
-		    {
-			    for(int i=0;i<listItem.size();i++)
+			 
+			 clsModifierMasterHdModel objModel = new clsModifierMasterHdModel(new clsModifierMasterModel_ID(modifierCode, clientCode));
+				objModel.setStrModifierCode(modifierCode);
+				objModel.setStrModifierName(modifierName);
+			    //objModel.setDocCode(modifierCode);
+				
+			    objModel.setStrModifierDesc(objBean.getStrModifierDescription());
+			    objModel.setStrModifierGroupCode(hmModifierGroupName.get(objBean.getStrModifierGroup()));
+			    objModel.setStrUserCreated(webStockUserCode);
+			    objModel.setStrUserEdited(webStockUserCode);
+			    objModel.setDteDateCreated(objGlobalFunctions.funGetCurrentDateTime("yyyy-MM-dd"));
+			    objModel.setDteDateEdited(objGlobalFunctions.funGetCurrentDateTime("yyyy-MM-dd"));
+			    objModel.setStrDataPostFlag("N");
+			    
+			    List<clsPOSMenuItemMasterBean> listItem=objBean.getListObjItemBean();
+			    Set<clsItemModifierMasterModel> setItemModifierDtl = new HashSet<clsItemModifierMasterModel>();
+			    if(listItem!=null)
 			    {
-			    	clsPOSMenuItemMasterBean objItem=listItem.get(i);
-			    	
-			    		    	
-			    	clsItemModifierMasterModel objItemModel = new clsItemModifierMasterModel();
-			    	objItemModel.setStrItemCode(objItem.getStrItemCode());
-			    	objItemModel.setStrApplicable(objGlobalFunctions.funIfNull(objBean.getStrApplicable(),"n","y"));
-			    	objItemModel.setStrChargable(objGlobalFunctions.funIfNull(objBean.getStrChargable(),"n","y"));
-			    	objItemModel.setDblRate(objItem.getDblPurchaseRate());
-			    	objItemModel.setStrDefaultModifier("N");
-			    	System.out.println(objItemModel);
-			    	
-			    	if(objItem.getStrSelect()!=null && objItem.getStrSelect().equalsIgnoreCase("Tick"))
-			    	{
-			    		setItemModifierDtl.add(objItemModel);
-			    	}
-			    	  
-			    		
-			    }
+				    for(int i=0;i<listItem.size();i++)
+				    {   
+				    	clsPOSMenuItemMasterBean objItem=new clsPOSMenuItemMasterBean();
+				    	objItem=(clsPOSMenuItemMasterBean)listItem.get(i);
+				    	clsItemModifierMasterModel objItemModel = new clsItemModifierMasterModel();
+				    	
+				    	String itemCode=objItem.getStrItemCode();
+				    	if(modifierCode!=null)
+				    	{
+				    		StringBuilder  sqlBuilder=new StringBuilder();
+				    		sqlBuilder.append("delete from tblitemmodofier  where strItemCode='"+itemCode+"' and strModifierCode='"+modifierCode+"' ");
+					    	objBaseServiceImpl.funExecuteUpdate(sqlBuilder.toString(), "sql"); 	
+				    	}
+				    	objItemModel.setStrItemCode(objItem.getStrItemCode());
+				    	objItemModel.setStrApplicable(objGlobalFunctions.funIfNull(objBean.getStrApplicable(),"n","y"));
+				    	objItemModel.setStrChargable(objGlobalFunctions.funIfNull(objBean.getStrChargable(),"n","y"));
+				    	objItemModel.setDblRate(objItem.getDblPurchaseRate());
+				    	objItemModel.setStrDefaultModifier("N");
+				    	System.out.println(objItemModel);
+				    	
+				    	if(objItem.getStrSelect()!=null && objItem.getStrSelect().equalsIgnoreCase("Tick"))
+				    	{
+				    		setItemModifierDtl.add(objItemModel);
+				    	}
+				    }
+			    
+			
+		   
+		  
+	
+			    System.out.println(setItemModifierDtl);
+			    objModel.setSetItemModifierDtl(setItemModifierDtl);
+			   
+		    	 objMasterService.funSaveUpdateItemModifierMaster(objModel);
+		    					    	
+		    				    	
 		    }
-		    System.out.println(setItemModifierDtl);
-		    objModel.setSetItemModifierDtl(setItemModifierDtl);
-		    objMasterService.funSaveUpdateItemModifierMaster(objModel);
-		    
 			req.getSession().setAttribute("success", true);
 			req.getSession().setAttribute("successMessage"," "+modifierCode);
 										
-				
 				return new ModelAndView("redirect:/frmPOSItemModifier.html");
 			}
 			catch(Exception ex)

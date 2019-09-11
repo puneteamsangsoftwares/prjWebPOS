@@ -40,6 +40,7 @@ import com.sanguine.base.service.intfBaseService;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSBillItemDtlBean;
 import com.sanguine.webpos.bean.clsPOSReportBean;
+import com.sanguine.webpos.model.clsShiftMasterModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.sevice.clsPOSReportService;
 
@@ -75,6 +76,7 @@ public class clsPOSItemWiseReportController
 	public ModelAndView funOpenForm(Map<String, Object> model, HttpServletRequest request)throws Exception
 	{
 		String strClientCode = request.getSession().getAttribute("gClientCode").toString();
+		String POSCode = request.getSession().getAttribute("loginPOS").toString();
 		String urlHits = "1";
 		try
 		{
@@ -98,6 +100,23 @@ public class clsPOSItemWiseReportController
 			}
 		}
 		model.put("posList", poslist);
+		
+		Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+		model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
+		//Shift 
+				List shiftList = new ArrayList();
+				shiftList.add("All");
+				List listShiftData = objReportService.funGetPOSWiseShiftList(POSCode,request);
+				if(listShiftData!=null)
+				{
+					for(int cnt=0;cnt<listShiftData.size();cnt++)
+					{
+						clsShiftMasterModel objShiftModel= (clsShiftMasterModel) listShiftData.get(cnt);
+						shiftList.add(objShiftModel.getIntShiftCode());
+					
+					}
+				}
+				model.put("shiftList",shiftList);
 
 		if ("2".equalsIgnoreCase(urlHits))
 		{
@@ -145,21 +164,21 @@ public class clsPOSItemWiseReportController
 			String toDate = hm.get("toDate").toString();
 			String strUserCode = hm.get("userName").toString();
 			String strPOSCode = posCode;
-			String shiftNo = "1";
+			//String shiftNo = "ALL";
 			
-			String strShiftNo = "ALL",enableShiftYN="N";	
+			String shiftNo = "ALL",enableShiftYN="N";	
 			Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, posCode, "gEnableShiftYN");
 			if (!strPOSName.equalsIgnoreCase("ALL"))
 			{
 				if(objSetupParameter.get("gEnableShiftYN").toString().equals("Y"))
 				{
-					strShiftNo=objBean.getStrShiftCode();
+					shiftNo=objBean.getStrShiftCode();
 					enableShiftYN=objSetupParameter.get("gEnableShiftYN").toString();
 				}
 			}
 			hm.remove("shiftNo");
-			hm.put("shiftNo", strShiftNo);
-			hm.put("shiftCode", strShiftNo);
+			hm.put("shiftNo", shiftNo);
+			hm.put("shiftCode", shiftNo);
 			
 			String printComplimentaryYN = objBean.getStrType();
 			Map<String, clsPOSBillItemDtlBean> mapItemdtl = new HashMap<>();

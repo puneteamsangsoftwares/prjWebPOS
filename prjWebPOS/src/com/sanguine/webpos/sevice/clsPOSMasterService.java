@@ -333,7 +333,7 @@ public class clsPOSMasterService
 	{
 		List list = null;
 		StringBuilder sqlBuilder = new StringBuilder();
-		sqlBuilder.append("select strMenuCode, strMenuName from tblmenuhd where strOperational='Y' ORDER by intSequence");
+		sqlBuilder.append("select strMenuCode, strMenuName from tblmenuhd where strOperational='Y' and strClientCode='"+strClientCode+"' ORDER by intSequence");
 		list = obBaseService.funGetList(sqlBuilder, "sql");
 		return list;
 	}
@@ -847,7 +847,7 @@ public class clsPOSMasterService
 	{
 		List list = null;
 		StringBuilder sqlBuilder = new StringBuilder();
-		sqlBuilder.append("SELECT m.strItemName,m.strItemCode,ifnull(n.strModifierCode,''),ifnull(n.strDefaultModifier,''),if(n.strItemCode is Null,'N','Y')\n" + " FROM tblmenuitempricingdtl m \n" + " left outer join tblitemmodofier n on m.strItemCode=n.strItemCode and  n.strModifierCode='" + modifierCode + "' \n" + " WHERE m.strMenuCode='" + menuCode + "' group by m.strItemCode");
+		sqlBuilder.append("SELECT m.strItemName,m.strItemCode,ifnull(n.strModifierCode,''),ifnull(n.strDefaultModifier,''),if(n.strItemCode is Null,'N','Y')\n" + " FROM tblmenuitempricingdtl m \n" + " left outer join tblitemmodofier n on m.strItemCode=n.strItemCode and  n.strModifierCode='" + modifierCode + "' \n" + " WHERE m.strMenuCode='" + menuCode + "'and n.strClientCode='"+clientCode+"' group by m.strItemCode");
 
 		list = obBaseService.funGetList(sqlBuilder, "sql");
 		return list;

@@ -81,8 +81,8 @@ public class clsPOSMenuItemMasterBean{
 	private String tmeTargetMiss;
 	private String strOperationalYN;
 	private String strRecipeUOM;
-	private Double dblReceivedConversion;
-	private Double dblRecipeConversion;
+	private double dblReceivedConversion;
+	private double dblRecipeConversion;
 	private String strHSNNo;
 
 
@@ -372,7 +372,23 @@ public class clsPOSMenuItemMasterBean{
 	{
 		this.strRecipeUOM = strRecipeUOM;
 	}
-	public Double getDblReceivedConversion()
+	public double getDblReceivedConversion()
+	{
+		return dblReceivedConversion;
+	}
+	public void setDblReceivedConversion(double dblReceivedConversion)
+	{
+		this.dblReceivedConversion = dblReceivedConversion;
+	}
+	public double getDblRecipeConversion()
+	{
+		return dblRecipeConversion;
+	}
+	public void setDblRecipeConversion(double dblRecipeConversion)
+	{
+		this.dblRecipeConversion = dblRecipeConversion;
+	}
+	/*public Double getDblReceivedConversion()
 	{
 		return dblReceivedConversion;
 	}
@@ -387,7 +403,7 @@ public class clsPOSMenuItemMasterBean{
 	public void setDblRecipeConversion(Double dblRecipeConversion)
 	{
 		this.dblRecipeConversion = dblRecipeConversion;
-	}
+	}*/
 	public String getStrHSNNo()
 	{
 		return strHSNNo;

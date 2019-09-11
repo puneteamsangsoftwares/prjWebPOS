@@ -255,6 +255,8 @@ public class clsPOSPropertySetupBean
 	private String strEmailServerName;
 
 	private String strReceiverEmailId;
+	
+	private String strDBBackupReceiverEmailId;
 
 	private String strBodyPart;
 
@@ -352,7 +354,7 @@ public class clsPOSPropertySetupBean
 
 	private String strDineInAreaForDirectBiller;
 
-	private String strHomeDeliAreaForDirectBiller;
+//	private String strHomeDeliAreaForDirectBiller;
 
 
 	private String chkRoundOffBillAmount;
@@ -475,6 +477,13 @@ public class clsPOSPropertySetupBean
 	
 	private String strHomeDeliveryAreaForDirectBiller;
 	private String strTakeAwayAreaForDirectBiller;
+	
+	private String strShortNameOnDirectBillerAndBill;
+	private String strClearAllTrasactionAtDayEnd;
+	private String strCashDenominationCompulsary;
+	private String strCashManagementCompulsary;
+	private String strPrintFullVoidBill;
+	
 	public String getStrSkipWaiterAndPax()
 	{
 		return strSkipWaiterAndPax;
@@ -2266,7 +2275,7 @@ public class clsPOSPropertySetupBean
 		this.strDineInAreaForDirectBiller = strDineInAreaForDirectBiller;
 	}
 
-	public String getStrHomeDeliAreaForDirectBiller()
+/*	public String getStrHomeDeliAreaForDirectBiller()
 	{
 		return strHomeDeliAreaForDirectBiller;
 	}
@@ -2274,7 +2283,7 @@ public class clsPOSPropertySetupBean
 	public void setStrHomeDeliAreaForDirectBiller(String strHomeDeliAreaForDirectBiller)
 	{
 		this.strHomeDeliAreaForDirectBiller = strHomeDeliAreaForDirectBiller;
-	}
+	}*/
 
 	public String getStrTakeAwayAreaForDirectBiller()
 	{
@@ -3064,6 +3073,66 @@ public class clsPOSPropertySetupBean
 	public void setStrHomeDeliveryAreaForDirectBiller(String strHomeDeliveryAreaForDirectBiller)
 	{
 		this.strHomeDeliveryAreaForDirectBiller = strHomeDeliveryAreaForDirectBiller;
+	}
+
+	public String getStrShortNameOnDirectBillerAndBill()
+	{
+		return strShortNameOnDirectBillerAndBill;
+	}
+
+	public void setStrShortNameOnDirectBillerAndBill(String strShortNameOnDirectBillerAndBill)
+	{
+		this.strShortNameOnDirectBillerAndBill = strShortNameOnDirectBillerAndBill;
+	}
+
+	public String getStrClearAllTrasactionAtDayEnd()
+	{
+		return strClearAllTrasactionAtDayEnd;
+	}
+
+	public void setStrClearAllTrasactionAtDayEnd(String strClearAllTrasactionAtDayEnd)
+	{
+		this.strClearAllTrasactionAtDayEnd = strClearAllTrasactionAtDayEnd;
+	}
+
+	public String getStrCashDenominationCompulsary()
+	{
+		return strCashDenominationCompulsary;
+	}
+
+	public void setStrCashDenominationCompulsary(String strCashDenominationCompulsary)
+	{
+		this.strCashDenominationCompulsary = strCashDenominationCompulsary;
+	}
+
+	public String getStrCashManagementCompulsary()
+	{
+		return strCashManagementCompulsary;
+	}
+
+	public void setStrCashManagementCompulsary(String strCashManagementCompulsary)
+	{
+		this.strCashManagementCompulsary = strCashManagementCompulsary;
+	}
+
+	public String getStrPrintFullVoidBill()
+	{
+		return strPrintFullVoidBill;
+	}
+
+	public void setStrPrintFullVoidBill(String strPrintFullVoidBill)
+	{
+		this.strPrintFullVoidBill = strPrintFullVoidBill;
+	}
+
+	public String getStrDBBackupReceiverEmailId()
+	{
+		return strDBBackupReceiverEmailId;
+	}
+
+	public void setStrDBBackupReceiverEmailId(String strDBBackupReceiverEmailId)
+	{
+		this.strDBBackupReceiverEmailId = strDBBackupReceiverEmailId;
 	}
 
 	
