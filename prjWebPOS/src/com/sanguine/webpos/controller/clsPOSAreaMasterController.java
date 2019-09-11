@@ -82,11 +82,11 @@ public class clsPOSAreaMasterController {
 		try
 		{
 			String clientCode=req.getSession().getAttribute("gClientCode").toString();
-			String webStockUserCode=req.getSession().getAttribute("gUserCode").toString();
+			String webPOSUserCode=req.getSession().getAttribute("gUserCode").toString();
 			String areaCode=objBean.getStrAreaCode();
 			if (areaCode.trim().isEmpty())
 			{
-				long intCode =objUtilityController.funGetDocumentCodeFromInternal("Area");
+				long intCode =objUtilityController.funGetDocumentCodeFromInternal("Area",clientCode);
 				areaCode = "A" + String.format("%03d", intCode);
 			}
 			clsAreaMasterModel objModel = new clsAreaMasterModel(new clsAreaMasterModel_ID(areaCode, clientCode));
@@ -94,9 +94,9 @@ public class clsPOSAreaMasterController {
 			objModel.setStrPOSCode(objBean.getStrPOSName());
 			objModel.setDteDateCreated(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
 			objModel.setDteDateEdited(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
-			objModel.setStrDataPostFlag("");
-			objModel.setStrUserCreated(webStockUserCode);
-			objModel.setStrUserEdited(webStockUserCode);
+			objModel.setStrDataPostFlag("N");
+			objModel.setStrUserCreated(webPOSUserCode);
+			objModel.setStrUserEdited(webPOSUserCode);
 			objMasterService.funSaveUpdateAreaMaster(objModel);
 			req.getSession().setAttribute("success", true);
 			req.getSession().setAttribute("successMessage"," "+areaCode);

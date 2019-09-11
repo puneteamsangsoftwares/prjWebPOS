@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sanguine.base.service.clsBaseServiceImpl;
+import com.sanguine.bean.clsUserHdBean;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSCostCenterBean;
 import com.sanguine.webpos.model.clsCostCenterMasterModel;
@@ -85,14 +86,12 @@ public class clsPOSCostCenterMasterController {
 	@RequestMapping(value ="/saveCostCenterMaster", method = RequestMethod.POST)
 	public ModelAndView funAddUpdate(@ModelAttribute("command") @Valid clsPOSCostCenterBean objBean ,BindingResult result,Map<String,Object> model,HttpServletRequest req)
 	{
-		
 		String urlHits="1";
-		
 		try
 		{
 			urlHits=req.getParameter("saddr").toString();
 			String clientCode=req.getSession().getAttribute("gClientCode").toString();
-			String webStockUserCode=req.getSession().getAttribute("gUserCode").toString();
+			String webPOSUserCode=req.getSession().getAttribute("gUserCode").toString();
 	
 			String code="";
 			String costCenterCode=objBean.getStrCostCenterCode();
@@ -136,15 +135,15 @@ public class clsPOSCostCenterMasterController {
 		    
 		    clsCostCenterMasterModel objModel = new clsCostCenterMasterModel(new clsCostCenterMasterModel_ID(costCenterCode, clientCode));
 		    objModel.setStrCostCenterName(objBean.getStrCostCenterName());
-		    objModel.setStrPrinterPort( objBean.getStrPrinterPort());
+		    objModel.setStrPrinterPort(objBean.getStrPrinterPort());
 		    objModel.setStrSecondaryPrinterPort(objBean.getStrSecondaryPrinterPort());
 		    objModel.setIntPrimaryPrinterNoOfCopies(objBean.getIntPrimaryPrinterNoOfCopies());
 		    objModel.setIntSecondaryPrinterNoOfCopies(objBean.getIntSecondaryPrinterNoOfCopies());
 		    objModel.setStrPrintOnBothPrinters(objGlobal.funIfNull(objBean.getStrPrintOnBothPrinters(),"N","Y"));
 		    objModel.setStrLabelOnKOT(objBean.getStrLabelOnKOT());
 		    objModel.setStrClientCode(clientCode); 
-		    objModel.setStrUserCreated(webStockUserCode);
-		    objModel.setStrUserEdited(webStockUserCode);
+		    objModel.setStrUserCreated(webPOSUserCode);
+		    objModel.setStrUserEdited(webPOSUserCode);
 		    objModel.setDteDateCreated(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
 		    objModel.setDteDateEdited(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
 		    objModel.setStrDataPostFlag("N");
@@ -163,7 +162,7 @@ public class clsPOSCostCenterMasterController {
 		{
 			urlHits="1";
 			ex.printStackTrace();
-			return new ModelAndView("redirect:/frmFail.html");
+			return new ModelAndView("redirect:/frmLogin.html");
 		}
 	}
 

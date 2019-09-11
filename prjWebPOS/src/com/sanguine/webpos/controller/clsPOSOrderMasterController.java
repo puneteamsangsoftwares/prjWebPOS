@@ -102,7 +102,7 @@ public class clsPOSOrderMasterController {
 			
 			if (orderCode.trim().isEmpty())
 			{
-				long intCode =objUtilityController.funGetDocumentCodeFromInternal("Order");
+				long intCode =objUtilityController.funGetDocumentCodeFromInternal("Order",clientCode);
 				orderCode = "OR" + String.format("%06d",orderCode );	
 			}
 

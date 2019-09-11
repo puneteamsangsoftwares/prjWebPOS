@@ -93,7 +93,7 @@ public class clsPOSCustomerTypeMasterController {
 						
 			 if (customerTypeMasterCode.trim().isEmpty())
 			    {
-			    	long lngCode=objUtilityController.funGetDocumentCodeFromInternal("custtype");
+			    	long lngCode=objUtilityController.funGetDocumentCodeFromInternal("custtype",clientCode);
 			    	if(lngCode>0)
 			    	{
 			    		customerTypeMasterCode = "CT" + String.format("%03d", lngCode);

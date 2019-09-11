@@ -140,7 +140,7 @@ public class clsPOSCounterMasterController
 
 			if (counterCode.trim().isEmpty())
 			{
-				long intCode =objUtilityController.funGetDocumentCodeFromInternal("Counter");
+				long intCode =objUtilityController.funGetDocumentCodeFromInternal("Counter",clientCode);
 				counterCode = "CT" + String.format("%02d", intCode);
 			}
 			else

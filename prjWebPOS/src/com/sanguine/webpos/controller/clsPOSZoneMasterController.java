@@ -111,7 +111,7 @@ public class clsPOSZoneMasterController
 
 			if (zoneCode.trim().isEmpty())
 			{
-				long intCode = objUtilityController.funGetDocumentCodeFromInternal("Zone");
+				long intCode = objUtilityController.funGetDocumentCodeFromInternal("Zone",clientCode);
 				zoneCode = "CA" + String.format("%03d", intCode);
 			}
 			clsPOSZoneMasterModel objModel = new clsPOSZoneMasterModel(new clsPOSZoneMasterModel_ID(zoneCode, clientCode));

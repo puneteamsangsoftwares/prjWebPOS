@@ -69,9 +69,8 @@ var fieldName="";
  	**/
  	function funResetFields()
  	{
- 		$("#txtPOSCode").focus();
- 		
-     }
+ 		$("#txtPOSCode").focus();	
+    }
      
  	
  	
@@ -91,24 +90,24 @@ var fieldName="";
 		* Success Message After Saving Record
 		**/
 		$(document).ready(function()
+		{
+			var message='';
+			<%if (session.getAttribute("success") != null) 
+			{
+				if(session.getAttribute("successMessage") != null)
+				{%>
+					message='<%=session.getAttribute("successMessage").toString()%>';
+				    <%
+				    session.removeAttribute("successMessage");
+				}
+				boolean test = ((Boolean) session.getAttribute("success")).booleanValue();
+				session.removeAttribute("success");
+				if (test) 
 				{
-					var message='';
-					<%if (session.getAttribute("success") != null) 
-					{
-						if(session.getAttribute("successMessage") != null)
-						{%>
-							message='<%=session.getAttribute("successMessage").toString()%>';
-						    <%
-						    session.removeAttribute("successMessage");
-						}
-						boolean test = ((Boolean) session.getAttribute("success")).booleanValue();
-						session.removeAttribute("success");
-						if (test) 
-						{
-							%>confirmDialog('Message !',"Data Saved \n\n"+ message);<%
-						}
-					}%>
-				});
+					%>confirmDialog('Message !',"Data Saved \n\n"+ message);<%
+				}
+			}%>
+		});
 
 	//Initialize tab Index or which tab is Active
 
@@ -239,37 +238,37 @@ var fieldName="";
 	function funTestPrint(printerval)
 	{
 
-			 var searchurl=getContextPath()+"/testPrint.html";
-			 $.ajax({
-				        type: "POST",
-				        data:{ printerval : printerval,
-			 	        	
-			 			},
-				        url: searchurl,
-				        dataType: "json",
-				        success: function(response)
-				        {
-				        	
-				            	        	
-						},
-						error: function(jqXHR, exception) {
-				            if (jqXHR.status === 0) {
-				                alert('Not connect.n Verify Network.');
-				            } else if (jqXHR.status == 404) {
-				                alert('Requested page not found. [404]');
-				            } else if (jqXHR.status == 500) {
-				                alert('Internal Server Error [500].');
-				            } else if (exception === 'parsererror') {
-				                alert('Requested JSON parse failed.');
-				            } else if (exception === 'timeout') {
-				                alert('Time out error.');
-				            } else if (exception === 'abort') {
-				                alert('Ajax request aborted.');
-				            } else {
-				                alert('Uncaught Error.n' + jqXHR.responseText);
-				            }		            
-				        }
-			      });
+		 var searchurl=getContextPath()+"/testPrint.html";
+		 $.ajax({
+			        type: "POST",
+			        data:{ printerval : printerval,
+		 	        	
+		 			},
+			        url: searchurl,
+			        dataType: "json",
+			        success: function(response)
+			        {
+			        	
+			            	        	
+					},
+					error: function(jqXHR, exception) {
+			            if (jqXHR.status === 0) {
+			                alert('Not connect.n Verify Network.');
+			            } else if (jqXHR.status == 404) {
+			                alert('Requested page not found. [404]');
+			            } else if (jqXHR.status == 500) {
+			                alert('Internal Server Error [500].');
+			            } else if (exception === 'parsererror') {
+			                alert('Requested JSON parse failed.');
+			            } else if (exception === 'timeout') {
+			                alert('Time out error.');
+			            } else if (exception === 'abort') {
+			                alert('Ajax request aborted.');
+			            } else {
+			                alert('Uncaught Error.n' + jqXHR.responseText);
+			            }		            
+			        }
+		      });
 		
 		
 	}

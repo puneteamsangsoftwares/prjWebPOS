@@ -6,9 +6,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-
-
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>AREA MASTER</title>
 <link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/jquery-confirm.min.css"/>"/>
@@ -32,8 +29,10 @@
     height: 200px;
 }
 </style>
-<script type="text/javascript">
 
+<script type="text/javascript">
+	
+	
 	 $(document).ready(function () 
 	 {
 		  $('input#txtAreaName').mlKeyboard({layout: 'en_US'});
