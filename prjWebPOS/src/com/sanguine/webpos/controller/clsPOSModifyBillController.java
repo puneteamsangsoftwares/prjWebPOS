@@ -4,14 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -28,13 +25,13 @@ import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSBillDtl;
 import com.sanguine.webpos.bean.clsPOSBillSeriesBillDtl;
 import com.sanguine.webpos.bean.clsPOSBillSettlementBean;
-import com.sanguine.webpos.bean.clsPOSItemsDtlsInBill;
 import com.sanguine.webpos.bean.clsPOSKOTItemDtl;
 import com.sanguine.webpos.bean.clsPOSPromotionItems;
 import com.sanguine.webpos.model.clsBillDtlModel;
 import com.sanguine.webpos.model.clsBillHdModel;
-import com.sanguine.webpos.model.clsBillHdModel_ID;
 import com.sanguine.webpos.model.clsBillModifierDtlModel;
+import com.sanguine.webpos.model.clsSetupHdModel;
+import com.sanguine.webpos.sevice.clsPOSMasterService;
 
 @Controller
 public class clsPOSModifyBillController
@@ -54,6 +51,9 @@ public class clsPOSModifyBillController
 
 	@Autowired
 	clsPOSBillingAPIController objBillingAPI;
+	
+	@Autowired
+	clsPOSMasterService objMasterService;
 
 	private StringBuilder sql = new StringBuilder();
 	private Map<String, clsPOSPromotionItems> hmPromoItem = new HashMap<String, clsPOSPromotionItems>();
@@ -179,7 +179,9 @@ public class clsPOSModifyBillController
 		{
 			String posDate = request.getSession().getAttribute("gPOSDate").toString().split(" ")[0];
 			String billDateTime = posDate;
-
+			String clientCode = request.getSession().getAttribute("gClientCode").toString();
+			String posCode = request.getSession().getAttribute("loginPOS").toString();
+			
 			Date dt = new Date();
 			String currentDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(dt);
 
@@ -189,7 +191,9 @@ public class clsPOSModifyBillController
 			String billNo = objBean.getStrBillNo();
 
 			boolean isBillSeries = false;
-			if (clsPOSGlobalFunctionsController.hmPOSSetupValues.containsKey("strEnableBillSeries") && clsPOSGlobalFunctionsController.hmPOSSetupValues.get("strEnableBillSeries").toString().equalsIgnoreCase("Y"))
+			clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(posCode, clientCode);
+			
+			if (objSetupHdModel.getStrEnableBillSeries().equalsIgnoreCase("Y"))
 			{
 				isBillSeries = true;
 			}

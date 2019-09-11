@@ -940,7 +940,7 @@
 	          	    globalDebitCardNo = "";
 	       		 }
 				 var total=$("#txtTotal").val();
-					  
+//Make KOT -- done button 					  
 	        	funDoneBtnKOT(ncKot,gTakeAway,globalDebitCardNo,cmsMemCode,cmsMemName,reasonCode,homeDeliveryForTax,arrListHomeDelDetails,total);
 			}
 			else if(operationType=="HomeDelivery")
@@ -963,7 +963,7 @@
 					
 					
 					funCheckHomeDelStatus();
-					
+//Direct Biller -- done button					
 					/**
 					*This methis is in frmBilling.jsp								
 					*/
@@ -986,6 +986,7 @@
 				
 				if (arrDirectBilleritems.length > 0)
 				{ 
+//take away -- done button										
 					/**
 					*This methis is in frmBilling.jsp								
 					*/
@@ -1213,8 +1214,9 @@ function funOpenKOTPrint(costCenterCode,costCenterName,areaCode,tableNo,kotNo){
    			custcode="";
    			custName="";
    		}
+   		var dblTaxAmt = $("#txtTotal").val();
 		var searchurl=getContextPath()+"/saveKOT.html?ncKot="+ncKot+"&takeAway="+gTakeAway+"&globalDebitCardNo="+globalDebitCardNo+"&cmsMemCode="+cmsMemCode+"&cmsMemName="+cmsMemName+"&reasonCode="+reasonCode+"&homeDeliveryForTax="+homeDeliveryForTax+
-				"&arrListHomeDelDetails="+arrListHomeDelDetails+"&total="+total+"&custcode="+custcode+"&custName="+custName;
+				"&arrListHomeDelDetails="+arrListHomeDelDetails+"&total="+total+"&custcode="+custcode+"&custName="+custName+"&dblTaxAmt="+dblTaxAmt;
 		$.ajax({
 			 type: "POST",
 		        url: searchurl,

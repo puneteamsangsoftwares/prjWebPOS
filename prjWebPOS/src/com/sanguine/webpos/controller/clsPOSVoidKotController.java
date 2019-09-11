@@ -7,21 +7,19 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import org.hibernate.Query;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sanguine.base.service.clsBaseServiceImpl;
 import com.sanguine.controller.clsGlobalFunctions;
-import com.sanguine.webpos.bean.clsPOSItemDetailFrTaxBean;
+import com.sanguine.webpos.bean.clsPOSItemDtlForTax;
 import com.sanguine.webpos.bean.clsPOSTaxCalculationBean;
 import com.sanguine.webpos.bean.clsPOSVoidKotBean;
-import com.sanguine.webpos.bean.clsPOSTaxCalculationDtls;
 import com.sanguine.webpos.util.clsPOSUtilityController;
 @Controller
 public class clsPOSVoidKotController {
@@ -180,6 +178,7 @@ public class clsPOSVoidKotController {
 //	    		String tableNo=req.getParameter("tableNo");
 	    		String tableNo="";
 	    		String tableName=req.getParameter("cmbTableName").toString();
+	    		String clientCode=req.getSession().getAttribute("gClientCode").toString();
 	    		Map mapFilltable=new HashMap();
 	    		LinkedList listFillItemGrid=new LinkedList();
 	    		try {
@@ -191,7 +190,7 @@ public class clsPOSVoidKotController {
 	    			}
 	    			
 	    			
-	    			Map jObj = fillItemTableData( KotNo, tableNo, strPosCode, tableName);
+	    			Map jObj = fillItemTableData( KotNo, tableNo, strPosCode, tableName,clientCode);
 	    		    List jarr = (List) jObj.get("jArr");
 	    			for(int i=0;i<jarr.size();i++)
 	    			{
@@ -492,7 +491,7 @@ public class clsPOSVoidKotController {
 	
 	
 	
-	public Map fillItemTableData(String KotNo,String tableNo1,String strPosCode,String tableName)
+	public Map fillItemTableData(String KotNo,String tableNo1,String strPosCode,String tableName,String clientCode)
 	{
 		Map jObjReturn=new HashMap();
 		List jArr=new ArrayList();
@@ -527,7 +526,7 @@ public class clsPOSVoidKotController {
         String userCreated="";
         
 
-        List<clsPOSItemDetailFrTaxBean> arrListItemDtl = new ArrayList<clsPOSItemDetailFrTaxBean>();
+        List<clsPOSItemDtlForTax> arrListItemDtl = new ArrayList<clsPOSItemDtlForTax>();
        
   	    List listSql=  objBaseServiceImpl.funGetList(sqlBuilder, "sql");
   	     {
@@ -559,7 +558,7 @@ public class clsPOSVoidKotController {
 
             jArr.add(jObj1);   
             
-            clsPOSItemDetailFrTaxBean objItemDtlForTax = new clsPOSItemDetailFrTaxBean();
+            clsPOSItemDtlForTax objItemDtlForTax = new clsPOSItemDtlForTax();
             objItemDtlForTax.setItemCode(itemCode);
             objItemDtlForTax.setItemName(itemName);
             objItemDtlForTax.setAmount(dblAmount);
@@ -580,7 +579,8 @@ public class clsPOSVoidKotController {
          
          
         double taxAmt = 0;
-        List<clsPOSTaxCalculationBean> arrListTaxDtl = objUtility.funCalculateTax(arrListItemDtl, POSCode, POSDate, areaCode, "DineIn", subTotalAmt, 0, "Void KOT", "S01");
+      //funCalculateTax(List<clsPOSItemDtlForTax> arrListItemDtl, String POSCode, String dtPOSDate, String billAreaCode, String operationTypeForTax, double subTotal, double discountAmt, String transType, String settlementCode, String taxOnSP,String strSCTaxForRemove,String strClientCode) throws Exception
+        List<clsPOSTaxCalculationBean> arrListTaxDtl = objUtility.funCalculateTax(arrListItemDtl, POSCode, POSDate, areaCode, "DineIn", subTotalAmt, 0, "Void KOT", "S01","Sales","N",clientCode);
         if(arrListTaxDtl.size()>0)
         {
         for (int i=0;i<arrListTaxDtl.size();i++)

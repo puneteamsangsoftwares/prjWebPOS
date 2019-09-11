@@ -4,7 +4,6 @@ import java.lang.reflect.Type;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -35,23 +34,15 @@ import com.sanguine.base.service.intfBaseService;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSBillSeriesBillDtl;
 import com.sanguine.webpos.bean.clsPOSBillSettlementBean;
-import com.sanguine.webpos.bean.clsPOSDiscountDtlsOnBill;
 import com.sanguine.webpos.bean.clsPOSItemDtlForTax;
 import com.sanguine.webpos.bean.clsPOSItemsDtlsInBill;
 import com.sanguine.webpos.bean.clsPOSKOTItemDtl;
 import com.sanguine.webpos.bean.clsPOSPromotionItems;
 import com.sanguine.webpos.bean.clsPOSSettelementOptions;
-import com.sanguine.webpos.bean.clsPOSSettlementDtlsOnBill;
 import com.sanguine.webpos.bean.clsPOSTaxCalculation;
-import com.sanguine.webpos.bean.clsPOSTaxCalculationDtls;
+import com.sanguine.webpos.bean.clsPOSTaxCalculationBean;
 import com.sanguine.webpos.bean.clsPOSTaxDtlsOnBill;
-import com.sanguine.webpos.model.clsBillDiscDtlModel;
-import com.sanguine.webpos.model.clsBillPromotionDtlModel;
-import com.sanguine.webpos.model.clsBillSettlementDtlModel;
-import com.sanguine.webpos.model.clsHomeDeliveryDtlModel;
-import com.sanguine.webpos.model.clsHomeDeliveryHdModel;
 import com.sanguine.webpos.model.clsSetupHdModel;
-import com.sanguine.webpos.model.clsSetupModel_ID;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.util.clsPOSSetupUtility;
 import com.sanguine.webpos.util.clsPOSTextFileGenerator;
@@ -61,11 +52,11 @@ import com.sanguine.webpos.util.clsPOSUtilityController;
 public class clsPOSBillSettlementControllerForDirectBiller
 {
 
-	private List listItemCode;
+	/*private List listItemCode;
 	String clientCode = "",
 			posCode = "", posDate = "",
 			userCode = "",
-			posClientCode = "";
+			posClientCode = "";*/
 
 	@Autowired
 	private clsGlobalFunctions objGlobalFunctions;
@@ -96,8 +87,8 @@ public class clsPOSBillSettlementControllerForDirectBiller
 	@Autowired
 	clsPOSMasterService objMasterService;
 
-	JSONArray listReasonCode,
-			listReasonName;
+//	JSONArray listReasonCode,
+//			listReasonName;
 
 	private Map<String, clsPOSPromotionItems> hmPromoItem = new HashMap<String, clsPOSPromotionItems>();
 
@@ -108,6 +99,9 @@ public class clsPOSBillSettlementControllerForDirectBiller
 		String urlHits = "1",voucherNo="";
 		clsPOSBillSettlementBean obBillSettlementBean = new clsPOSBillSettlementBean();
 		clsSetupHdModel objSetupHdModel=null;
+		String clientCode = "",posCode = "", posDate = "",
+				userCode = "",posClientCode = "";
+		JSONArray listReasonCode,listReasonName;
 		try
 		{
 
@@ -118,8 +112,6 @@ public class clsPOSBillSettlementControllerForDirectBiller
 			if(voucherNo!=null&&!voucherNo.isEmpty()){
 				model.put("voucherNo", voucherNo);
 			}
-			
-			
 			
 			
 			clientCode = request.getSession().getAttribute("gClientCode").toString();
@@ -229,15 +221,17 @@ public class clsPOSBillSettlementControllerForDirectBiller
 		
 		
 		model.put("billDate", posDate);
-		model.put("gCMSIntegrationYN", clsPOSGlobalFunctionsController.hmPOSSetupValues.get("CMSIntegrationYN"));
-		model.put("gCRMInterface", clsPOSGlobalFunctionsController.hmPOSSetupValues.get("CRMInterface"));
-		String gPopUpToApplyPromotionsOnBill = objPOSSetupUtility.funGetParameterValuePOSWise(clientCode, posCode, "gPopUpToApplyPromotionsOnBill");
-		model.put("gPopUpToApplyPromotionsOnBill", gPopUpToApplyPromotionsOnBill);
-		model.put("gCreditCardSlipNo", clsPOSGlobalFunctionsController.hmPOSSetupValues.get("CreditCardSlipNoCompulsoryYN"));
-		model.put("gCreditCardExpiryDate", clsPOSGlobalFunctionsController.hmPOSSetupValues.get("CreditCardExpiryDateCompulsoryYN"));
+
+
+		model.put("gCMSIntegrationYN", objSetupHdModel.getStrCMSIntegrationYN());
+		model.put("gCRMInterface", objSetupHdModel.getStrCRMInterface());// clsPOSGlobalFunctionsController.hmPOSSetupValues.get("CRMInterface"));
+		//String gPopUpToApplyPromotionsOnBill = objPOSSetupUtility.funGetParameterValuePOSWise(clientCode, posCode, "gPopUpToApplyPromotionsOnBill");
+		model.put("gPopUpToApplyPromotionsOnBill", objSetupHdModel.getStrPopUpToApplyPromotionsOnBill()); //gPopUpToApplyPromotionsOnBill);
+		model.put("gCreditCardSlipNo",objSetupHdModel.getStrCreditCardSlipNoCompulsoryYN());//.getStr clsPOSGlobalFunctionsController.hmPOSSetupValues.get("CreditCardSlipNoCompulsoryYN"));
+		model.put("gCreditCardExpiryDate", objSetupHdModel.getStrCreditCardExpiryDateCompulsoryYN());// clsPOSGlobalFunctionsController.hmPOSSetupValues.get("CreditCardExpiryDateCompulsoryYN"));
 		
-		model.put("gSkipPax", clsPOSGlobalFunctionsController.hmPOSSetupValues.get("SkipPax"));
-		model.put("gSkipWaiter", clsPOSGlobalFunctionsController.hmPOSSetupValues.get("SkipWaiter"));
+		model.put("gSkipPax",objSetupHdModel.getStrSkipPax());// clsPOSGlobalFunctionsController.hmPOSSetupValues.get("SkipPax"));
+		model.put("gSkipWaiter",objSetupHdModel.getStrSkipWaiter());//CreditCard clsPOSGlobalFunctionsController.hmPOSSetupValues.get("SkipWaiter"));
 
 		funLoadAllReasonMasterData(request);
 		
@@ -257,9 +251,9 @@ public class clsPOSBillSettlementControllerForDirectBiller
 
 		}
 
-		model.put("listReasonCode", listReasonCode);
+		/*model.put("listReasonCode", listReasonCode);
 		model.put("listReasonName", listReasonName);
-
+*/
 		double gMaxDiscount = objSetupHdModel.getDblMaxDiscount();
 		String gApplyDiscountOn = objSetupHdModel.getStrApplyDiscountOn();
 		return new ModelAndView("frmWebPOSBilling", "command", obBillSettlementBean);
@@ -272,7 +266,8 @@ public class clsPOSBillSettlementControllerForDirectBiller
 		Map<String, String> mapComplementry = new HashMap<String, String>();
 		Map<String, String> mapDiscount = new HashMap<String, String>();
 		String clientCode = request.getSession().getAttribute("gClientCode").toString();
-
+		JSONArray listReasonCode,listReasonName;
+		
 		JSONObject jObj = objBillingAPI.funLoadAllReasonMasterData(clientCode);
 		if (jObj != null)
 		{
@@ -433,21 +428,17 @@ public class clsPOSBillSettlementControllerForDirectBiller
 	private @ResponseBody List<clsPOSTaxDtlsOnBill> funCalculateTax(@RequestBody List listBillItem, HttpServletRequest request)
 	{
 		List<clsPOSTaxDtlsOnBill> listTaxDtlOnBill = new ArrayList<clsPOSTaxDtlsOnBill>();
-		// if (billTransType.equalsIgnoreCase("Home Delivery"))
-		// {
-		// operationTypeForTax = "HomeDelivery";
-		// }
-		// else if (obBillItem.getTakeAwayYN().equals("Yes"))
-		// {
-		// operationTypeForTax = "TakeAway";
-		// }
-		// else
-		// {
-		// operationTypeForTax = "DineIn";
-		// }
+//HomeDelivery DineIn TakeAway
+		String operationTypeForTax = "DineIn";
+		if(request.getParameter("operationTypeForTax")!=null)
+		{
+			operationTypeForTax = request.getParameter("operationTypeForTax");
+		}
+		String clientCode = "",posCode = "", posDate = "",
+				userCode = "",posClientCode = "";
 
 		// customerType=objDirectBillerBean.getStrCustomerType();
-		String operationTypeForTax = "DineIn";
+		
 		clientCode = request.getSession().getAttribute("gClientCode").toString();
 		posClientCode = request.getSession().getAttribute("gClientCode").toString();
 		posCode = request.getSession().getAttribute("gPOSCode").toString();
@@ -573,15 +564,15 @@ public class clsPOSBillSettlementControllerForDirectBiller
 			Date dt = new Date();
 			String date = (dt.getYear() + 1900) + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
 			clsPOSTaxCalculation objTaxCalculation = new clsPOSTaxCalculation();
-
-			List<clsPOSTaxCalculationDtls> arrListTaxDtl = objUtility.funCalculateTax(arrListItemDtls, posCode, posDate, areaCode, operationType, subTotalForTax, 0.0, "");
+//funCalculateTax(List<clsPOSItemDetailFrTaxBean> arrListItemDtl, String POSCode, String dtPOSDate, String billAreaCode, String operationTypeForTax, double subTotal, double discountAmt, String transType, String settlementCode, String taxOnSP,String strSCTaxForRemove,String strClientCode) throws Exception
+			List<clsPOSTaxCalculationBean> arrListTaxDtl = objUtility.funCalculateTax(arrListItemDtls, posCode, posDate, areaCode, operationType, subTotalForTax, 0.0, "","S01","Sales","N",clientCode);
 
 			JSONArray jAyyTaxList = new JSONArray();
 			JSONObject jsTax;
 			for (int cnt = 0; cnt < arrListTaxDtl.size(); cnt++)
 			{
 				jsTax = new JSONObject();
-				clsPOSTaxCalculationDtls obj = (clsPOSTaxCalculationDtls) arrListTaxDtl.get(cnt);
+				clsPOSTaxCalculationBean obj = (clsPOSTaxCalculationBean) arrListTaxDtl.get(cnt);
 				System.out.println("Tax Dtl= " + obj.getTaxCode() + "\t" + obj.getTaxName() + "\t" + obj.getTaxAmount());
 				taxAmount += obj.getTaxAmount();
 				taxAmt = String.valueOf(taxAmount);
@@ -612,6 +603,13 @@ public class clsPOSBillSettlementControllerForDirectBiller
 		String areaCode = "";
 		double dblDiscountAmt = 0.0;
 		StringBuilder sqlBuilder = new StringBuilder();
+		String clientCode = "",posCode = "", posDate = "",
+				userCode = "",posClientCode = "";
+		clientCode = request.getSession().getAttribute("gClientCode").toString();
+		posClientCode = request.getSession().getAttribute("gClientCode").toString();
+		posCode = request.getSession().getAttribute("gPOSCode").toString();
+		posDate = request.getSession().getAttribute("gPOSDate").toString().split(" ")[0];
+		userCode = request.getSession().getAttribute("gUserCode").toString();
 		if (areaCode.equals(""))
 		{
 			sqlBuilder.setLength(0);
@@ -862,8 +860,11 @@ public class clsPOSBillSettlementControllerForDirectBiller
 	}
 
 	@RequestMapping(value = "/funCalculateDeliveryChages", method = RequestMethod.POST)
-	public @ResponseBody double funCalclulateDeliveryCharges(@RequestParam("buildingCode") String buildingCode, @RequestParam("gCustomerCode") String gCustomerCode, @RequestParam("totalBillAmount") double totalBillAmount)
+	public @ResponseBody double funCalclulateDeliveryCharges(@RequestParam("buildingCode") String buildingCode, @RequestParam("gCustomerCode") String gCustomerCode, @RequestParam("totalBillAmount") double totalBillAmount,HttpServletRequest request)
 	{
+		String clientCode = "",posCode = "";
+		clientCode = request.getSession().getAttribute("gClientCode").toString();
+		posCode = request.getSession().getAttribute("gPOSCode").toString();
 		double deliverycharges = objUtility.funCalculateDeliveryChages(buildingCode, totalBillAmount, gCustomerCode, clientCode, posCode);
 		return deliverycharges;
 	}
@@ -897,7 +898,8 @@ public class clsPOSBillSettlementControllerForDirectBiller
 		sbSql.setLength(0);
 
 		boolean isBillSeries = false;
-		if (clsPOSGlobalFunctionsController.hmPOSSetupValues.get("strEnableBillSeries").toString().equalsIgnoreCase("Y"))
+		clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(POSCode, clientCode);
+		if (objSetupHdModel.getStrEnableBillSeries().equalsIgnoreCase("Y"))
 		{
 			isBillSeries = true;
 		}
@@ -926,7 +928,7 @@ public class clsPOSBillSettlementControllerForDirectBiller
 			objBillDtl.setDblItemQuantity(objDirectBillerItem.getQuantity());
 			objBillDtl.setDblAmount(objDirectBillerItem.getAmount());
 			objBillDtl.setDblTaxAmount(0);
-			objBillDtl.setDteBillDate(posDate);
+			objBillDtl.setDteBillDate(POSDate);
 			objBillDtl.setStrKOTNo("");
 			objBillDtl.setStrCounterCode("");
 			objBillDtl.setStrOrderProcessTime("00:00:00");
@@ -964,13 +966,13 @@ public class clsPOSBillSettlementControllerForDirectBiller
 		String voucherNo ="";
 		if (isBillSeries)
 		{
-			if ((mapBillSeries = objBillingAPI.funGetBillSeriesList(listOfWholeKOTItemDtl, POSCode)).size() > 0)
+			if ((mapBillSeries = objBillingAPI.funGetBillSeriesList(listOfWholeKOTItemDtl, POSCode,clientCode)).size() > 0)
 			{
 				if (mapBillSeries.containsKey("NoBillSeries"))
 				{
 					result.addError(new ObjectError("BillSeries", "Please Create Bill Series"));
 
-					objBillingAPI.funUpdateTableStatus(tableNo, "Occupied");
+					objBillingAPI.funUpdateTableStatus(tableNo, "Occupied",clientCode);
 
 					return new ModelAndView("/frmWebPOSBilling.html");
 				}
@@ -991,7 +993,7 @@ public class clsPOSBillSettlementControllerForDirectBiller
 						intBillSeriesPaxNo = mapPAXPerBill.get(billCount);
 					}
 
-					String billSeriesBillNo = objBillingAPI.funGetBillSeriesBillNo(key, POSCode);
+					String billSeriesBillNo = objBillingAPI.funGetBillSeriesBillNo(key, POSCode,clientCode);
 
 					/* To save billseries bill */
 					objBillingAPI.funSaveBill(isBillSeries, key, listBillSeriesBillDtl, billSeriesBillNo, listOfItemsBillSeriesWise, objBean, request, hmPromoItem);
@@ -1006,7 +1008,7 @@ public class clsPOSBillSettlementControllerForDirectBiller
 				}
 				else
 				{
-					objBillingAPI.funClearRTempTable(tableNo, POSCode);
+					objBillingAPI.funClearRTempTable(tableNo, POSCode,clientCode);
 				}
 
 				// save bill series bill detail
@@ -1044,7 +1046,7 @@ public class clsPOSBillSettlementControllerForDirectBiller
 		}
 		else // No Bill Series
 		{
-			voucherNo = objBillingAPI.funGenerateBillNo(POSCode);
+			voucherNo = objBillingAPI.funGenerateBillNo(POSCode,clientCode);
 
 			/* To save normal bill */
 			objBillingAPI.funSaveBill(isBillSeries, "", listBillSeriesBillDtl, voucherNo, listOfWholeKOTItemDtl, objBean, request, hmPromoItem);
@@ -1060,7 +1062,9 @@ public class clsPOSBillSettlementControllerForDirectBiller
 
 	}
 
-	// generate bill no.
+	
+	
+/*	// generate bill no.
 	private String funGenerateBillNo()
 	{
 		String voucherNo = "";
@@ -1099,7 +1103,8 @@ public class clsPOSBillSettlementControllerForDirectBiller
 			return voucherNo;
 		}
 	}
-
+*/
+/*
 	private List funSaveBillDiscountDetail(String voucherNo, clsPOSBillSettlementBean objBean, String dateTime)
 	{
 		List<clsBillDiscDtlModel> listBillDiscDtlModel = new ArrayList<clsBillDiscDtlModel>();
@@ -1369,5 +1374,5 @@ public class clsPOSBillSettlementControllerForDirectBiller
 		objBaseServiceImpl.funSave(objDtlModel);
 
 	}
-
+*/
 }

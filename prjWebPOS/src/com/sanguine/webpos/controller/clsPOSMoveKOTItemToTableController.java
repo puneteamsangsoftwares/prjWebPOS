@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sanguine.base.service.clsBaseServiceImpl;
-import com.sanguine.webpos.bean.clsPOSItemDetailFrTaxBean;
+import com.sanguine.webpos.bean.clsPOSItemDtlForTax;
 import com.sanguine.webpos.bean.clsPOSKOTItemdtlBean;
 import com.sanguine.webpos.bean.clsPOSMoveKOTItemsToTableBean;
 import com.sanguine.webpos.bean.clsPOSTaxCalculation;
-import com.sanguine.webpos.bean.clsPOSTaxCalculationDtls;
+import com.sanguine.webpos.bean.clsPOSTaxCalculationBean;
 import com.sanguine.webpos.model.clsMakeKOTHdModel;
 import com.sanguine.webpos.model.clsMakeKOTModel_ID;
 import com.sanguine.webpos.util.clsPOSUtilityController;
@@ -134,12 +134,12 @@ public class clsPOSMoveKOTItemToTableController {
 			    
 		        String strPosCode=req.getSession().getAttribute("loginPOS").toString();
 		        String posDate=req.getSession().getAttribute("gPOSDate").toString().split(" ")[0];
-		        List<clsPOSItemDetailFrTaxBean> arrListItemDtl = new ArrayList<clsPOSItemDetailFrTaxBean>();
+		        List<clsPOSItemDtlForTax> arrListItemDtl = new ArrayList<clsPOSItemDtlForTax>();
 				 try{
 					 double taxAmt = 0,subTotalAmt=0;
 					 for (int i = 0; i < listData.size(); i++) 
 						{
-						    clsPOSItemDetailFrTaxBean objItemDtl=new clsPOSItemDetailFrTaxBean();
+						    clsPOSItemDtlForTax objItemDtl=new clsPOSItemDtlForTax();
 						    Map mapObj = (Map) listData.get(i);
 						    String itemCode=(String) mapObj.get("strItemCode");
 					    	String itemName=mapObj.get("strItemName").toString();
@@ -166,8 +166,9 @@ public class clsPOSMoveKOTItemToTableController {
 		                     areaCode = (String)list1.get(0);
 		                 }
 		     			  clsPOSTaxCalculation objTaxCalculation=new clsPOSTaxCalculation();
-		                 List<clsPOSTaxCalculationDtls> arrListTaxDtl = objUtilityController.funCalculateTax(arrListItemDtl, loginPosCode, posDate, areaCode, "DineIn", subTotalAmt, 0.0, "Make KOT", "Cash");
-		                 for (clsPOSTaxCalculationDtls objTaxDtl : arrListTaxDtl)
+//funCalculateTax(List<clsPOSItemDtlForTax> arrListItemDtl, String POSCode, String dtPOSDate, String billAreaCode, String operationTypeForTax, double subTotal, double discountAmt, String transType, String settlementCode, String taxOnSP,String strSCTaxForRemove,String strClientCode) throws Exception		     			  
+		                 List<clsPOSTaxCalculationBean> arrListTaxDtl = objUtilityController.funCalculateTax(arrListItemDtl, loginPosCode, posDate, areaCode, "DineIn", subTotalAmt, 0.0, "Make KOT", "S01","Sales","N",clientCode);
+		                 for (clsPOSTaxCalculationBean objTaxDtl : arrListTaxDtl)
 		            
 		                 {
 		                     taxAmt += objTaxDtl.getTaxAmount();

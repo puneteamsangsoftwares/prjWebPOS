@@ -28,6 +28,8 @@ import com.sanguine.service.clsGlobalFunctionsService;
 import com.sanguine.service.clsSetupMasterService;
 import com.sanguine.webpos.bean.clsPOSReportBean;
 import com.sanguine.webpos.controller.clsPOSGlobalFunctionsController;
+import com.sanguine.webpos.model.clsSetupHdModel;
+import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.util.clsPOSSetupUtility;
 
 @Controller
@@ -44,8 +46,13 @@ public class clsGlobalFunctions
 	@Autowired
 	private ServletContext servletContext;
 
+
+	@Autowired
+	private clsPOSMasterService objMasterService;
+	
 	@Autowired
 	static clsPOSSetupUtility objPOSSetupUtility;
+	
 
 	public final String NARRATION = "strNarration";
 	public final String COMPANY_NAME = "strCompanyName";
@@ -541,12 +548,12 @@ public class clsGlobalFunctions
 	}
 
 
-	public static String funGetGlobalDecimalFormatString(String strClientCode, String POSCode)
+	public  String funGetGlobalDecimalFormatString(String strClientCode, String POSCode)
 	{
-
 		StringBuilder decimalFormatBuilderForDoubleValue = new StringBuilder("0");
-		if(clsPOSGlobalFunctionsController.hmPOSSetupValues.get("dblNoOfDecimalPlace")!=null){
-			int gNoOfDecimalPlace = Integer.parseInt(clsPOSGlobalFunctionsController.hmPOSSetupValues.get("dblNoOfDecimalPlace").toString());
+		try{
+			clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(POSCode, strClientCode);
+			int gNoOfDecimalPlace = objSetupHdModel.getDblNoOfDecimalPlace();
 			for (int i = 0; i < gNoOfDecimalPlace; i++)
 			{
 				if (i == 0)
@@ -558,8 +565,9 @@ public class clsGlobalFunctions
 					decimalFormatBuilderForDoubleValue.append("0");
 				}
 			}	
+		}catch(Exception e){
+			e.printStackTrace();
 		}
-		
 		return decimalFormatBuilderForDoubleValue.toString();
 	}
 

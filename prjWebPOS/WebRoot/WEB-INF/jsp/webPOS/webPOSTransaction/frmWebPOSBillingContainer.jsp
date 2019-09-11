@@ -510,7 +510,7 @@ function funCalculatePromotion(listItmeDtl)
 
 		var taxTotal=0;
 		 var rowCountTax=0;
-		var searchurl=getContextPath()+"/funCalculateTaxInSettlement.html?";
+		var searchurl=getContextPath()+"/funCalculateTaxInSettlement.html?operationTypeForTax="+operationType;
 		$.ajax({
 			 type: "POST",
 		        url: searchurl,

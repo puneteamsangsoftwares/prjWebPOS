@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.hibernate.Query;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.sanguine.base.service.clsBaseServiceImpl;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSBillSettlementBean;
-import com.sanguine.webpos.bean.clsPOSMakeBillBean;
+import com.sanguine.webpos.model.clsSetupHdModel;
+import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.util.clsPOSSortMapOnValue;
 
 @Controller
@@ -34,6 +34,8 @@ public class clsPOSMakeBillController {
 	@Autowired
 	clsBaseServiceImpl objBaseServiceImpl;
 	
+	@Autowired
+	clsPOSMasterService objMasterService;
 
 
 	@RequestMapping(value = "/frmPOSMakeBill", method = RequestMethod.GET)
@@ -49,7 +51,12 @@ public class clsPOSMakeBillController {
 
 		// get and set menu item pricing for direct biller in json
 		
-	
+		clsSetupHdModel objSetupHdModel=null;
+		try{
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(posCode, clientCode);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		 JSONObject jObj =  funLoadTableDtl( clientCode, posCode);
 		 JSONArray jsonArrForTableDtl =(JSONArray)jObj.get("tableDtl");	
 		 String areaName=(String)jObj.get("areaName");	
@@ -57,9 +64,9 @@ public class clsPOSMakeBillController {
 		 objBillSettlementBean.setJsonArrForTableDtl(jsonArrForTableDtl);
 
 		 model.put("areaName",areaName);
-		 model.put("gCustAddressSelectionForBill", clsPOSGlobalFunctionsController.hmPOSSetupValues.get("CustAddressSelectionForBill"));
-		 model.put("gCRMInterface", clsPOSGlobalFunctionsController.hmPOSSetupValues.get("CRMInterface"));
-		 model.put("gPrintType", clsPOSGlobalFunctionsController.hmPOSSetupValues.get("PrintType"));
+		 model.put("gCustAddressSelectionForBill",objSetupHdModel.getStrCustAddressSelectionForBill());// clsPOSGlobalFunctionsController.hmPOSSetupValues.get("CustAddressSelectionForBill"));
+		 model.put("gCRMInterface",objSetupHdModel.getStrCRMInterface());// clsPOSGlobalFunctionsController.hmPOSSetupValues.get("CRMInterface"));
+		 model.put("gPrintType", objSetupHdModel.getStrPrintType());// clsPOSGlobalFunctionsController.hmPOSSetupValues.get("PrintType"));
 		 
 		 String operationFrom = "Make Bill";
 		 model.put("operationFrom", operationFrom);

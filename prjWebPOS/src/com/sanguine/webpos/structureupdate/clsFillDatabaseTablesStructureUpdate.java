@@ -7181,6 +7181,12 @@ public class clsFillDatabaseTablesStructureUpdate
 		sql="ALTER TABLE `tbldebitcardtabletemp` ADD COLUMN `strClientCode` VARCHAR(10) NOT NULL AFTER `strPrintYN`;";
 		mapStructureUpdater.get("tblStructure").add(sql);
 		
+		sql="ALTER TABLE `tblstorelastbill` ADD COLUMN `strClientCode` VARCHAR(10) NOT NULL AFTER `strBillNo`, DROP PRIMARY KEY, "
+				+" ADD PRIMARY KEY (`strPosCode`, `strClientCode`);";
+		mapStructureUpdater.get("tblStructure").add(sql);
+		
+		//sql="ALTER TABLE `tbltaxtemp` ADD COLUMN `strClientCode` VARCHAR(10) NOT NULL AFTER `strItemName`;";
+		//mapStructureUpdater.get("tblStructure").add(sql);
 		
 	    }
 	    

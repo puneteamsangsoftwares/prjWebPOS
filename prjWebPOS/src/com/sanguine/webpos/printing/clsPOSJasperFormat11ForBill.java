@@ -71,6 +71,9 @@ public class clsPOSJasperFormat11ForBill implements clsPOSBillGenerationFormat
 	@Autowired
 	clsPOSJasperGenerator objJasperFileGeneration;
 	
+	@Autowired
+	clsGlobalFunctions objGlobalFunctions;
+	
 	String strBillPrinterPort="";
 		
 	public void funGenerateBill(String strBillNo, String reprint, String transactionType,String strPosCode, String strBillDate,String strClientCode,String strServerBillPrinterName, boolean isOriginal)
@@ -87,11 +90,12 @@ public class clsPOSJasperFormat11ForBill implements clsPOSBillGenerationFormat
 			//JasperDesign jd  = JRXmlLoader.load("/WEB-INF/reports/billFormat/rptBillFormat4JasperReport.jrxml");
 			//JasperDesign jd = JRXmlLoader.load(servletContext.getResourceAsStream("/WEB-INF/reports/webpos/rptBillFormat4JasperReport.jrxml"));
 
-			final String gDecimalFormatString = clsGlobalFunctions.funGetGlobalDecimalFormatString(strClientCode,strPosCode);
+			clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strPosCode, strClientCode);
+
+			final String gDecimalFormatString = objGlobalFunctions.funGetGlobalDecimalFormatString(strClientCode,strPosCode);
 			
 			clsPOSPropertySetupBean objBean =new clsPOSPropertySetupBean();
 			clsSetupModel_ID ob=new clsSetupModel_ID(strClientCode,strPosCode);
-			clsSetupHdModel objSetupHdModel= new clsSetupHdModel();
 			clsPOSBillDtl objPOSBillDtl = null;
 			
 			String billhd = "tblbillhd";
@@ -355,7 +359,7 @@ public class clsPOSJasperFormat11ForBill implements clsPOSBillGenerationFormat
             hm.put("TAX_INVOICE", "TAX INVOICE");
             
             // Client Details
-			objSetupHdModel = objMasterService.funGetPOSWisePropertySetup(strPosCode, strClientCode);
+			
 			hm.put("ClientName", objSetupHdModel.getStrClientName());
 			hm.put("ClientAddressLine1",objSetupHdModel.getStrAddressLine1());
 			hm.put("ClientAddressLine2", objSetupHdModel.getStrAddressLine2());

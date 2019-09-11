@@ -314,7 +314,7 @@ function funCalculatePromotion(listItmeDtl)
 
 		var taxTotal=0;
 		var rowCountTax=0;
-		var searchurl=getContextPath()+"/funCalculateTaxInSettlement.html?operationTypeForTax="+"KOT";
+		var searchurl=getContextPath()+"/funCalculateTaxInSettlement.html?operationTypeForTax=DineIn";
 		$.ajax({
 			 type: "POST",
 		        url: searchurl,

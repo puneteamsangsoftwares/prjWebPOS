@@ -40,7 +40,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSGroupWaiseSalesBean;
 import com.sanguine.webpos.bean.clsPOSTaxWaiseBean;
-import com.sanguine.webpos.bean.clsPOSTaxCalculationDtls;
+import com.sanguine.webpos.bean.clsPOSTaxCalculationBean;
 import com.sanguine.webpos.bean.clsPOSReportBean;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.sevice.clsPOSReportService;
@@ -128,7 +128,7 @@ public class clsPOSTaxWiseReportController {
 			String strUserCode = hm.get("userName").toString();
 			String strPOSCode = posCode;
 			String strShiftNo = "1";	
-			List<clsPOSTaxCalculationDtls> listOfTaxData = new ArrayList<clsPOSTaxCalculationDtls>();
+			List<clsPOSTaxCalculationBean> listOfTaxData = new ArrayList<clsPOSTaxCalculationBean>();
 			
 			listOfTaxData = objReportService.funProcessTaxWiseReport(posCode,fromDate,toDate,strShiftNo);
 			

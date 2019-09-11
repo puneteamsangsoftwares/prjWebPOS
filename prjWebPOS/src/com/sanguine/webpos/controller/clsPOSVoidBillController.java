@@ -28,7 +28,7 @@ import com.sanguine.webpos.bean.clsPOSBillDtl;
 import com.sanguine.webpos.bean.clsPOSBillHd;
 import com.sanguine.webpos.bean.clsPOSBillModifierDtl;
 import com.sanguine.webpos.bean.clsPOSBillTaxDtl;
-import com.sanguine.webpos.bean.clsPOSItemDetailFrTaxBean;
+import com.sanguine.webpos.bean.clsPOSItemDtlForTax;
 import com.sanguine.webpos.bean.clsPOSTaxCalculationBean;
 import com.sanguine.webpos.bean.clsPOSVoidBillDtl;
 import com.sanguine.webpos.bean.clsPOSVoidBillHd;
@@ -944,13 +944,13 @@ public class clsPOSVoidBillController {
     	    	
     	        double subTotalForTax = 0;
     	        double totalDiscAmt = 0.00;
-    	        List<clsPOSItemDetailFrTaxBean> arrListItemDtls = new ArrayList<clsPOSItemDetailFrTaxBean>();
+    	        List<clsPOSItemDtlForTax> arrListItemDtls = new ArrayList<clsPOSItemDtlForTax>();
    	        List<clsPOSTaxCalculationBean> arrListTaxCal = new ArrayList<clsPOSTaxCalculationBean>()   ;
     	        List<clsPOSBillTaxDtl> arrListBillTaxDtl = new ArrayList<clsPOSBillTaxDtl>();
     	        for (clsPOSBillDtl objBillItemDtl : arrListBillDtl)
     	        {
     	        	Map hmObj=new HashMap();
-    	        	clsPOSItemDetailFrTaxBean objItemDtl = new clsPOSItemDetailFrTaxBean();
+    	        	clsPOSItemDtlForTax objItemDtl = new clsPOSItemDtlForTax();
     	           hmObj.put("strItemName",objBillItemDtl.getStrItemName());
                   hmObj.put("dblQuantity", objBillItemDtl.getDblQuantity());
                   hmObj.put("dblAmount",objBillItemDtl.getDblAmount());
@@ -980,7 +980,7 @@ public class clsPOSVoidBillController {
                            objMapMod.put("strKOTNoMod",objBillItemDtl.getStrKOTNo());
                            listMod.add(objMapMod);
     	                    //add modifier items
-    	                    clsPOSItemDetailFrTaxBean objModiItemDtl = new clsPOSItemDetailFrTaxBean();
+    	                    clsPOSItemDtlForTax objModiItemDtl = new clsPOSItemDtlForTax();
     	                    objModiItemDtl.setItemCode(objBillModDtl.getStrItemCode());
     	                    objModiItemDtl.setItemName(objBillModDtl.getStrModifierName());
     	                    objModiItemDtl.setAmount(objBillModDtl.getDblAmount());
@@ -998,8 +998,8 @@ public class clsPOSVoidBillController {
     	        String userCreated = "";
 
     	        arrListTaxCal.clear();
-    	       
-    	      arrListTaxCal = objUtility.funCalculateTax(arrListItemDtls,gPOSCode, dtPOSDate, areaCode, operationTypeForTax, subTotalForTax, totalDiscAmt, "", "S01");
+    	      //funCalculateTax(List<clsPOSItemDtlForTax> arrListItemDtl, String POSCode, String dtPOSDate, String billAreaCode, String operationTypeForTax, double subTotal, double discountAmt, String transType, String settlementCode, String taxOnSP,String strSCTaxForRemove,String strClientCode) throws Exception       
+    	      arrListTaxCal = objUtility.funCalculateTax(arrListItemDtls,gPOSCode, dtPOSDate, areaCode, operationTypeForTax, subTotalForTax, totalDiscAmt, "", "S01","Sales","N",clientCode);
     	        arrListBillTaxDtl.clear();
     	        double totalTaxAmount = 0;
     	        for (int cnt = 0; cnt < arrListTaxCal.size(); cnt++)

@@ -1,42 +1,26 @@
 package com.sanguine.webpos.controller;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.Socket;
-import java.net.URL;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.hibernate.Query;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sanguine.base.service.intfBaseService;
 import com.sanguine.controller.clsGlobalFunctions;
-import com.sanguine.controller.clsUserController;
-import com.sanguine.webpos.bean.clsPOSBillItemDtl;
 import com.sanguine.webpos.bean.clsPOSSalesFlashReportsBean;
 
 @Controller
@@ -102,7 +86,7 @@ public class clsPOSGlobalFunctionsController
 
 	public static String POSWSURL;
 
-	public static Map<Object, Object> hmPOSSetupValues = new HashMap<Object, Object>();
+//	public static Map<Object, Object> hmPOSSetupValues = new HashMap<Object, Object>();
 
 
 	public int funCheckName(String name, String code, String clientCode, String formName)

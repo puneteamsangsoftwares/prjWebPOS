@@ -367,8 +367,8 @@ public class clsPOSDayEndUtility {
 			                                        + ",intShiftCode,strAgainst,dblRollingAmt,strClientCode,strDataPostFlag) "
 			                                        + "values ('" + transId + "','Float','" + transDateForCashMgmt + "','" + reasonCode + "'"
 			                                        + ",'" + posCode + "','" + balanceAmt + "','Carryforward Float Amt'"
-			                                        + ",'" + entry.getKey() + "','" + entry.getKey() + "','" + objUtilityController.getCurrentDateTime() + "'"
-			                                        + ",'" +objUtilityController.getCurrentDateTime() + "','Cash','" + shiftNo + "'"
+			                                        + ",'" + entry.getKey() + "','" + entry.getKey() + "','" + objUtilityController.funGetCurrentDateTime() + "'"
+			                                        + ",'" +objUtilityController.funGetCurrentDateTime() + "','Cash','" + shiftNo + "'"
 			                                        + ",'Direct','0','" + strClientCode + "','N')";
 			                                
 			                               objBaseServiceImpl.funExecuteUpdate(sql, "sql");
@@ -379,7 +379,7 @@ public class clsPOSDayEndUtility {
 			                   /* sql = "insert into tbldayendprocess(strPOSCode,dtePOSDate,strDayEnd,intShiftCode,strShiftEnd"
 			                            + ",strUserCreated,dteDateCreated) "
 			                            + "values('" + posCode + "','" + newStartDate + "','N'," + shift + ",''"
-			                            + ",'" + strUserCode + "','" + getCurrentDateTime() + "')";
+			                            + ",'" + strUserCode + "','" + funGetCurrentDateTime() + "')";
 			                    objBaseServiceImpl.funExecuteUpdate(sql, "sql");*/
 			                    
 			                    clsDayEndProcessHdModel objDayEndProcessHdModel = new clsDayEndProcessHdModel();
@@ -413,8 +413,8 @@ public class clsPOSDayEndUtility {
 			                    objDayEndProcessHdModel.setIntNoOfHomeDelivery(0);
 			                    objDayEndProcessHdModel.setStrUserCreated(strUserCode);
 			                    objDayEndProcessHdModel.setStrUserEdited(strUserCode);
-			                    objDayEndProcessHdModel.setDteDateCreated(objUtilityController.getCurrentDateTime() );
-			                    objDayEndProcessHdModel.setDteDayEndDateTime(objUtilityController.getCurrentDateTime() );
+			                    objDayEndProcessHdModel.setDteDateCreated(objUtilityController.funGetCurrentDateTime() );
+			                    objDayEndProcessHdModel.setDteDayEndDateTime(objUtilityController.funGetCurrentDateTime() );
 			                    objDayEndProcessHdModel.setStrClientCode(strClientCode);
 			                    objDayEndProcessHdModel.setStrDataPostFlag("N");
 			                    objDayEndProcessHdModel.setIntNoOfNCKOT(0);
@@ -631,7 +631,7 @@ public class clsPOSDayEndUtility {
 		                    sql = "insert into tbldayendprocess(strPOSCode,dtePOSDate,strDayEnd,intShiftCode,strShiftEnd"
 		                            + ",strUserCreated,dteDateCreated) "
 		                            + "values('" + posCode + "','" + newStartDate + "','N'," + (shift + 1)
-		                            + ",'','" + strUserCode + "','" + objUtilityController.getCurrentDateTime() + "')";
+		                            + ",'','" + strUserCode + "','" + objUtilityController.funGetCurrentDateTime() + "')";
 		                    objBaseServiceImpl.funExecuteUpdate(sql, "sql");
 		                    //clsGlobalVarClass.dbMysql.execute(sql);
 		                    
@@ -772,7 +772,7 @@ public class clsPOSDayEndUtility {
 		            		sql = "insert into tbldebitcardrevenue (strCardNo,dblCardAmt,strPOSCode,dtePOSDate,dteDate"
 		                        + ",strClientCode,strDataPostFlag,strUserCreated) values"
 		                        + "('" + ob[0].toString() + "','" + ob[1].toString() + "','" + posCode + "','" + posDate + "'"
-		                        + ",'" + objUtilityController.getCurrentDateTime() + "','" + strClientCode + "','N'"
+		                        + ",'" + objUtilityController.funGetCurrentDateTime() + "','" + strClientCode + "','N'"
 		                        + ",'" + strUserCode + "')";
 		            		
 		                //System.out.println(sql);
@@ -1623,7 +1623,7 @@ public class clsPOSDayEndUtility {
           objBaseServiceImpl.funExecuteUpdate(sql,"sql");
           
         
-          sql = "update tbldayendprocess set dteDayEndDateTime='" + objUtilityController.getCurrentDateTime() + "'"
+          sql = "update tbldayendprocess set dteDayEndDateTime='" + objUtilityController.funGetCurrentDateTime() + "'"
                   + " where date(dtePOSDate)='" + posDate + "' and strPOSCode='" + posCode + "' "
                   + "and intShiftCode=" + shiftNo;
           //System.out.println("UpdateDayEndQuery_2=="+sql);

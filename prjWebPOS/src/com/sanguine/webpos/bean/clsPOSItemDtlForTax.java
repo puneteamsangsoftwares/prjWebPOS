@@ -12,6 +12,10 @@ public class clsPOSItemDtlForTax
 	    
 	    private double discPer;
 
+	
+	    private String modifierCode;
+	    private double modifierAmount;
+	    
 	    public String getItemCode()
 	    {
 	        return itemCode;
@@ -61,6 +65,26 @@ public class clsPOSItemDtlForTax
 	    {
 	        this.discPer = discPer;
 	    }
+
+		public String getModifierCode()
+		{
+			return modifierCode;
+		}
+
+		public void setModifierCode(String modifierCode)
+		{
+			this.modifierCode = modifierCode;
+		}
+
+		public double getModifierAmount()
+		{
+			return modifierAmount;
+		}
+
+		public void setModifierAmount(double modifierAmount)
+		{
+			this.modifierAmount = modifierAmount;
+		}
 	    
 	    
 

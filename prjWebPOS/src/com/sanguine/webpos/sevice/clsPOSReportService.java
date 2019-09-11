@@ -50,7 +50,7 @@ import com.sanguine.webpos.bean.clsPOSKOTAnalysisBean;
 import com.sanguine.webpos.bean.clsPOSOperatorDtl;
 import com.sanguine.webpos.bean.clsPOSSalesFlashColumns;
 import com.sanguine.webpos.bean.clsPOSSalesFlashReportsBean;
-import com.sanguine.webpos.bean.clsPOSTaxCalculationDtls;
+import com.sanguine.webpos.bean.clsPOSTaxCalculationBean;
 import com.sanguine.webpos.bean.clsPOSUserWiseItemWiseBean;
 import com.sanguine.webpos.bean.clsPOSVoidBillDtl;
 import com.sanguine.webpos.bean.clsPOSWaiterAnalysisBean;
@@ -1720,12 +1720,12 @@ public class clsPOSReportService
 		return listOfGroupSubGroupWiseSales;
 	}
 
-	public List<clsPOSTaxCalculationDtls> funProcessTaxWiseReport(String posCode, String fromDate, String toDate, String strShiftNo)
+	public List<clsPOSTaxCalculationBean> funProcessTaxWiseReport(String posCode, String fromDate, String toDate, String strShiftNo)
 	{
 		StringBuilder sqlBuilder = new StringBuilder();
 		StringBuilder sqlQBuilder = new StringBuilder();
 		String enableShiftYN = "N";
-		List<clsPOSTaxCalculationDtls> listOfTaxData = new ArrayList<clsPOSTaxCalculationDtls>();
+		List<clsPOSTaxCalculationBean> listOfTaxData = new ArrayList<clsPOSTaxCalculationBean>();
 		try
 		{
 			// live
@@ -1748,7 +1748,7 @@ public class clsPOSReportService
 				for (int i = 0; i < lisSqlLive.size(); i++)
 				{
 					Object[] obj = (Object[]) lisSqlLive.get(i);
-					clsPOSTaxCalculationDtls objBeanTaxCalculation = new clsPOSTaxCalculationDtls();
+					clsPOSTaxCalculationBean objBeanTaxCalculation = new clsPOSTaxCalculationBean();
 					objBeanTaxCalculation.setStrBillNo(obj[0].toString());
 					objBeanTaxCalculation.setDteBillDate(obj[1].toString());
 					objBeanTaxCalculation.setTaxCode(obj[2].toString());
@@ -1780,7 +1780,7 @@ public class clsPOSReportService
 				for (int i = 0; i < listQBillData.size(); i++)
 				{
 					Object[] obj = (Object[]) listQBillData.get(i);
-					clsPOSTaxCalculationDtls objBeanTaxCalculation = new clsPOSTaxCalculationDtls();
+					clsPOSTaxCalculationBean objBeanTaxCalculation = new clsPOSTaxCalculationBean();
 					objBeanTaxCalculation.setStrBillNo(obj[0].toString());
 					objBeanTaxCalculation.setDteBillDate(obj[1].toString());
 					objBeanTaxCalculation.setTaxCode(obj[2].toString());
@@ -3809,7 +3809,7 @@ public class clsPOSReportService
 
 	public List funProcessTaxSummaryForSubGroupWiseSummaryReport(String posCode, String fromDate, String toDate)
 	{
-		List<clsPOSTaxCalculationDtls> listOfTaxData = new ArrayList<clsPOSTaxCalculationDtls>();
+		List<clsPOSTaxCalculationBean> listOfTaxData = new ArrayList<clsPOSTaxCalculationBean>();
 		try
 		{
 			StringBuilder sqlTax = new StringBuilder();
@@ -3825,7 +3825,7 @@ public class clsPOSReportService
 				for (int i = 0; i < listTax.size(); i++)
 				{
 					Object[] obj = (Object[]) listTax.get(i);
-					clsPOSTaxCalculationDtls objBean = new clsPOSTaxCalculationDtls();
+					clsPOSTaxCalculationBean objBean = new clsPOSTaxCalculationBean();
 					objBean.setStrTaxDesc(obj[0].toString());
 					objBean.setTaxableAmount(Double.parseDouble(obj[1].toString()));
 					objBean.setTaxAmount(Double.parseDouble(obj[2].toString()));
@@ -8064,10 +8064,10 @@ public class clsPOSReportService
 
 	public List funProcessTaxBreakUpSummaryReport(String posCode, String fromDate, String toDate,String enableShiftYN, String strShiftNo)
 	{
-		List<clsPOSTaxCalculationDtls> listOfTaxDtl = new LinkedList<>();
+		List<clsPOSTaxCalculationBean> listOfTaxDtl = new LinkedList<>();
 		try
 		{
-			Map<String, clsPOSTaxCalculationDtls> mapTaxDtl = new HashMap<>();
+			Map<String, clsPOSTaxCalculationBean> mapTaxDtl = new HashMap<>();
 			StringBuilder sqlTaxBuilder = new StringBuilder();
 			StringBuilder sqlMenuBreakupBuilder = new StringBuilder();
 			DecimalFormat decimalFormat2Decimal = new DecimalFormat("0.00");
@@ -8094,13 +8094,13 @@ public class clsPOSReportService
 					Object[] obj = (Object[]) listSqlLiveTaxDtl.get(i);
 					if (mapTaxDtl.containsKey(obj[0].toString()))// taxCode
 					{
-						clsPOSTaxCalculationDtls objTaxCalculationDtlBean = mapTaxDtl.get(obj[0].toString());
+						clsPOSTaxCalculationBean objTaxCalculationDtlBean = mapTaxDtl.get(obj[0].toString());
 						objTaxCalculationDtlBean.setTaxableAmount(objTaxCalculationDtlBean.getTaxableAmount() + Double.parseDouble(obj[2].toString()));
 						objTaxCalculationDtlBean.setTaxAmount(objTaxCalculationDtlBean.getTaxAmount() + Double.parseDouble(obj[3].toString()));
 					}
 					else
 					{
-						clsPOSTaxCalculationDtls objTaxCalculationDtlBean = new clsPOSTaxCalculationDtls();
+						clsPOSTaxCalculationBean objTaxCalculationDtlBean = new clsPOSTaxCalculationBean();
 
 						objTaxCalculationDtlBean.setTaxCode(obj[0].toString());
 						objTaxCalculationDtlBean.setTaxName(obj[1].toString());
@@ -8134,13 +8134,13 @@ public class clsPOSReportService
 					Object[] obj = (Object[]) listSqlQBillTaxDtl.get(i);
 					if (mapTaxDtl.containsKey(obj[0].toString()))// taxCode
 					{
-						clsPOSTaxCalculationDtls objTaxCalculationDtlBean = mapTaxDtl.get(obj[0].toString());
+						clsPOSTaxCalculationBean objTaxCalculationDtlBean = mapTaxDtl.get(obj[0].toString());
 						objTaxCalculationDtlBean.setTaxableAmount(objTaxCalculationDtlBean.getTaxableAmount() + Double.parseDouble(obj[2].toString()));
 						objTaxCalculationDtlBean.setTaxAmount(objTaxCalculationDtlBean.getTaxAmount() + Double.parseDouble(obj[3].toString()));
 					}
 					else
 					{
-						clsPOSTaxCalculationDtls objTaxCalculationDtlBean = new clsPOSTaxCalculationDtls();
+						clsPOSTaxCalculationBean objTaxCalculationDtlBean = new clsPOSTaxCalculationBean();
 
 						objTaxCalculationDtlBean.setTaxCode(obj[0].toString());
 						objTaxCalculationDtlBean.setTaxName(obj[1].toString());
@@ -8153,15 +8153,15 @@ public class clsPOSReportService
 				}
 			}
 
-			for (clsPOSTaxCalculationDtls objTaxDtl : mapTaxDtl.values())
+			for (clsPOSTaxCalculationBean objTaxDtl : mapTaxDtl.values())
 			{
 				listOfTaxDtl.add(objTaxDtl);
 			}
-			Comparator<clsPOSTaxCalculationDtls> taxNameComparator = new Comparator<clsPOSTaxCalculationDtls>()
+			Comparator<clsPOSTaxCalculationBean> taxNameComparator = new Comparator<clsPOSTaxCalculationBean>()
 			{
 
 				@Override
-				public int compare(clsPOSTaxCalculationDtls o1, clsPOSTaxCalculationDtls o2)
+				public int compare(clsPOSTaxCalculationBean o1, clsPOSTaxCalculationBean o2)
 				{
 					return o1.getTaxName().compareToIgnoreCase(o2.getTaxName());
 				}
@@ -20097,7 +20097,7 @@ public class clsPOSReportService
 				 * ,clientCode,posName,webStockUserCode,PrintVatNoPOS,vatNo
 				 * ,printServiceTaxNo,serviceTaxNo); }
 				 */
-				hmData = objUtilityController.funPrintBill(code.trim(), POSDate, true, posCode, clientCode, posName, webStockUserCode, PrintVatNoPOS, vatNo, printServiceTaxNo, serviceTaxNo);
+			//	hmData = objUtilityController.funPrintBill(code.trim(), POSDate, true, posCode, clientCode, posName, webStockUserCode, PrintVatNoPOS, vatNo, printServiceTaxNo, serviceTaxNo);
 				code = "";
 			}
 		}
@@ -20112,7 +20112,7 @@ public class clsPOSReportService
 			 * posCode,clientCode,posName,webStockUserCode,PrintVatNoPOS,vatNo
 			 * ,printServiceTaxNo,serviceTaxNo); }
 			 */
-			hmData = objUtilityController.funPrintBill(code.trim(), POSDate, true, posCode, clientCode, posName, webStockUserCode, PrintVatNoPOS, vatNo, printServiceTaxNo, serviceTaxNo);
+		//	hmData = objUtilityController.funPrintBill(code.trim(), POSDate, true, posCode, clientCode, posName, webStockUserCode, PrintVatNoPOS, vatNo, printServiceTaxNo, serviceTaxNo);
 			code = "";
 		}
 		else
@@ -20691,13 +20691,13 @@ public class clsPOSReportService
 
 			for (clsPOSSalesFlashColumns objSalesFlashColumns : listOfBills)
 			{
-				Map<String, clsPOSTaxCalculationDtls> mapOfTaxes = new HashMap<>();
+				Map<String, clsPOSTaxCalculationBean> mapOfTaxes = new HashMap<>();
 				for (Map.Entry<String, String> taxEntry : mapAllTaxes.entrySet())
 				{
 					String taxCode = taxEntry.getKey();
 					String taxName = taxEntry.getValue();
 
-					clsPOSTaxCalculationDtls objTax = new clsPOSTaxCalculationDtls();
+					clsPOSTaxCalculationBean objTax = new clsPOSTaxCalculationBean();
 					objTax.setTaxCode(taxCode);
 					objTax.setTaxName(taxName);
 					objTax.setTaxAmount(0.00);
@@ -20736,10 +20736,10 @@ public class clsPOSReportService
 
 				List<clsPOSSalesFlashColumns> listOfBills = hmBillWiseSales.get(billKey);
 				clsPOSSalesFlashColumns objSalesFlashColumns = listOfBills.get(0);
-				Map<String, clsPOSTaxCalculationDtls> mapOfTaxesLocal = objSalesFlashColumns.getMapOfTaxes();
+				Map<String, clsPOSTaxCalculationBean> mapOfTaxesLocal = objSalesFlashColumns.getMapOfTaxes();
 				if (mapOfTaxesLocal.containsKey(obj[1].toString()))
 				{
-					clsPOSTaxCalculationDtls objTax = mapOfTaxesLocal.get(obj[1].toString());
+					clsPOSTaxCalculationBean objTax = mapOfTaxesLocal.get(obj[1].toString());
 					objTax.setTaxAmount(Double.parseDouble(obj[2].toString()));
 				}
 			}
@@ -20773,10 +20773,10 @@ public class clsPOSReportService
 
 				List<clsPOSSalesFlashColumns> listOfBills = hmBillWiseSales.get(billKey);
 				clsPOSSalesFlashColumns objSalesFlashColumns = listOfBills.get(0);
-				Map<String, clsPOSTaxCalculationDtls> mapOfTaxesLocal = objSalesFlashColumns.getMapOfTaxes();
+				Map<String, clsPOSTaxCalculationBean> mapOfTaxesLocal = objSalesFlashColumns.getMapOfTaxes();
 				if (mapOfTaxesLocal.containsKey(obj[1].toString()))
 				{
-					clsPOSTaxCalculationDtls objTax = mapOfTaxesLocal.get(obj[1].toString());
+					clsPOSTaxCalculationBean objTax = mapOfTaxesLocal.get(obj[1].toString());
 					objTax.setTaxAmount(Double.parseDouble(obj[2].toString()));
 				}
 			}
@@ -20898,8 +20898,8 @@ public class clsPOSReportService
 			row.add(Double.parseDouble(objSalesFlashColumns.getStrField9()));
 			row.add(Double.parseDouble(objSalesFlashColumns.getStrField11()));
 
-			Map<String, clsPOSTaxCalculationDtls> mapOfTaxesLocal = objSalesFlashColumns.getMapOfTaxes();
-			for (clsPOSTaxCalculationDtls objTaxCalculationDtls : mapOfTaxesLocal.values())
+			Map<String, clsPOSTaxCalculationBean> mapOfTaxesLocal = objSalesFlashColumns.getMapOfTaxes();
+			for (clsPOSTaxCalculationBean objTaxCalculationDtls : mapOfTaxesLocal.values())
 			{
 				row.add(objTaxCalculationDtls.getTaxAmount());
 			}

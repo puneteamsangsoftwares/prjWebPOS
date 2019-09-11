@@ -14,6 +14,13 @@ public class clsPOSTaxCalculationBean {
 	    private String strTaxDesc;
 	    private String dteBillDate;
 	    private String strBillNo;
+	    
+	    private String strTaxOnTaxCode;
+	    
+	    private String isTaxOnTax;
+	    
+	    private String strTOTOnSubTotal;
+	    
 		public String getTaxCode() {
 			return taxCode;
 		}
@@ -79,6 +86,30 @@ public class clsPOSTaxCalculationBean {
 		}
 		public void setStrBillNo(String strBillNo) {
 			this.strBillNo = strBillNo;
+		}
+		public String getStrTaxOnTaxCode()
+		{
+			return strTaxOnTaxCode;
+		}
+		public void setStrTaxOnTaxCode(String strTaxOnTaxCode)
+		{
+			this.strTaxOnTaxCode = strTaxOnTaxCode;
+		}
+		public String getIsTaxOnTax()
+		{
+			return isTaxOnTax;
+		}
+		public void setIsTaxOnTax(String isTaxOnTax)
+		{
+			this.isTaxOnTax = isTaxOnTax;
+		}
+		public String getStrTOTOnSubTotal()
+		{
+			return strTOTOnSubTotal;
+		}
+		public void setStrTOTOnSubTotal(String strTOTOnSubTotal)
+		{
+			this.strTOTOnSubTotal = strTOTOnSubTotal;
 		}
 	    
 	    

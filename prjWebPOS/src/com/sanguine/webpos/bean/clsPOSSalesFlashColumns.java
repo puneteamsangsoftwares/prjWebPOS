@@ -58,7 +58,7 @@ public class clsPOSSalesFlashColumns {
     private String strSettlementType ;
     
     
-    private Map<String,clsPOSTaxCalculationDtls> mapOfTaxes;
+    private Map<String,clsPOSTaxCalculationBean> mapOfTaxes;
 
     
     public String getStrField18() {
@@ -328,12 +328,12 @@ public class clsPOSSalesFlashColumns {
 		this.strSettlementType = strSettlementType;
 	}
 
-	public Map<String, clsPOSTaxCalculationDtls> getMapOfTaxes()
+	public Map<String, clsPOSTaxCalculationBean> getMapOfTaxes()
 	{
 		return mapOfTaxes;
 	}
 
-	public void setMapOfTaxes(Map<String, clsPOSTaxCalculationDtls> mapOfTaxes)
+	public void setMapOfTaxes(Map<String, clsPOSTaxCalculationBean> mapOfTaxes)
 	{
 		this.mapOfTaxes = mapOfTaxes;
 	}

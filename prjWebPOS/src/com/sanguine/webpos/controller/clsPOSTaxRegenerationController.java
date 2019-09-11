@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.sanguine.base.service.clsBaseServiceImpl;
 import com.sanguine.webpos.bean.clsPOSItemDtlForTax;
-import com.sanguine.webpos.bean.clsPOSTaxCalculationDtls;
+import com.sanguine.webpos.bean.clsPOSTaxCalculationBean;
 import com.sanguine.webpos.bean.clsPOSTaxRegenerationBean;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.util.clsPOSSetupUtility;
@@ -227,8 +227,8 @@ public class clsPOSTaxRegenerationController {
 	                    operationType = "DineIn";
 	                }
 	                
-//	                (List<clsItemDtlForTax> arrListItemDtl,String POSCode,String dtPOSDate, String billAreaCode, String operationTypeForTax, double subTotal, double discountPer, String transType)
-	                List<clsPOSTaxCalculationDtls> arrListTaxDtl = objUtility.funCalculateTax(arrListItemDtlForTax, posCode, filterDate, area, operationType, subTotal, dblBillDiscAmt, "Tax Regen");
+	              //funCalculateTax(List<clsPOSItemDtlForTax> arrListItemDtl, String POSCode, String dtPOSDate, String billAreaCode, String operationTypeForTax, double subTotal, double discountAmt, String transType, String settlementCode, String taxOnSP,String strSCTaxForRemove,String strClientCode) throws Exception
+	                List<clsPOSTaxCalculationBean> arrListTaxDtl = objUtility.funCalculateTax(arrListItemDtlForTax, posCode, filterDate, area, operationType, subTotal, dblBillDiscAmt, "Tax Regen","","Sales","N",clientCode);
 	                System.out.println(arrListTaxDtl.size() + "\t" + operationType + "\t" + area);
 	                String sql_BillTaxDtl = "insert into tblqbilltaxdtl "
 	                        + "(strBillNo,strTaxCode,dblTaxableAmount,dblTaxAmount,strClientCode,strDataPostFlag,dteBillDate ) "
@@ -236,7 +236,7 @@ public class clsPOSTaxRegenerationController {
 	                String billTaxDtlData = "";
 	                boolean flgData = false;
 
-	                for (clsPOSTaxCalculationDtls objTaxCalDtl : arrListTaxDtl)
+	                for (clsPOSTaxCalculationBean objTaxCalDtl : arrListTaxDtl)
 	                {
 	                    billTaxDtlData += "('" + billNo + "','" + objTaxCalDtl.getTaxCode() + "','" + objTaxCalDtl.getTaxableAmount() + "'"
 	                            + ",'" + objTaxCalDtl.getTaxAmount() + "','" + clientCode + "','N','" + billDate + "'),";
@@ -604,7 +604,7 @@ public class clsPOSTaxRegenerationController {
  			    	sqlBuilder.append("update tblqbillpromotiondtl set strDataPostFlag='N' where strBillNo='" + billNo + "' and date(dteBillDate)='" + filterDate + "' ");
 	                objBaseServiceImpl.funExecuteUpdate(sqlBuilder.toString(),"sql");
 
-	                objUtility.funUpdateBillDtlWithTaxValues(billNo, "QFile", filterDate);
+	                objUtility.funUpdateBillDtlWithTaxValues(billNo, "QFile", filterDate,clientCode);
 	            }
 	        }
 	    		 sqlBuilder.setLength(0);

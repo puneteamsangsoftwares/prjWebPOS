@@ -716,7 +716,7 @@ public class clsUserController
 		
 		clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(POSCode, clientCode);
 		if(null!=objSetupHdModel)
-		{
+		{/*
 			clsPOSGlobalFunctionsController.hmPOSSetupValues.put("gClientCode",objSetupHdModel.getStrClientCode());
 	    	clsPOSGlobalFunctionsController.hmPOSSetupValues.put("ClientName",objSetupHdModel.getStrClientName());
 	    	clsPOSGlobalFunctionsController.hmPOSSetupValues.put("ClientAddressLine1",objSetupHdModel.getStrAddressLine1());
@@ -890,7 +890,7 @@ public class clsUserController
 	    	clsPOSGlobalFunctionsController.hmPOSSetupValues.put("strConsolidatedKOTPrinterPort","");
 	    	clsPOSGlobalFunctionsController.hmPOSSetupValues.put("dblNoOfDecimalPlace",objSetupHdModel.getDblNoOfDecimalPlace());
 	    	
-		}
+		*/}
 		
 		
 		List listMainMenuForms=objMainMenuService.funGetMainMenuForms(moduleType, superUserYN, POSCode, userCode, clientCode,"");

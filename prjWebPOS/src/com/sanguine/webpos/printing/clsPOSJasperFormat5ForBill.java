@@ -59,6 +59,9 @@ public class clsPOSJasperFormat5ForBill
 	@Autowired
 	private ServletContext servletContext;
 
+	@Autowired
+	clsGlobalFunctions objGlobalFunctions;
+	
 	String strBillPrinterPort = "";
 
 	public HttpServletResponse funGenerateBill(String strBillNo, String reprint, String transactionType, String strPosCode, String strBillDate, String strClientCode, String strServerBillPrinterName, boolean isOriginal,HttpServletResponse response)
@@ -72,7 +75,7 @@ public class clsPOSJasperFormat5ForBill
 		{
 			// String reportName =
 			// servletContext.getRealPath("/WEB-INF/reports/billFormat/rptBillFormat5.jrxml");
-			final String gDecimalFormatString = clsGlobalFunctions.funGetGlobalDecimalFormatString(strClientCode, strPosCode);
+			final String gDecimalFormatString = objGlobalFunctions.funGetGlobalDecimalFormatString(strClientCode,strPosCode);
 
 			clsPOSPropertySetupBean objBean = new clsPOSPropertySetupBean();
 			clsSetupModel_ID ob = new clsSetupModel_ID(strClientCode, strPosCode);

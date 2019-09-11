@@ -6,14 +6,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -26,19 +24,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sanguine.base.service.clsBaseServiceImpl;
-import com.sanguine.base.service.clsSetupService;
 import com.sanguine.base.service.intfBaseService;
 import com.sanguine.controller.clsGlobalFunctions;
-import com.sanguine.webpos.bean.clsPOSBillDtl;
 import com.sanguine.webpos.bean.clsPOSBillItemDtlBean;
 import com.sanguine.webpos.bean.clsPOSBillSeriesBillDtl;
 import com.sanguine.webpos.bean.clsPOSBillSettlementBean;
 import com.sanguine.webpos.bean.clsPOSItemsDtlsInBill;
 import com.sanguine.webpos.bean.clsPOSKOTItemDtl;
 import com.sanguine.webpos.bean.clsPOSPromotionItems;
-import com.sanguine.webpos.model.clsBillDtlModel;
-import com.sanguine.webpos.model.clsBillHdModel;
-import com.sanguine.webpos.model.clsBillHdModel_ID;
+import com.sanguine.webpos.model.clsSetupHdModel;
+import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.util.clsPOSSetupUtility;
 import com.sanguine.webpos.util.clsPOSTextFileGenerator;
 import com.sanguine.webpos.util.clsPOSUtilityController;
@@ -74,6 +69,8 @@ public class clsPOSBillForItemsController
 	@Autowired
 	private clsPOSBillingAPIController objBillingAPI;
 	
+	@Autowired
+	private clsPOSMasterService objMasterService;
 	
 	
 
@@ -383,7 +380,9 @@ public class clsPOSBillForItemsController
 			String dateTime = POSDate + " " + currentDateTime.split(" ")[1];
 
 			boolean isBillSeries = false;
-			if (clsPOSGlobalFunctionsController.hmPOSSetupValues.get("strEnableBillSeries").toString().equalsIgnoreCase("Y"))
+			clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(POSCode, clientCode);
+			
+			if (objSetupHdModel.getStrEnableBillSeries().equalsIgnoreCase("Y"))
 			{
 				isBillSeries = true;
 			}
@@ -513,7 +512,7 @@ public class clsPOSBillForItemsController
 
 			if (isBillSeries)
 			{
-				if ((mapBillSeries = objBillingAPI.funGetBillSeriesList(listOfItemsToBeBilled, POSCode)).size() > 0)
+				if ((mapBillSeries = objBillingAPI.funGetBillSeriesList(listOfItemsToBeBilled, POSCode,clientCode )).size() > 0)
 				{
 					if (mapBillSeries.containsKey("NoBillSeries"))
 					{
@@ -538,7 +537,7 @@ public class clsPOSBillForItemsController
 							intBillSeriesPaxNo = mapPAXPerBill.get(billCount);
 						}
 
-						String billSeriesBillNo = objBillingAPI.funGetBillSeriesBillNo(key, POSCode);
+						String billSeriesBillNo = objBillingAPI.funGetBillSeriesBillNo(key, POSCode,clientCode);
 
 						/* To save billseries bill */
 						objBillingAPI.funSaveBill(isBillSeries, key, listBillSeriesBillDtl, billSeriesBillNo, listOfItemsBillSeriesWise, objBean, request,hmPromoItem);
@@ -604,7 +603,7 @@ public class clsPOSBillForItemsController
 					}
 					else
 					{
-						objBillingAPI.funClearRTempTable(tableNo, POSCode);
+						objBillingAPI.funClearRTempTable(tableNo, POSCode,clientCode);
 					}
 
 					for (int i = 0; i < listBillSeriesBillDtl.size(); i++)
@@ -621,7 +620,7 @@ public class clsPOSBillForItemsController
 			}
 			else // No Bill Series
 			{
-				String voucherNo = objBillingAPI.funGenerateBillNo(POSCode);
+				String voucherNo = objBillingAPI.funGenerateBillNo(POSCode,clientCode);
 
 				/* To save normal bill */
 				objBillingAPI.funSaveBill(isBillSeries, "", listBillSeriesBillDtl, voucherNo, listOfItemsToBeBilled, objBean, request,hmPromoItem);
@@ -660,7 +659,7 @@ public class clsPOSBillForItemsController
 				}
 				else
 				{
-					objBillingAPI.funClearRTempTable(tableNo, POSCode);
+					objBillingAPI.funClearRTempTable(tableNo, POSCode,clientCode);
 				}
 
 				/* printing bill............... */

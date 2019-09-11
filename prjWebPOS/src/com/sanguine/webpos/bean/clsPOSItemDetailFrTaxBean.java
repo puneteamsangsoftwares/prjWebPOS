@@ -1,6 +1,6 @@
 package com.sanguine.webpos.bean;
 
-public class clsPOSItemDetailFrTaxBean {
+public class clsPOSItemDetailFrTaxBean {/*
 	
     private String itemCode;
     private String itemName;
@@ -54,4 +54,4 @@ public class clsPOSItemDetailFrTaxBean {
     
     
 
-}
+*/}

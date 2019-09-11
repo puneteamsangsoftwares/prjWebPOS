@@ -1,8 +1,6 @@
 package com.sanguine.webpos.controller;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -36,12 +34,8 @@ import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -63,7 +57,7 @@ import com.sanguine.webpos.bean.clsPOSBillSettlementBean;
 import com.sanguine.webpos.bean.clsPOSItemDtlForTax;
 import com.sanguine.webpos.bean.clsPOSKOTItemDtl;
 import com.sanguine.webpos.bean.clsPOSPromotionItems;
-import com.sanguine.webpos.bean.clsPOSTaxCalculationDtls;
+import com.sanguine.webpos.bean.clsPOSTaxCalculationBean;
 import com.sanguine.webpos.model.clsMakeKOTHdModel;
 import com.sanguine.webpos.model.clsMakeKOTModel_ID;
 import com.sanguine.webpos.model.clsNonChargableKOTHdModel;
@@ -71,7 +65,6 @@ import com.sanguine.webpos.model.clsNonChargableKOTModel_ID;
 import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.util.clsPOSSetupUtility;
-import com.sanguine.webpos.util.clsPOSSortMapOnValue;
 import com.sanguine.webpos.util.clsPOSTextFileGenerator;
 import com.sanguine.webpos.util.clsPOSUtilityController;
 
@@ -115,22 +108,22 @@ public class clsPOSBillSettlementControllerForMakeKOT
 	/**
 	 * global attributes
 	 */
-	String gGetWebserviceURL = (String) clsPOSGlobalFunctionsController.hmPOSSetupValues.get("GetWebserviceURL");
-	String gOutletUID = (String) clsPOSGlobalFunctionsController.hmPOSSetupValues.get("OutletUID");;
+//	String gGetWebserviceURL = (String) clsPOSGlobalFunctionsController.hmPOSSetupValues.get("GetWebserviceURL");
+//	String gOutletUID = (String) clsPOSGlobalFunctionsController.hmPOSSetupValues.get("OutletUID");;
 
-	double taxAmt = 0.00;
+//	double taxAmt = 0.00;
 //	String globalTableNo = "",
 //			strCounterCode = "",
 //			gAreaCodeForTrans = "",
 //			clsAreaCode = "",
 //			gInrestoPOSIntegrationYN = "";
-	ArrayList<String> ListTDHOnModifierItem = new ArrayList<>();
-	ArrayList<Double> ListTDHOnModifierItemMaxQTY = new ArrayList<>();
+	//ArrayList<String> ListTDHOnModifierItem = new ArrayList<>();
+	//ArrayList<Double> ListTDHOnModifierItemMaxQTY = new ArrayList<>();
 	// String clientCode="",posCode="",posDate="",userCode="",posClientCode="";
-
-	private Map<String, clsPOSPromotionItems> hmPromoItem = new HashMap<String, clsPOSPromotionItems>();
-	JSONArray listReasonCode,
-			listReasonName;
+//String clientCode="";
+//	private Map<String, clsPOSPromotionItems> hmPromoItem = new HashMap<String, clsPOSPromotionItems>();
+//	JSONArray listReasonCode,
+	//		listReasonName;
 
 
 	@RequestMapping(value = "/funLoadTablesForMakeKOT", method = RequestMethod.GET)
@@ -142,7 +135,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 		JSONArray jArrData = new JSONArray();
 		try
 		{
-
+			
 			//String gCMSIntegrationY = "N";
 			String gCMSIntegrationYN = objPOSSetupUtility.funGetParameterValuePOSWise(clientCode, posCode, "gCMSIntegrationYN");
 //			if (clsPOSGlobalFunctionsController.hmPOSSetupValues.get("CMSIntegrationYN") != null)
@@ -292,7 +285,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 			if (strCounterWiseBilling.equalsIgnoreCase("Yes"))
 			{
 
-				sql = new StringBuilder("select distinct(a.strMenuCode),b.strMenuName " + "from tblmenuitempricingdtl a left outer join tblmenuhd b on a.strMenuCode=b.strMenuCode " + "left outer join tblcounterdtl c on b.strMenuCode=c.strMenuCode " + "left outer join tblcounterhd d on c.strCounterCode=d.strCounterCode " + "where d.strOperational='Yes' " + "and (a.strPosCode='" + strPOSCode + "' or a.strPosCode='ALL') and a.strClientCode='"+clientCode+"' " + "and c.strCounterCode='" + strCounterCode + "' " + "order by b.intSequence ");
+				sql = new StringBuilder("select distinct(a.strMenuCode),b.strMenuName " + "from tblmenuitempricingdtl a left outer join tblmenuhd b on a.strMenuCode=b.strMenuCode and a.strClientCode=b.strClientCode " + "left outer join tblcounterdtl c on b.strMenuCode=c.strMenuCode  and a.strClientCode=b.strClientCode " + "left outer join tblcounterhd d on c.strCounterCode=d.strCounterCode " + "where d.strOperational='Yes' " + "and (a.strPosCode='" + strPOSCode + "' or a.strPosCode='ALL') and a.strClientCode='"+clientCode+"' " + "and c.strCounterCode='" + strCounterCode + "' " + "order by b.intSequence ");
 			}
 			else
 			{
@@ -549,7 +542,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 		String posDate = request.getSession().getAttribute("gPOSDate").toString().split(" ")[0];
 
 		String total = "",strAreaCode="";
-		double amt = 0.00;
+		double amt = 0.00,taxAmt=0;
 		StringBuilder sqlBuilder = new StringBuilder();
 		List<clsPOSItemDtlForTax> arrListItemDtls = new ArrayList<clsPOSItemDtlForTax>();
 		List list = null;
@@ -594,9 +587,10 @@ public class clsPOSBillSettlementControllerForMakeKOT
 			if (gCalculateTaxOnMakeKOT.equalsIgnoreCase("Y"))
 			{
 				String dtPOSDate = posDate.split(" ")[0];
-				List<clsPOSTaxCalculationDtls> listTax = objUtility.funCalculateTax(arrListItemDtls, posCode, dtPOSDate, strAreaCode, "DineIn", 0, 0, "");
+////funCalculateTax(List<clsPOSItemDetailFrTaxBean> arrListItemDtl, String POSCode, String dtPOSDate, String billAreaCode, String operationTypeForTax, double subTotal, double discountAmt, String transType, String settlementCode, String taxOnSP,String strSCTaxForRemove,String strClientCode) throws Exception				
+				List<clsPOSTaxCalculationBean> listTax = objUtility.funCalculateTax(arrListItemDtls, posCode, dtPOSDate, strAreaCode, "DineIn", 0, 0, "","S01","Sales","N",clientCode);
 				taxAmt = 0;
-				for (clsPOSTaxCalculationDtls objTaxDtl : listTax)
+				for (clsPOSTaxCalculationBean objTaxDtl : listTax)
 				{
 					if (objTaxDtl.getTaxCalculationType().equalsIgnoreCase("Forward"))
 					{
@@ -678,11 +672,11 @@ public class clsPOSBillSettlementControllerForMakeKOT
 			String gAreaWisePricing = objPOSSetupUtility.funGetParameterValuePOSWise(clientCode, posCode, "gAreaWisePricing");
 			if (gAreaWisePricing.equalsIgnoreCase("N"))
 			{
-				sql = new StringBuilder("SELECT a.strItemCode,b.strItemName,a.strTextColor,a.strPriceMonday,a.strPriceTuesday," + " a.strPriceWednesday,a.strPriceThursday,a.strPriceFriday, " + " a.strPriceSaturday,a.strPriceSunday,a.tmeTimeFrom,a.strAMPMFrom,a.tmeTimeTo,a.strAMPMTo," + " a.strCostCenterCode,a.strHourlyPricing,a.strSubMenuHeadCode,a.dteFromDate,a.dteToDate" + " ,b.strStockInEnable " + " FROM tblmenuitempricingdtl a ,tblitemmaster b " + " WHERE a.strItemCode=b.strItemCode " + " and a.strAreaCode='" + gAreaCodeForTrans + "' " + " and (a.strPosCode='" + posCode + "' or a.strPosCode='All') " + " and date(a.dteFromDate)<='" + posDate + "' and date(a.dteToDate)>='" + posDate + "' and a.strClientCode='"+clientCode+"' " + " and a.strHourlyPricing='Yes'");
+				sql = new StringBuilder("SELECT a.strItemCode,b.strItemName,a.strTextColor,a.strPriceMonday,a.strPriceTuesday," + " a.strPriceWednesday,a.strPriceThursday,a.strPriceFriday, " + " a.strPriceSaturday,a.strPriceSunday,a.tmeTimeFrom,a.strAMPMFrom,a.tmeTimeTo,a.strAMPMTo," + " a.strCostCenterCode,a.strHourlyPricing,a.strSubMenuHeadCode,a.dteFromDate,a.dteToDate" + " ,b.strStockInEnable " + " FROM tblmenuitempricingdtl a ,tblitemmaster b " + " WHERE a.strItemCode=b.strItemCode " + " and a.strAreaCode='" + gAreaCodeForTrans + "' " + " and (a.strPosCode='" + posCode + "' or a.strPosCode='All') " + " and date(a.dteFromDate)<='" + posDate + "' and date(a.dteToDate)>='" + posDate + "' and a.strClientCode='"+clientCode+"' " + " and a.strHourlyPricing='Yes'  and a.strClientCode=b.strClientCode ");
 			}
 			else
 			{
-				sql = new StringBuilder("SELECT a.strItemCode,b.strItemName,a.strTextColor,a.strPriceMonday,a.strPriceTuesday," + " a.strPriceWednesday,a.strPriceThursday,a.strPriceFriday," + " a.strPriceSaturday,a.strPriceSunday,a.tmeTimeFrom,a.strAMPMFrom,a.tmeTimeTo,a.strAMPMTo," + " a.strCostCenterCode,a.strHourlyPricing,a.strSubMenuHeadCode,a.dteFromDate,a.dteToDate" + ",b.strStockInEnable " + " FROM tblmenuitempricingdtl a ,tblitemmaster b " + " WHERE a.strAreaCode='" + gAreaCodeForTrans + "' " + " and a.strItemCode=b.strItemCode " + " and (a.strPosCode='" + posCode + "' or a.strPosCode='All') " + " and date(a.dteFromDate)<='" + posDate + "' and date(a.dteToDate)>='" + posDate + "' and a.strClientCode='"+clientCode+"' " + " and a.strHourlyPricing='Yes'");
+				sql = new StringBuilder("SELECT a.strItemCode,b.strItemName,a.strTextColor,a.strPriceMonday,a.strPriceTuesday," + " a.strPriceWednesday,a.strPriceThursday,a.strPriceFriday," + " a.strPriceSaturday,a.strPriceSunday,a.tmeTimeFrom,a.strAMPMFrom,a.tmeTimeTo,a.strAMPMTo," + " a.strCostCenterCode,a.strHourlyPricing,a.strSubMenuHeadCode,a.dteFromDate,a.dteToDate" + ",b.strStockInEnable " + " FROM tblmenuitempricingdtl a ,tblitemmaster b " + " WHERE a.strAreaCode='" + gAreaCodeForTrans + "' " + " and a.strItemCode=b.strItemCode " + " and (a.strPosCode='" + posCode + "' or a.strPosCode='All') " + " and date(a.dteFromDate)<='" + posDate + "' and date(a.dteToDate)>='" + posDate + "' and a.strClientCode='"+clientCode+"' " + " and a.strHourlyPricing='Yes' and a.strClientCode=b.strClientCode ");
 			}
 
 			list = objBaseService.funGetList(sql, "sql");
@@ -728,8 +722,8 @@ public class clsPOSBillSettlementControllerForMakeKOT
 			jObjTableData.put("CurrentDate", objUtility.funGetCurrentDate());
 			jObjTableData.put("CurrentTime", objUtility.funGetCurrentTime());
 			jObjTableData.put("DayForPricing", objUtility.funGetDayForPricing());
-			jObjTableData.put("ListTDHOnModifierItem", ListTDHOnModifierItem);
-			jObjTableData.put("ListTDHOnModifierItemMaxQTY", ListTDHOnModifierItemMaxQTY);
+		//	jObjTableData.put("ListTDHOnModifierItem", ListTDHOnModifierItem);
+		//	jObjTableData.put("ListTDHOnModifierItemMaxQTY", ListTDHOnModifierItemMaxQTY);
 
 			sql = new StringBuilder("select strPosCode,strPosName,strPosType,strDebitCardTransactionYN" + " ,strPropertyPOSCode,strCounterWiseBilling,strDelayedSettlementForDB,strBillPrinterPort" + " ,strAdvReceiptPrinterPort,strPrintVatNo,strPrintServiceTaxNo,strVatNo,strServiceTaxNo" + " ,strEnableShift from tblposmaster where strClientCode='"+clientCode+"' ");
 
@@ -765,7 +759,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 		try
 		{
 
-			StringBuilder sql = new StringBuilder(" select a.strWaiterNo,a.intPaxNo,sum(a.dblAmount),a.strCardNo,if(a.strCustomerCode='null','',a.strCustomerCode) " + ",ifnull(b.strCustomerName,''),ifnull(b.strBuldingCode,''),a.strHomeDelivery " + " from tblitemrtemp a left outer join tblcustomermaster b on a.strCustomerCode=b.strCustomerCode " + " where a.strTableNo='" + strTableNo + "' and a.strPrintYN='Y' and a.strNCKotYN='N' and a.strClientCode='"+clientCode+"' " + " group by a.strTableNo");
+			StringBuilder sql = new StringBuilder(" select a.strWaiterNo,a.intPaxNo,sum(a.dblAmount),a.strCardNo,if(a.strCustomerCode='null','',a.strCustomerCode) " + ",ifnull(b.strCustomerName,''),ifnull(b.strBuldingCode,''),a.strHomeDelivery " + " from tblitemrtemp a left outer join tblcustomermaster b on a.strCustomerCode=b.strCustomerCode and a.strClientCode=b.strClientCode " + " where a.strTableNo='" + strTableNo + "' and a.strPrintYN='Y' and a.strNCKotYN='N' and a.strClientCode='"+clientCode+"' " + " group by a.strTableNo");
 
 			list = objBaseService.funGetList(sql, "sql");
 			if (list.size() > 0)
@@ -866,7 +860,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 		try
 		{
 			String clientCode = request.getSession().getAttribute("gClientCode").toString();
-			String sql = " select a.strWaiterNo,a.intPaxNo,sum(a.dblAmount),b.dblRedeemAmt,a.strCardNo " + " from tblitemrtemp a,tbldebitcardmaster b " + " where a.strCardNo=b.strCardNo and strTableNo='" + strTableNo + "' " + " and strPrintYN='Y' and strNCKotYN='N'   and strClientCode='"+clientCode+"'  " + " group by strTableNo ";
+			String sql = " select a.strWaiterNo,a.intPaxNo,sum(a.dblAmount),b.dblRedeemAmt,a.strCardNo " + " from tblitemrtemp a,tbldebitcardmaster b " + " where a.strCardNo=b.strCardNo and strTableNo='" + strTableNo + "' " + " and strPrintYN='Y' and strNCKotYN='N'  and a.strClientCode=b.strClientCode  and a.strClientCode='"+clientCode+"' group by strTableNo ";
 
 			list = objBaseService.funGetList(new StringBuilder(sql), "sql");
 			if (list.size() > 0)
@@ -875,7 +869,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 				if ((double) obj[3] > 0)
 				{
 					double debitCardBal = (double) obj[3];
-					debitCardBal = objUtility.funGetKOTAmtOnTable(obj[4].toString());
+					debitCardBal = objUtility.funGetKOTAmtOnTable(obj[4].toString(),clientCode);
 
 					jObjTableData.put("cardBalnce", debitCardBal);
 					jObjTableData.put("kotAmt", (double) obj[2]);
@@ -913,7 +907,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 		String posCode = request.getSession().getAttribute("gPOSCode").toString();
 		String posDate = request.getSession().getAttribute("gPOSDate").toString().split(" ")[0];
 
-		double amt = 0.00;
+		double amt = 0.00,taxAmt=0;
 		List<clsPOSItemDtlForTax> arrListItemDtls = new ArrayList<clsPOSItemDtlForTax>();
 		List list = null;
 		JSONObject jObjTableData = new JSONObject();
@@ -928,7 +922,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 			
 			sql.setLength(0);
 
-			sql = new StringBuilder("select distinct(strKOTNo) " + " from tblitemrtemp " + " where (strPosCode='" + posCode + "' or strPosCode='All') " + " and strTableNo='" + strTableNo + "' and strPrintYN='Y' and strNCKotYN='N' and strClientCode='"+clientCode+"' " + " order by strKOTNo DESC");
+			sql = new StringBuilder("select distinct(strKOTNo) " + " from tblitemrtemp " + " where (strPosCode='" + posCode + "' or strPosCode='All') " + " and strTableNo='" + strTableNo + "' and strPrintYN='Y' and strNCKotYN='N' and strClientCode='"+clientCode+"' order by strKOTNo DESC");
 			list = objBaseService.funGetList(sql, "sql");
 			if (list.size() > 0)
 			{
@@ -1006,9 +1000,10 @@ public class clsPOSBillSettlementControllerForMakeKOT
 					if (gCalculateTaxOnMakeKOT.equalsIgnoreCase("Y"))
 					{
 						String dtPOSDate = posDate.split(" ")[0];
-						List<clsPOSTaxCalculationDtls> listTax = objUtility.funCalculateTax(arrListItemDtls, posCode, dtPOSDate, gAreaCodeForTrans, "DineIn", 0, 0, "");
+//funCalculateTax(List<clsPOSItemDetailFrTaxBean> arrListItemDtl, String POSCode, String dtPOSDate, String billAreaCode, String operationTypeForTax, double subTotal, double discountAmt, String transType, String settlementCode, String taxOnSP,String strSCTaxForRemove,String strClientCode) throws Exception						
+						List<clsPOSTaxCalculationBean> listTax = objUtility.funCalculateTax(arrListItemDtls, posCode, dtPOSDate, gAreaCodeForTrans, "DineIn", 0, 0, "","S01","Sales","N",clientCode);
 						taxAmt = 0;
-						for (clsPOSTaxCalculationDtls objTaxDtl : listTax)
+						for (clsPOSTaxCalculationBean objTaxDtl : listTax)
 						{
 							if (objTaxDtl.getTaxCalculationType().equalsIgnoreCase("Forward"))
 							{
@@ -1523,7 +1518,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 	// arrListHomeDelDetails)
 	// {
 	@RequestMapping(value = "/saveKOT", method = RequestMethod.POST, headers = { "Content-type=application/json" })
-	private @ResponseBody String funSaveKOT(@RequestBody List listItmeDtl, HttpServletRequest req,HttpServletResponse response, @RequestParam("ncKot") String strNCKotYN, @RequestParam("takeAway") String strTakeAwayYesNo, @RequestParam("globalDebitCardNo") String globalDebitCardNo, @RequestParam("cmsMemCode") String cmsMemCode, @RequestParam("cmsMemName") String cmsMemName, @RequestParam("reasonCode") String reasonCode, @RequestParam("homeDeliveryForTax") String homeDeliveryForTax, @RequestParam("total") double total, @RequestParam("arrListHomeDelDetails") List<String> arrListHomeDelDetails, @RequestParam("custcode") String custcode, @RequestParam("custName") String custName) throws Exception
+	private @ResponseBody String funSaveKOT(@RequestBody List listItmeDtl, HttpServletRequest req,HttpServletResponse response, @RequestParam("ncKot") String strNCKotYN, @RequestParam("takeAway") String strTakeAwayYesNo, @RequestParam("globalDebitCardNo") String globalDebitCardNo, @RequestParam("cmsMemCode") String cmsMemCode, @RequestParam("cmsMemName") String cmsMemName, @RequestParam("reasonCode") String reasonCode, @RequestParam("homeDeliveryForTax") String homeDeliveryForTax, @RequestParam("total") double total, @RequestParam("arrListHomeDelDetails") List<String> arrListHomeDelDetails, @RequestParam("custcode") String custcode, @RequestParam("custName") String custName,@RequestParam("dblTaxAmt") double dblTaxAmt) throws Exception
 	{
 		String result = "true";
 		try
@@ -1616,7 +1611,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 				rate = dblAmount / dblQuantity;
 				objModel.setDblRate(rate);
 				objModel.setDblRedeemAmt(0);
-				objModel.setDblTaxAmt(taxAmt);
+				objModel.setDblTaxAmt(dblTaxAmt);
 				objModel.setIntId(0);
 				objModel.setIntPaxNo(strPaxNo);
 
@@ -1649,7 +1644,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 
 				}
 			}
-			funUpdateKOT(dateTime, strKOTNo, strTableNo, cmsMemCode, homeDelivery, strNCKotYN, strPaxNo, total,clientCode);
+			funUpdateKOT(dateTime, strKOTNo, strTableNo, cmsMemCode, homeDelivery, strNCKotYN, strPaxNo, total,clientCode,dblTaxAmt);
 			funInsertIntoTblItemRTempBck(strTableNo, strKOTNo,clientCode);
 			//printPDFResource1(response,req);//strTableNo,strKOTNo, costCenterCode, costCenterName,areaCode
 			//response.getWriter().write("saved="+strKOTNo);
@@ -1668,13 +1663,13 @@ public class clsPOSBillSettlementControllerForMakeKOT
 
 	}
 
-	public void funUpdateKOT(String dateTime, String strKOTNo, String strTableNo, String strCustomerCode, String strHomeDelivery, String strNCKotYN, int intPaxNo, double KOTAmt,String strClientCode)
+	public void funUpdateKOT(String dateTime, String strKOTNo, String strTableNo, String strCustomerCode, String strHomeDelivery, String strNCKotYN, int intPaxNo, double KOTAmt,String strClientCode,double dblTaxAmt)
 	{
 
 		try
 		{
 
-			String sql = "insert into tblkottaxdtl " + "values ('" + strTableNo + "','" + strKOTNo + "'," + KOTAmt + "," + taxAmt + ",'"+strClientCode+"')";
+			String sql = "insert into tblkottaxdtl " + "values ('" + strTableNo + "','" + strKOTNo + "'," + KOTAmt + "," + dblTaxAmt + ",'"+strClientCode+"')";
 
 			objBaseService.funExecuteUpdate(sql, "sql");
 
@@ -1740,7 +1735,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 			e.printStackTrace();
 		}
 	}
-
+/*
 	@SuppressWarnings("finally")
 	@RequestMapping(value = "/funCallWebService", method = RequestMethod.GET)
 	public @ResponseBody JSONObject funCallWebService(@RequestParam("strMobNo") String strMobNo, HttpServletRequest request)
@@ -1788,11 +1783,14 @@ public class clsPOSBillSettlementControllerForMakeKOT
 		}
 	}
 
-	// ///////Promotion Calculation
+*/	// ///////Promotion Calculation
 
+	
+	
 	@RequestMapping(value = "/promotionCalculateForKOT", method = RequestMethod.POST, headers = { "Content-type=application/json" })
 	private @ResponseBody Map funPromotionCalculate(@RequestBody List listItmeDtl, HttpServletRequest request) throws Exception
 	{
+		Map<String, clsPOSPromotionItems> hmPromoItem = new HashMap<String, clsPOSPromotionItems>();
 		String clientCode = "",
 				posCode = "",
 				posDate = "",
@@ -2038,6 +2036,8 @@ public class clsPOSBillSettlementControllerForMakeKOT
 
 		mapResult.put("listOfPromotionItem", listOfPromotionItem);
 		mapResult.put("checkPromotion", checkPromotion);
+		mapResult.put("hmPromoItem", hmPromoItem);
+		
 		return mapResult;
 	}
 
@@ -2056,7 +2056,13 @@ public class clsPOSBillSettlementControllerForMakeKOT
 		POSCode = request.getSession().getAttribute("gPOSCode").toString();
 		POSDate = request.getSession().getAttribute("gPOSDate").toString().split(" ")[0];
 		userCode = request.getSession().getAttribute("gUserCode").toString();
-
+		Map<String, clsPOSPromotionItems> hmPromoItem =new HashMap<>();
+		try{
+			
+			// Map mapPromo=funPromotionCalculate(listItmeDtl, request);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		String split = POSDate;
 		String billDateTime = split;
 		String custCode = "";
@@ -2066,7 +2072,9 @@ public class clsPOSBillSettlementControllerForMakeKOT
 		String dateTime = POSDate + " " + currentDateTime.split(" ")[1];
 
 		boolean isBillSeries = false;
-		if (clsPOSGlobalFunctionsController.hmPOSSetupValues.get("strEnableBillSeries").toString().equalsIgnoreCase("Y"))
+		clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(POSCode, clientCode);
+		
+		if (objSetupHdModel.getStrEnableBillSeries().equalsIgnoreCase("Y"))
 		{
 			isBillSeries = true;
 		}
@@ -2135,13 +2143,13 @@ public class clsPOSBillSettlementControllerForMakeKOT
 
 		if (isBillSeries)
 		{
-			if ((mapBillSeries = objBillingAPI.funGetBillSeriesList(listOfWholeKOTItemDtl, POSCode)).size() > 0)
+			if ((mapBillSeries = objBillingAPI.funGetBillSeriesList(listOfWholeKOTItemDtl, POSCode,clientCode)).size() > 0)
 			{
 				if (mapBillSeries.containsKey("NoBillSeries"))
 				{
 					result.addError(new ObjectError("BillSeries", "Please Create Bill Series"));
 
-					objBillingAPI.funUpdateTableStatus(tableNo, "Occupied");
+					objBillingAPI.funUpdateTableStatus(tableNo, "Occupied",clientCode);
 
 					return new ModelAndView("/frmWebPOSBilling.html");
 				}
@@ -2162,7 +2170,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 						intBillSeriesPaxNo = mapPAXPerBill.get(billCount);
 					}
 
-					String billSeriesBillNo = objBillingAPI.funGetBillSeriesBillNo(key, POSCode);
+					String billSeriesBillNo = objBillingAPI.funGetBillSeriesBillNo(key, POSCode,clientCode);
 
 					/* To save billseries bill */
 					objBillingAPI.funSaveBill(isBillSeries, key, listBillSeriesBillDtl, billSeriesBillNo, listOfItemsBillSeriesWise, objBean, request, hmPromoItem);
@@ -2199,7 +2207,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 				}
 				else
 				{
-					objBillingAPI.funClearRTempTable(tableNo, POSCode);
+					objBillingAPI.funClearRTempTable(tableNo, POSCode,clientCode);
 				}
 
 				for (int i = 0; i < listBillSeriesBillDtl.size(); i++)
@@ -2216,7 +2224,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 		}
 		else // No Bill Series
 		{
-			String voucherNo = objBillingAPI.funGenerateBillNo(POSCode);
+			String voucherNo = objBillingAPI.funGenerateBillNo(POSCode,clientCode);
 
 			/* To save normal bill */
 			objBillingAPI.funSaveBill(isBillSeries, "", listBillSeriesBillDtl, voucherNo, listOfWholeKOTItemDtl, objBean, request, hmPromoItem);
@@ -2229,7 +2237,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 			}
 			else
 			{
-				objBillingAPI.funClearRTempTable(tableNo, POSCode);
+				objBillingAPI.funClearRTempTable(tableNo, POSCode,clientCode);
 			}
 
 			/* printing bill............... */

@@ -21,6 +21,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.sanguine.base.service.clsBaseServiceImpl;
 import com.sanguine.webpos.bean.clsPOSBillDtl;
 import com.sanguine.webpos.bean.clsPOSBillHd;
+import com.sanguine.webpos.model.clsSetupHdModel;
+import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.util.clsPOSSetupUtility;
 
 @Controller
@@ -33,17 +35,30 @@ public class clsPOSChangeCustomerOnBillController {
 	@Autowired 
 	clsPOSSetupUtility objPOSSetupUtility;
 	
+	@Autowired
+	private clsPOSMasterService objMasterService;
+	
 	@RequestMapping(value = "/frmPOSChangeCustomerOnBill", method = RequestMethod.GET)
 	public ModelAndView funOpenForm(Map<String, Object> model,HttpServletRequest request) {
 		String urlHits="1";
 	
-		
+		clsSetupHdModel objSetupHdModel=null;
 		try{
 			urlHits=request.getParameter("saddr").toString();
+			String clientCode = request.getSession().getAttribute("gClientCode").toString();
+			String POSCode = request.getSession().getAttribute("gPOSCode").toString();
+			
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(POSCode, clientCode);
+			
 		}catch(NullPointerException e){
 			urlHits="1";
 		}
-		model.put("gCMSIntegrationYN", clsPOSGlobalFunctionsController.hmPOSSetupValues.get("CMSIntegrationYN"));
+		catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+		
+		model.put("gCMSIntegrationYN",objSetupHdModel.getStrCMSIntegrationYN());// clsPOSGlobalFunctionsController.hmPOSSetupValues.get("CMSIntegrationYN"));
 		
 		model.put("urlHits",urlHits);
 		if("2".equalsIgnoreCase(urlHits)){

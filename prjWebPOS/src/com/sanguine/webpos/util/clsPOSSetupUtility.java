@@ -336,6 +336,10 @@ public class clsPOSSetupUtility
 			case "gAreaWiseCostCenterKOTPrinting":
 				columnName = "strAreaWiseCostCenterKOTPrintingYN";
 				break;
+			
+			case "gRemoveSCTaxCode":
+				columnName ="strRemoveSCTaxCode";
+				break;
 			}
 
 			StringBuilder sqlQuery = new StringBuilder("select " + columnName + " " + " from tblsetup " + " where (strPOSCode='" + posCode + "'  OR strPOSCode='All') " + " and strClientCode='"+clientCode+"' ");

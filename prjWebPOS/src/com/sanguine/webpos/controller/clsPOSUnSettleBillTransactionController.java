@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.sanguine.base.service.intfBaseService;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.service.clsGlobalFunctionsService;
-import com.sanguine.webpos.bean.clsPOSItemDetailFrTaxBean;
+import com.sanguine.webpos.bean.clsPOSItemDtlForTax;
 import com.sanguine.webpos.bean.clsPOSTaxCalculationBean;
 import com.sanguine.webpos.bean.clsPOSUnsettleBillTransactionBean;
 import com.sanguine.webpos.model.clsReasonMasterModel;
@@ -333,14 +333,14 @@ public class clsPOSUnSettleBillTransactionController {
     	        double subTotal=0.0;
     	        double disTotal=0.0;
     	    
-    	        List<clsPOSItemDetailFrTaxBean> arrListItemDtls=new ArrayList<clsPOSItemDetailFrTaxBean>();
+    	        List<clsPOSItemDtlForTax> arrListItemDtls=new ArrayList<clsPOSItemDtlForTax>();
     	        List listSqlModLive = objBaseService.funGetList(sql, "sql");
 		         if(listSqlModLive.size()>0)
 		 		   {		 			  
 		 		       for(int i=0 ;i<listSqlModLive.size();i++ )
 		 		       {
 		 				   Object[] obj = (Object[]) listSqlModLive.get(i);
-		 				   clsPOSItemDetailFrTaxBean objItemDtl=new clsPOSItemDetailFrTaxBean();
+		 				   clsPOSItemDtlForTax objItemDtl=new clsPOSItemDtlForTax();
 		    	            objItemDtl.setItemCode(obj[0].toString());
 		    	            objItemDtl.setItemName(obj[1].toString());
 		    	            objItemDtl.setAmount(Double.parseDouble(obj[2].toString()));
@@ -358,7 +358,8 @@ public class clsPOSUnSettleBillTransactionController {
     	            disper=(disTotal/subTotal)*100;
     	        }
     	        clsPOSUtilityController obj=new clsPOSUtilityController();
-    	        List<clsPOSTaxCalculationBean> arrListTaxCal = obj.funCalculateTax(arrListItemDtls,POSCode,"",billAreaCode,operationTypeForTax,0,0,"Tax Regen","Cash");
+    	        ////funCalculateTax(List<clsPOSItemDtlForTax> arrListItemDtl, String POSCode, String dtPOSDate, String billAreaCode, String operationTypeForTax, double subTotal, double discountAmt, String transType, String settlementCode, String taxOnSP,String strSCTaxForRemove,String strClientCode) throws Exception
+    	        List<clsPOSTaxCalculationBean> arrListTaxCal = obj.funCalculateTax(arrListItemDtls,POSCode,"",billAreaCode,operationTypeForTax,0,0,"Tax Regen","SO1","Sales","N",clientCode);
     	        
     	        
     	        sql.setLength(0);

@@ -23,12 +23,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.sanguine.base.service.intfBaseService;
+import com.sanguine.webpos.model.clsSetupHdModel;
+import com.sanguine.webpos.sevice.clsPOSMasterService;
 
 @Controller
 public class clsPOSTextFileGenerator
 {
 	@Autowired
 	intfBaseService objBaseService;
+	
+	@Autowired
+	clsPOSMasterService objMasterService;
 	StringBuilder sql=new StringBuilder(); 
     private void funCreateTempFolder()
     {
@@ -50,12 +55,11 @@ public class clsPOSTextFileGenerator
     public void funGenerateAndPrintBill(String billNo, String posCode, String clientCode) throws Exception
     {
 		String billFormat = "";
+		
+		clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(posCode, clientCode);
+		
 		sql.setLength(0);
-		sql.append( "select a.strBillFormatType from tblsetup a;");
-		List list=objBaseService.funGetList(new StringBuilder(sql), "sql");
-		if(list.size()>0){
-			billFormat=list.get(0).toString();
-		}
+		billFormat=objSetupHdModel.getStrBillFormatType();
 		if (billFormat.equalsIgnoreCase("Format 1"))
 		{
 		    funGenerateTextFileForBill(billNo, posCode, clientCode);

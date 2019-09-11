@@ -2295,7 +2295,7 @@ function funDiscOkClicked()
 			
 			var taxTotal=0;
 			var rowCountTax=0;
-			var searchurl=getContextPath()+"/funCalculateTaxInSettlement.html?";
+			var searchurl=getContextPath()+"/funCalculateTaxInSettlement.html?operationTypeForTax="+operationType;
 			$.ajax({
 				 type: "POST",
 			        url: searchurl,
@@ -2774,7 +2774,7 @@ function funDiscOkClicked()
 					 <table>
 						 <tr>
 						 	<td style="padding-right: 5px;" ><input type="button" id="btnBack" value="BACK" style="width: 60px; height:40px; margin-left:25px;"  onclick="funBackButtonClicked(this)" class="btn btn-outline-success" ></input></td>
-						 	<td style="padding-right: 5px;"><input type="submit" id="btnPrint"  value="PRINT" style="width: 72px; height:40px; margin-left:10px;" onclick="return funSaveBtnClicked()" class="btn btn-outline-success"></input></td>
+						 	<td style="padding-right: 5px;"><input type="button" id="btnPrint"  value="PRINT" style="width: 72px; height:40px; margin-left:10px;" onclick="return funSaveBtnClicked()" class="btn btn-outline-success"></input></td>
 						 	<td style="padding-right: 5px;"><input type="button" id="btnSettle" name = "settleBill" value="Need To Remove" style="width: 130px; height:40px; display:none" class="btn btn-outline-success"></input></td>
 						 	<td style="padding-right: 5px;"><input type="button" id="btnGetOffer" value="CHECK OFFER" style="width: 80px; height:40px;display:block"  onclick="funGetOfferButtonClicked(this)" class="btn btn-outline-success"></input></td>			 	
 						 	<td colspan="3" style="padding: 5px;"><input type="button" id="btnOpenBillItems" value="SHOW BILL ITEMS" style="width: 150px; height:40px;" onclick="funModalOperation(this)" class="btn btn-outline-info"></input></td>

@@ -22,13 +22,14 @@ import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSBillSeriesBillDtl;
 import com.sanguine.webpos.bean.clsPOSBillSettlementBean;
 import com.sanguine.webpos.bean.clsPOSDiscountDtlsOnBill;
+import com.sanguine.webpos.bean.clsPOSItemDetailFrTaxBean;
 import com.sanguine.webpos.bean.clsPOSItemDtlForTax;
 import com.sanguine.webpos.bean.clsPOSItemsDtlsInBill;
 import com.sanguine.webpos.bean.clsPOSKOTItemDtl;
 import com.sanguine.webpos.bean.clsPOSPromotionItems;
 import com.sanguine.webpos.bean.clsPOSSettelementOptions;
 import com.sanguine.webpos.bean.clsPOSSettlementDtlsOnBill;
-import com.sanguine.webpos.bean.clsPOSTaxCalculationDtls;
+import com.sanguine.webpos.bean.clsPOSTaxCalculationBean;
 import com.sanguine.webpos.model.clsBillDiscDtlModel;
 import com.sanguine.webpos.model.clsBillDtlModel;
 import com.sanguine.webpos.model.clsBillHdModel;
@@ -64,7 +65,7 @@ public class clsPOSBillingAPIController
 	@Autowired
 	clsBaseServiceImpl objBaseServiceImpl;
 
-	private StringBuilder sqlBuilder = new StringBuilder();
+	//private StringBuilder sqlBuilder = new StringBuilder();
 
 	// JSONObject jsSettelementOptionsDtl = new JSONObject();
 	// List listSettlementObject = new ArrayList<clsSettelementOptions>();
@@ -93,7 +94,7 @@ public class clsPOSBillingAPIController
 			//String gAreaWisePricing = objPOSSetupUtility.funGetParameterValuePOSWise(clientCode, posCode, "gAreaWisePricing");
 			if (gAreaWisePricing.equalsIgnoreCase("N"))
 			{
-				sql_ItemDtl = "SELECT a.strItemCode,b.strItemName,a.strTextColor,a.strPriceMonday,a.strPriceTuesday," + " a.strPriceWednesday,a.strPriceThursday,a.strPriceFriday, " + " a.strPriceSaturday,a.strPriceSunday,a.tmeTimeFrom,a.strAMPMFrom,a.tmeTimeTo,a.strAMPMTo," + " a.strCostCenterCode,a.strHourlyPricing,a.strSubMenuHeadCode,a.dteFromDate,a.dteToDate,b.strStockInEnable ,a.strMenuCode ,b.strSubGroupCode,c.strGroupCode ,c.strSubGroupName,d.strGroupName" + " FROM tblmenuitempricingdtl a ,tblitemmaster b left outer join tblsubgrouphd c on b.strSubGroupCode=c.strSubGroupCode " + " left outer join  tblgrouphd d  on c.strGroupCode= d.strGroupCode  " + " WHERE  a.strItemCode=b.strItemCode " + " and a.strAreaCode='" + gAreaCodeForTrans + "' " + " and (a.strPosCode='" + posCode + "' or a.strPosCode='All') " + " and date(dteFromDate)<='" + posDate + "' and date(dteToDate)>='" + posDate + "' and a.strClientCode='"+clientCode+"' " + " ORDER BY b.strItemName ASC";
+				sql_ItemDtl = "SELECT a.strItemCode,b.strItemName,a.strTextColor,a.strPriceMonday,a.strPriceTuesday," + " a.strPriceWednesday,a.strPriceThursday,a.strPriceFriday, " + " a.strPriceSaturday,a.strPriceSunday,a.tmeTimeFrom,a.strAMPMFrom,a.tmeTimeTo,a.strAMPMTo," + " a.strCostCenterCode,a.strHourlyPricing,a.strSubMenuHeadCode,a.dteFromDate,a.dteToDate,b.strStockInEnable ,a.strMenuCode ,b.strSubGroupCode,c.strGroupCode ,c.strSubGroupName,d.strGroupName" + " FROM tblmenuitempricingdtl a ,tblitemmaster b left outer join tblsubgrouphd c on b.strSubGroupCode=c.strSubGroupCode and b.strClientCode=c.strClientCode left outer join  tblgrouphd d  on c.strGroupCode= d.strGroupCode and c.strClientCode=d.strClientCode  " + " WHERE  a.strItemCode=b.strItemCode " + " and a.strAreaCode='" + gAreaCodeForTrans + "' " + " and (a.strPosCode='" + posCode + "' or a.strPosCode='All') " + " and date(dteFromDate)<='" + posDate + "' and date(dteToDate)>='" + posDate + "' and a.strClientCode='"+clientCode+"' " + " ORDER BY b.strItemName ASC";
 			}
 			else
 			{
@@ -170,7 +171,7 @@ public class clsPOSBillingAPIController
 		String strCounterWiseBilling = "";
 		try
 		{
-
+			StringBuilder sqlBuilder = new StringBuilder();
 			sqlBuilder.setLength(0);
 			sqlBuilder.append("select strCounterWiseBilling from tblposmaster where strClientCode='"+clientCode+"' ");
 			list = objBaseService.funGetList(sqlBuilder, "sql");
@@ -229,7 +230,7 @@ public class clsPOSBillingAPIController
 		JSONObject jObjTableData = new JSONObject();
 		try
 		{
-
+			StringBuilder sqlBuilder = new StringBuilder();
 			sqlBuilder.setLength(0);
 			sqlBuilder.append("select strButtonName from tblbuttonsequence where strTransactionName='" + transName + "' and (strPOSCode='All' or strPOSCode='" + posCode + "') and strClientCode='" + posClientCode + "' " + "  order by intSeqNo ");
 			list = objBaseService.funGetList(sqlBuilder, "sql");
@@ -266,8 +267,9 @@ public class clsPOSBillingAPIController
 
 		try
 		{
+			StringBuilder sqlBuilder = new StringBuilder();
 			sqlBuilder.setLength(0);
-			sqlBuilder.append("select strAreaCode from tblareamaster where strAreaName='All'");
+			sqlBuilder.append("select strAreaCode from tblareamaster where strAreaName='All' and strClientCode='"+clientCode +"' ");
 			list = objBaseService.funGetList(sqlBuilder, "sql");
 			if (list.size() > 0)
 				gAreaCodeForTrans = (String) list.get(0);
@@ -275,7 +277,7 @@ public class clsPOSBillingAPIController
 		//	String gDirectAreaCode = objPOSSetupUtility.funGetParameterValuePOSWise(clientCode, strPOSCode, "gDirectAreaCode");
 
 			sqlBuilder.setLength(0);
-			sqlBuilder.append("SELECT a.strItemCode,b.strItemName,a.strTextColor,a.strPriceMonday,a.strPriceTuesday," + " a.strPriceWednesday,a.strPriceThursday,a.strPriceFriday, " + " a.strPriceSaturday,a.strPriceSunday,a.tmeTimeFrom,a.strAMPMFrom,a.tmeTimeTo,a.strAMPMTo," + " a.strCostCenterCode,a.strHourlyPricing,a.strSubMenuHeadCode,a.dteFromDate,a.dteToDate,b.strStockInEnable " + " FROM tblmenuitempricingdtl a ,tblitemmaster b " + " where a.strPopular='Y' and  a.strItemCode= b.strItemCode " + " and date(a.dteFromDate)<='" + posDate + "' and date(a.dteToDate)>='" + posDate + "' " + " and (a.strPosCode='" + strPOSCode + "' or a.strPosCode='All') " + " and (a.strAreaCode='" + gDirectAreaCode + "' or a.strAreaCode='" + gAreaCodeForTrans + "') ");
+			sqlBuilder.append("SELECT a.strItemCode,b.strItemName,a.strTextColor,a.strPriceMonday,a.strPriceTuesday," + " a.strPriceWednesday,a.strPriceThursday,a.strPriceFriday, " + " a.strPriceSaturday,a.strPriceSunday,a.tmeTimeFrom,a.strAMPMFrom,a.tmeTimeTo,a.strAMPMTo," + " a.strCostCenterCode,a.strHourlyPricing,a.strSubMenuHeadCode,a.dteFromDate,a.dteToDate,b.strStockInEnable " + " FROM tblmenuitempricingdtl a ,tblitemmaster b " + " where a.strPopular='Y' and  a.strItemCode= b.strItemCode and a.strClientCode=b.strClientCode  and a.strClientCode='"+clientCode+"' and date(a.dteFromDate)<='" + posDate + "' and date(a.dteToDate)>='" + posDate + "' " + " and (a.strPosCode='" + strPOSCode + "' or a.strPosCode='All') " + " and (a.strAreaCode='" + gDirectAreaCode + "' or a.strAreaCode='" + gAreaCodeForTrans + "') ");
 				
 			list = objBaseService.funGetList(sqlBuilder, "sql");
 			JSONArray jArr = new JSONArray();
@@ -332,7 +334,7 @@ public class clsPOSBillingAPIController
 			
 			String sqlSettlementModes = "";
 			JSONObject jsSettelementOptionsDtl = new JSONObject();
-
+			StringBuilder sqlBuilder = new StringBuilder();
 			try
 			{
 
@@ -433,7 +435,7 @@ public class clsPOSBillingAPIController
 		JSONArray jArr = new JSONArray();
 		try
 		{
-
+			StringBuilder sqlBuilder = new StringBuilder();
 			String sqlModifyBill = "select strReasonCode,strReasonName from tblreasonmaster where strModifyBill='Y' and strClientCode='" + clientCode + "'";
 			sqlBuilder.setLength(0);
 			sqlBuilder.append(sqlModifyBill);
@@ -524,7 +526,7 @@ public class clsPOSBillingAPIController
 	 * @param posCode
 	 * @return
 	 */
-	public Map<String, List<clsPOSKOTItemDtl>> funGetBillSeriesList(List<clsPOSKOTItemDtl> listOfItemDtl, String posCode)
+	public Map<String, List<clsPOSKOTItemDtl>> funGetBillSeriesList(List<clsPOSKOTItemDtl> listOfItemDtl, String posCode,String clientCode)
 	{
 		Map<String, List<clsPOSKOTItemDtl>> hmBillSeriesItemList = new HashMap<String, List<clsPOSKOTItemDtl>>();
 		try
@@ -536,7 +538,7 @@ public class clsPOSBillingAPIController
 				boolean isExistsBillSeries = false;
 
 				sqlBuilder.setLength(0);
-				sqlBuilder.append(" select * from tblbillseries where (strPOSCode='" + posCode + "' or strPOSCode='All') ");
+				sqlBuilder.append(" select * from tblbillseries where (strPOSCode='" + posCode + "' or strPOSCode='All') and strClientCode='"+clientCode+"' ");
 				List listOfBillSeries = objBaseService.funGetList(sqlBuilder, "sql");
 				if (listOfBillSeries != null && listOfBillSeries.size() > 0)
 				{
@@ -549,8 +551,8 @@ public class clsPOSBillingAPIController
 						String billSeriesCodes = ob[4].toString();
 
 						sqlBuilder.setLength(0);
-						sqlBuilder.append("select a.strItemCode,a.strItemName,a.strRevenueHead,b.strPosCode,c.strMenuCode,c.strMenuName " + " ,d.strSubGroupCode,d.strSubGroupName,e.strGroupCode,e.strGroupName " + " from tblitemmaster a,tblmenuitempricingdtl b,tblmenuhd c,tblsubgrouphd d,tblgrouphd e " + " where a.strItemCode=b.strItemCode and b.strMenuCode=c.strMenuCode " + " and a.strSubGroupCode=d.strSubGroupCode and d.strGroupCode=e.strGroupCode ");
-						sqlBuilder.append(" and (b.strPosCode='" + posCode + "' Or b.strPosCode='All') ");
+						sqlBuilder.append("select a.strItemCode,a.strItemName,a.strRevenueHead,b.strPosCode,c.strMenuCode,c.strMenuName " + " ,d.strSubGroupCode,d.strSubGroupName,e.strGroupCode,e.strGroupName " + " from tblitemmaster a,tblmenuitempricingdtl b,tblmenuhd c,tblsubgrouphd d,tblgrouphd e " + " where a.strItemCode=b.strItemCode and b.strMenuCode=c.strMenuCode " + " and a.strSubGroupCode=d.strSubGroupCode and d.strGroupCode=e.strGroupCode and a.strClientCode=b.strClientCode and a.strClientCode=c.strClientCode  and a.strClientCode=d.strClientCode  and a.strClientCode=e.strClientCode");
+						sqlBuilder.append(" and (b.strPosCode='" + posCode + "' Or b.strPosCode='All')  and a.strClientCode='"+clientCode+"' ");
 						sqlBuilder.append(" and a.strItemCode='" + objBillItemDtl.getStrItemCode().substring(0, 7) + "' ");
 
 						String filter = " e.strGroupCode ";
@@ -710,11 +712,11 @@ public class clsPOSBillingAPIController
 	 * @param tableNo
 	 * @param status
 	 */
-	public void funUpdateTableStatus(String tableNo, String status)
+	public void funUpdateTableStatus(String tableNo, String status,String clientCode)
 	{
 		try
 		{
-			String sqlTableStatus = "update tbltablemaster set strStatus='" + status + "' where strTableNo='" + tableNo + "';";
+			String sqlTableStatus = "update tbltablemaster set strStatus='" + status + "' where strTableNo='" + tableNo + "' and strClientCode='"+clientCode+"';";
 			objBaseService.funExecuteUpdate(sqlTableStatus, "sql");
 		}
 		catch (Exception e)
@@ -729,11 +731,11 @@ public class clsPOSBillingAPIController
 	 * @param tableNo
 	 * @param posCode
 	 */
-	public void funClearRTempTable(String tableNo, String posCode)
+	public void funClearRTempTable(String tableNo, String posCode,String clientCode)
 	{
 		try
 		{
-			String sqlDeleteKOT = "delete from tblitemrtemp where strTableNo='" + tableNo + "' and strPOSCode='" + posCode + "'";
+			String sqlDeleteKOT = "delete from tblitemrtemp where strTableNo='" + tableNo + "' and strPOSCode='" + posCode + "' and strClientCode='"+clientCode+"' ";
 			objBaseService.funExecuteUpdate(sqlDeleteKOT, "sql");
 		}
 		catch (Exception e)
@@ -748,16 +750,16 @@ public class clsPOSBillingAPIController
 	 * @param billSeriesPrefix
 	 * @return billNo for this bill series prefix
 	 */
-	public String funGetBillSeriesBillNo(String billSeriesPrefix, String posCode)
+	public String funGetBillSeriesBillNo(String billSeriesPrefix, String posCode,String clientCode)
 	{
 		String billSeriesBillNo = "";
 
 		try
 		{
 			int billSeriesLastNo = 0;
-
+			StringBuilder sqlBuilder = new StringBuilder();
 			sqlBuilder.setLength(0);
-			sqlBuilder.append("select a.intLastNo " + "from tblbillseries a " + "where a.strBillSeries='" + billSeriesPrefix + "' " + "and (a.strPOSCode='" + posCode + "' OR a.strPOSCode='All') ");
+			sqlBuilder.append("select a.intLastNo " + "from tblbillseries a " + "where a.strBillSeries='" + billSeriesPrefix + "' " + "and (a.strPOSCode='" + posCode + "' OR a.strPOSCode='All') and strClientCode='"+clientCode+"' ");
 
 			List listOfBillSeriesLatNo = objBaseService.funGetList(sqlBuilder, "sql");
 			if (listOfBillSeriesLatNo != null && listOfBillSeriesLatNo.size() > 0)
@@ -768,7 +770,7 @@ public class clsPOSBillingAPIController
 			billSeriesBillNo = billSeriesPrefix + "" + posCode + "" + String.format("%05d", (billSeriesLastNo + 1));
 
 			// update last bill series last no
-			String sqlUpdate = "update tblbillseries " + "set intLastNo='" + (billSeriesLastNo + 1) + "' " + "where (strPOSCode='" + posCode + "' OR strPOSCode='All') " + "and strBillSeries='" + billSeriesPrefix + "' ";
+			String sqlUpdate = "update tblbillseries " + "set intLastNo='" + (billSeriesLastNo + 1) + "' " + "where (strPOSCode='" + posCode + "' OR strPOSCode='All') " + "and strBillSeries='" + billSeriesPrefix + "' and strClientCode='"+clientCode+"' ";
 			objBaseService.funExecuteUpdate(sqlUpdate, "sql");
 
 		}
@@ -822,7 +824,7 @@ public class clsPOSBillingAPIController
 	}
 
 	// generate bill no.
-	public String funGenerateBillNo(String POSCode)
+	public String funGenerateBillNo(String strPOSCode,String clientCode)
 	{
 		String voucherNo = "";
 		try
@@ -830,7 +832,7 @@ public class clsPOSBillingAPIController
 			long code = 0;
 			StringBuilder sqlBuilder = new StringBuilder();
 			sqlBuilder.setLength(0);
-			sqlBuilder.append("select strBillNo from tblstorelastbill where strPosCode='" + POSCode + "'");
+			sqlBuilder.append("select strBillNo from tblstorelastbill where strPosCode='" + strPOSCode + "' and strClientCode='"+clientCode+"' ");
 			List listItemDtl = objBaseServiceImpl.funGetList(sqlBuilder, "sql");
 
 			if (listItemDtl != null && listItemDtl.size() > 0)
@@ -838,14 +840,14 @@ public class clsPOSBillingAPIController
 				Object objItemDtl = (Object) listItemDtl.get(0);
 				code = Math.round(Double.parseDouble(objItemDtl.toString()));
 				code = code + 1;
-				voucherNo = POSCode + String.format("%05d", code);
-				objBaseServiceImpl.funExecuteUpdate("update tblstorelastbill set strBillNo='" + code + "' where strPosCode='" + POSCode + "'", "sql");
+				voucherNo = strPOSCode + String.format("%05d", code);
+				objBaseServiceImpl.funExecuteUpdate("update tblstorelastbill set strBillNo='" + code + "' where strPosCode='" + strPOSCode + "' and strClientCode='"+clientCode+"' ", "sql");
 			}
 			else
 			{
-				voucherNo = POSCode + "00001";
+				voucherNo = strPOSCode + "00001";
 				sqlBuilder.setLength(0);
-				objBaseServiceImpl.funExecuteUpdate("insert into tblstorelastbill values('" + POSCode + "','1')", "sql");
+				objBaseServiceImpl.funExecuteUpdate("insert into tblstorelastbill values('" + strPOSCode + "','1','"+clientCode+"')", "sql");
 			}
 		}
 		catch (Exception e)
@@ -1207,13 +1209,13 @@ public class clsPOSBillingAPIController
 				discAmt += objBillModifierDtlModel.getDblDiscAmt();
 			}
 
-			String deleteBillTaxDTL = "delete from tblbilltaxdtl where strBillNo='" + voucherNo + "'";
+			String deleteBillTaxDTL = "delete from tblbilltaxdtl where strBillNo='" + voucherNo + "' and strClientCode='"+clientCode+"' ";
 			objBaseServiceImpl.funExecuteUpdate(deleteBillTaxDTL, "sql");
 
-			List<clsPOSTaxCalculationDtls> arrListTaxDtl = objUtility.funCalculateTax(arrListItemDtls, POSCode, POSDate, areaCodeForTransaction, operationTypeForBilling, subTotalForTax, 0.0, "");
-
+			List<clsPOSTaxCalculationBean> arrListTaxDtl = objUtility.funCalculateTax(arrListItemDtls, POSCode, POSDate, areaCodeForTransaction, operationTypeForBilling, subTotalForTax, 0.0, "","S01","Sales","N",clientCode);
+//
 			List<clsBillTaxDtl> listObjBillTaxBillDtls = new ArrayList<clsBillTaxDtl>();
-			for (clsPOSTaxCalculationDtls objTaxCalculationDtls : arrListTaxDtl)
+			for (clsPOSTaxCalculationBean objTaxCalculationDtls : arrListTaxDtl)
 			{
 				double dblTaxAmt = objTaxCalculationDtls.getTaxAmount();
 
@@ -1395,7 +1397,7 @@ public class clsPOSBillingAPIController
 			}
 			else
 			{
-				listOfBillSettlementToBeSave = funInsertBillSettlementDtlTable(listObjBillSettlementDtl, userCode, dateTime, voucherNo);
+				listOfBillSettlementToBeSave = funInsertBillSettlementDtlTable(listObjBillSettlementDtl, userCode, dateTime, voucherNo,clientCode);
 			}
 
 			objBillHd.setStrSettelmentMode("");
@@ -1422,9 +1424,9 @@ public class clsPOSBillingAPIController
 			/* Save Bill HD */
 			objBaseServiceImpl.funSave(objBillHd);
 
-			objUtility.funUpdateBillDtlWithTaxValues(voucherNo, "Live", POSDate);
+			objUtility.funUpdateBillDtlWithTaxValues(voucherNo, "Live", POSDate,clientCode);
 			sbSql.setLength(0);
-			sbSql.append("select dblQuantity,dblRate,strItemCode " + "from tblbillpromotiondtl " + " where strBillNo='" + voucherNo + "' and strPromoType='ItemWise' ");
+			sbSql.append("select dblQuantity,dblRate,strItemCode " + "from tblbillpromotiondtl " + " where strBillNo='" + voucherNo + "' and strPromoType='ItemWise' and strClientCode='"+clientCode+"' ");
 
 			List listBillPromo = objBaseServiceImpl.funGetList(sbSql, "sql");
 			if (listBillPromo.size() > 0)
@@ -1434,7 +1436,7 @@ public class clsPOSBillingAPIController
 					Object[] objPrmo = (Object[]) listBillPromo.get(i);
 					double freeQty = Double.parseDouble(objPrmo[0].toString());
 					sbSql.setLength(0);
-					sbSql.append("select strItemCode,dblQuantity,strKOTNo,dblAmount " + " from tblbilldtl " + " where strItemCode='" + objPrmo[2].toString() + "'" + " and strBillNo='" + voucherNo + "'");
+					sbSql.append("select strItemCode,dblQuantity,strKOTNo,dblAmount " + " from tblbilldtl " + " where strItemCode='" + objPrmo[2].toString() + "'" + " and strBillNo='" + voucherNo + "' and strClientCode='"+clientCode+"' ");
 
 					List listBillDetail = objBaseServiceImpl.funGetList(sbSql, "sql");
 					if (listBillDetail.size() > 0)
@@ -1450,13 +1452,13 @@ public class clsPOSBillingAPIController
 								{
 									freeQty = freeQty - saleQty;
 									double amtToUpdate = saleAmt - (saleQty * Double.parseDouble(objPrmo[1].toString()));
-									String sqlUpdate = "update tblbilldtl set dblAmount= " + amtToUpdate + " " + " where strItemCode='" + objBillDtl[0].toString() + "' " + "and strKOTNo='" + objBillDtl[2].toString() + "'";
+									String sqlUpdate = "update tblbilldtl set dblAmount= " + amtToUpdate + " " + " where strItemCode='" + objBillDtl[0].toString() + "' " + "and strKOTNo='" + objBillDtl[2].toString() + "' and strClientCode='"+clientCode+"' ";
 									objBaseServiceImpl.funExecuteUpdate(sqlUpdate, "sql");
 								}
 								else
 								{
 									double amtToUpdate = saleAmt - (freeQty * Double.parseDouble(objPrmo[1].toString()));
-									String sqlUpdate = "update tblbilldtl set dblAmount= " + amtToUpdate + " " + " where strItemCode='" + objBillDtl[0].toString() + "' " + "and strKOTNo='" + objBillDtl[2].toString() + "'";
+									String sqlUpdate = "update tblbilldtl set dblAmount= " + amtToUpdate + " " + " where strItemCode='" + objBillDtl[0].toString() + "' " + "and strKOTNo='" + objBillDtl[2].toString() + "' and strClientCode='"+clientCode+"' ";
 									objBaseServiceImpl.funExecuteUpdate(sqlUpdate, "sql");
 									freeQty = 0;
 								}
@@ -1481,12 +1483,12 @@ public class clsPOSBillingAPIController
 			if (listOfBillSettlementToBeSave != null && listOfBillSettlementToBeSave.size() > 0 && operationTypeForBilling!="Bill For Items")
 			{
 				/* table billed and settled */
-				funUpdateTableStatus(tableNo, "Normal");
+				funUpdateTableStatus(tableNo, "Normal",clientCode);
 			}
-			else if(operationTypeForBilling!="Bill For Items")
+			else if( !operationTypeForBilling.equalsIgnoreCase("Bill For Items") || !operationTypeForBilling.equalsIgnoreCase("TakeAway"))
 			{
 				/* table only billed and not settled */
-				funUpdateTableStatus(tableNo, "Billed" );
+				funUpdateTableStatus(tableNo, "Billed",clientCode );
 			}
 
 		}
@@ -1543,9 +1545,9 @@ public class clsPOSBillingAPIController
 		}
 	}
 
-	private List funInsertBillSettlementDtlTable(List<clsPOSSettlementDtlsOnBill> listObjBillSettlementDtl, String userCode, String dtCurrentDate, String voucherNo) throws Exception
+	private List funInsertBillSettlementDtlTable(List<clsPOSSettlementDtlsOnBill> listObjBillSettlementDtl, String userCode, String dtCurrentDate, String voucherNo,String clientCode) throws Exception
 	{
-		String sqlDelete = "delete from tblbillsettlementdtl where strBillNo='" + voucherNo + "'";
+		String sqlDelete = "delete from tblbillsettlementdtl where strBillNo='" + voucherNo + "'  and strClientCode='"+clientCode+"' ";
 		objBaseServiceImpl.funExecuteUpdate(sqlDelete, "sql");
 
 		List<clsBillSettlementDtlModel> listBillSettlementDtlModel = new ArrayList<clsBillSettlementDtlModel>();
@@ -1578,7 +1580,7 @@ public class clsPOSBillingAPIController
 
 	}
 
-	public clsBillPromotionDtlModel funInsertIntoPromotion(String voucherNo, String iCode, String promoCode, double rate, double iQty, Map<String, clsPOSPromotionItems> hmPromoItem)
+	public clsBillPromotionDtlModel funInsertIntoPromotion(String voucherNo, String iCode, String promoCode, double rate, double iQty, Map<String, clsPOSPromotionItems> hmPromoItem)//,String clientCode
 	{
 
 		clsBillPromotionDtlModel objPromortion = new clsBillPromotionDtlModel();
@@ -1652,7 +1654,7 @@ public class clsPOSBillingAPIController
 	{
 		StringBuilder sbSql = new StringBuilder();
 		sbSql.setLength(0);
-		sbSql.append("select strHomeDelivery,strCustomerCode,strCustomerName,strDelBoyCode " + "from tblitemrtemp where strTableNo='" + objBean.getStrTableNo() + "' " + "group by strTableNo ;");
+		sbSql.append("select strHomeDelivery,strCustomerCode,strCustomerName,strDelBoyCode " + "from tblitemrtemp where strTableNo='" + objBean.getStrTableNo() + "' and strClientCode='"+clientCode+"' group by strTableNo ;");
 
 		List listsqlCheckHomeDelivery = objBaseServiceImpl.funGetList(sbSql, "sql");
 		if (listsqlCheckHomeDelivery.size() > 0)

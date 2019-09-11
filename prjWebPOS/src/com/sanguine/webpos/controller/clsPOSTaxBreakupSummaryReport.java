@@ -44,7 +44,7 @@ import com.sanguine.base.service.clsSetupService;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSAuditorReportBean;
 import com.sanguine.webpos.bean.clsPOSSalesFlashReportsBean;
-import com.sanguine.webpos.bean.clsPOSTaxCalculationDtls;
+import com.sanguine.webpos.bean.clsPOSTaxCalculationBean;
 import com.sanguine.webpos.bean.clsPOSReportBean;
 import com.sanguine.webpos.model.clsShiftMasterModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
@@ -175,7 +175,7 @@ public class clsPOSTaxBreakupSummaryReport {
 				}
 				hm.remove("shiftNo");
 				hm.put("shiftNo", strShiftNo);
-				List<clsPOSTaxCalculationDtls> listOfTaxDtl = new LinkedList<>();
+				List<clsPOSTaxCalculationBean> listOfTaxDtl = new LinkedList<>();
 				listOfTaxDtl = objReportService.funProcessTaxBreakUpSummaryReport(strPOSCode, fromDate, toDate, objSetupParameter.get("gEnableShiftYN").toString(),strShiftNo);
 				
 	            JasperDesign jd = JRXmlLoader.load(reportName);

@@ -203,7 +203,7 @@ public class clsStructureUpdater
     				    queryBuilder.append("update  tblstructureupdate "
     					    + "set intQueryNo='" + noOfQueriesInList + "' "
     					    + ",strUserEdited='" + gUserCode + "' "
-    					    + ",dteDateEdited='" + objUtilityController.getCurrentDateTime() + "' "
+    					    + ",dteDateEdited='" + objUtilityController.funGetCurrentDateTime() + "' "
     					    + "where strStructureCode='" + key + "' ");
     				    funExecuteUpdateQuery(queryBuilder.toString());
 
@@ -262,14 +262,14 @@ public class clsStructureUpdater
 					    queryBuilder.append("INSERT INTO  tblstructureupdate  "
 						    + "(`strStructureCode`, `strStructureName`,`intQueryNo`, `strClientCode`, `strUserCreated`, `strUserEdited`, `dteDateCreated`, `dteDateEdited`,`strDataPostFlag`)  "
 						    + "VALUES  "
-						    + "('dbStructure', 'Database Level Structure Update', 0,'" + gClientCode + "', '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "','N') "
-						    + ",('tblStructure', 'Table Level Structure Update', 0,'" + gClientCode + "', '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "','N') "
-						    + ",('frmStructure', 'Forms Structure Update', 0,'" + gClientCode + "', '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "','N') "
-						    + ",('superUserStructure', 'Super User Entry Structure Update', 0,'" + gClientCode + "', '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "','N') "
-						    + ",('userStructure', 'Normal User Entry Structure Update', 0,'" + gClientCode + "', '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "','N') "
-						    + ",('viewStructure', 'Table View  Structure Update', 0,'" + gClientCode + "', '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "','N') "
-						    + ",('internalTableStructure', 'Internal Table Structure Update', 0,'" + gClientCode + "', '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "','N') "
-						    + ",('masterTableStatusStructure', 'Master Forms Table Structure Update', 0,'" + gClientCode + "', '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "','N') ");
+						    + "('dbStructure', 'Database Level Structure Update', 0,'" + gClientCode + "', '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "','N') "
+						    + ",('tblStructure', 'Table Level Structure Update', 0,'" + gClientCode + "', '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "','N') "
+						    + ",('frmStructure', 'Forms Structure Update', 0,'" + gClientCode + "', '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "','N') "
+						    + ",('superUserStructure', 'Super User Entry Structure Update', 0,'" + gClientCode + "', '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "','N') "
+						    + ",('userStructure', 'Normal User Entry Structure Update', 0,'" + gClientCode + "', '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "','N') "
+						    + ",('viewStructure', 'Table View  Structure Update', 0,'" + gClientCode + "', '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "','N') "
+						    + ",('internalTableStructure', 'Internal Table Structure Update', 0,'" + gClientCode + "', '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "','N') "
+						    + ",('masterTableStatusStructure', 'Master Forms Table Structure Update', 0,'" + gClientCode + "', '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "','N') ");
 					    funExecuteUpdateQuery(queryBuilder.toString());
 					}
 					else
@@ -313,14 +313,14 @@ public class clsStructureUpdater
 					    queryBuilder.append("INSERT INTO  tblstructureupdate  "
 						    + "(`strStructureCode`, `strStructureName`,`intQueryNo`, `strClientCode`, `strUserCreated`, `strUserEdited`, `dteDateCreated`, `dteDateEdited`,`strDataPostFlag`)  "
 						    + "VALUES  "
-						    + "('dbStructure', 'Database Level Structure Update', 0,'" +  gClientCode + "', '" +  gUserCode + "', '" +  gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "','N') "
-						    + ",('tblStructure', 'Table Level Structure Update', 0,'" +  gClientCode + "', '" +  gUserCode + "', '" +  gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "','N') "
-						    + ",('frmStructure', 'Forms Structure Update', 0,'" +  gClientCode + "', '" +  gUserCode + "', '" +  gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "','N') "
-						    + ",('superUserStructure', 'Super User Entry Structure Update', 0,'" +  gClientCode + "', '" +  gUserCode + "', '" +  gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "','N') "
-						    + ",('userStructure', 'Normal User Entry Structure Update', 0,'" +  gClientCode + "', '" +  gUserCode + "', '" +  gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "','N') "
-						    + ",('viewStructure', 'Table View  Structure Update', 0,'" +  gClientCode + "', '" +  gUserCode + "', '" +  gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "','N') "
-						    + ",('internalTableStructure', 'Internal Table Structure Update', 0,'" +  gClientCode + "', '" +  gUserCode + "', '" +  gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "','N') "
-						    + ",('masterTableStatusStructure', 'Master Forms Table Structure Update', 0,'" +  gClientCode + "', '" +  gUserCode + "', '" +  gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "','N') ");
+						    + "('dbStructure', 'Database Level Structure Update', 0,'" +  gClientCode + "', '" +  gUserCode + "', '" +  gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "','N') "
+						    + ",('tblStructure', 'Table Level Structure Update', 0,'" +  gClientCode + "', '" +  gUserCode + "', '" +  gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "','N') "
+						    + ",('frmStructure', 'Forms Structure Update', 0,'" +  gClientCode + "', '" +  gUserCode + "', '" +  gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "','N') "
+						    + ",('superUserStructure', 'Super User Entry Structure Update', 0,'" +  gClientCode + "', '" +  gUserCode + "', '" +  gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "','N') "
+						    + ",('userStructure', 'Normal User Entry Structure Update', 0,'" +  gClientCode + "', '" +  gUserCode + "', '" +  gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "','N') "
+						    + ",('viewStructure', 'Table View  Structure Update', 0,'" +  gClientCode + "', '" +  gUserCode + "', '" +  gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "','N') "
+						    + ",('internalTableStructure', 'Internal Table Structure Update', 0,'" +  gClientCode + "', '" +  gUserCode + "', '" +  gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "','N') "
+						    + ",('masterTableStatusStructure', 'Master Forms Table Structure Update', 0,'" +  gClientCode + "', '" +  gUserCode + "', '" +  gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "','N') ");
 					    funExecuteUpdateQuery(queryBuilder.toString());
 					     structup();
 					}
@@ -570,7 +570,7 @@ public class clsStructureUpdater
         	            }
         				
         				String sql_Area = "insert into tblareamaster (strAreaCode,strAreaName,strUserCreated,strUserEdited,dteDateCreated,dteDateEdited)values('" + areaCode + "'"
-        					+ ",'All','" + gUserCode + "','" + gUserCode + "','" + objUtilityController.getCurrentDateTime() + "','" + objUtilityController.getCurrentDateTime() + "')";
+        					+ ",'All','" + gUserCode + "','" + gUserCode + "','" + objUtilityController.funGetCurrentDateTime() + "','" + objUtilityController.funGetCurrentDateTime() + "')";
         				//System.out.println(sql);
         				funExecuteUpdateQuery(sql_Area);
         				
@@ -688,21 +688,21 @@ public class clsStructureUpdater
 		{
 		    sql = "INSERT INTO `tblbuttonsequence` (`strPOSCode`, `strTransactionName`, `strButtonName`, `intSeqNo`, `strUserCreated`, `strUserEdited`, `dteDateCreated`, `dteDateEdited`, `strClientCode`, `strDataPostFlag`) "
 			    + "VALUES "
-			    + "('All', 'DirectBiller', 'Customer History', 2, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
-			    + "('All', 'DirectBiller', 'Delivery Boy', 4, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
-			    + "('All', 'DirectBiller', 'Done', 6, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
-			    + "('All', 'DirectBiller', 'Home', 1, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
-			    + "('All', 'DirectBiller', 'Home Delivery', 3, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
-			    + "('All', 'DirectBiller', 'Take Away', 5, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
-			    + "('All', 'MakeKOT', 'Home', 1, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
-			    + "('All', 'MakeKOT', 'Settle Bill', 2, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
-			    + "('All', 'MakeKOT', 'Home Delivery', 3, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
-			    + "('All', 'MakeKOT', 'Delivery Boy', 4, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
-			    + "('All', 'MakeKOT', 'Check KOT', 5, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
-			    + "('All', 'MakeKOT', 'NC KOT', 6, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
-			    + "('All', 'MakeKOT', 'Customer', 7, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
-			    + "('All', 'MakeKOT', 'Done', 8, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
-			    + "('All', 'MakeKOT', 'Make Bill', 9, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.getCurrentDateTime() + "', '" + objUtilityController.getCurrentDateTime() + "', '" + gClientCode + "', 'N'); ";
+			    + "('All', 'DirectBiller', 'Customer History', 2, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
+			    + "('All', 'DirectBiller', 'Delivery Boy', 4, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
+			    + "('All', 'DirectBiller', 'Done', 6, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
+			    + "('All', 'DirectBiller', 'Home', 1, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
+			    + "('All', 'DirectBiller', 'Home Delivery', 3, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
+			    + "('All', 'DirectBiller', 'Take Away', 5, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
+			    + "('All', 'MakeKOT', 'Home', 1, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
+			    + "('All', 'MakeKOT', 'Settle Bill', 2, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
+			    + "('All', 'MakeKOT', 'Home Delivery', 3, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
+			    + "('All', 'MakeKOT', 'Delivery Boy', 4, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
+			    + "('All', 'MakeKOT', 'Check KOT', 5, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
+			    + "('All', 'MakeKOT', 'NC KOT', 6, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
+			    + "('All', 'MakeKOT', 'Customer', 7, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
+			    + "('All', 'MakeKOT', 'Done', 8, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + gClientCode + "', 'N'), "
+			    + "('All', 'MakeKOT', 'Make Bill', 9, '" + gUserCode + "', '" + gUserCode + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + objUtilityController.funGetCurrentDateTime() + "', '" + gClientCode + "', 'N'); ";
 
 		    i = funExecuteUpdateQuery(sql);
 		}
@@ -752,7 +752,7 @@ public class clsStructureUpdater
 			    {
 				insertSql += "('" + taxCode + "', '" + groupCode + "', '" + groupName + "', 'true', '" + fromDate + "', '" + toDate + "', '" + gUserCode + "'"
 					+ ", '" + gUserCode + "' "
-					+ ",'" + objUtilityController.getCurrentDateTime() + "','" + objUtilityController.getCurrentDateTime() + "','" + clsGlobalVarClass.gClientCode + "' )";
+					+ ",'" + objUtilityController.funGetCurrentDateTime() + "','" + objUtilityController.funGetCurrentDateTime() + "','" + clsGlobalVarClass.gClientCode + "' )";
 
 				isFirst = false;
 			    }
@@ -760,7 +760,7 @@ public class clsStructureUpdater
 			    {
 				insertSql += ",('" + taxCode + "', '" + groupCode + "', '" + groupName + "', 'true', '" + fromDate + "', '" + toDate + "', '" + gUserCode + "'"
 					+ ", '" + gUserCode + "' "
-					+ ",'" + objUtilityController.getCurrentDateTime() + "','" + objUtilityController.getCurrentDateTime() + "','" + clsGlobalVarClass.gClientCode + "' )";
+					+ ",'" + objUtilityController.funGetCurrentDateTime() + "','" + objUtilityController.funGetCurrentDateTime() + "','" + clsGlobalVarClass.gClientCode + "' )";
 
 			    }
 			}

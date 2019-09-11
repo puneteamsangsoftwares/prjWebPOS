@@ -133,10 +133,10 @@ public class clsPOSCallCenterController
 		model.put("urlHits", urlHits);
 		model.put("billNo", "");
 		model.put("billDate", posDate.split("-")[2] + "-" + posDate.split("-")[1] + "-" + posDate.split("-")[0]);
-		model.put("gCustAddressSelectionForBill", clsPOSGlobalFunctionsController.hmPOSSetupValues.get("CustAddressSelectionForBill"));
+		/*model.put("gCustAddressSelectionForBill", clsPOSGlobalFunctionsController.hmPOSSetupValues.get("CustAddressSelectionForBill"));
 		model.put("gCMSIntegrationYN", clsPOSGlobalFunctionsController.hmPOSSetupValues.get("CMSIntegrationYN"));
 		model.put("gCRMInterface", clsPOSGlobalFunctionsController.hmPOSSetupValues.get("CRMInterface"));
-
+*/
 		// function to get all POS list
 		List listOfPos = objMasterService.funFillPOSCombo(clientCode);
 		if(listOfPos!=null)
@@ -237,11 +237,11 @@ public class clsPOSCallCenterController
 			model.put("urlHits", urlHits);
 			model.put("billNo", "");
 			model.put("billDate", posDate.split("-")[2] + "-" + posDate.split("-")[1] + "-" + posDate.split("-")[0]);
-			model.put("gCustAddressSelectionForBill", clsPOSGlobalFunctionsController.hmPOSSetupValues.get("CustAddressSelectionForBill"));
+			/*model.put("gCustAddressSelectionForBill", clsPOSGlobalFunctionsController.hmPOSSetupValues.get("CustAddressSelectionForBill"));
 			model.put("gCMSIntegrationYN", clsPOSGlobalFunctionsController.hmPOSSetupValues.get("CMSIntegrationYN"));
 			model.put("gCRMInterface", clsPOSGlobalFunctionsController.hmPOSSetupValues.get("CRMInterface"));
 
-			Map mapSelected = new HashMap<>();
+			*/Map mapSelected = new HashMap<>();
 			if (mapPOSName.containsKey(selectedPOSCode))
 			{
 				String selectedPOSName = mapPOSName.get(selectedPOSCode).toString();

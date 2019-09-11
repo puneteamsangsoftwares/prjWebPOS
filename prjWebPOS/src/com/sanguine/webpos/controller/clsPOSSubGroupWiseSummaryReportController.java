@@ -23,7 +23,7 @@ import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSBillItemDtlBean;
 import com.sanguine.webpos.bean.clsPOSGroupSubGroupWiseSales;
 import com.sanguine.webpos.bean.clsPOSReportBean;
-import com.sanguine.webpos.bean.clsPOSTaxCalculationDtls;
+import com.sanguine.webpos.bean.clsPOSTaxCalculationBean;
 import com.sanguine.webpos.model.clsShiftMasterModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.sevice.clsPOSReportService;
@@ -163,7 +163,7 @@ public class clsPOSSubGroupWiseSummaryReportController {
 			String reportName = servletContext.getRealPath("/WEB-INF/reports/webpos/rptSubGroupWiseSummaryReport.jrxml");
 			
 			List<clsPOSGroupSubGroupWiseSales> listOfData = new ArrayList<clsPOSGroupSubGroupWiseSales>();
-			List<clsPOSTaxCalculationDtls> listOfTaxData = new ArrayList<clsPOSTaxCalculationDtls>();
+			List<clsPOSTaxCalculationBean> listOfTaxData = new ArrayList<clsPOSTaxCalculationBean>();
 			List<clsPOSBillItemDtlBean> listOfSettlementData = new ArrayList<clsPOSBillItemDtlBean>();
 			
 			listOfData = objReportService.funProcessSubGroupWiseSummaryReport(posCode,fromDate,toDate,strShiftNo,strUserCode,objSetupParameter.get("gEnableShiftYN").toString());

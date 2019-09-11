@@ -70,6 +70,9 @@ public class clsPOSJasperFormat8ForBill implements clsPOSBillGenerationFormat
 	@Autowired
 	clsPOSJasperGenerator objJasperFileGeneration;
 	
+	@Autowired
+	clsGlobalFunctions objGlobalFunctions;
+	
 	String strBillPrinterPort="";
 		
 	public void funGenerateBill(String strBillNo,String reprint, String transactionType,String strPosCode, String strBillDate,String strClientCode,String strServerBillPrinterName, boolean isOriginal)
@@ -83,7 +86,7 @@ public class clsPOSJasperFormat8ForBill implements clsPOSBillGenerationFormat
 		{
 			
 
-			final String gDecimalFormatString = clsGlobalFunctions.funGetGlobalDecimalFormatString(strClientCode,strPosCode);
+			final String gDecimalFormatString = objGlobalFunctions.funGetGlobalDecimalFormatString(strClientCode,strPosCode);
 			
 			clsPOSPropertySetupBean objBean =new clsPOSPropertySetupBean();
 			clsSetupModel_ID ob=new clsSetupModel_ID(strClientCode,strPosCode);

@@ -68,6 +68,9 @@ public class clsPOSJasperFormat7ForBill implements clsPOSBillGenerationFormat
 	private ServletContext servletContext;
 
 	String strBillPrinterPort = "";
+	
+	@Autowired
+	clsGlobalFunctions objGlobalFunctions;
 
 	private String strPrintOrderNoOnBillYN;
 
@@ -82,7 +85,7 @@ public class clsPOSJasperFormat7ForBill implements clsPOSBillGenerationFormat
 		{
 			// String reportName =
 			// servletContext.getRealPath("/WEB-INF/reports/billFormat/rptBillFormat7JasperReport.jrxml");
-			final String gDecimalFormatString = clsGlobalFunctions.funGetGlobalDecimalFormatString(strClientCode, strPosCode);
+			final String gDecimalFormatString = objGlobalFunctions.funGetGlobalDecimalFormatString(strClientCode,strPosCode);
 
 			clsPOSPropertySetupBean objBean = new clsPOSPropertySetupBean();
 			clsSetupModel_ID ob = new clsSetupModel_ID(strClientCode, strPosCode);
