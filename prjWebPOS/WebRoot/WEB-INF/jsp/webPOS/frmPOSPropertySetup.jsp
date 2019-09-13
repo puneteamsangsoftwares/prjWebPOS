@@ -20,7 +20,7 @@
 #tab_container {
 	width: 100%;
 	margin: 1;
-	height: 500px;
+	height: 100%;
 	overflow: auto;
 	float: right;
 }
@@ -38,8 +38,9 @@ ul.tab li.active {
 ul.tab li {
 	width: 100px;
 	margin: 0;
-	padding: 4px 4px;
-	height: 25px;
+	margin-top: 3px;
+	padding: 6px 6px;
+	height: 30px;
 	line-height: 16px;
 	border: 1px solid #6DA9DB;
 	border-left: none;
@@ -53,6 +54,8 @@ ul.tab li {
 	color: #fff;
 	cursor: pointer; //
 	background: red;
+	
+	
 }
 
 ul.tab li.a:FOCUS {
@@ -2672,11 +2675,11 @@ ul.tab li.a:FOCUS {
 
 		<div class="row" style="background-color: #fff; display: -webkit-box;">
 			<div class="element-input col-lg-6"
-				style="width: 15%; margin-left: 1%">
+				style="width: 15%; margin-left: 2%">
 				<label class="title">POS Name</label>
 			</div>
 			<div class="element-input col-lg-6"
-				style="margin-bottom: 10px; width: 10%; margin-left: -8%;">
+				style="margin-bottom: 10px; width: 20%; margin-left: -8%;">
 				<s:select id="cmbPosCode" path="strPosCode" items="${posList}"></s:select>
 			</div>
 		</div>
@@ -2768,7 +2771,7 @@ ul.tab li.a:FOCUS {
 													height="100px" alt="Client Image" /></td>
 											</tr>
 											<tr>
-												<td><input style="width: 80px;" id="companyLogo"
+												<td><input style="width: 90px;" id="companyLogo"
 													name="companyLogo" type="file" accept="image/png"
 													onchange="funShowImagePreview(this);" /></td>
 											</tr>
@@ -3030,11 +3033,11 @@ ul.tab li.a:FOCUS {
 					</div> <!--  End of  Property Setup tab--> <!-- Start of Bill Setup tab -->
 
 					<div id="tab2" class="tab_content">
-						<div style="float: left; margin-left: 18%; margin-top: -37%">
+						<div style="float: left; margin-left: 20%; margin-top: -48%">
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
 
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 28%;">
 									<label class="title">Bill Footer</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3060,7 +3063,7 @@ ul.tab li.a:FOCUS {
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
 
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 28%;">
 									<label class="title">Bill Paper Size</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3088,7 +3091,7 @@ ul.tab li.a:FOCUS {
 
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 28%;">
 									<label class="title">Doc Printing Type</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3120,7 +3123,7 @@ ul.tab li.a:FOCUS {
 										<option value="Jasper 11">Jasper 11</option>
 									</s:select>
 								</div>
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 25%;">
 									<label class="title">Show Doc</label>
 								</div>
 								<div class="element-input col-lg-6" style="width: 20%;">
@@ -3131,7 +3134,7 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 28%;">
 									<label class="title">Allow Negative Billing</label>
 								</div>
 								<div class="element-input col-lg-6" style="width: 20%;">
@@ -3147,7 +3150,7 @@ ul.tab li.a:FOCUS {
 										path="chkPrintKotForDirectBiller" value="Yes" />
 								</div>
 
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 25%;">
 									<label class="title">Enable KOT Printing</label>
 								</div>
 								<div class="element-input col-lg-6" style="width: 20%;">
@@ -3158,7 +3161,7 @@ ul.tab li.a:FOCUS {
 
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 28%;">
 									<label class="title">Multiple Bill Printing</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3175,7 +3178,7 @@ ul.tab li.a:FOCUS {
 										value="Yes" />
 								</div>
 
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 25%;">
 									<label class="title">Print Short Name On KOT</label>
 								</div>
 								<div class="element-input col-lg-6" style="width: 20%;">
@@ -3185,7 +3188,7 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 28%;">
 									<label class="title">Multiple KOT Printing</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3202,7 +3205,7 @@ ul.tab li.a:FOCUS {
 										path="chkPrintInvoiceOnBill" value="Yes" />
 								</div>
 
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 25%;">
 									<label class="title">Print TDH Items In Bill</label>
 								</div>
 								<div class="element-input col-lg-6" style="width: 20%;">
@@ -3212,7 +3215,7 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 28%;">
 									<label class="title">Manual Bill No.</label>
 								</div>
 								<div class="element-input col-lg-6" style="width: 20%;">
@@ -3227,7 +3230,7 @@ ul.tab li.a:FOCUS {
 									<s:checkbox element="li" id="chkPrintInclusiveOfAllTaxesOnBill"
 										path="chkPrintInclusiveOfAllTaxesOnBill" value="Yes" />
 								</div>
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 25%;">
 									<label class="title">Effect On PSP </label>
 								</div>
 								<div class="element-input col-lg-6" style="width: 20%;">
@@ -3244,7 +3247,7 @@ ul.tab li.a:FOCUS {
 									<s:checkbox element="li" id="chkEffectOnPSP"
 										path="chkEffectOnPSP" value="Yes" />
 								</div> --%>
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 28%;">
 									<label class="title">Print VAT No.</label>
 								</div>
 								<div class="element-input col-lg-6" style="width: 20%;">
@@ -3261,7 +3264,7 @@ ul.tab li.a:FOCUS {
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
 
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 28%;">
 									<label class="title">No Of Lines In KOT Print</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3289,7 +3292,7 @@ ul.tab li.a:FOCUS {
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-bottom: 10px;">
+									style="width: 28%; margin-bottom: 10px;">
 									<label class="title">Show Bills Detail Type</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3323,14 +3326,14 @@ ul.tab li.a:FOCUS {
 					<div id="tab3" class="tab_content">
 
 
-						<div style="float: left; margin-left: 17%; margin-top: -37%">
+						<div style="float: left; margin-left: 20%; margin-top: -48%">
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
 								<div class="element-input col-lg-6" style="width: 20%;">
 									<label class="title">Property Type</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 30%;">
+									style="margin-bottom: 10px; width: 25%;">
 									<s:select id="cmbPOSType" path="strPOSType">
 
 										<option value="Stand Alone-HOPOS">Stand Alone-HOPOS</option>
@@ -3342,7 +3345,7 @@ ul.tab li.a:FOCUS {
 									</s:select>
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: 10%">
+									style="margin-bottom: 10px; width: 35%; margin-left: 2%">
 									<label class="title">Data Posting Frequency</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3382,16 +3385,16 @@ ul.tab li.a:FOCUS {
 									<s:input id="dteHOServerDate" path="dteHOServerDate" />
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: 10%">
+									style="margin-bottom: 10px; width: 35%; margin-left: 2%">
 									<label class="title">Enable Master Discount</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 30%; margin-left: -10%">
+									style="margin-bottom: 10px; width: 25%; margin-left: -10%">
 									<s:checkbox element="li" id="chkEnableMasterDiscount"
 										path="strEnableMasterDiscount" value="Yes" />
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: -20%">
+									style="margin-bottom: 10px; width: 35%; margin-left: -20%">
 									<label class="title">Max. discount</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3405,7 +3408,7 @@ ul.tab li.a:FOCUS {
 								<div class="element-input col-lg-6" style="width: 20%;">
 									<label class="title">Change Theme</label>
 								</div>
-								<div class="element-input col-lg-6" style="width: 20%;">
+								<div class="element-input col-lg-6" style="width: 23%;">
 									<s:select id="cmbChangeTheme" path="strChangeTheme">
 
 										<option value="Default">Default</option>
@@ -3426,7 +3429,7 @@ ul.tab li.a:FOCUS {
  --%>
 
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: 10%">
+									style="margin-bottom: 10px; width: 35%; margin-left: -1%">
 									<label class="title">Reprint On Settle Bill</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3436,7 +3439,7 @@ ul.tab li.a:FOCUS {
 								</div>
 
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: -20%">
+									style="margin-bottom: 10px; width: 35%; margin-left: -20%">
 									<label class="title">Show Item StK Column in DB </label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3455,7 +3458,7 @@ ul.tab li.a:FOCUS {
 									<s:input type="number" id="txtCustSeries" path="longCustSeries"  />
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: 10%">
+									style="margin-bottom: 10px; width: 35%; margin-left: 2%">
 									<label class="title">Print KOT</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3464,7 +3467,7 @@ ul.tab li.a:FOCUS {
 										path="chkPrintKOTYN" value="Yes" />
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: -20%">
+									style="margin-bottom: 10px; width: 35%; margin-left: -20%">
 									<label class="title">Slab Based Home Delivery Charges</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3483,7 +3486,7 @@ ul.tab li.a:FOCUS {
 										path="chkEditHomeDelivery" value="Yes" />
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: 10%">
+									style="margin-bottom: 10px; width: 35%; margin-left: 2%">
 									<label class="title">Print For Void Bill</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3492,7 +3495,7 @@ ul.tab li.a:FOCUS {
 										path="chkPrintForVoidBill" value="Yes" />
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: -20%">
+									style="margin-bottom: 10px; width: 35%; margin-left: -20%">
 									<label class="title">Direct KOT Print from Make KOT</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3511,7 +3514,7 @@ ul.tab li.a:FOCUS {
 										path="strSkipWaiterAndPax" value="Yes" />
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: 10%">
+									style="margin-bottom: 10px; width: 35%; margin-left: 2%">
 									<label class="title">Skip Pax Selection </label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3520,7 +3523,7 @@ ul.tab li.a:FOCUS {
 										path="chkSkipPaxSelection" value="Yes" />
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: -20%">
+									style="margin-bottom: 10px; width: 35%; margin-left: -20%">
 									<label class="title">Compulsory Customer Area Master</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3551,7 +3554,7 @@ ul.tab li.a:FOCUS {
 								</div>
 
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-left: 7%">
+									style="width: 25%; margin-left: -1%">
 									<label class="title">Show Printer Error Message</label>
 								</div>
 
@@ -3564,7 +3567,7 @@ ul.tab li.a:FOCUS {
 									<label class="title">Pick Up Price From</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 20%; margin-left: -10%">
+									style="margin-bottom: 10px; width: 18%; margin-left: -10%">
 									<s:select id="cmbPriceFrom" path="strPriceFrom">
 
 										<option value="Menu Pricing">Menu Pricing</option>
@@ -3582,16 +3585,16 @@ ul.tab li.a:FOCUS {
 										path="chkActivePromotions" value="Yes" />
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: 10%">
+									style="margin-bottom: 10px; width: 40%; margin-left: 2%">
 									<label class="title">Change Quantity For External Code</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 30%; margin-left: -10%">
+									style="margin-bottom: 10px; width: 25%; margin-left: -10%">
 									<s:checkbox element="li" id="chkChangeQtyForExternalCode"
 										path="chkChangeQtyForExternalCode" value="Yes" />
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: -20%">
+									style="margin-bottom: 10px; width: 35%; margin-left: -20%">
 									<label class="title">Ask For Print Bill Popup</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3610,18 +3613,18 @@ ul.tab li.a:FOCUS {
 										path="chkUseVatAndServiceNoFromPos" value="Yes" />
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: 5%">
+									style="margin-bottom: 10px; width: 40%; margin-left: 2%">
 									<label class="title">POS Wise Item LinkedUp To MMS
 										Product</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 30%; margin-left: -5%">
+									style="margin-bottom: 10px; width: 25%; margin-left: -5%">
 									<s:checkbox element="li"
 										id="strPOSWiseItemToMMSProductLinkUpYN"
 										path="strPOSWiseItemToMMSProductLinkUpYN" value="Yes" />
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: -20%">
+									style="margin-bottom: 10px; width: 30%; margin-left: -20%">
 									<label class="title">Enable Lock Tables</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3637,7 +3640,7 @@ ul.tab li.a:FOCUS {
 									<label class="title">Stock In Options</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 20%; margin-left: -10%">
+									style="margin-bottom: 10px; width: 22%; margin-left: -10%">
 									<s:select id="cmbStockInOption" path="strStockInOption">
 
 										<option value="ItemWise">ItemWise</option>
@@ -3645,7 +3648,7 @@ ul.tab li.a:FOCUS {
 
 									</s:select>
 								</div>
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 28%;">
 									<label class="title">Post MMS Sales Effect</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3656,7 +3659,7 @@ ul.tab li.a:FOCUS {
 										<option value="WS Location">WS Location</option>
 									</s:select>
 								</div>
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 23%;">
 									<label class="title">Discount On</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3686,19 +3689,19 @@ ul.tab li.a:FOCUS {
 					</div> <!-- End of POS Setup 1 tab --> <!-- Start of POS Setup 2 tab -->
 
 					<div id="tab4" class="tab_content">
-						<div style="float: left; margin-left: 18%; margin-top: -37%">
+						<div style="float: left; margin-left: 20%; margin-top: -48%">
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 45%;">
 									<label class="title">Manual Advance Order No Compulsory
 									</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-bottom: 10px;">
+									style="width: 28%; margin-bottom: 10px;">
 									<s:checkbox element="li" id="chkManualAdvOrderCompulsory"
 										path="chkManualAdvOrderCompulsory" value="Yes" />
 								</div>
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 50%;">
 									<label class="title">Print Manual Advance Order No On
 										Bill </label>
 								</div>
@@ -3712,15 +3715,15 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 45%;">
 									<label class="title">Print Modifier Quantity On KOT </label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-bottom: 10px;">
+									style="width: 28%; margin-bottom: 10px;">
 									<s:checkbox element="li" id="chkPrintModifierQtyOnKOT"
 										path="chkPrintModifierQtyOnKOT" value="Yes" />
 								</div>
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 50%;">
 									<label class="title">Allow New Area Master From
 										Customer Master </label>
 								</div>
@@ -3735,11 +3738,11 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 35%;">
 									<label class="title">Menu Item Sorting </label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-bottom: 10px;">
+									style="width: 38%; margin-bottom: 10px;">
 									<s:select id="cmbMenuItemSortingOn" path="strMenuItemSortingOn">
 
 										<option value="SELECT">SELECT</option>
@@ -3748,7 +3751,7 @@ ul.tab li.a:FOCUS {
 
 									</s:select>
 								</div>
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 50%;">
 									<label class="title">Allow To Calculate Item Weight </label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3761,11 +3764,11 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 35%;">
 									<label class="title">Menu Item Display Sequence </label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-bottom: 10px;">
+									style="width: 38%; margin-bottom: 10px;">
 									<s:select id="cmbMenuItemDisSeq" path="strMenuItemDisSeq">
 
 										<option value="Ascending">Ascending</option>
@@ -3773,7 +3776,7 @@ ul.tab li.a:FOCUS {
 
 									</s:select>
 								</div>
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 50%;">
 									<label class="title">Item Wise KOT Y/N : </label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3785,15 +3788,15 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 45%;">
 									<label class="title">Item Quantiy Numeric Pad </label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-bottom: 10px;">
+									style="width: 28%; margin-bottom: 10px;">
 									<s:checkbox element="li" id="chkItemQtyNumpad"
 										path="chkItemQtyNumpad" value="Yes" />
 								</div>
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 50%;">
 									<label class="title">Slip No Compulsory For Credit Card
 										Bill </label>
 								</div>
@@ -3806,15 +3809,15 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 45%;">
 									<label class="title">Print KOT To Local Printer </label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-bottom: 10px;">
+									style="width: 28%; margin-bottom: 10px;">
 									<s:checkbox element="li" id="chkPrintKOTToLocalPrinter"
 										path="chkPrintKOTToLocalPrinter" value="Yes" />
 								</div>
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 50%;">
 									<label class="title">Expiry date Compulsory For Credit
 										Card Bill</label>
 								</div>
@@ -3827,16 +3830,16 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 45%;">
 									<label class="title">Delivery Boy Compulsory On Direct
 										Biller </label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-bottom: 10px;">
+									style="width: 28%; margin-bottom: 10px;">
 									<s:checkbox element="li" id="chkDelBoyCompulsoryOnDirectBiller"
 										path="chkDelBoyCompulsoryOnDirectBiller" value="Yes" />
 								</div>
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 50%;">
 									<label class="title">Select Waiter From Card Swipe </label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3848,17 +3851,17 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 45%;">
 									<label class="title">Enable Settle Button For Direct
 										Biller Bill </label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-bottom: 10px;">
+									style="width: 28%; margin-bottom: 10px;">
 									<s:checkbox element="li"
 										id="chkEnableSettleBtnForDirectBillerBill"
 										path="chkEnableSettleBtnForDirectBillerBill" value="Yes" />
 								</div>
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 50%;">
 									<label class="title">Multiple Waiter Selection On Make
 										KOT </label>
 								</div>
@@ -3872,16 +3875,16 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 45%;">
 									<label class="title">Don't Show Advance Order In Other
 										POS </label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-bottom: 10px;">
+									style="width: 28%; margin-bottom: 10px;">
 									<s:checkbox element="li" id="chkDontShowAdvOrderInOtherPOS"
 										path="chkDontShowAdvOrderInOtherPOS" value="Yes" />
 								</div>
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 50%;">
 									<label class="title">Move Table From One POS To Other
 										POS </label>
 								</div>
@@ -3894,16 +3897,16 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 45%;">
 									<label class="title">Print Zero Amount Modifiers In
 										Bill </label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-bottom: 10px;">
+									style="width: 28%; margin-bottom: 10px;">
 									<s:checkbox element="li" id="chkPrintZeroAmtModifierInBill"
 										path="chkPrintZeroAmtModifierInBill" value="Yes" />
 								</div>
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 50%;">
 									<label class="title">Move KOT From One POS To Other POS
 									</label>
 								</div>
@@ -3916,15 +3919,15 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 45%;">
 									<label class="title">Points On Bill Print </label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-bottom: 10px;">
+									style="width: 28%; margin-bottom: 10px;">
 									<s:checkbox element="li" id="chkPointsOnBillPrint"
 										path="chkPointsOnBillPrint" value="Yes" />
 								</div>
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 50%;">
 									<label class="title">Calculate Tax on Make KOT </label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3936,15 +3939,15 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 45%;">
 									<label class="title">Calculate Discount Item Wise </label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-bottom: 10px;">
+									style="width: 28%; margin-bottom: 10px;">
 									<s:checkbox element="li" id="chkCalculateDiscItemWise"
 										path="chkCalculateDiscItemWise" value="Yes" />
 								</div>
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 50%;">
 									<label class="title">Take Away Customer Selection </label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3956,16 +3959,16 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 45%;">
 									<label class="title">Customer Address Selection For
 										Billing</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-bottom: 10px;">
+									style="width: 28%; margin-bottom: 10px;">
 									<s:checkbox element="li" id="chkSelectCustAddressForBill"
 										path="chkSelectCustAddressForBill" value="Yes" />
 								</div>
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 50%;">
 									<label class="title">Generate MI With DayEnd </label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3977,15 +3980,15 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 45%;">
 									<label class="title">Area Wise Promotion</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-bottom: 10px;">
+									style="width: 28%; margin-bottom: 10px;">
 									<s:checkbox element="li" id="chkAreaWisePromotions"
 										path="strAreaWisePromotions" value="Yes" />
 								</div>
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 50%;">
 									<label class="title">Scan Or Y/N </label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -3997,16 +4000,16 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 45%;">
 									<label class="title">Show Purchase Rate On Direct
 										Biller</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-bottom: 10px;">
+									style="width: 28%; margin-bottom: 10px;">
 									<s:checkbox element="li" id="chkShowPurRateInDirectBiller"
 										path="strShowPurRateInDirectBiller" value="Yes" />
 								</div>
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 50%;">
 									<label class="title">Enable Table reservation For
 										Customer </label>
 								</div>
@@ -4020,14 +4023,14 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 45%;">
 									<label class="title">Print Home Delivery</label>
 								</div>
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 28%;">
 									<s:checkbox element="li" id="chkPrintHomeDeliveryYN"
 										path="strPrintHomeDeliveryYN" value="Yes" />
 								</div>
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 50%;">
 									<label class="title">Effects Of Sale </label>
 								</div>
 								<div class="element-input col-lg-6" style="width: 15%;">
@@ -4045,18 +4048,18 @@ ul.tab li.a:FOCUS {
 					</div> <!-- End of POS Setup 2 tab --> <!-- Start of POS Setup 3 tab -->
 
 					<div id="tab5" class="tab_content">
-						<div style="float: left; margin-left: 18%; margin-top: -37%">
+						<div style="float: left; margin-left: 20%; margin-top: -48%">
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 50%;">
+								<div class="element-input col-lg-6" style="width: 49%;">
 									<label class="title">Pop Up to Apply Promotions on Bill</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 20%; margin-bottom: 10px; margin-left: -20%">
+									style="width: 8%; margin-bottom: 10px; margin-left: -20%">
 									<s:checkbox element="li" id="chkPopUpToApplyPromotionsOnBill"
 										path="chkPopUpToApplyPromotionsOnBill" value="Yes" />
 								</div>
-								<div class="element-input col-lg-6" style="width: 40%;">
+								<div class="element-input col-lg-6" style="width: 38%;">
 									<label class="title">WebStock /HO Client Code</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -4068,16 +4071,16 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 50%;">
+								<div class="element-input col-lg-6" style="width: 49%;">
 									<label class="title">Check Debit Card Bal on
 										Transactions</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 20%; margin-bottom: 10px; margin-left: -20%">
+									style="width: 8%; margin-bottom: 10px; margin-left: -20%">
 									<s:checkbox element="li" id="chkCheckDebitCardBalOnTrans"
 										path="strCheckDebitCardBalOnTransactions" value="Yes" />
 								</div>
-								<div class="element-input col-lg-6" style="width: 40%;">
+								<div class="element-input col-lg-6" style="width: 38%;">
 									<label class="title">Days Before Order Can Be Cancelled</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -4089,15 +4092,15 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 50%;">
+								<div class="element-input col-lg-6" style="width: 49%;">
 									<label class="title">Pick Settlements from POS Master</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 20%; margin-bottom: 10px; margin-left: -20%">
+									style="width: 8%; margin-bottom: 10px; margin-left: -20%">
 									<s:checkbox element="li" id="chkSettlementsFromPOSMaster"
 										path="chkSettlementsFromPOSMaster" value="Yes" />
 								</div>
-								<div class="element-input col-lg-6" style="width: 40%;">
+								<div class="element-input col-lg-6" style="width: 38%;">
 									<label class="title">Dont allow Adv Order for next how
 										many days</label>
 								</div>
@@ -4110,15 +4113,15 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 50%;">
+								<div class="element-input col-lg-6" style="width: 49%;">
 									<label class="title">Enable Shift</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 20%; margin-bottom: 10px; margin-left: -20%">
+									style="width: 8%; margin-bottom: 10px; margin-left: -20%">
 									<s:checkbox element="li" id="chkShiftWiseDayEnd"
 										path="chkShiftWiseDayEnd" value="Yes" />
 								</div>
-								<div class="element-input col-lg-6" style="width: 40%;">
+								<div class="element-input col-lg-6" style="width: 38%;">
 									<label class="title">Allow Urgent Order for next how
 										many days</label>
 								</div>
@@ -4131,15 +4134,15 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 50%;">
+								<div class="element-input col-lg-6" style="width: 49%;">
 									<label class="title">Production Link Up</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 20%; margin-bottom: 10px; margin-left: -20%">
+									style="width: 8%; margin-bottom: 10px; margin-left: -20%">
 									<s:checkbox element="li" id="chkProductionLinkup"
 										path="chkProductionLinkup" value="Yes" />
 								</div>
-								<div class="element-input col-lg-6" style="width: 40%;">
+								<div class="element-input col-lg-6" style="width: 38%;">
 									<label class="title">Set UpTo Time For Adv Order </label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -4151,15 +4154,15 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 50%;">
+								<div class="element-input col-lg-6" style="width: 49%;">
 									<label class="title">Lock Data On Shift</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 20%; margin-bottom: 10px; margin-left: -20%">
+									style="width: 8%; margin-bottom: 10px; margin-left: -20%">
 									<s:checkbox element="li" id="chkLockDataOnShift"
 										path="chkLockDataOnShift" value="Yes" />
 								</div>
-								<div class="element-input col-lg-6" style="width: 50%;">
+								<div class="element-input col-lg-6" style="width: 38%;">
 									<label class="title">Enable Bill Series</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -4171,7 +4174,7 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 38%;">
+								<div class="element-input col-lg-6" style="width: 37%;">
 									<label class="title">UpTo Time To Punch Adv Order</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -4264,9 +4267,10 @@ ul.tab li.a:FOCUS {
 										<option value="PM">PM</option>
 									</s:select>
 								</div>
-
-								<div class="element-input col-lg-6"
-									style="width: 38%; margin-left: 2%">
+                              </div>
+                              <div class="row"
+								style="background-color: #fff; display: -webkit-box;">
+								<div class="element-input col-lg-6" style="width: 37%; ">
 									<label class="title">UpTo Time To Punch Urgent Order</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -4362,11 +4366,11 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 29%;">
 									<label class="title">Enable PMS Integration</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 10%; margin-bottom: 10px;">
+									style="width: 5%; margin-bottom: 10px;">
 									<s:checkbox element="li" id="chkEnablePMSIntegration"
 										path="chkEnablePMSIntegration" value="Yes" />
 								</div>
@@ -4374,11 +4378,11 @@ ul.tab li.a:FOCUS {
 
 
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-left: 5%">
+									style="width: 30%; margin-left: 3%">
 									<label class="title">Print Time On Bill</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 10%; margin-bottom: 5px;">
+									style="width: 8%; margin-bottom: 5px;">
 									<s:checkbox element="li" id="chkPrintTimeOnBill"
 										path="chkPrintTimeOnBill" value="Yes" />
 								</div>
@@ -4395,22 +4399,22 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 29%;">
 									<label class="title">Carry Forward Float Amt to Next
 										Day</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 10%; margin-bottom: 10px;">
+									style="width: 5%; margin-bottom: 10px;">
 									<s:checkbox element="li" id="chkCarryForwardFloatAmtToNextDay"
 										path="chkCarryForwardFloatAmtToNextDay" value="Yes" />
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-left: 5%">
+									style="width: 30%; margin-left: 3%">
 									<label class="title">Show Item Details Grid For Change
 										Customer On Bill</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 10%; margin-bottom: 5px;">
+									style="width: 8%; margin-bottom: 5px;">
 									<s:checkbox element="li"
 										id="chkShowItemDtlsForChangeCustomerOnBill"
 										path="chkShowItemDtlsForChangeCustomerOnBill" value="Yes" />
@@ -4427,23 +4431,23 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 29%;">
 									<label class="title">Enable Both Print And Settle Btn
 										For DB</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 10%; margin-bottom: 10px;">
+									style="width: 5%; margin-bottom: 10px;">
 									<s:checkbox element="li"
 										id="chkEnableBothPrintAndSettleBtnForDB"
 										path="chkEnableBothPrintAndSettleBtnForDB" value="Yes" />
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-left: 5%">
+									style="width: 30%; margin-left: 3%">
 									<label class="title">Show Pop Up For Next Item Quantity
 									</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 10%; margin-bottom: 5px;">
+									style="width: 8%; margin-bottom: 5px;">
 									<s:checkbox element="li" id="chkShowPopUpForNextItemQuantity"
 										path="chkShowPopUpForNextItemQuantity" value="Yes" />
 								</div>
@@ -4459,20 +4463,20 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 29%;">
 									<label class="title">Open Cash Drawer After Bill Print</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 10%; margin-bottom: 10px;">
+									style="width: 5%; margin-bottom: 10px;">
 									<s:checkbox element="li" id="chkOpenCashDrawerAfterBillPrint"
 										path="chkOpenCashDrawerAfterBillPrint" value="Yes" />
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-left: 5%">
+									style="width: 30%; margin-left: 3%">
 									<label class="title">Property Wise Sales Order </label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 10%; margin-bottom: 5px;">
+									style="width: 8%; margin-bottom: 5px;">
 									<s:checkbox element="li" id="strPropertyWiseSalesOrderYN"
 										path="strPropertyWiseSalesOrderYN" value="Yes" />
 								</div>
@@ -4488,21 +4492,21 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 29%;">
 									<label class="title">Auto Area Selection In Make KOT</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 10%; margin-bottom: 10px;">
+									style="width: 5%; margin-bottom: 10px;">
 									<s:checkbox element="li" id="chkAutoAreaSelectionInMakeKOT"
 										path="chkAutoAreaSelectionInMakeKOT" value="Yes" />
 								</div>
 
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-left: 5%">
+									style="width: 30%; margin-left: 3%">
 									<label class="title">Show UnSettlement Form</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 10%; margin-bottom: 5px;">
+									style="width: 8%; margin-bottom: 5px;">
 									<s:checkbox element="li" id="strShowUnSettlementForm"
 										path="strShowUnSettlementForm" value="Yes" />
 								</div>
@@ -4518,11 +4522,11 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 25%;">
 									<label class="title">Rounding Off To</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 10%; margin-bottom: 10px;">
+									style="width: 5%; margin-bottom: 10px;">
 									<s:input type="text" id="txtRoundOff" path="dblRoundOff" />
 								</div>
 
@@ -4546,7 +4550,7 @@ ul.tab li.a:FOCUS {
 
 					</div> <!-- End of POS Setup 3 tab --> <!-- 	Start of property setup tab 4 -->
 					<div id="tab6" class="tab_content">
-						<div style="float: left; margin-left: 17%; margin-top: -37%">
+						<div style="float: left; margin-left: 20%; margin-top: -48%">
 
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box; margin-bottom: 10px;">
@@ -4554,16 +4558,16 @@ ul.tab li.a:FOCUS {
 									<label class="title">Area Wise Pricing </label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 20%; margin-left: 5%">
+									style="width: 8%; margin-left: 5%">
 									<s:checkbox element="li" id="chkAreaWisePricing"
 										path="chkAreaWisePricing" value="Yes" />
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: 0%">
+									style="margin-bottom: 10px; width: 35%; margin-left: 0%">
 									<label class="title">Area Wise Cost Center KOT Printing</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 30%; margin-left: -10%">
+									style="margin-bottom: 10px; width: 25%; margin-left: -10%">
 									<s:checkbox element="li"
 										id="strAreaWiseCostCenterKOTPrintingYN"
 										path="strAreaWiseCostCenterKOTPrintingYN" value="Yes" />
@@ -4585,16 +4589,16 @@ ul.tab li.a:FOCUS {
 									<label class="title">Print Quantity Total</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 20%; margin-left: 5%">
+									style="width: 8%; margin-left: 5%">
 									<s:checkbox element="li" id="chkPrintQtyTotal"
 										path="chkPrintQtyTotal" value="Yes" />
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: 0%">
+									style="margin-bottom: 10px; width: 35%; margin-left: 0%">
 									<label class="title">Print Order No On Bill</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 30%; margin-left: -10%">
+									style="margin-bottom: 10px; width: 25%; margin-left: -10%">
 									<s:checkbox element="li" id="chkPrintOrderNoOnBill"
 										path="chkPrintOrderNoOnBill" value="Yes" />
 								</div>
@@ -4617,17 +4621,17 @@ ul.tab li.a:FOCUS {
 								</div>
 
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: -5%">
+									style="margin-bottom: 10px; width: 33%; margin-left: -5%">
 									<s:checkbox element="li" id="chkSendDBBackupOnMail"
 										path="chkSendDBBackupOnMail" value="Yes" />
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-left: -20%">
+									style="width: 25%; margin-left: -25%">
 									<label class="title">Print Move Table,Move KOT</label>
 								</div>
 
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: 0%">
+									style="margin-bottom: 10px; width: 35%; margin-left: 0%">
 									<s:checkbox element="li" id="chkPrintMoveTableMoveKOT"
 										path="chkPrintMoveTableMoveKOT" value="Yes" />
 								</div>
@@ -4653,17 +4657,17 @@ ul.tab li.a:FOCUS {
 								</div>
 
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: -5%">
+									style="margin-bottom: 10px; width: 33%; margin-left: -5%">
 									<s:checkbox element="li" id="chkFireCommunication"
 										path="chkFireCommunication" value="Yes" />
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-left: -20%">
+									style="width: 25%; margin-left: -25%">
 									<label class="title">Merge All KOTs TO Bill</label>
 								</div>
 
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: 0%">
+									style="margin-bottom: 10px; width: 35%; margin-left: 0%">
 									<s:checkbox element="li" id="strMergeAllKOTSToBill"
 										path="strMergeAllKOTSToBill" value="Yes" />
 								</div>
@@ -4687,13 +4691,13 @@ ul.tab li.a:FOCUS {
 									<label class="title">Dine In Area For Direct Biller</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 22%; margin-left: -15%">
+									style="margin-bottom: 10px; width: 20%; margin-left: -15%">
 									<s:select id="cmbDineInAreaForDirectBiller"
 										path="strDineInAreaForDirectBiller" items="${areaList}">
 									</s:select>
 								</div>
 
-								<div class="element-input col-lg-6" style="width: 40%;">
+								<div class="element-input col-lg-6" style="width: 35%;">
 									<label class="title">Home Delivery Area For Direct
 										Biller</label>
 								</div>
@@ -4719,11 +4723,11 @@ ul.tab li.a:FOCUS {
 									</s:select>
 								</div>
 
-								<div class="element-input col-lg-6" style="width: 40%;">
+								<div class="element-input col-lg-6" style="width: 35%;">
 									<label class="title">Service Charge Tax </label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 20%; margin-left: -10%">
+									style="margin-bottom: 10px; width: 22%; margin-left: -10%">
 									<s:select id="cmbRemoveServiceChargeTaxCode"
 										path="strRemoveServiceChargeTaxCode" items="${taxList}">
 
@@ -4735,11 +4739,11 @@ ul.tab li.a:FOCUS {
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
 
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 25%;">
 									<label class="title">Show Reports In Currency</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 12%; margin-left: -5%">
+									style="margin-bottom: 10px; width: 11%; margin-left: -5%">
 									<s:select id="cmbShowReportsInCurrency"
 										path="strShowReportsInCurrency">
 										<option value="BASE">BASE</option>
@@ -4747,11 +4751,11 @@ ul.tab li.a:FOCUS {
 									</s:select>
 								</div>
 
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 24%;">
 									<label class="title">POS To MMS Posting Currency</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 12%;">
+									style="margin-bottom: 10px; width: 11%;">
 									<s:select id="cmbPOSToMMSPostingCurrency"
 										path="strPOSToMMSPostingCurrency">
 										<option value="BASE">BASE</option>
@@ -4759,11 +4763,11 @@ ul.tab li.a:FOCUS {
 									</s:select>
 								</div>
 
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 22%;">
 									<label class="title">POS To WebBook Posting Currency</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 12%;">
+									style="margin-bottom: 10px; width: 11%;">
 									<s:select id="cmbPOSToWebBooksPostingCurrency"
 										path="strPOSToWebBooksPostingCurrency">
 										<option value="BASE">BASE</option>
@@ -4785,7 +4789,7 @@ ul.tab li.a:FOCUS {
 										path="intNoOfDecimalPlaces" />
 								</div>
 
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 27%;">
 									<label class="title">USD Currency Convertion Rate</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -4802,17 +4806,17 @@ ul.tab li.a:FOCUS {
 								</div>
 
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: -5%">
+									style="margin-bottom: 10px; width: 33%; margin-left: -5%">
 									<s:checkbox element="li" id="chkPrintItemsOnMoveKOTMoveTable"
 										path="chkPrintItemsOnMoveKOTMoveTable" value="Yes" />
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-left: -20%">
+									style="width: 25%; margin-left: -25%">
 									<label class="title">Print Original On Bill</label>
 								</div>
 
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: 0%">
+									style="margin-bottom: 10px; width: 35%; margin-left: 0%">
 									<s:checkbox element="li" id="chkPrintOriginalOnBill"
 										path="strPrintOriginalOnBill" value="Yes" />
 								</div>
@@ -4836,17 +4840,17 @@ ul.tab li.a:FOCUS {
 								</div>
 
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: -5%">
+									style="margin-bottom: 10px; width: 33%; margin-left: -5%">
 									<s:checkbox element="li" id="strBlankDayEndPrint"
 										path="strBlankDayEndPrint" value="Yes" />
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-left: -20%">
+									style="width: 25%; margin-left: -25%">
 									<label class="title">Online Order Notification</label>
 								</div>
 
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: 0%">
+									style="margin-bottom: 10px; width: 35%; margin-left: 0%">
 									<s:checkbox element="li" id="strOnlineOrderNotification"
 										path="strOnlineOrderNotification" value="Yes" />
 								</div>
@@ -4870,17 +4874,17 @@ ul.tab li.a:FOCUS {
 								</div>
 
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: -5%">
+									style="margin-bottom: 10px; width: 33%; margin-left: -5%">
 									<s:checkbox element="li" id="strDisplayTotalShowBill"
 										path="strDisplayTotalShowBill" value="Yes" />
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-left: -20%">
+									style="width: 25%; margin-left: -25%">
 									<label class="title">User Wise Show Bill</label>
 								</div>
 
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: 0%">
+									style="margin-bottom: 10px; width: 35%; margin-left: 0%">
 									<s:checkbox element="li" id="strUserWiseShowBill"
 										path="strUserWiseShowBill" value="Yes" />
 								</div>
@@ -4905,18 +4909,18 @@ ul.tab li.a:FOCUS {
 								</div>
 
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: -5%">
+									style="margin-bottom: 10px; width: 33%; margin-left: -5%">
 									<s:checkbox element="li" id="strCashDenominationCompulsary"
 										path="strCashDenominationCompulsary" value="Yes" />
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-left: -20%">
+									style="width: 25%; margin-left: -25%">
 									<label class="title">Cash Management Compulsory on
 										Blank Day End</label>
 								</div>
 
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: 0%">
+									style="margin-bottom: 10px; width: 35%; margin-left: 0%">
 									<s:checkbox element="li" id="strCashManagementCompulsary"
 										path="strCashManagementCompulsary" value="Yes" />
 								</div>
@@ -4935,13 +4939,13 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box; margin-bottom: 10px;">
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 28%;">
 									<label class="title">Item Short Name on Direct Biller &
 										Bill</label>
 								</div>
 
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: -5%">
+									style="margin-bottom: 10px; width: 40%; margin-left: -3%">
 									<s:checkbox element="li" id="strShortNameOnDirectBillerAndBill"
 										path="strShortNameOnDirectBillerAndBill" value="Yes" />
 								</div>
@@ -4952,7 +4956,7 @@ ul.tab li.a:FOCUS {
 					</div> <!-- End of POS Setup 4 tab --> <!-- 	Start of Email Setup tab -->
 
 					<div id="tab7" class="tab_content">
-						<div style="float: left; margin-left: 25%; margin-top: -37%">
+						<div style="float: left; margin-left: 25%; margin-top: -47%">
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
 
@@ -5082,7 +5086,7 @@ ul.tab li.a:FOCUS {
 					</div> <!-- 	End of Email Setup tab --> <!-- 	Start of Card Interface tab -->
 
 					<div id="tab8" class="tab_content">
-						<div style="float: left; margin-left: 25%; margin-top: -37%">
+						<div style="float: left; margin-left: 25%; margin-top: -47%">
 
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
@@ -5170,7 +5174,7 @@ ul.tab li.a:FOCUS {
 					</div> <!-- 	End of Card Interface tab --> <!-- 	Start of CRM Interface tab -->
 
 					<div id="tab9" class="tab_content">
-						<div style="float: left; margin-left: 25%; margin-top: -37%">
+						<div style="float: left; margin-left: 25%; margin-top: -47%">
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
 
@@ -5244,13 +5248,13 @@ ul.tab li.a:FOCUS {
 					</div> <!-- 	End of CRM Interface tab --> <!-- 	Start of SMS Setup tab -->
 
 					<div id="tab10" class="tab_content">
-						<div style="float: left; margin-left: 25%; margin-top: -37%">
+						<div style="float: left; margin-left: 20%; margin-top: -47%">
 
 
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
 
-								<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 28%;">
 									<label class="title">SMS Type</label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -5275,7 +5279,7 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box; margin-bottom: 10px;">
-								<div class="element-input col-lg-6" style="width: 40%;">
+								<div class="element-input col-lg-6" style="width: 38%;">
 									<label class="title" style="width: 100%">Mobile Nos. </label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -5292,7 +5296,7 @@ ul.tab li.a:FOCUS {
 
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box; margin-bottom: 10px;">
-								<div class="element-input col-lg-6" style="width: 40%;">
+								<div class="element-input col-lg-6" style="width: 38%;">
 									<label class="title" style="width: 100%">Home Delivery
 										SMS </label>
 								</div>
@@ -5316,7 +5320,7 @@ ul.tab li.a:FOCUS {
 									</s:select>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-bottom: 10px">
+									style="width: 22%; margin-bottom: 10px">
 									<input id="btnAddDelSMS" type="button" value=">>"
 										onclick="return btnAddDelSMS_onclick();"></input>
 								</div>
@@ -5328,7 +5332,7 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box; margin-bottom: 10px;">
-								<div class="element-input col-lg-6" style="width: 40%;">
+								<div class="element-input col-lg-6" style="width: 38%;">
 									<label class="title" style="width: 100%">Bill
 										Settlement SMS </label>
 								</div>
@@ -5353,7 +5357,7 @@ ul.tab li.a:FOCUS {
 									</s:select>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-bottom: 10px">
+									style="width: 22%; margin-bottom: 10px">
 									<input id="btnAddSettleSMS" type="button" value=">>"
 										onclick="return btnAddSettleSMS_onclick();"></input>
 								</div>
@@ -5366,7 +5370,7 @@ ul.tab li.a:FOCUS {
 
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box; margin-bottom: 10px;">
-								<div class="element-input col-lg-6" style="width: 40%;">
+								<div class="element-input col-lg-6" style="width: 38%;">
 									<label class="title" style="width: 100%">Table
 										Reservation SMS </label>
 								</div>
@@ -5391,7 +5395,7 @@ ul.tab li.a:FOCUS {
 									</s:select>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 30%; margin-bottom: 10px">
+									style="width: 22%; margin-bottom: 10px">
 									<input id="btnAddTAbleReservationSMS" type="button" value=">>"
 										onclick="return btnAddBtnFor_Send_Table_Reservation();"></input>
 								</div>
@@ -5404,7 +5408,7 @@ ul.tab li.a:FOCUS {
 
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box; margin-bottom: 10px;">
-								<div class="element-input col-lg-6" style="width: 40%;">
+								<div class="element-input col-lg-6" style="width: 38%;">
 									<label class="title" style="width: 100%">Audit SMS </label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -5451,7 +5455,7 @@ ul.tab li.a:FOCUS {
 								style="background-color: #fff; display: -webkit-box; margin-bottom: 10px;">
 
 								<div class="element-input col-lg-6"
-									style="width: 20%; margin-bottom: 10px; margin-left: 25%;">
+									style="width: 20%; margin-bottom: 10px; margin-left: 23%;">
 									<label class="title" style="width: 100%"> Void Bill </label>
 								</div>
 								<div class="element-input col-lg-6"
@@ -5575,7 +5579,7 @@ ul.tab li.a:FOCUS {
 
 					<div id="tab11" class="tab_content">
 
-						<div style="float: left; margin-left: 25%; margin-top: -37%">
+						<div style="float: left; margin-left: 25%; margin-top: -47%">
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
 
@@ -5619,7 +5623,7 @@ ul.tab li.a:FOCUS {
 
 					<div id="tab12" class="tab_content">
 
-						<div style="float: left; margin-left: 25%; margin-top: -37%">
+						<div style="float: left; margin-left: 25%; margin-top: -47%">
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
 
@@ -5654,11 +5658,11 @@ ul.tab li.a:FOCUS {
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box; margin-bottom: 10px">
 
-								<div class="element-input col-lg-6" style="width: 90%;">
+								<div class="element-input col-lg-6" style="width: 80%;">
 									<label class="title">Treat Member As Table</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 20%; margin-left: -30%; margin-bottom: 10px">
+									style="width: 8%; margin-left: -30%; margin-bottom: 10px">
 									<s:input type="checkbox" id="chkMemberAsTable"
 										path="chkMemberAsTable"></s:input>
 								</div>
@@ -5674,11 +5678,11 @@ ul.tab li.a:FOCUS {
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box; margin-bottom: 10px">
 
-								<div class="element-input col-lg-6" style="width: 90%;">
+								<div class="element-input col-lg-6" style="width: 80%;">
 									<label class="title">Member Code For KOT In JPOS</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="width: 20%; margin-left: -30%">
+									style="width: 8%; margin-left: -30%">
 									<s:input type="checkbox" id="chkMemberCodeForKOTJPOS"
 										path="chkMemberCodeForKOTJPOS"></s:input>
 								</div>
@@ -5695,11 +5699,11 @@ ul.tab li.a:FOCUS {
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box; margin-bottom: 10px">
 
-								<div class="element-input col-lg-6" style="width: 60%;">
+								<div class="element-input col-lg-6" style="width: 50%;">
 									<label class="title">Member Code For KOT In MPOS By
 										Card Swipe</label>
 								</div>
-								<div class="element-input col-lg-6" style="width: 20%;">
+								<div class="element-input col-lg-6" style="width: 8%;">
 									<s:input type="checkbox"
 										id="chkMemberCodeForKotInMposByCardSwipe"
 										path="chkMemberCodeForKotInMposByCardSwipe"></s:input>
@@ -5733,7 +5737,7 @@ ul.tab li.a:FOCUS {
 					</div> <!-- 	End of CMS Integration tab --> <!-- 	Start of Printer Setup tab -->
 
 					<div id="tab13" class="tab_content">
-						<div style="float: left; margin-left: 25%; margin-top: -37%">
+						<div style="float: left; margin-left: 25%; margin-top: -47%">
 
 							<table border="1" style="width: 100%; margin: auto;">
 
@@ -5801,7 +5805,7 @@ ul.tab li.a:FOCUS {
 					</div> <!-- 	End of Printer Setup tab --> <!-- 	Start of Debit Card Setup tab -->
 
 					<div id="tab14" class="tab_content">
-						<div style="float: left; margin-left: 25%; margin-top: -37%">
+						<div style="float: left; margin-left: 25%; margin-top: -47%">
 
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
@@ -5836,7 +5840,7 @@ ul.tab li.a:FOCUS {
 
 					<div id="tab15" class="tab_content">
 
-						<div style="float: left; margin-left: 25%; margin-top: -37%">
+						<div style="float: left; margin-left: 25%; margin-top: -47%">
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
 
@@ -5895,7 +5899,7 @@ ul.tab li.a:FOCUS {
 					<div id="tab16" class="tab_content">
 
 
-						<div style="float: left; margin-left: 25%; margin-top: -37%">
+						<div style="float: left; margin-left: 25%; margin-top: -47%">
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
 
@@ -5992,7 +5996,7 @@ ul.tab li.a:FOCUS {
 
 					<div id="tab17" class="tab_content">
 						<br> <br>
-						<div style="float: left; margin-left: 25%; margin-top: -37%">
+						<div style="float: left; margin-left: 25%; margin-top: -47%">
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
 
@@ -6086,7 +6090,7 @@ ul.tab li.a:FOCUS {
 					<div id="tab18" class="tab_content">
 						<br> <br>
 
-						<div style="float: left; margin-left: 25%; margin-top: -37%">
+						<div style="float: left; margin-left: 25%; margin-top: -47%">
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
 
