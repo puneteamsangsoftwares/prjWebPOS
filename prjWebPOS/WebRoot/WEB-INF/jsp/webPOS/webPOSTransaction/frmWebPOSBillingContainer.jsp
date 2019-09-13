@@ -595,7 +595,7 @@ function funCalculatePromotion(listItmeDtl)
 		var tblSettleItemDtl=document.getElementById('tblSettleItemTable');
 		var rowCount = tblSettleItemDtl.rows.length;
 		var insertRow = tblSettleItemDtl.insertRow(rowCount);
-		
+		totalItemRow=rowCount;
 	    var col1=insertRow.insertCell(0);
 	    var col2=insertRow.insertCell(1);
 	    var col3=insertRow.insertCell(2);

@@ -41,11 +41,11 @@
 		var hmSettlemetnOptions=new Map();
 		var arrObjReasonCode ="";//${listReasonCode};
 		var arrObjReasonName ="";//${listReasonName};
-       var checkSetteType="";
-       var rowCountSettle=0;
+        var checkSetteType="";
+        var rowCountSettle=0,totalItemRow=0;
 		
 		var disCount=0;
-		 var totalDiscAmt=0;
+		var totalDiscAmt=0;
 		 
 		 var disountType="Total";
 		
@@ -62,6 +62,8 @@
 				 //
 				 document.getElementById("divSettlementButtons").style.display='block';
 				 document.getElementById("divAmt").style.display='block';
+				 
+				 
 				 
 				 //${command.jsonArrForSettleButtons}
 				/*  if (!objListSettle.getStrSettelmentType().equals("Debit Card"))
@@ -100,6 +102,7 @@
 		
 	function funSetProperty()
 	{
+		funsetSettlement();
 		  settlementName="other";
 		  cmsStopCredit="N";
 		  cmsMemberCreditLimit = 0;
@@ -124,6 +127,7 @@
         // document.getElementById("divAmt").style.display='none';
          document.getElementById("divCoupen").style.display='none';
          document.getElementById("divGiftVoucher").style.display='none';
+         
          document.getElementById("divRoomSettlement").style.display='none';
          document.getElementById("divJioMoneySettlement").style.display='none';
         
@@ -132,6 +136,16 @@
         // txtPaidAmt.setFocusable(true);
          flgGiftVoucherOK=false;
         
+       
+	}
+	function funsetSettlement(){
+		  var objPOSSettelementOptions='${cashSettlement}';
+		  var arr=objPOSSettelementOptions.split(',');
+				 if(arr[1]=="Cash"){
+					 
+					funSettleOptionSelected(arr[0],arr[1],arr[2],arr[3],arr[4]);
+				 }
+			
 	}
 	function funNumpadButtonClicked(ObjNumPadBtn)
 	{
@@ -1454,48 +1468,52 @@
 
 	        
 	        flgEnterBtnPressed=true;
-	        funSettlementDtlFill(); //for refresh item table
+	        funSettlementDtlFill(); 	//for refresh item table
 		}
 }
 	 
 	function funSettlementDtlFill()
 	 {
   
+		if(hmSettlemetnOptions.size>0){
+			
 			var tblSettleItemDtl=document.getElementById('tblSettleItemTable');
 			var rowCount = tblSettleItemDtl.rows.length;
-		   if(checkSetteType=="Balance")
+		    while((totalItemRow+1) < rowCount){
+		    	rowCount=rowCount-1;
+		    	tblSettleItemDtl.deleteRow(rowCount);
+		    }
+			/* if(checkSetteType=="Balance")
 			{
 			   tblSettleItemDtl.deleteRow(rowCount-1);
 				rowCount--;
-			}
-		
+			} */
 		
 			var insertRow = tblSettleItemDtl.insertRow(rowCount);
 			var col1=insertRow.insertCell(0);
 		    var col2=insertRow.insertCell(1);
 		    var col3=insertRow.insertCell(2);
-		    /* var col4=insertRow.insertCell(3);
-		    var col5=insertRow.insertCell(4); */
+		    var col4=insertRow.insertCell(3);
+		    var col5=insertRow.insertCell(4); 
 		    var col6=insertRow.insertCell(5);
 		    var col7=insertRow.insertCell(6);
 		    var col8=insertRow.insertCell(7);
-		    var col9=insertRow.insertCell(8);
-		    var col10=insertRow.insertCell(9);
-            var remark="";//  $('#txtRemark').val();
+		    
+		    var remark="";//  $('#txtRemark').val();
             var dteExpiryDate=  "";//$('#dteExpiryDate').val();
             
-		    col1.innerHTML = "<input   readonly=\"readonly\" size=\"40px\" class=\"strSettelmentDesc\" style=\"text-align: left; color:black; height:30px;\"   name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].strSettelmentDesc\" id=\"strSettelmentDesc."+(rowCount)+"\" value='"+settleName+"' />";
-		    col2.innerHTML = "<input readonly=\"readonly\"  size=\"7px\" style=\"text-align: right; color:blue; height:20px;\"  />";
-		    col3.innerHTML = "<input readonly=\"readonly\" size=\"15px\" class=\"dblSettlementAmt\" style=\"text-align: right; color:black; height:30px;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].dblSettlementAmt\" id=\"dblSettlementAmt."+(rowCount)+"\" value='"+paidAmount+"'/>";
-		    /* col4.innerHTML = "<input readonly=\"readonly\"  size=\"1px\"      style=\"text-align: right; color:blue; height:20px;\"  />";
+            var arrSettleOptions=new Array();
+            arrSettleOptions=hmSettlemetnOptions.get(settleName);
+            
+		    col1.innerHTML = "<input readonly=\"readonly\"  size=\"30px\" style=\"text-align:left;border:none;\" name=\"listSettlementDtlOnBill["+(rowCount)+"].strSettelmentDesc\" id=\"strSettelmentDesc."+(rowCount)+"\" value='"+arrSettleOptions[0]+"' />"; //settleName
+		    /* col2.innerHTML = "<input readonly=\"readonly\"  style=\"text-align: right; color:blue; height:20px; border:none;\"  />"; */
+		    col3.innerHTML = "<input readonly=\"readonly\"  size=\"9.5px\" style=\"text-align: right; color:black; height:30px;border:none;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].dblPaidAmt\" id=\"dblSettlementAmt."+(rowCount)+"\" value='"+arrSettleOptions[3]+"'/>"; //paid Amt
+		    /*col4.innerHTML = "<input readonly=\"readonly\"  size=\"1px\"      style=\"text-align: right; color:blue; height:20px;\"  />";
 		    col5.innerHTML = "<input readonly=\"readonly\"  size=\"1px\"      style=\"text-align: right; color:blue; height:20px;\"  />"; */
-		    col6.innerHTML = "<input type=\"hidden\"  size=\"0px\"   class=\"strSettelmentType\"      style=\"text-align: right; color:blue; height:20px;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].strSettelmentType\" id=\"strSettelmentType."+(rowCount)+"\" value='"+settleType+"' />";
-		    col7.innerHTML = "<input type=\"hidden\" size=\"0px\" class=\"dblPaidAmt\"     style=\"text-align: right; color:blue; height:20px;\"   name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].dblPaidAmt\" id=\"dblPaidAmt."+(rowCount)+"\" value="+paidAmount+" />";
-		    col8.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"dblRefundAmt\"  style=\"text-align: right; color:blue; height:20px;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].dblRefundAmt\" id=\"dblRefundAmt."+(rowCount)+"\" value="+refundAmount+" />";
-		    col9.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"strSettelmentCode\"  style=\"text-align: right; color:blue; height:20px;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].strSettelmentCode\" id=\"strSettelmentCode."+(rowCount)+"\" value='"+settlementCode+"'/>";
-		    col10.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"strRemark\"  style=\"text-align: right; color:blue; height:20px;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].strRemark\" id=\"strRemark."+(rowCount)+"\" value='"+remark+"'/>";
-		    col10.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"strExpiryDate\"  style=\"text-align: right; color:blue; height:20px;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].strExpiryDate\" id=\"strExpiryDate."+(rowCount)+"\" value='"+dteExpiryDate+"'/>";
-		    col10.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"strCardName\"  style=\"text-align: right; color:blue; height:20px;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].strCardName\" id=\"strCardName."+(rowCount)+"\" value=''/>";
+		    col5.innerHTML = "<input type=\"hidden\" style=\"text-align: right; color:blue; height:20px;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].strSettelmentCode\" id=\"strSettelmentCode."+(rowCount)+"\" value='"+arrSettleOptions[1]+"' />"; //code
+		    col6.innerHTML = "<input type=\"hidden\" style=\"text-align: right; color:blue; height:20px;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].strSettelmentType\" id=\"strSettelmentType."+(rowCount)+"\" value='"+arrSettleOptions[7]+"' />"; //type
+		    col7.innerHTML = "<input type=\"hidden\" style=\"text-align: right; color:blue; height:20px;\"   name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].dblPaidAmt\" id=\"dblSettlementAmt."+(rowCount)+"\" value="+arrSettleOptions[2]+" />"; //settl amt
+		    col8.innerHTML = "<input type=\"hidden\" style=\"text-align: right; color:blue; height:20px;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].dblRefundAmt\" id=\"dblRefundAmt."+(rowCount)+"\" value="+arrSettleOptions[5]+" />"; //refund amt
 		    
 		    document.getElementById("divRemarks").style.display='none';
 		    document.getElementById("divAmt").style.display='none';
@@ -1503,30 +1521,38 @@
 		    funFillBalanceAmt();
 		    
 		    rowCountSettle++;
+		}
+		
+			
 		    
-            }
+    }
 
-			function funFillBalanceAmt()
-			{
-			    var tblSettleItemDtl=document.getElementById('tblSettleItemTable');
-				var rowCount = tblSettleItemDtl.rows.length;
-				var insertRow = tblSettleItemDtl.insertRow(rowCount);
-				var col1=insertRow.insertCell(0);
-			    var col2=insertRow.insertCell(1);
-			    var col3=insertRow.insertCell(2);
-			    var col4=insertRow.insertCell(3);
-			    var col5=insertRow.insertCell(4);
-			    col1.innerHTML = "<input   readonly=\"readonly\" size=\"45px\"     style=\"text-align: left; color:black; height:30px;\"   value='Balance Amount' />";
-			    col2.innerHTML = "<input readonly=\"readonly\"  size=\"4px\"        style=\"text-align: right; color:blue; height:20px;\"  />";
-			    col3.innerHTML = "<input readonly=\"readonly\" size=\"10px\"        style=\"text-align: right; color:blue; height:20px;\"  value='"+balanceAmount+"' />";
-			    col4.innerHTML = "<input readonly=\"readonly\"  size=\"1px\"      style=\"text-align: right; color:blue; height:20px;\"  />";
-			    col5.innerHTML = "<input readonly=\"readonly\"  size=\"1px\"      style=\"text-align: right; color:blue; height:20px;\"  />";
-			    
-			    $('#txtAmount').val(balanceAmount);
-			    $('#txtPaidAmount').val(balanceAmount);
-			    
-			    checkSetteType="Balance";
-			}
+		function funFillBalanceAmt()
+		{
+		    var tblSettleItemDtl=document.getElementById('tblSettleItemTable');
+			var rowCount = tblSettleItemDtl.rows.length;
+			var insertRow = tblSettleItemDtl.insertRow(rowCount);
+			var col1=insertRow.insertCell(0);
+		    var col2=insertRow.insertCell(1);
+		    var col3=insertRow.insertCell(2);
+		    var col4=insertRow.insertCell(3);
+		    var col5=insertRow.insertCell(4);
+		    var col6=insertRow.insertCell(5);
+		    var col7=insertRow.insertCell(6);
+		    var col8=insertRow.insertCell(7);
+		    
+		    
+		    col1.innerHTML = "<input readonly=\"readonly\"  size=\"30px\"   style=\"text-align: left; color:black; height:30px;border:none;\"   value='Balance Amount' />";
+		    /* col2.innerHTML = "<input readonly=\"readonly\"        style=\"text-align: right; color:blue; height:20px;\"  />"; */
+		    col3.innerHTML = "<input readonly=\"readonly\"  size=\"9.5px\"    style=\"text-align: right; color:blue; height:20px;border:none;\"  value='"+balanceAmount+"' />";
+		   /*  col4.innerHTML = "<input readonly=\"readonly\" />";
+		    col5.innerHTML = "<input readonly=\"readonly\"/>"; */
+		    
+		    $('#txtAmount').val(balanceAmount);
+		    $('#txtPaidAmount').val(balanceAmount);
+		    
+		    checkSetteType="Balance";
+		}
 
 
 
@@ -1753,7 +1779,11 @@
 	  function funSaveBtnClicked()
 	  {
 
-		  	if(balanceAmount>0)
+		  if(balanceAmount ===''){
+			  alert("Balance is not zero.");
+		  		 return false;
+		  	}
+		  else if(balanceAmount>0)
 		  	{
 		  		 alert("Balance is not zero.");
 		  		 return false;
@@ -2382,7 +2412,7 @@ function funDiscOkClicked()
 				 	<table style="width:95%;height:140px;font-size:11px; font-weight: bold;">
 				 		<tr>
 					 		<td><label id="lblAmount" style=" display: inline-block;width: 70px;text-align: left;">Bill Amount</label></td>
-					 		<td><s:input  type="text"  id="txtAmount" path="" cssStyle="width:120px; text-align: right;" cssClass="longTextBox jQKeyboard form-control"  /> </td>
+					 		<td><s:input  type="text"  id="txtAmount" path="" cssStyle="width:120px; text-align: right;" cssClass="longTextBox jQKeyboard form-control"  readonly="readonly" /> </td>
 				 		</tr>
 				 		<tr>
 					 		<td><label id="lblPaidAmt" style=" display: inline-block;width: 70px;text-align: left;">Paid Amount</label></td>
@@ -2413,7 +2443,7 @@ function funDiscOkClicked()
 			 		</table>
 			 	</div>
 			 	<!--div Coupen  -->
-			 	<div id="divCoupen"  style=" border: 0px solid #ccc;height:65px;width:240px;display :block; position:absolute; top:385px;" >
+			 	<div id="divCoupen"  style=" border: 0px solid #ccc;height:65px;width:240px;display :block; position:absolute; top:385px;display :none;" >
 				 	<table style="width:95%;height:60px;font-size:11px; font-weight: bold;">
 				 		<tr>
 					 		<td><label id="lblAmountLabel" style=" display: inline-block;width: 70px;text-align: left;">Amount   </label></td>
@@ -2426,7 +2456,7 @@ function funDiscOkClicked()
 			 		</table>
 				</div>
 				<!-- Div Cheque  -->
-			 	<div id="divCheque"  style=" border: 0px solid #ccc;height:100px;width:240px; position:absolute; top:285px; " >
+			 	<div id="divCheque"  style=" border: 0px solid #ccc;height:100px;width:240px; position:absolute; top:285px;display :none;" >
 				 	<table style="width:95%;height:100px;font-size:11px; font-weight: bold;">
 				 		<tr>
 					 		<td><label id="lblBankName" style=" display: inline-block;width: 70px;text-align: left;">Bank Name</label></td>
@@ -2491,7 +2521,7 @@ function funDiscOkClicked()
 			 	<!-- div Discount  -->
 			 	
 				
-			 	<div id="divDiscount" style=" border: 0px solid #ccc;height:160px;width:300px; position:absolute;top:160px; left:880px;">
+			 	<div id="divDiscount" style=" border: 0px solid #ccc;height:160px;width:300px; position:absolute;top:160px; left:880px;display :block;">
 			 		<table style="width:98%;height:105px;font-size:12px; border:0px solid black;">
 					 		<tr>
 					 			<td style="padding-bottom: 2px;"><label id="lblDisc" style=" display: inline-block;width: 100%;text-align: left;margin-top:2px;">Discount %</label></td>
@@ -2531,7 +2561,7 @@ function funDiscOkClicked()
 				</div>
 				
 				<!--Div Room Settlement  -->
-			 	<div id="divRoomSettlement" style=" border: 0px solid #ccc;height:140px;width:240px; position:absolute;top:140px; left:350;">
+			 	<div id="divRoomSettlement" style="border: 0px solid #ccc;height:140px;width:240px; position:absolute;top:140px; left:350;display :none;">
 			 		<table style="width:98%;height:138px;font-size:11px; font-weight: bold;">
 				 		<tr>
 					 		<td><label id="lblGuestName" style=" display: inline-block;width: 70px;text-align: left;">Guest Name </label></td>

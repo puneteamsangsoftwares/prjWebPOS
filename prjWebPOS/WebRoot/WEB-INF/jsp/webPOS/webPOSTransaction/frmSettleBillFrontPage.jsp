@@ -170,7 +170,7 @@ var selectedRowIndex="";
 			 row.hilite = true;
 		 } */
 		 
-		 
+		 hmSettlemetnOptions=new Map();
 		 funOpenBillSettlement()
 		
 	}
@@ -338,7 +338,7 @@ var selectedRowIndex="";
 <br/>
 
 <s:form name=" BillSettlement" method="GET" action="fillBillSettlementData.html?saddr=${urlHits}"  target="_blank" class="formoid-default-skyblue" style="background-color:#FFFFFF;font-size:14px;font-family:'Open Sans','Helvetica Neue','Helvetica',Arial,Verdana,sans-serif;color:#666666;max-width:99%;min-width:25%;">
-    <div style=" background-color: #ffffff; border: 1px solid #ccc; display: block; margin: auto; width: 90%;">
+    <div class="row" style=" background-color: #ffffff; border: 1px solid #ccc; display: block; margin: auto; width: 90%;">
 	
 	<table id="tblHeader" style="width: 100%; border: 1px solid black; table-layout: fixed; height:5%; overflow: scroll">
 	

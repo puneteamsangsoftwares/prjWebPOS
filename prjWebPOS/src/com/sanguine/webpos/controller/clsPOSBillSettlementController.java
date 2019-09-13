@@ -1,6 +1,5 @@
 package com.sanguine.webpos.controller;
 
-import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sanguine.base.service.clsBaseServiceImpl;
 import com.sanguine.base.service.clsSetupService;
 import com.sanguine.base.service.intfBaseService;
@@ -108,9 +105,14 @@ public class clsPOSBillSettlementController
 			listSettlementObject = (List) jObj1.get("listSettleObj");
 			JSONArray jArr = new JSONArray();
 			JSONObject jsSettle = new JSONObject();
+			clsPOSSettelementOptions ob=null;
 			for (int j = 0; j < listSettlementObject.size(); j++)
 			{
 				jArr.add(listSettlementObject.get(j));
+				ob=(clsPOSSettelementOptions)listSettlementObject.get(j);
+				if(ob.getStrSettelmentType().equalsIgnoreCase("cash")){
+					model.put("cashSettlement", ob.getStrSettelmentDesc()+","+ob.getStrSettelmentType()+","+ob.getStrSettelmentCode()+","+ob.getDblConvertionRatio()+","+ob.getStrBillPrintOnSettlement());
+				}
 			}
 			model.put("ObSettleObject", jsSettle);
 
@@ -338,50 +340,54 @@ public class clsPOSBillSettlementController
 			{
 				clsBillSettlementDtlModel objSettleModel = new clsBillSettlementDtlModel();
 
-				objSettleModel.setStrSettlementCode(objBillSettlementDtl.getStrSettelmentCode());
-				if (isComplementarySettle)
-				{
-					objSettleModel.setDblSettlementAmt(0.00);
-					objSettleModel.setDblPaidAmt(0.00);
+				if(objBillSettlementDtl.getStrSettelmentCode()!=null && objBillSettlementDtl.getPaidAmt()>0){
+				
+					objSettleModel.setStrSettlementCode(objBillSettlementDtl.getStrSettelmentCode());
+					if (isComplementarySettle)
+					{
+						objSettleModel.setDblSettlementAmt(0.00);
+						objSettleModel.setDblPaidAmt(0.00);
+						
+						objSettleModel.setDblActualAmt(0.00);
+						objSettleModel.setDblRefundAmt(0.00);
+						
+						objBillHdModel.setDblDeliveryCharges(0.00);
+						objBillHdModel.setDblDiscountAmt(0);
+						objBillHdModel.setDblDiscountPer(0);
+						objBillHdModel.setDblGrandTotal(0);
+						objBillHdModel.setDblRoundOff(0);
+						objBillHdModel.setDblSubTotal(0);
+						objBillHdModel.setDblTaxAmt(0);
+						objBillHdModel.setDblTipAmount(0);
+						
+					}
+					else
+					{
+						objSettleModel.setDblSettlementAmt(objBillSettlementDtl.getDblSettlementAmt());
+						objSettleModel.setDblPaidAmt(objBillSettlementDtl.getDblPaidAmt());
+						
+						objSettleModel.setDblActualAmt(objBillSettlementDtl.getDblActualAmt());
+						objSettleModel.setDblRefundAmt(objBillSettlementDtl.getDblRefundAmt());
+					}
 					
-					objSettleModel.setDblActualAmt(0.00);
-					objSettleModel.setDblRefundAmt(0.00);
 					
-					objBillHdModel.setDblDeliveryCharges(0.00);
-					objBillHdModel.setDblDiscountAmt(0);
-					objBillHdModel.setDblDiscountPer(0);
-					objBillHdModel.setDblGrandTotal(0);
-					objBillHdModel.setDblRoundOff(0);
-					objBillHdModel.setDblSubTotal(0);
-					objBillHdModel.setDblTaxAmt(0);
-					objBillHdModel.setDblTipAmount(0);
 					
+					objSettleModel.setStrExpiryDate("");
+					objSettleModel.setStrCardName("");
+					objSettleModel.setStrRemark("");
+
+					objSettleModel.setStrCustomerCode("");
+					
+					objSettleModel.setStrGiftVoucherCode("");
+					objSettleModel.setStrDataPostFlag("");
+
+					objSettleModel.setStrFolioNo("");
+					objSettleModel.setStrRoomNo("");
+
+					listBillSettlementDtlModel.add(objSettleModel);
+
 				}
-				else
-				{
-					objSettleModel.setDblSettlementAmt(objBillSettlementDtl.getDblSettlementAmt());
-					objSettleModel.setDblPaidAmt(objBillSettlementDtl.getDblPaidAmt());
-					
-					objSettleModel.setDblActualAmt(objBillSettlementDtl.getDblActualAmt());
-					objSettleModel.setDblRefundAmt(objBillSettlementDtl.getDblRefundAmt());
-				}
 				
-				
-				
-				objSettleModel.setStrExpiryDate("");
-				objSettleModel.setStrCardName("");
-				objSettleModel.setStrRemark("");
-
-				objSettleModel.setStrCustomerCode("");
-				
-				objSettleModel.setStrGiftVoucherCode("");
-				objSettleModel.setStrDataPostFlag("");
-
-				objSettleModel.setStrFolioNo("");
-				objSettleModel.setStrRoomNo("");
-
-				listBillSettlementDtlModel.add(objSettleModel);
-
 			}
 
 			objBillHdModel.setStrSettelmentMode("");
