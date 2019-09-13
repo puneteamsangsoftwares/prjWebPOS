@@ -170,10 +170,10 @@ public class clsMenuItemMasterModel extends clsBaseModel implements Serializable
 	private String strRecipeUOM;
 	
 	@Column(name="dblReceivedConversion")
-	private Double dblReceivedConversion;
+	private double dblReceivedConversion;
 	
 	@Column(name="dblRecipeConversion")
-	private Double dblRecipeConversion;
+	private double dblRecipeConversion;
 	
 	@Column(name="strHSNNo")
 	private String strHSNNo;
@@ -239,7 +239,8 @@ public class clsMenuItemMasterModel extends clsBaseModel implements Serializable
 		return strTaxIndicator;
 	}
 	public void setStrTaxIndicator(String strTaxIndicator){
-		this. strTaxIndicator = (String) setDefaultValue( strTaxIndicator, "NA");
+		//this. strTaxIndicator = (String) setDefaultValue( strTaxIndicator, "NA");
+		this.strTaxIndicator=strTaxIndicator;
 	}
 
 	public String getStrStockInEnable(){
@@ -323,7 +324,7 @@ public class clsMenuItemMasterModel extends clsBaseModel implements Serializable
 		return strItemType;
 	}
 	public void setStrItemType(String strItemType){
-		this. strItemType = (String) setDefaultValue( strItemType, "NA");
+		this. strItemType = (String) setDefaultValue( strItemType, "Food");
 	}
 
 	public String getStrDiscountApply(){
@@ -386,7 +387,7 @@ public class clsMenuItemMasterModel extends clsBaseModel implements Serializable
 		return strRevenueHead;
 	}
 	public void setStrRevenueHead(String strRevenueHead){
-		this. strRevenueHead = (String) setDefaultValue( strRevenueHead, "NA");
+		this. strRevenueHead = (String) setDefaultValue( strRevenueHead, "Food");
 	}
 
 	public String getStrItemWeight(){
@@ -490,7 +491,7 @@ public class clsMenuItemMasterModel extends clsBaseModel implements Serializable
 		this.strRecipeUOM = strRecipeUOM;
 	}
 
-	public Double getDblReceivedConversion()
+	/*public Double getDblReceivedConversion()
 	{
 		return dblReceivedConversion;
 	}
@@ -498,6 +499,7 @@ public class clsMenuItemMasterModel extends clsBaseModel implements Serializable
 	public void setDblReceivedConversion(Double dblReceivedConversion)
 	{
 		this.dblReceivedConversion = dblReceivedConversion;
+		
 	}
 
 	public Double getDblRecipeConversion()
@@ -506,6 +508,25 @@ public class clsMenuItemMasterModel extends clsBaseModel implements Serializable
 	}
 
 	public void setDblRecipeConversion(Double dblRecipeConversion)
+	{
+		this.dblRecipeConversion = dblRecipeConversion;
+	}*/
+
+	public double getDblReceivedConversion()
+	{
+		return dblReceivedConversion;
+	}
+
+	public void setDblReceivedConversion(double dblReceivedConversion)
+	{
+		this. dblReceivedConversion = (Double) setDefaultValue( dblReceivedConversion, "0.0000");	}
+
+	public double getDblRecipeConversion()
+	{
+		return dblRecipeConversion;
+	}
+
+	public void setDblRecipeConversion(double dblRecipeConversion)
 	{
 		this.dblRecipeConversion = dblRecipeConversion;
 	}

@@ -142,7 +142,7 @@ public class clsBaseDaoImpl implements intfBaseDao
 		cr.add(Restrictions.eq("strClientCode", clientCode));
 		cr.add(Restrictions.eq("strPOSCode", strPOSCode));
 
-		return webPOSSessionFactory.getCurrentSession().createCriteria(objBaseModel.getClass()).list();
+		return cr.list();
 	}
 
 	@Override

@@ -386,6 +386,9 @@ public class clsSetupHdModel extends clsBaseModel implements Serializable
 
 	@Column(name = "strReceiverEmailId")
 	private String strReceiverEmailId;
+	
+	@Column(name = "strDBBackupMailReceiver")
+	private String strDBBackupMailReceiver;
 
 	@Column(name = "strCalculateDiscItemWise")
 	private String strCalculateDiscItemWise;
@@ -657,8 +660,6 @@ public class clsSetupHdModel extends clsBaseModel implements Serializable
 	@Column(name = "strSalt")
 	private String strSalt;
 
-	
-
 	@Column(name = "strWERAMerchantOutletId")
 	private String strWERAMerchantOutletId;
 
@@ -719,144 +720,125 @@ public class clsSetupHdModel extends clsBaseModel implements Serializable
 	private String strSendTableReservationSMS;
 	@Column(name = "strConsolidatedKOTPrinterPort")
 	private String strConsolidatedKOTPrinterPort;
-
-	/*@Column(name = "strSuperMerchantCode")
-	private String strSuperMerchantCode;
-*/
-	/*@Column(name = "strDayEndSMSYN")
-	private String strDayEndSMSYN;*/
-
-/*	@Column(name = "strVoidKOTSMSYN")
-	private String strVoidKOTSMSYN;
-*/
-	/*@Column(name = "strNCKOTSMSYN")
-	private String strNCKOTSMSYN;*/
-/*
-	@Column(name = "strVoidAdvOrderSMSYN")
-	private String strVoidAdvOrderSMSYN;
-
-	@Column(name = "strVoidBill")
-	private String strVoidBill;*/
-/*
-	@Column(name = "strSettleBill")
-	private String strSettleBill;*/
-
-	/*@Column(name = "strModifyBill")
-	private String strModifyBill;
-*/
-	/*@Column(name = "strComplimentaryBill")
-	private String strComplimentaryBill;*/
 	
+	@Column(name = "strShortNameOnDirectBillerAndBill")
+	private String strShortNameOnDirectBillerAndBill;
+	@Column(name = "strClearAllTrasactionAtDayEnd")
+	private String strClearAllTrasactionAtDayEnd;
+	@Column(name = "strCashDenominationCompulsary")
+	private String strCashDenominationCompulsary;
+	@Column(name = "strCashManagementCompulsary")
+	private String strCashManagementCompulsary;
+	
+	@Column(name = "strPrintFullVoidBill")
+	private String strPrintFullVoidBill;
+	/*
+	 * @Column(name = "strSuperMerchantCode") private String
+	 * strSuperMerchantCode;
+	 */
+	
+	 /* @Column(name = "strDayEndSMSYN")
+	  private String strDayEndSMSYN;
+	 
+
+	
+	  @Column(name = "strVoidKOTSMSYN") 
+	  private String strVoidKOTSMSYN;
+	 
+	
+	  @Column(name = "strNCKOTSMSYN") 
+	  private String strNCKOTSMSYN;
+	 
+	
+	  @Column(name = "strVoidAdvOrderSMSYN") 
+	  private String strVoidAdvOrderSMSYN;
+	 
+	  @Column(name = "strVoidBill") 
+	  private String strVoidBill;
+	 
+	
+	  @Column(name = "strSettleBill") 
+	  private String strSettleBill;
+	 
+      @Column(name = "strModifyBill")
+      private String strModifyBill;
+	 
+	
+	  @Column(name = "strComplimentaryBill") 
+	  private String strComplimentaryBill;
+	 */
+
 	@Column(name = "strEmailSmtpPort")
 	private String strEmailSmtpPort;
-	
+
 	@Column(name = "strEmailSmtpHost")
 	private String strEmailSmtpHost;
-	
+
 	@Column(name = "strMergeAllKOTSToBill")
 	private String strMergeAllKOTSToBill;
-	
+
 	@Column(name = "strBlankDayEndPrint")
 	private String strBlankDayEndPrint;
-	
+
 	@Column(name = "strOnlineOrderNotification")
 	private String strOnlineOrderNotification;
-	
+
 	@Column(name = "strPostRoundOffToWebBooks")
 	private String strPostRoundOffToWebBooks;
-	
+
 	@Column(name = "strDisplayTotalShowBill")
 	private String strDisplayTotalShowBill;
-	
+
 	@Column(name = "strUserWiseShowBill")
 	private String strUserWiseShowBill;
-	
+
 	@Column(name = "strPostSalesDataToExcise")
 	private String strPostSalesDataToExcise;
-	
+
 	@Column(name = "strWERAOnlineOrderIntegration")
 	private String strWERAOnlineOrderIntegration;
-	
-	
-/*	public String getStrDayEndSMSYN()
-	{
-		return strDayEndSMSYN;
-	}
 
-	public void setStrDayEndSMSYN(String strDayEndSMSYN)
-	{
-		this.strDayEndSMSYN = strDayEndSMSYN;
-	}
-
-	public String getStrVoidKOTSMSYN()
-	{
-		return strVoidKOTSMSYN;
-	}
-
-	public void setStrVoidKOTSMSYN(String strVoidKOTSMSYN)
-	{
-		this.strVoidKOTSMSYN = strVoidKOTSMSYN;
-	}
-
-	public String getStrNCKOTSMSYN()
-	{
-		return strNCKOTSMSYN;
-	}
-
-	public void setStrNCKOTSMSYN(String strNCKOTSMSYN)
-	{
-		this.strNCKOTSMSYN = strNCKOTSMSYN;
-	}
-
-	public String getStrVoidAdvOrderSMSYN()
-	{
-		return strVoidAdvOrderSMSYN;
-	}
-
-	public void setStrVoidAdvOrderSMSYN(String strVoidAdvOrderSMSYN)
-	{
-		this.strVoidAdvOrderSMSYN = strVoidAdvOrderSMSYN;
-	}
-
-	public String getStrVoidBill()
-	{
-		return strVoidBill;
-	}
-
-	public void setStrVoidBill(String strVoidBill)
-	{
-		this.strVoidBill = strVoidBill;
-	}
-
-	public String getStrSettleBill()
-	{
-		return strSettleBill;
-	}
-
-	public void setStrSettleBill(String strSettleBill)
-	{
-		this.strSettleBill = strSettleBill;
-	}
-
-	public String getStrModifyBill()
-	{
-		return strModifyBill;
-	}
-
-	public void setStrModifyBill(String strModifyBill)
-	{
-		this.strModifyBill = strModifyBill;
-	}
-
-	public String getStrComplimentaryBill()
-	{
-		return strComplimentaryBill;
-	}
-
-	public void setStrComplimentaryBill(String strComplimentaryBill)
-	{
-		this.strComplimentaryBill = strComplimentaryBill;
-	}*/
+	/*
+	 * public String getStrDayEndSMSYN() { return strDayEndSMSYN; }
+	 * 
+	 * public void setStrDayEndSMSYN(String strDayEndSMSYN) {
+	 * this.strDayEndSMSYN = strDayEndSMSYN; }
+	 * 
+	 * public String getStrVoidKOTSMSYN() { return strVoidKOTSMSYN; }
+	 * 
+	 * public void setStrVoidKOTSMSYN(String strVoidKOTSMSYN) {
+	 * this.strVoidKOTSMSYN = strVoidKOTSMSYN; }
+	 * 
+	 * public String getStrNCKOTSMSYN() { return strNCKOTSMSYN; }
+	 * 
+	 * public void setStrNCKOTSMSYN(String strNCKOTSMSYN) { this.strNCKOTSMSYN =
+	 * strNCKOTSMSYN; }
+	 * 
+	 * public String getStrVoidAdvOrderSMSYN() { return strVoidAdvOrderSMSYN; }
+	 * 
+	 * public void setStrVoidAdvOrderSMSYN(String strVoidAdvOrderSMSYN) {
+	 * this.strVoidAdvOrderSMSYN = strVoidAdvOrderSMSYN; }
+	 * 
+	 * public String getStrVoidBill() { return strVoidBill; }
+	 * 
+	 * public void setStrVoidBill(String strVoidBill) { this.strVoidBill =
+	 * strVoidBill; }
+	 * 
+	 * public String getStrSettleBill() { return strSettleBill; }
+	 * 
+	 * public void setStrSettleBill(String strSettleBill) { this.strSettleBill =
+	 * strSettleBill; }
+	 * 
+	 * public String getStrModifyBill() { return strModifyBill; }
+	 * 
+	 * public void setStrModifyBill(String strModifyBill) { this.strModifyBill =
+	 * strModifyBill; }
+	 * 
+	 * public String getStrComplimentaryBill() { return strComplimentaryBill; }
+	 * 
+	 * public void setStrComplimentaryBill(String strComplimentaryBill) {
+	 * this.strComplimentaryBill = strComplimentaryBill; }
+	 */
 
 	// Setter-Getter Methods
 	public String getStrClientCode()
@@ -879,15 +861,12 @@ public class clsSetupHdModel extends clsBaseModel implements Serializable
 		this.strClientName = (String) setDefaultValue(strClientName, " ");
 	}
 
-	/*public String getStrSuperMerchantCode()
-	{
-		return strSuperMerchantCode;
-	}
-
-	public void setStrSuperMerchantCode(String strSuperMerchantCode)
-	{
-		this.strSuperMerchantCode = strSuperMerchantCode;
-	}*/
+	/*
+	 * public String getStrSuperMerchantCode() { return strSuperMerchantCode; }
+	 * 
+	 * public void setStrSuperMerchantCode(String strSuperMerchantCode) {
+	 * this.strSuperMerchantCode = strSuperMerchantCode; }
+	 */
 
 	public String getStrAddressLine1()
 	{
@@ -1389,15 +1368,13 @@ public class clsSetupHdModel extends clsBaseModel implements Serializable
 		this.strChangeTheme = (String) setDefaultValue(strChangeTheme, " ");
 	}
 
-	/*public double getDblMaxDiscount()
-	{
-		return dblMaxDiscount;
-	}
-
-	public void setDblMaxDiscount(double dblMaxDiscount)
-	{
-		this.dblMaxDiscount = (Double) setDefaultValue(dblMaxDiscount, "0.0000");
-	}*/
+	/*
+	 * public double getDblMaxDiscount() { return dblMaxDiscount; }
+	 * 
+	 * public void setDblMaxDiscount(double dblMaxDiscount) {
+	 * this.dblMaxDiscount = (Double) setDefaultValue(dblMaxDiscount, "0.0000");
+	 * }
+	 */
 
 	public String getStrAreaWisePricing()
 	{
@@ -3254,8 +3231,6 @@ public class clsSetupHdModel extends clsBaseModel implements Serializable
 		this.strDisplayTotalShowBill = strDisplayTotalShowBill;
 	}
 
-	
-
 	public String getStrUserWiseShowBill()
 	{
 		return strUserWiseShowBill;
@@ -3276,6 +3251,64 @@ public class clsSetupHdModel extends clsBaseModel implements Serializable
 		this.strPostSalesDataToExcise = strPostSalesDataToExcise;
 	}
 
+	public String getStrShortNameOnDirectBillerAndBill()
+	{
+		return strShortNameOnDirectBillerAndBill;
+	}
 
+	public void setStrShortNameOnDirectBillerAndBill(String strShortNameOnDirectBillerAndBill)
+	{
+		this.strShortNameOnDirectBillerAndBill = strShortNameOnDirectBillerAndBill;
+	}
+
+	public String getStrClearAllTrasactionAtDayEnd()
+	{
+		return strClearAllTrasactionAtDayEnd;
+	}
+
+	public void setStrClearAllTrasactionAtDayEnd(String strClearAllTrasactionAtDayEnd)
+	{
+		this.strClearAllTrasactionAtDayEnd = strClearAllTrasactionAtDayEnd;
+	}
+
+	public String getStrCashDenominationCompulsary()
+	{
+		return strCashDenominationCompulsary;
+	}
+
+	public void setStrCashDenominationCompulsary(String strCashDenominationCompulsary)
+	{
+		this.strCashDenominationCompulsary = strCashDenominationCompulsary;
+	}
+
+	public String getStrCashManagementCompulsary()
+	{
+		return strCashManagementCompulsary;
+	}
+
+	public void setStrCashManagementCompulsary(String strCashManagementCompulsary)
+	{
+		this.strCashManagementCompulsary = strCashManagementCompulsary;
+	}
+
+	public String getStrPrintFullVoidBill()
+	{
+		return strPrintFullVoidBill;
+	}
+
+	public void setStrPrintFullVoidBill(String strPrintFullVoidBill)
+	{
+		this.strPrintFullVoidBill = strPrintFullVoidBill;
+	}
+
+	public String getStrDBBackupMailReceiver()
+	{
+		return strDBBackupMailReceiver;
+	}
+
+	public void setStrDBBackupMailReceiver(String strDBBackupMailReceiver)
+	{
+		this.strDBBackupMailReceiver = strDBBackupMailReceiver;
+	}
 
 }

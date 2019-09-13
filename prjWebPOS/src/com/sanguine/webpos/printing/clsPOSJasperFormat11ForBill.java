@@ -90,7 +90,7 @@ public class clsPOSJasperFormat11ForBill implements clsPOSBillGenerationFormat
 			//JasperDesign jd  = JRXmlLoader.load("/WEB-INF/reports/billFormat/rptBillFormat4JasperReport.jrxml");
 			//JasperDesign jd = JRXmlLoader.load(servletContext.getResourceAsStream("/WEB-INF/reports/webpos/rptBillFormat4JasperReport.jrxml"));
 
-			clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strPosCode, strClientCode);
+			clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,strPosCode);
 
 			final String gDecimalFormatString = objGlobalFunctions.funGetGlobalDecimalFormatString(strClientCode,strPosCode);
 			

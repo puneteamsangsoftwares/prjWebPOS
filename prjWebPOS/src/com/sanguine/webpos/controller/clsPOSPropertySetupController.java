@@ -45,10 +45,12 @@ import com.sanguine.webpos.bean.clsPOSPrinterSetupBean;
 import com.sanguine.webpos.bean.clsPOSSMSSetupBean;
 import com.sanguine.webpos.bean.clsPOSSettlementDetailsBean;
 import com.sanguine.webpos.model.clsAreaMasterModel;
+import com.sanguine.webpos.model.clsBillHdModel;
 import com.sanguine.webpos.model.clsBillSeriesHdModel;
 import com.sanguine.webpos.model.clsBillSeriesModel_ID;
 import com.sanguine.webpos.model.clsGroupMasterModel;
 import com.sanguine.webpos.model.clsPOSSMSSetupModel;
+import com.sanguine.webpos.model.clsPOSSMSSetupModel_ID;
 import com.sanguine.webpos.model.clsPrinterSetupHdModel;
 import com.sanguine.webpos.model.clsPrinterSetupModel_ID;
 import com.sanguine.webpos.model.clsSettlementMasterModel;
@@ -110,10 +112,10 @@ public class clsPOSPropertySetupController
 		model.put("posList", mapPosData);
 		model.put("posListForDayEnd", mapPOSForDayEnd);
 
-		mapArea = funLoadAreaList(posCode);
+		mapArea = funLoadAreaList(posCode,clientCode);
 		model.put("areaList", mapArea);
 
-		mapTax = funLoadTaxList();
+		mapTax = funLoadTaxList(clientCode);
 		model.put("taxList", mapTax);
 
 		// Consolidate Printer
@@ -176,7 +178,12 @@ public class clsPOSPropertySetupController
 		clsSetupHdModel objSetupHdModel = new clsSetupHdModel();
 		try
 		{
+			if(posCode.equalsIgnoreCase("All")){
+				posCode=request.getSession().getAttribute("loginPOS").toString();
+
+			}
 			List list = objBaseService.funLoadAllPOSWise(objSetupHdModel, clientCode, posCode);
+			
 
 			for (int cnt = 0; cnt < list.size(); cnt++)
 			{
@@ -194,7 +201,9 @@ public class clsPOSPropertySetupController
 						fileOuputStream.write(byteContent);
 						fileOuputStream.close();
 					}
-
+				}
+			}
+			
 					objBean.setStrPosCode(objSetupHdModel.getStrPOSCode());
 					objBean.setStrPrintingType(objSetupHdModel.getStrPrintType());
 					objBean.setIntColumnSize(objSetupHdModel.getIntColumnSize());
@@ -237,6 +246,7 @@ public class clsPOSPropertySetupController
 					objBean.setStrEmailServerName(objSetupHdModel.getStrEmailServerName());
 					objBean.setStrAreaSMSApi(objSetupHdModel.getStrSMSApi());
 					objBean.setStrDirectArea(objSetupHdModel.getStrDirectAreaCode());
+					objBean.setStrBillFormatType(objSetupHdModel.getStrBillFormatType());
 
 					objBean.setStrPOSType(objSetupHdModel.getStrPOSType());
 					objBean.setStrWebServiceLink(objSetupHdModel.getStrWebServiceLink());
@@ -380,7 +390,7 @@ public class clsPOSPropertySetupController
 					objBean.setChkEnableDineIn(objSetupHdModel.getStrEnableDineIn());
 					objBean.setChkAutoAreaSelectionInMakeKOT(objSetupHdModel.getStrAutoAreaSelectionInMakeKOT());
 					objBean.setStrAreaWiseCostCenterKOTPrintingYN(objSetupHdModel.getStrAreaWiseCostCenterKOTPrintingYN());
-					objBean.setStrHomeDeliAreaForDirectBiller(objSetupHdModel.getStrHomeDeliveryAreaForDirectBiller());
+					objBean.setStrHomeDeliveryAreaForDirectBiller(objSetupHdModel.getStrHomeDeliveryAreaForDirectBiller());
 					objBean.setStrTakeAwayAreaForDirectBiller(objSetupHdModel.getStrTakeAwayAreaForDirectBiller());
 					objBean.setChkRoundOffBillAmount(objSetupHdModel.getStrRoundOffBillFinalAmt());
 					objBean.setChkPrintItemsOnMoveKOTMoveTable(objSetupHdModel.getStrPrintItemsOnMoveKOTMoveTable());
@@ -449,19 +459,69 @@ public class clsPOSPropertySetupController
 					objBean.setStrPrintOriginalOnBill(objSetupHdModel.getStrPrintOriginalOnBill());
 					objBean.setStrUserWiseShowBill(objSetupHdModel.getStrUserWiseShowBill());
 					objBean.setStrPropertyWiseSalesOrderYN(objSetupHdModel.getStrPropertyWiseSalesOrderYN());
+				
+					objBean.setStrShortNameOnDirectBillerAndBill(objSetupHdModel.getStrShortNameOnDirectBillerAndBill());
+					objBean.setStrClearAllTrasactionAtDayEnd(objSetupHdModel.getStrClearAllTrasactionAtDayEnd());
+					objBean.setStrCashDenominationCompulsary(objSetupHdModel.getStrCashDenominationCompulsary());
+					objBean.setStrCashManagementCompulsary(objSetupHdModel.getStrCashManagementCompulsary());
+				
 					
 					//changes mahesh 21/06/2019
 					objBean.setStrDineInAreaForDirectBiller(objSetupHdModel.getStrDirectAreaCode());
 					objBean.setStrHomeDeliveryAreaForDirectBiller(objSetupHdModel.getStrHomeDeliveryAreaForDirectBiller());
 					objBean.setStrTakeAwayAreaForDirectBiller(objSetupHdModel.getStrTakeAwayAreaForDirectBiller());
-
+					objBean.setStrPrintFullVoidBill(objSetupHdModel.getStrPrintFullVoidBill());
+					objBean.setStrDBBackupReceiverEmailId(objSetupHdModel.getStrDBBackupMailReceiver());
+					
+					objBean.setStrShowNotificationsOnTransaction(objSetupHdModel.getStrShowNotificationsOnTransaction());
+					objBean.setStrEmailSmtpPort(objSetupHdModel.getStrEmailSmtpPort());
+					objBean.setStrEmailSmtpHost(objSetupHdModel.getStrEmailSmtpHost());
 				
 					dteEndDate = objSetupHdModel.getDteEndDate();
-				}
-
-			}
-
-		}
+					
+					StringBuilder hql = new StringBuilder();
+					hql.append(" from clsPOSSMSSetupModel  where strPOSCode='" + posCode + "' and strClientCode='" + clientCode + "'  ");
+					List listSMS = objBaseService.funGetList(hql, "hql");
+					if (null != listSMS)
+					{
+						
+						for (int i = 0; i < listSMS.size(); i++)
+						{
+							clsPOSSMSSetupModel obj = (clsPOSSMSSetupModel) listSMS.get(i);
+							String transName = obj.getStrTransactionName();
+							String sendSMSYN =obj.getStrSendSMSYN();
+							clsPOSSMSSetupModel objSmSModel = new clsPOSSMSSetupModel(new clsPOSSMSSetupModel_ID(clientCode,posCode,transName));
+							switch (transName)
+							{
+							case "DayEnd":
+								objBean.setStrDayEndSMSYN(sendSMSYN);
+								break;
+							case "VoidKOT":
+								objBean.setStrVoidKOTSMSYN(sendSMSYN);
+								break;
+							case "NCKOT":
+								objBean.setStrNCKOTSMSYN(sendSMSYN);
+								break;
+							case "VoidAdvOrder":
+								objBean.setStrVoidAdvOrderSMSYN(sendSMSYN);
+								break;
+							case "VoidBill":
+								objBean.setStrVoidBill(sendSMSYN);
+								break;
+							case "ModifyBill":
+								objBean.setStrModifyBill(sendSMSYN);
+								break;
+							case "SettleBill":
+								objBean.setStrSettleBill(sendSMSYN);
+								break;
+							case "ComplementaryBill":
+								objBean.setStrComplimentaryBill(sendSMSYN);
+								break;
+							}
+		                 }
+					 }
+			  }
+			
 		catch (Exception e)
 		{
 
@@ -472,11 +532,12 @@ public class clsPOSPropertySetupController
 
 	@RequestMapping(value = "/funGetPos", method = RequestMethod.GET)
 	public @ResponseBody String funGetPos(@RequestParam("posCode") String posCode, HttpServletRequest request)
-	{
+	{ 
+		String clientCode = request.getSession().getAttribute("gClientCode").toString();
 		String count = "0";
 		try
 		{
-			String sqlBillSeries = "select count(*) from tblsetup where strPOSCode='" + posCode + "' ";
+			String sqlBillSeries = "select count(*) from tblsetup where strPOSCode='" + posCode + "' and strClientCode='"+clientCode+"' ";
 			List list = objBaseService.funGetList(new StringBuilder(sqlBillSeries), "sql");
 			if (list.size() > 0)
 			{
@@ -502,10 +563,11 @@ public class clsPOSPropertySetupController
 		FileOutputStream fileOuputStream = null;
 		clsSetupModel_ID ob = new clsSetupModel_ID(clientCode, posCode);
 		clsSetupHdModel objSetupHdModel = new clsSetupHdModel();
-
+       
 		try
 		{
-			List list = objBaseService.funLoadAll(objSetupHdModel, clientCode);
+			
+			List list = objBaseService.funLoadAllPOSWise(objSetupHdModel, clientCode,posCode);
 
 			for (int cnt = 0; cnt < list.size(); cnt++)
 			{
@@ -708,7 +770,7 @@ public class clsPOSPropertySetupController
 			objBean.setChkShowReportsPOSWise(objSetupHdModel.getStrShowReportsPOSWise());
 			objBean.setChkEnableDineIn(objSetupHdModel.getStrEnableDineIn());
 			objBean.setChkAutoAreaSelectionInMakeKOT(objSetupHdModel.getStrAutoAreaSelectionInMakeKOT());
-			objBean.setStrHomeDeliAreaForDirectBiller(objSetupHdModel.getStrHomeDeliveryAreaForDirectBiller());
+			objBean.setStrHomeDeliveryAreaForDirectBiller(objSetupHdModel.getStrHomeDeliveryAreaForDirectBiller());
 			objBean.setStrTakeAwayAreaForDirectBiller(objSetupHdModel.getStrTakeAwayAreaForDirectBiller());
 			objBean.setChkRoundOffBillAmount(objSetupHdModel.getStrRoundOffBillFinalAmt());
 			objBean.setChkPrintItemsOnMoveKOTMoveTable(objSetupHdModel.getStrPrintItemsOnMoveKOTMoveTable());
@@ -775,16 +837,17 @@ public class clsPOSPropertySetupController
 			objBean.setStrXEmail(objSetupHdModel.getStrXEmail());
 			objBean.setStrSalt(objSetupHdModel.getStrSalt());
 			objBean.setLongCustSeries(objSetupHdModel.getLongCustSeries());
-			objBean.setStrDayEndSMSYN(objSetupHdModel.getStrDayEnd());
-			objBean.setStrBillFormatType(objSetupHdModel.getStrBillFormatType());
-			/*objBean.setStrVoidBill(objSetupHdModel.getStrVoidBill());
+			
+			/*objBean.setStrDayEndSMSYN(objSetupHdModel.getStrDayEnd());
+			objBean.setStrVoidBill(objSetupHdModel.getStrVoidBill());
 			objBean.setStrVoidAdvOrderSMSYN(objSetupHdModel.getStrVoidAdvOrderSMSYN());
 			objBean.setStrVoidKOTSMSYN(objSetupHdModel.getStrVoidKOTSMSYN());
 			objBean.setStrNCKOTSMSYN(objSetupHdModel.getStrNCKOTSMSYN());
 			objBean.setStrSettleBill(objSetupHdModel.getStrSettleBill());
 			objBean.setStrModifyBill(objSetupHdModel.getStrModifyBill());
 			objBean.setStrComplimentaryBill(objSetupHdModel.getStrComplimentaryBill());*/
-			objBean.setStrShowBillsDtlType(objSetupHdModel.getStrShowBillsDtlType());
+			
+			//objBean.setStrShowBillsDtlType(objSetupHdModel.getStrShowBillsDtlType());
 			objBean.setStrEmailSmtpHost(objSetupHdModel.getStrEmailSmtpHost());
 			objBean.setStrBillFormatType(objSetupHdModel.getStrBillFormatType());
 			objBean.setStrEmailSmtpPort(objSetupHdModel.getStrEmailSmtpPort());
@@ -817,6 +880,14 @@ public class clsPOSPropertySetupController
 			objBean.setStrTakeAwayAreaForDirectBiller(objSetupHdModel.getStrTakeAwayAreaForDirectBiller());
 			objBean.setStrMergeAllKOTSToBill(objSetupHdModel.getStrMergeAllKOTSToBill());
 
+			objBean.setStrShortNameOnDirectBillerAndBill(objSetupHdModel.getStrShortNameOnDirectBillerAndBill());
+			objBean.setStrClearAllTrasactionAtDayEnd(objSetupHdModel.getStrClearAllTrasactionAtDayEnd());
+			objBean.setStrCashDenominationCompulsary(objSetupHdModel.getStrCashDenominationCompulsary());
+			objBean.setStrCashManagementCompulsary(objSetupHdModel.getStrCashManagementCompulsary());
+			objBean.setStrPrintFullVoidBill(objSetupHdModel.getStrPrintFullVoidBill());
+			objBean.setStrDBBackupReceiverEmailId(objSetupHdModel.getStrDBBackupMailReceiver());
+			
+			
 			// Setting Mobile Number in SMS
 			List listsms = funFillSMSSetupData(posCode, clientCode);
 			if (listsms.size() > 0)
@@ -833,7 +904,8 @@ public class clsPOSPropertySetupController
 			}
 
 			dteEndDate = objSetupHdModel.getDteEndDate();
-
+		
+			
 		}
 		catch (Exception e)
 		{
@@ -847,13 +919,14 @@ public class clsPOSPropertySetupController
 	@RequestMapping(value = "/loadPrinterDtl", method = RequestMethod.GET)
 	public @ResponseBody clsPOSPropertySetupBean funSetPrinterDtl(HttpServletRequest request)
 	{
+		String clientCode = request.getSession().getAttribute("gClientCode").toString();
 		List<clsPOSPrinterSetupBean> listBillSeriesDtl = new ArrayList<clsPOSPrinterSetupBean>();
 		clsPOSPropertySetupBean objBean = new clsPOSPropertySetupBean();
 		StringBuilder sqlStringBuilder = new StringBuilder();
 		try
 		{
 
-			sqlStringBuilder.append(" select a.strCostCenterCode,a.strCostCenterName,ifnull(b.strPrimaryPrinterPort,'')" + " ,ifnull(b.strSecondaryPrinterPort,''),ifnull(b.strPrintOnBothPrintersYN,'N')" + " from tblcostcentermaster a " + " left outer join tblprintersetup b on a.strCostCenterCode=b.strCostCenterCode");
+			sqlStringBuilder.append(" select a.strCostCenterCode,a.strCostCenterName,ifnull(b.strPrimaryPrinterPort,'')" + " ,ifnull(b.strSecondaryPrinterPort,''),ifnull(b.strPrintOnBothPrintersYN,'N')" + " from tblcostcentermaster a " + " left outer join tblprintersetup b on a.strCostCenterCode=b.strCostCenterCode " + " where b.strClientCode='"+clientCode+"'");
 
 			List list = objBaseService.funGetList(sqlStringBuilder, "sql");
 			if (list != null)
@@ -883,10 +956,11 @@ public class clsPOSPropertySetupController
 	@RequestMapping(value = "/loadOldSBillSeriesSetup", method = RequestMethod.GET)
 	public @ResponseBody String funSetBillSeries(@RequestParam("posCode") String posCode, HttpServletRequest request)
 	{
+		String clientCode = request.getSession().getAttribute("gClientCode").toString();
 		String strType = "";
 		try
 		{
-			String sqlBillSeries = "select a.strType from tblbillseries a where a.strPOSCode='" + posCode + "' group by a.strType  ";
+			String sqlBillSeries = "select a.strType from tblbillseries a where a.strPOSCode='" + posCode + "' and strClientCode='"+clientCode+"' group by a.strType  ";
 			List list = objBaseService.funGetList(new StringBuilder(sqlBillSeries), "sql");
 			if (list.size() > 0)
 			{
@@ -929,12 +1003,13 @@ public class clsPOSPropertySetupController
 	@RequestMapping(value = "/loadOldBillSeries", method = RequestMethod.GET)
 	public @ResponseBody clsPOSPropertySetupBean funSetSelectedBillSeries(@RequestParam("posCode") String posCode, HttpServletRequest request)
 	{
+		String clientCode = request.getSession().getAttribute("gClientCode").toString();
 		List<clsPOSBillSeriesDtlBean> listBillSeriesDtl = new ArrayList<clsPOSBillSeriesDtlBean>();
 		clsPOSPropertySetupBean objBean = new clsPOSPropertySetupBean();
 		try
 		{
 
-			StringBuilder sqlBillSeries = new StringBuilder("select a.strType,a.strBillSeries,a.strCodes,a.strNames,a.strPrintGTOfOtherBills,strPrintInclusiveOfTaxOnBill " + " from tblbillseries a where strPOSCode='" + posCode + "' ");
+			StringBuilder sqlBillSeries = new StringBuilder("select a.strType,a.strBillSeries,a.strCodes,a.strNames,a.strPrintGTOfOtherBills,strPrintInclusiveOfTaxOnBill " + " from tblbillseries a where strPOSCode='" + posCode + "' and strClientCode='"+clientCode+"' ");
 
 			List list = objBaseService.funGetList(sqlBillSeries, "sql");
 			if (list.size() > 0)
@@ -1012,13 +1087,33 @@ public class clsPOSPropertySetupController
 	public ModelAndView funAddUpdate(@ModelAttribute("command") @Valid clsPOSPropertySetupBean objBean, BindingResult result, HttpServletRequest req, @RequestParam("companyLogo") MultipartFile file)
 	{
 
-		String posCode = "";
+		String posCode =objBean.getStrPosCode();
+		
 		try
 		{
 
 			String clientCode = req.getSession().getAttribute("gClientCode").toString();
+			
 			String webStockUserCode = req.getSession().getAttribute("gUserCode").toString();
-
+			List<String> listPosCode=new ArrayList<String>();
+			List list = objMasterService.funFullPOSCombo(clientCode);
+			if(posCode.equalsIgnoreCase("All"))
+			{
+				for(int k=0;k<list.size();k++)
+				{
+				Object[] arr=(Object[]) list.get(k);
+			    listPosCode.add(arr[0].toString());
+			    }
+			}
+			else
+			{
+				listPosCode.add(posCode);
+			}
+			for(int j=0;j<listPosCode.size();j++)
+			{
+				
+			posCode=listPosCode.get(j);
+			
 			clsSetupHdModel objModel = new clsSetupHdModel(new clsSetupModel_ID(clientCode, posCode));
 			String dateTime = obUtilityController.funGetCurrentDateTime();
 			if (file.getSize() != 0)
@@ -1094,7 +1189,7 @@ public class clsPOSPropertySetupController
 			objModel.setStrDBPassword(objBean.getStrRFIDPassword());
 			objModel.setStrDBUserName(objBean.getStrRFIDUserName());
 			objModel.setStrDelBoySelCompulsoryOnDirectBiller(objGlobal.funIfNull(objBean.getChkDelBoyCompulsoryOnDirectBiller(), "N", "Y"));
-			objModel.setStrDirectAreaCode(objBean.getStrDirectArea());
+			objModel.setStrDirectAreaCode(objBean.getStrDineInAreaForDirectBiller());
 			objModel.setStrDirectKOTPrintMakeKOT(objGlobal.funIfNull(objBean.getChkDirectKOTPrintMakeKOT(), "N", "Y"));
 			objModel.setStrDiscountNote("N");
 			objModel.setStrDontShowAdvOrderInOtherPOS(objGlobal.funIfNull(objBean.getChkDontShowAdvOrderInOtherPOS(), "N", "Y"));
@@ -1124,7 +1219,7 @@ public class clsPOSPropertySetupController
 			objModel.setStrJioActivationCode(objBean.getStrJioActivationCode());
 			objModel.setStrJioDeviceID(objBean.getStrJioDeviceID());
 			objModel.setStrJioMID(objBean.getStrJioMID());
-			objModel.setStrJioMoneyIntegration(objBean.getStrJioPOSIntegrationYN());
+			objModel.setStrJioMoneyIntegration(objGlobal.funIfNull(objBean.getStrJioPOSIntegrationYN(), "N", "Y"));
 			objModel.setStrJioTID(objBean.getStrJioTID());
 			objModel.setStrJioWebServiceUrl(objBean.getStrJioPOSWesServiceURL());
 			objModel.setStrKOTToLocalPrinter(objGlobal.funIfNull(objBean.getChkPrintKOTToLocalPrinter(), "N", "Y"));
@@ -1149,7 +1244,7 @@ public class clsPOSPropertySetupController
 			objModel.setStrOutletUID(objBean.getStrOutletUID());
 			objModel.setStrPointsOnBillPrint(objGlobal.funIfNull(objBean.getChkPointsOnBillPrint(), "N", "Y"));
 			objModel.setStrPopUpToApplyPromotionsOnBill(objGlobal.funIfNull(objBean.getChkPopUpToApplyPromotionsOnBill(), "N", "Y"));
-			objModel.setStrPOSCode(objBean.getStrPosCode());
+			objModel.setStrPOSCode(posCode);
 			objModel.setStrPOSID(objBean.getStrPOSID());
 			objModel.setStrPostSalesDataToMMS(objGlobal.funIfNull(objBean.getChkPostSalesDataToMMS(), "N", "Y"));
 			objModel.setStrPostWebserviceURL(objBean.getStrPostWebservice());
@@ -1188,7 +1283,7 @@ public class clsPOSPropertySetupController
 			objModel.setStrSetUpToTimeForUrgentOrder(objGlobal.funIfNull(objBean.getChkSetUpToTimeForUrgentOrder(), "N", "Y"));
 			objModel.setStrShiftWiseDayEndYN(objGlobal.funIfNull(objBean.getChkShiftWiseDayEnd(), "N", "Y"));
 			objModel.setStrShowBill(objGlobal.funIfNull(objBean.getChkShowBills(), "N", "Y"));
-			objModel.setStrShowBillsDtlType(objBean.getStrShowBillsDtlType());
+			objModel.setStrShowBillsDtlType(objGlobal.funIfNull(objBean.getStrShowBillsDtlType(), " ", objBean.getStrShowBillsDtlType()));
 			objModel.setStrShowCustHelp("N");
 			objModel.setStrShowItemDetailsGrid(objGlobal.funIfNull(objBean.getChkShowItemDtlsForChangeCustomerOnBill(), "N", "Y"));
 			objModel.setStrShowItemStkColumnInDB(objGlobal.funIfNull(objBean.getChkShowItemStkColumnInDB(), "N", "Y"));
@@ -1216,8 +1311,8 @@ public class clsPOSPropertySetupController
 			objModel.setStrWSClientCode(objBean.getStrWSClientCode());
 			objModel.setStrEnableDineIn(objGlobal.funIfNull(objBean.getChkEnableDineIn(), "N", "Y"));
 			objModel.setStrAutoAreaSelectionInMakeKOT(objGlobal.funIfNull(objBean.getChkAutoAreaSelectionInMakeKOT(), "N", "Y"));
-			objModel.setStrHomeDeliveryAreaForDirectBiller(objGlobal.funIfNull(objBean.getStrHomeDeliAreaForDirectBiller()," ",objBean.getStrHomeDeliAreaForDirectBiller()));
-			objModel.setStrTakeAwayAreaForDirectBiller(objBean.getStrTakeAwayAreaForDirectBiller());
+			objModel.setStrHomeDeliveryAreaForDirectBiller(objGlobal.funIfNull(objBean.getStrHomeDeliveryAreaForDirectBiller(),"A001 ",objBean.getStrHomeDeliveryAreaForDirectBiller()));
+			objModel.setStrTakeAwayAreaForDirectBiller(objGlobal.funIfNull(objBean.getStrTakeAwayAreaForDirectBiller(), "A001", objBean.getStrTakeAwayAreaForDirectBiller()));
 			objModel.setStrRoundOffBillFinalAmt(objGlobal.funIfNull(objBean.getChkRoundOffBillAmount(), "N", "Y"));
 			objModel.setStrPrintItemsOnMoveKOTMoveTable(objGlobal.funIfNull(objBean.getChkPrintItemsOnMoveKOTMoveTable(), "N", "Y"));
 			
@@ -1235,17 +1330,17 @@ public class clsPOSPropertySetupController
 			objModel.setStrLockTableForWaiter(objGlobal.funIfNull(objBean.getChkLockTableForWaiter(), "N", "Y"));
 			
 			objModel.setDblUSDConverionRate(objBean.getDblUSDCrrencyConverionRate());
-			objModel.setStrShowReportsInCurrency(objBean.getStrShowReportsInCurrency());
-			objModel.setStrPOSToMMSPostingCurrency(objBean.getStrPOSToMMSPostingCurrency());
-			objModel.setStrPOSToWebBooksPostingCurrency(objBean.getStrPOSToWebBooksPostingCurrency());
-			objModel.setStrBenowIntegrationYN(objBean.getStrBenowPOSIntegrationYN());
+			objModel.setStrShowReportsInCurrency(objGlobal.funIfNull(objBean.getStrShowReportsInCurrency(), "BASE", objBean.getStrShowReportsInCurrency()));
+			objModel.setStrPOSToMMSPostingCurrency(objGlobal.funIfNull(objBean.getStrPOSToMMSPostingCurrency(), "BASE", objBean.getStrPOSToMMSPostingCurrency()));
+			objModel.setStrPOSToWebBooksPostingCurrency(objGlobal.funIfNull(objBean.getStrPOSToWebBooksPostingCurrency(), "BASE", objBean.getStrPOSToWebBooksPostingCurrency()));
+			objModel.setStrBenowIntegrationYN(objGlobal.funIfNull(objBean.getStrBenowPOSIntegrationYN(), "N", "Y"));
 			objModel.setStrXEmail(objBean.getStrEmail());
 			objModel.setStrMerchantCode(objBean.getStrMerchantCode());
 			//objModel.setStrSuperMerchantCode(objBean.getStrSuperMerchantCode());
 
 			objModel.setStrAuthenticationKey(objBean.getStrAuthenticationKey());
 			objModel.setStrSalt(objBean.getStrSalt());
-			objModel.setStrWERAOnlineOrderIntegration(objBean.getStrWERAOnlineOrderIntegration());
+			objModel.setStrWERAOnlineOrderIntegration(objGlobal.funIfNull(objBean.getStrWERAOnlineOrderIntegration(), "N", "Y"));
 			objModel.setStrWERAMerchantOutletId(objBean.getStrWERAMerchantOutletId());
 			objModel.setStrWERAAuthenticationAPIKey(objBean.getStrWERAAuthenticationAPIKey());
 
@@ -1263,7 +1358,7 @@ public class clsPOSPropertySetupController
 			objModel.setStrShowPurRateInDirectBiller(objGlobal.funIfNull(objBean.getStrShowPurRateInDirectBiller(), "N", "Y"));
 
 			//objModel.setStrEffectOfSales((objBean.getStrEffectOfSales()));
-			objModel.setStrEffectOfSales(objGlobal.funIfNull(objBean.getStrEffectOfSales(),"No","Yes"));
+			objModel.setStrEffectOfSales(objGlobal.funIfNull(objBean.getStrEffectOfSales()," ",objBean.getStrEffectOfSales()));
 
 			objModel.setStrEnableTableReservationForCustomer(objGlobal.funIfNull(objBean.getStrEnableTableReservationForCustomer(), "N", "Y"));
 			objModel.setStrAutoShowPopItems((objBean.getStrAutoShowPopItems()));
@@ -1276,7 +1371,7 @@ public class clsPOSPropertySetupController
 			objModel.setStrTableReservationSMS((objBean.getStrTableReservationSMS()));
 			objModel.setStrBillFormatType(objGlobal.funIfNull(objBean.getStrBillFormatType()," ",objBean.getStrBillFormatType()));
 			objModel.setStrSendTableReservationSMS(objGlobal.funIfNull(objBean.getStrSendTableReservationSMS(), "N", "Y"));
-			objModel.setStrConsolidatedKOTPrinterPort((objBean.getStrConsolidatedKOTPrinterPort()));
+			objModel.setStrConsolidatedKOTPrinterPort(objGlobal.funIfNull(objBean.getStrConsolidatedKOTPrinterPort(), " ", objBean.getStrConsolidatedKOTPrinterPort()));
 			objModel.setStrAutoShowPopItems(objGlobal.funIfNull(objBean.getStrAutoShowPopItems(), "N", "Y"));
 			objModel.setStrPrintOpenItemsOnBill(objGlobal.funIfNull(objBean.getStrPrintOpenItemsOnBill(), "N", "Y"));
 
@@ -1315,14 +1410,24 @@ public class clsPOSPropertySetupController
 		
 			objModel.setStrMultipleKOTPrintYN(objGlobal.funIfNull(objBean.getStrMultipleKOTPrintYN(), "N", "Y"));
 			
-			//changes mahesh
-			objModel.setStrDirectAreaCode(objBean.getStrDineInAreaForDirectBiller());
-			objModel.setStrHomeDeliveryAreaForDirectBiller(objBean.getStrHomeDeliveryAreaForDirectBiller());
-			objModel.setStrTakeAwayAreaForDirectBiller(objBean.getStrTakeAwayAreaForDirectBiller());
 			
-
-			funSaveUpdatePropertySetup(objModel);
-
+			objModel.setStrShortNameOnDirectBillerAndBill(objGlobal.funIfNull(objBean.getStrShortNameOnDirectBillerAndBill(), "N", "Y"));
+			objModel.setStrClearAllTrasactionAtDayEnd(objGlobal.funIfNull(objBean.getStrClearAllTrasactionAtDayEnd(), "N", "Y"));
+			objModel.setStrCashDenominationCompulsary(objGlobal.funIfNull(objBean.getStrCashDenominationCompulsary(), "N", "Y"));
+			objModel.setStrCashManagementCompulsary(objGlobal.funIfNull(objBean.getStrCashManagementCompulsary(), "N", "Y"));	
+			objModel.setStrPrintFullVoidBill(objGlobal.funIfNull(objBean.getStrPrintFullVoidBill(), "N", "Y"));
+			objModel.setStrDBBackupMailReceiver(objGlobal.funIfNull(objBean.getStrDBBackupReceiverEmailId(), " ", objBean.getStrDBBackupReceiverEmailId()));
+			
+			//funSaveUpdatePropertySetup(objModel);
+			objBaseService.funSave(objModel);
+			
+			if (objModel.getStrPOSType().equalsIgnoreCase("Client POS"))
+			{
+				funPostPropertySetupDataToHO(clientCode);
+				funPostBillSeriesDataHO(clientCode);
+			}
+			
+            
 			if (objBean.getStrJioPOSIntegrationYN().equalsIgnoreCase("Y"))
 			{
 				if (!(objBean.getStrJioDeviceID().isEmpty()))
@@ -1369,54 +1474,63 @@ public class clsPOSPropertySetupController
 				}
 			}
 
-			List<clsPOSSMSSetupBean> smsList = objBean.getListSMSDtl();
-			StringBuilder sql = new StringBuilder();
-			sql.append("select * from tblsmssetup where strPOSCode='" + posCode + "' and strClientCode='" + clientCode + "' ");
-			List listSMS = objBaseService.funGetList(sql, "sql");
+			
+			StringBuilder hql = new StringBuilder();
+			hql.setLength(0);
+			hql.append(" from clsPOSSMSSetupModel   where strPOSCode='" + posCode + "' and  strClientCode='" + clientCode + "' ");
+			List listSMS = objBaseService.funGetList(hql, "hql");
 			if (null != listSMS)
 			{
-				clsPOSSMSSetupModel objSmSModel = new clsPOSSMSSetupModel();
+				
 				for (int i = 0; i < listSMS.size(); i++)
 				{
-					clsPOSSMSSetupBean objsmsbean = new clsPOSSMSSetupBean();
-					objsmsbean = (clsPOSSMSSetupBean) listSMS.get(i);
-					// clsPOSSMSSetupModel objSmSModel = new
-					// clsPOSSMSSetupModel();
-					Object[] obj = (Object[]) listSMS.get(i);
-					String transName = obj[1].toString();
-					String sendSMSYN = obj[2].toString();
+				     
+					clsPOSSMSSetupModel obj = (clsPOSSMSSetupModel) listSMS.get(i);
+					String transName = obj.getStrTransactionName();
+					String sendSMSYN =obj.getStrSendSMSYN();
+					clsPOSSMSSetupModel objSmSModel = new clsPOSSMSSetupModel(new clsPOSSMSSetupModel_ID(clientCode,posCode,transName));
 					switch (transName)
 					{
 					case "DayEnd":
-
-						objSmSModel.setStrSendSMSYN(objGlobal.funIfNull(objsmsbean.getStrSendSMSYN(), "N", "Y"));
+                        objSmSModel.setStrSendSMSYN(objGlobal.funIfNull(objBean.getStrDayEndSMSYN() , "N", "Y"));
+                         break;
 					case "VoidKOT":
-						objSmSModel.setStrSendSMSYN(objGlobal.funIfNull(objsmsbean.getStrSendSMSYN(), "N", "Y"));
+						objSmSModel.setStrSendSMSYN(objGlobal.funIfNull(objBean.getStrVoidKOTSMSYN() , "N", "Y"));
+						 break;
 					case "NCKOT":
-						objSmSModel.setStrSendSMSYN(objGlobal.funIfNull(objsmsbean.getStrSendSMSYN(), "N", "Y"));
+						objSmSModel.setStrSendSMSYN(objGlobal.funIfNull(objBean.getStrNCKOTSMSYN() , "N", "Y"));
+						 break;
 					case "VoidAdvOrder":
-						objSmSModel.setStrSendSMSYN(objGlobal.funIfNull(objsmsbean.getStrSendSMSYN(), "N", "Y"));
+						objSmSModel.setStrSendSMSYN(objGlobal.funIfNull( objBean.getStrVoidAdvOrderSMSYN(), "N", "Y"));
+						 break;
 					case "VoidBill":
-						objSmSModel.setStrSendSMSYN(objGlobal.funIfNull(objsmsbean.getStrSendSMSYN(), "N", "Y"));
+						objSmSModel.setStrSendSMSYN(objGlobal.funIfNull(objBean.getStrVoidBill() , "N", "Y"));
+						 break;
 					case "ModifyBill":
-						objSmSModel.setStrSendSMSYN(objGlobal.funIfNull(objsmsbean.getStrSendSMSYN(), "N", "Y"));
+						objSmSModel.setStrSendSMSYN(objGlobal.funIfNull(objBean.getStrModifyBill() , "N", "Y"));
+						 break;
 					case "SettleBill":
-						objSmSModel.setStrSendSMSYN(objGlobal.funIfNull(objsmsbean.getStrSendSMSYN(), "N", "Y"));
-					case "ComplimentaryBill":
-						objSmSModel.setStrSendSMSYN(objGlobal.funIfNull(objsmsbean.getStrSendSMSYN(), "N", "Y"));
+						objSmSModel.setStrSendSMSYN(objGlobal.funIfNull(objBean.getStrSettleBill() , "N", "Y"));
+						 break;
+					case "ComplementaryBill":
+						objSmSModel.setStrSendSMSYN(objGlobal.funIfNull(objBean.getStrComplimentaryBill() , "N", "Y"));
+						 break;
 					}
 
-					objSmSModel.setLongMobileNo(objsmsbean.getLongMobileNo());
+					objSmSModel.setLongMobileNo(obj.getLongMobileNo());
 					objSmSModel.setStrUserCreated(webStockUserCode);
 					objSmSModel.setStrUserEdited(webStockUserCode);
-					objSmSModel.setStrTransactionName(objsmsbean.getStrTransactionName());
+					objSmSModel.setStrTransactionName(transName);
 					objSmSModel.setStrDataPostFlag("Y");
+					objSmSModel.setDteDateCreated(dateTime);
+					objSmSModel.setDteDateEdited(dateTime);
+					
 
 					objBaseService.funSave(objSmSModel);
 
 				}
 			}
-
+		}
 			/*
 			 * List<clsPOSSMSSetupBean> listsms = objBean.getListSMSDtl(); if
 			 * (null != listsms) { // DayEnd clsPOSSMSSetupBean objsms = new
@@ -1493,9 +1607,10 @@ public class clsPOSPropertySetupController
 			 */
 
 			req.getSession().setAttribute("success", true);
-			req.getSession().setAttribute("successMessage", "Updated Successfully");
+			req.getSession().setAttribute("successMessage","Updated Successfully");
 			return new ModelAndView("redirect:/frmPOSPropertySetup.html");
 		}
+			
 		catch (Exception ex)
 		{
 
@@ -1504,8 +1619,9 @@ public class clsPOSPropertySetupController
 		}
 	}
 
-	public void funSaveUpdatePropertySetup(clsSetupHdModel objModel)
+	/*public void funSaveUpdatePropertySetup(clsSetupHdModel objModel)
 	{
+		String clientCode=objModel.getStrClientCode();
 		String newPropertyPOSCode = objModel.getStrPOSCode();
 		String strHOPOSType = objModel.getStrPOSType();
 		try
@@ -1517,7 +1633,7 @@ public class clsPOSPropertySetupController
 				objBaseService.funSave(objModel);
 				if (!newPropertyPOSCode.equalsIgnoreCase("All"))
 				{
-					sql = "delete from tblsetup where strPOSCode='All' ";
+					sql = "delete from tblsetup where strPOSCode='All' and strClientCode='"+clientCode+"' ";
 					objBaseService.funExecuteUpdate(sql, "sql");
 				}
 			}
@@ -1526,13 +1642,13 @@ public class clsPOSPropertySetupController
 				objBaseService.funSave(objModel);
 				if (newPropertyPOSCode.equalsIgnoreCase("All"))
 				{
-					sql = "delete from tblsetup where strPOSCode<>'All' ";
+					sql = "delete from tblsetup where strPOSCode<>'All' and strClientCode='"+clientCode+"' ";
 					objBaseService.funExecuteUpdate(sql, "sql");
 				}
 				if (strHOPOSType.equalsIgnoreCase("Client POS"))
 				{
-					funPostPropertySetupDataToHO();
-					funPostBillSeriesDataHO();
+					funPostPropertySetupDataToHO(clientCode);
+					funPostBillSeriesDataHO(clientCode);
 				}
 			}
 
@@ -1541,19 +1657,21 @@ public class clsPOSPropertySetupController
 		{
 			e.printStackTrace();
 		}
-	}
+	}*/
 
-	private void funPostPropertySetupDataToHO()
+	private void funPostPropertySetupDataToHO(String clientCode)
 	{
-		boolean flgResult = false;
+		
 		StringBuilder sql = new StringBuilder();
 		clsSetupHdModel objSetupHdModel = new clsSetupHdModel();
+		//boolean flgResult = false;
 		try
 		{
-			Map hmMainMap = new HashMap();
+			/*Map hmMainMap = new HashMap();
 			List listData = new ArrayList<>();
 			boolean flgAllPOS = false;
 			sql.append("select strClientCode from tblsetup where strPOSCode='All' ");
+			
 			List list = objBaseService.funGetList(sql, "sql");
 			if (list.size() > 0)
 			{
@@ -1563,16 +1681,19 @@ public class clsPOSPropertySetupController
 			list = objBaseService.funLoadAllCriteriaWise(objSetupHdModel, "strDataPostFlag", "N");
 
 			if (list.size() > 0)
-			{
+			{*/ 
+			Map hmMainMap = new HashMap();
+			List listData = new ArrayList<>();
+			List list=objBaseService.funLoadAllCriteriaWise(objSetupHdModel,"strDataPostFlag", "N");
 				for (int i = 0; i < list.size(); i++)
 				{
 					objSetupHdModel = (clsSetupHdModel) list.get(i);
 					if (!objSetupHdModel.getStrWSClientCode().trim().isEmpty())
 					{
-						if (flgAllPOS)
-						{
+						//if (flgAllPOS)
+						//{
 							sql.setLength(0);
-							sql.append("select strPOSCode from tblposmaster ");
+							sql.append("select strPOSCode from tblposmaster where strClientCode='"+clientCode+"' ");
 
 							List poslist = objBaseService.funGetList(sql, "sql");
 							for (int j = 0; j < poslist.size(); j++)
@@ -1786,11 +1907,12 @@ public class clsPOSPropertySetupController
 								hmData.put("strCheckDebitCardBalOnTransactions", objSetupHdModel.getStrCheckDebitCardBalOnTransactions());
 							
 								hmData.put("strUserWiseShowBill", objSetupHdModel.getStrUserWiseShowBill());
+								hmData.put("strPrintFullVoidBill", objSetupHdModel.getStrPrintFullVoidBill());
 
 								listData.add(hmData);
 							}
 						}
-						else
+						/*else
 						{
 							Map hmData = new HashMap();
 
@@ -1990,12 +2112,12 @@ public class clsPOSPropertySetupController
 							hmData.put("strAreaWiseCostCenterKOTPrintingYN", objSetupHdModel.getStrAreaWiseCostCenterKOTPrintingYN());
 							hmData.put("strPrintOriginalOnBill", objSetupHdModel.getStrPrintOriginalOnBill());
 							hmData.put("strCheckDebitCardBalOnTransactions", objSetupHdModel.getStrCheckDebitCardBalOnTransactions());
-
+							hmData.put("strPrintFullVoidBill", objSetupHdModel.getStrPrintFullVoidBill()); 
 							listData.add(hmData);
 
-						}
-					}
-				}
+						}*/
+					//}
+				//}
 			}
 			hmMainMap.put("tblsetup", listData);
 			funPOSTDataToHO(hmMainMap);
@@ -2006,7 +2128,7 @@ public class clsPOSPropertySetupController
 		}
 	}
 
-	private void funPostBillSeriesDataHO()
+	private void funPostBillSeriesDataHO(String clientCode)
 	{
 		boolean flgResult = false;
 		StringBuilder sql = new StringBuilder();
@@ -2016,7 +2138,7 @@ public class clsPOSPropertySetupController
 			Map hmMainMap = new HashMap();
 			List listData = new ArrayList();
 
-			sql.append("select * from tblbillseries where strDataPostFlag='N'");
+			sql.append("select * from tblbillseries where strDataPostFlag='N' and strClientCode='"+clientCode+"'");
 
 			List list = objBaseService.funGetList(sql, "sql");
 			for (int j = 0; j < list.size(); j++)
@@ -2207,13 +2329,14 @@ public class clsPOSPropertySetupController
 		return nextDate;
 	}
 
-	public Map funLoadAreaList(String posCode)
+	public Map funLoadAreaList(String posCode,String clientCode)
 	{
+	
 		Map mapArea = new TreeMap();
 		try
 		{
 			StringBuilder sqlBuilder = new StringBuilder();
-			sqlBuilder.append("select * from tblareamaster where (strPOSCode='" + posCode + "' or strPOSCode='All' )");
+			sqlBuilder.append("select * from tblareamaster where (strPOSCode='" + posCode + "' or strPOSCode='All' ) and strClientCode='"+clientCode+"'");
 			List listSql = objBaseService.funGetList(sqlBuilder, "sql");
 			if (listSql.size() > 0)
 			{
@@ -2231,7 +2354,7 @@ public class clsPOSPropertySetupController
 		return mapArea;
 	}
 
-	public Map funLoadTaxList()
+	public Map funLoadTaxList(String clientCode)
 	{
 
 		Map mapTax = new TreeMap();
@@ -2239,7 +2362,7 @@ public class clsPOSPropertySetupController
 		try
 		{
 			StringBuilder sqlBuilder = new StringBuilder();
-			sqlBuilder.append("select a.strTaxCode,a.strTaxDesc from tbltaxhd a");
+			sqlBuilder.append("select a.strTaxCode,a.strTaxDesc from tbltaxhd a where strClientCode='"+clientCode+"'");
 			List listSql = objBaseService.funGetList(sqlBuilder, "sql");
 			if (listSql.size() > 0)
 			{

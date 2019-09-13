@@ -898,7 +898,7 @@ public class clsPOSBillSettlementControllerForDirectBiller
 		sbSql.setLength(0);
 
 		boolean isBillSeries = false;
-		clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(POSCode, clientCode);
+		clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,POSCode);
 		if (objSetupHdModel.getStrEnableBillSeries().equalsIgnoreCase("Y"))
 		{
 			isBillSeries = true;
@@ -1052,7 +1052,7 @@ public class clsPOSBillSettlementControllerForDirectBiller
 			objBillingAPI.funSaveBill(isBillSeries, "", listBillSeriesBillDtl, voucherNo, listOfWholeKOTItemDtl, objBean, request, hmPromoItem);
 
 			/* printing bill............... */
-			objTextFileGeneration.funGenerateAndPrintBill(voucherNo, POSCode, clientCode);
+			//objTextFileGeneration.funGenerateAndPrintBill(voucherNo, POSCode, clientCode);
 		}
 
 		Map<String, Object> model = new HashMap<String, Object>();

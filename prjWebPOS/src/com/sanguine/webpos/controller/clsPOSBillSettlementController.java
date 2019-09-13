@@ -62,6 +62,7 @@ public class clsPOSBillSettlementController
 	@Autowired 
 	clsPOSMasterService objMasterService;
 	
+	@SuppressWarnings("finally")
 	@RequestMapping(value = "/frmPOSRestaurantDtl", method = RequestMethod.GET)
 	public ModelAndView funOpenForm(Map<String, Object> model, HttpServletRequest request)
 	{
@@ -72,7 +73,6 @@ public class clsPOSBillSettlementController
 		{
 
 			String clientCode = request.getSession().getAttribute("gClientCode").toString();
-			String posClientCode = request.getSession().getAttribute("gPOSCode").toString();
 			String posCode = request.getSession().getAttribute("gPOSCode").toString();
 			String posDate = request.getSession().getAttribute("gPOSDate").toString().split(" ")[0];
 			String userCode = request.getSession().getAttribute("gUserCode").toString();
@@ -81,10 +81,10 @@ public class clsPOSBillSettlementController
 
 			String usertype = request.getSession().getAttribute("gUserType").toString();
 			boolean isSuperUser = false;
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,posCode);
 			if (usertype.equalsIgnoreCase("yes"))
 			{
 				isSuperUser = true;
-				objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,posCode);
 			}
 			else
 			{
@@ -103,7 +103,7 @@ public class clsPOSBillSettlementController
 
 			JSONObject jObj1 = objBillingAPI.funSettlementMode(clientCode, posCode, isSuperUser, gPickSettlementsFromPOSMaster, gEnablePMSIntegrationYN);
 
-			JSONObject jsSettelementOptionsDtl = (JSONObject) jObj1.get("SettleObj");
+			//JSONObject jsSettelementOptionsDtl = (JSONObject) jObj1.get("SettleObj");
 
 			listSettlementObject = (List) jObj1.get("listSettleObj");
 			JSONArray jArr = new JSONArray();
@@ -140,59 +140,77 @@ public class clsPOSBillSettlementController
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/fillUnsettleBillData", method = RequestMethod.GET)
 	public @ResponseBody Map funFillUnSettleBill(Map<String, Object> model, HttpServletRequest req)
 	{
 		List listUnsettlebill = new ArrayList();
-		Map hmUnsettleBill = new HashMap();
+		Map<String,Object> hmUnsettleBill = new HashMap<String,Object> ();
 		try
 		{
 			String clientCode = req.getSession().getAttribute("gClientCode").toString();
 			String strPosCode = req.getSession().getAttribute("loginPOS").toString();
 			String posDate = req.getSession().getAttribute("gPOSDate").toString();
 
-			hmUnsettleBill = funFillUnsettleBill(clientCode, strPosCode, posDate);
-
-			String gShowBillsType = hmUnsettleBill.get("gShowBillsType").toString();
-			String gCMSIntegrationYN = hmUnsettleBill.get("gCMSIntegrationYN").toString();
-			List listData = (List) hmUnsettleBill.get("jArr");
-
-			for (int i = 0; i < listData.size(); i++)
+			StringBuilder sql = new StringBuilder();
+			try
 			{
-				LinkedList setFillGrid = new LinkedList();
-				Map hmtemp = (Map) listData.get(i);
-				if (gShowBillsType.equalsIgnoreCase("Table Detail Wise"))
-				{
-					setFillGrid.add(hmtemp.get("strBillNo").toString());
-					setFillGrid.add(hmtemp.get("strTableName").toString());
-					setFillGrid.add(hmtemp.get("strWShortName").toString());
-					setFillGrid.add(hmtemp.get("strCustomerName").toString());
-					setFillGrid.add(hmtemp.get("dteBillDate").toString());
-					setFillGrid.add(Double.parseDouble(hmtemp.get("dblGrandTotal").toString()));
-					setFillGrid.add(hmtemp.get("strTableNo").toString());
-
-					listUnsettlebill.add(setFillGrid);
-				}
-				else
-				{
-					setFillGrid.add(hmtemp.get("strBillNo").toString());
-					setFillGrid.add(hmtemp.get("strTableName").toString());
-					setFillGrid.add(hmtemp.get("strCustomerName").toString());
-					setFillGrid.add(hmtemp.get("strBuildingName").toString());
-					setFillGrid.add(hmtemp.get("strDPName").toString());
-					setFillGrid.add(hmtemp.get("dteBillDate").toString());
-					setFillGrid.add(Double.parseDouble(hmtemp.get("dblGrandTotal").toString()));
-					setFillGrid.add(hmtemp.get("strTableNo").toString());
-
-					listUnsettlebill.add(setFillGrid);
-
-				}
-
-				hmUnsettleBill.put("listUnsettlebill", listUnsettlebill);
-				System.out.println(listUnsettlebill);
+				clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,strPosCode);
+				String gShowBillsType = objSetupHdModel.getStrShowBillsDtlType();
+				String gCMSIntegrationYN = objSetupHdModel.getStrCMSIntegrationYN();
 				hmUnsettleBill.put("gShowBillsType", gShowBillsType);
 				hmUnsettleBill.put("gCMSIntegrationYN", gCMSIntegrationYN);
 
+				if (gShowBillsType.equalsIgnoreCase("Table Detail Wise"))
+				{
+					sql.append("select a.strBillNo,ifnull(b.strTableNo,''),ifnull(b.strTableName,''),ifnull(c.strWaiterNo,'')" + " ,ifnull(c.strWShortName,''),ifnull(d.strCustomerCode,''),ifnull(d.strCustomerName,''),a.dblGrandTotal" + " ,DATE_FORMAT(a.dteBillDate,'%h:%i:%s')  " + " from tblbillhd a left outer join tbltablemaster b on a.strTableNo=b.strTableNo and a.strClientCode=b.strClientCode left outer join tblwaitermaster c on a.strWaiterNo=c.strWaiterNo  and a.strClientCode=c.strClientCode  left outer join tblcustomermaster d on a.strCustomerCode=d.strCustomerCode  and a.strClientCode=d.strClientCode where a.strBillNo not in (select strBillNo from tblbillsettlementdtl where strClientCode='"+clientCode+"' )  and date(a.dteBillDate)='" + posDate + "' " + " and a.strPOSCode='" + strPosCode + "' and a.strClientCode='"+clientCode+"' ");
+				}
+				else// Delivery Detail Wise
+				{
+					sql.append("SELECT a.strBillNo,IFNULL(d.strCustomerName,''),ifnull(e.strBuildingName,''),ifnull(f.strDPName,'')" + " ,a.dblGrandTotal,ifnull(g.strTableNo,''),ifnull(g.strTableName,''),DATE_FORMAT(a.dteBillDate,'%h:%i:%s') " + " FROM tblbillhd a " + " left outer join tblhomedeldtl b on a.strBillNo=b.strBillNo  and a.strClientCode=b.strClientCode " + " LEFT OUTER JOIN tblcustomermaster d ON a.strCustomerCode=d.strCustomerCode  and a.strClientCode=d.strClientCode " + " left outer join tblbuildingmaster e on d.strBuldingCode=e.strBuildingCode  and d.strClientCode=e.strClientCode " + " left outer join tbldeliverypersonmaster  f on  f.strDPCode=b.strDPCode  and f.strClientCode=b.strClientCode " + " left outer join tbltablemaster g on a.strTableNo=g.strTableNo  and a.strClientCode=g.strClientCode " + " WHERE a.strBillNo NOT IN (SELECT strBillNo FROM tblbillsettlementdtl  where strClientCode='"+clientCode+"' )  AND DATE(a.dteBillDate)='" + posDate + "'  AND a.strPOSCode='" + strPosCode + "' and a.strClientCode='"+clientCode+"' group by a.strBillNo");
+				}
+				List listPendBillData = objBaseService.funGetList(sql, "sql");
+				if (listPendBillData.size() > 0)
+				{
+					for (int i = 0; i < listPendBillData.size(); i++)
+					{
+						LinkedList<String> setFillGrid = new LinkedList();
+						Object[] obj = (Object[]) listPendBillData.get(i);
+						
+						if (gShowBillsType.equalsIgnoreCase("Table Detail Wise"))
+						{
+							setFillGrid.add(obj[0].toString());
+							setFillGrid.add(obj[2].toString());
+							setFillGrid.add(obj[4].toString());
+							setFillGrid.add(obj[6].toString());
+							setFillGrid.add(obj[8].toString());
+							setFillGrid.add(obj[7].toString());
+							setFillGrid.add(obj[1].toString());
+
+							listUnsettlebill.add(setFillGrid);
+						}
+						else// Delivery Detail Wise
+						{
+							setFillGrid.add(obj[0].toString());
+							setFillGrid.add(obj[6].toString());
+							setFillGrid.add(obj[1].toString());
+							setFillGrid.add(obj[2].toString());
+							setFillGrid.add(obj[3].toString());
+							setFillGrid.add(obj[7].toString());
+							setFillGrid.add(obj[4].toString());
+							setFillGrid.add(obj[5].toString());
+
+							listUnsettlebill.add(setFillGrid);
+						}
+						
+					}
+				}
+				hmUnsettleBill.put("listUnsettlebill", listUnsettlebill);
+
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
 			}
 		}
 		catch (Exception ex)
@@ -202,77 +220,6 @@ public class clsPOSBillSettlementController
 		return hmUnsettleBill;
 	}
 
-	@RequestMapping(value = "/fillBillSettlementData", method = RequestMethod.GET)
-	public ModelAndView funOpenBillSettlement(@ModelAttribute("command") clsPOSBillSettlementBean objBean, Map<String, Object> model, HttpServletRequest request)
-	{
-		String strClientCode = request.getSession().getAttribute("gClientCode").toString();
-		String urlHits = "2";
-		try
-		{
-			urlHits = request.getParameter("saddr").toString();
-		}
-		catch (NullPointerException e)
-		{
-			urlHits = "1";
-		}
-		model.put("urlHits", urlHits);
-
-		String billNo = objBean.getStrBillNo();
-		String selectedTableNo = objBean.getStrTableNo();
-		String selectedRowIndex = objBean.getSelectedRow();
-		String billType = "";
-
-		String posUrl = clsPOSGlobalFunctionsController.POSWSURL + "/WebPOSBillSettlement/fillRowSelected";
-		JSONObject objRows = new JSONObject();
-		String clientCode = request.getSession().getAttribute("gClientCode").toString();
-		String strPosCode = request.getSession().getAttribute("loginPOS").toString();
-		
-		String posDate = request.getSession().getAttribute("gPOSDate").toString();
-		String isSuperUser = request.getSession().getAttribute("superuser").toString();
-		boolean superuser = true;
-		if ("YES".equalsIgnoreCase(isSuperUser))
-		{
-			superuser = true;
-		}
-
-		request.setAttribute("billNo", billNo);
-
-		objRows.put("billNo", billNo);
-		objRows.put("selectedTableNo", selectedTableNo);
-		objRows.put("selectedRowIndex", selectedRowIndex);
-		objRows.put("clientCode", clientCode);
-		objRows.put("posCode", strPosCode);
-		objRows.put("billType", billType);
-		objRows.put("superuser", superuser);
-
-		JSONObject jObj = null;//objGlobalFunctions.funPOSTMethodUrlJosnObjectData(posUrl, objRows);
-
-		List listSettlemode = (List) jObj.get("jArrSettlementMode");
-		model.put("listSettlemode", listSettlemode);
-
-		// String path=request.getContextPath().toString();
-		// try{
-		//// String searchUrl="/fillBillSettlementData.html?";
-		// res.sendRedirect("fillBillSettlementData.html?");
-		//
-		// }catch(Exception e){
-		// e.printStackTrace();
-		// }
-		if ("2".equalsIgnoreCase(urlHits))
-		{
-			return new ModelAndView("frmBillSettlement_1", "command", new clsPOSBillSettlementBean());
-		}
-		else if ("1".equalsIgnoreCase(urlHits))
-		{
-			return new ModelAndView("frmBillSettlement", "command", new clsPOSBillSettlementBean());
-		}
-		else
-		{
-			return null;
-		}
-
-	}
-
 	public Map funFillUnsettleBill(String clientCode, String posCode, String posDate)
 	{
 		Map hmReturn = new HashMap();
@@ -280,21 +227,19 @@ public class clsPOSBillSettlementController
 		StringBuilder sql = new StringBuilder();
 		try
 		{
-			Map hmBillType = objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gShowBillsType");
-			String gShowBillsType = hmBillType.get("gShowBillsType").toString();
-			Map hmCMSIntegrationYN = objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gCMSIntegrationYN");
-			String gCMSIntegrationYN = hmCMSIntegrationYN.get("gCMSIntegrationYN").toString();
-
+			clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(posCode, clientCode);
+			String gShowBillsType = objSetupHdModel.getStrShowBillsDtlType();
+			String gCMSIntegrationYN = objSetupHdModel.getStrCMSIntegrationYN();
 			hmReturn.put("gShowBillsType", gShowBillsType);
 			hmReturn.put("gCMSIntegrationYN", gCMSIntegrationYN);
 
 			if (gShowBillsType.equalsIgnoreCase("Table Detail Wise"))
 			{
-				sql.append("select a.strBillNo,ifnull(b.strTableNo,''),ifnull(b.strTableName,''),ifnull(c.strWaiterNo,'')" + " ,ifnull(c.strWShortName,''),ifnull(d.strCustomerCode,''),ifnull(d.strCustomerName,''),a.dblGrandTotal" + " ,DATE_FORMAT(a.dteBillDate,'%h:%i:%s')  " + " from tblbillhd a left outer join tbltablemaster b on a.strTableNo=b.strTableNo" + " left outer join tblwaitermaster c on a.strWaiterNo=c.strWaiterNo" + " left outer join tblcustomermaster d on a.strCustomerCode=d.strCustomerCode" + " where a.strBillNo not in (select strBillNo from tblbillsettlementdtl) " + " and date(a.dteBillDate)='" + posDate + "' " + " and a.strPOSCode='" + posCode + "' ");
+				sql.append("select a.strBillNo,ifnull(b.strTableNo,''),ifnull(b.strTableName,''),ifnull(c.strWaiterNo,'')" + " ,ifnull(c.strWShortName,''),ifnull(d.strCustomerCode,''),ifnull(d.strCustomerName,''),a.dblGrandTotal" + " ,DATE_FORMAT(a.dteBillDate,'%h:%i:%s')  " + " from tblbillhd a left outer join tbltablemaster b on a.strTableNo=b.strTableNo and a.strClientCode=b.strClientCode left outer join tblwaitermaster c on a.strWaiterNo=c.strWaiterNo  and a.strClientCode=c.strClientCode  left outer join tblcustomermaster d on a.strCustomerCode=d.strCustomerCode  and a.strClientCode=d.strClientCode where a.strBillNo not in (select strBillNo from tblbillsettlementdtl where strClientCode='"+clientCode+"' )  and date(a.dteBillDate)='" + posDate + "' " + " and a.strPOSCode='" + posCode + "' and a.strClientCode='"+clientCode+"' ");
 			}
 			else// Delivery Detail Wise
 			{
-				sql.append("SELECT a.strBillNo,IFNULL(d.strCustomerName,''),ifnull(e.strBuildingName,''),ifnull(f.strDPName,'')" + " ,a.dblGrandTotal,ifnull(g.strTableNo,''),ifnull(g.strTableName,''),DATE_FORMAT(a.dteBillDate,'%h:%i:%s') " + " FROM tblbillhd a " + " left outer join tblhomedeldtl b on a.strBillNo=b.strBillNo " + " LEFT OUTER JOIN tblcustomermaster d ON a.strCustomerCode=d.strCustomerCode " + " left outer join tblbuildingmaster e on d.strBuldingCode=e.strBuildingCode " + " left outer join tbldeliverypersonmaster  f on  f.strDPCode=b.strDPCode " + " left outer join tbltablemaster g on a.strTableNo=g.strTableNo " + " WHERE a.strBillNo NOT IN (SELECT strBillNo FROM tblbillsettlementdtl) " + " AND DATE(a.dteBillDate)='" + posDate + "' " + " AND a.strPOSCode='" + posCode + "' " + " group by a.strBillNo");
+				sql.append("SELECT a.strBillNo,IFNULL(d.strCustomerName,''),ifnull(e.strBuildingName,''),ifnull(f.strDPName,'')" + " ,a.dblGrandTotal,ifnull(g.strTableNo,''),ifnull(g.strTableName,''),DATE_FORMAT(a.dteBillDate,'%h:%i:%s') " + " FROM tblbillhd a " + " left outer join tblhomedeldtl b on a.strBillNo=b.strBillNo  and a.strClientCode=b.strClientCode " + " LEFT OUTER JOIN tblcustomermaster d ON a.strCustomerCode=d.strCustomerCode  and a.strClientCode=d.strClientCode " + " left outer join tblbuildingmaster e on d.strBuldingCode=e.strBuildingCode  and d.strClientCode=e.strClientCode " + " left outer join tbldeliverypersonmaster  f on  f.strDPCode=b.strDPCode  and f.strClientCode=b.strClientCode " + " left outer join tbltablemaster g on a.strTableNo=g.strTableNo  and a.strClientCode=g.strClientCode " + " WHERE a.strBillNo NOT IN (SELECT strBillNo FROM tblbillsettlementdtl  where strClientCode='"+clientCode+"' )  AND DATE(a.dteBillDate)='" + posDate + "'  AND a.strPOSCode='" + posCode + "' and a.strClientCode='"+clientCode+"' group by a.strBillNo");
 			}
 			List listPendBillData = objBaseService.funGetList(sql, "sql");
 			if (listPendBillData.size() > 0)

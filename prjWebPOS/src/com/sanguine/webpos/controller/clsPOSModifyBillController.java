@@ -68,11 +68,9 @@ public class clsPOSModifyBillController
 			urlHits = request.getParameter("saddr").toString();
 
 			String clientCode = request.getSession().getAttribute("gClientCode").toString();
-			String posClientCode = request.getSession().getAttribute("gPOSCode").toString();
 			String posCode = request.getSession().getAttribute("gPOSCode").toString();
 			String posDate = request.getSession().getAttribute("gPOSDate").toString().split(" ")[0];
-			String userCode = request.getSession().getAttribute("gUserCode").toString();
-
+			
 			model.put("gPOSCode", posCode);
 			model.put("gClientCode", clientCode);
 
@@ -123,9 +121,22 @@ public class clsPOSModifyBillController
 		{
 			String posCode = request.getSession().getAttribute("gPOSCode").toString();
 			String posDate = request.getSession().getAttribute("gPOSDate").toString().split(" ")[0];
-
+			String clientCode = request.getSession().getAttribute("gClientCode").toString();
+			
 			sql.setLength(0);
-			sql.append("select c.strItemCode,c.strItemName,c.dblRate,c.dblQuantity,c.dblAmount,c.dblTaxAmount,c.dblDiscAmt,c.isModifier,c.strSequenceNo " + ",d.strSubGroupCode,e.strSubGroupName,e.strGroupCode,f.strGroupName " + "from " + "(select a.strItemCode,a.strItemName,a.dblRate,sum(a.dblQuantity)dblQuantity,sum(a.dblAmount)dblAmount,sum(a.dblTaxAmount)dblTaxAmount,sum(a.dblDiscountAmt)dblDiscAmt,'false' isModifier,a.strSequenceNo strSequenceNo " + "from tblbilldtl a " + "where a.strBillNo='" + billNo + "' " + "group by a.strItemCode " + " " + "union all " + " " + "select b.strItemCode,b.strModifierName,b.dblRate,sum(b.dblQuantity)dblQuantity,sum(b.dblAmount)dblAmount,0.00 dblTaxAmount,sum(b.dblDiscAmt)dblDiscAmt,'true' isModifier,b.strSequenceNo strSequenceNo " + "from tblbillmodifierdtl b " + "where b.strBillNo='" + billNo + "' " + "group by b.strItemCode) c " + ",tblitemmaster d,tblsubgrouphd e,tblgrouphd f " + "where left(c.strItemCode,7)=d.strItemCode " + "and d.strSubGroupCode=e.strSubGroupCode " + "and e.strGroupCode=f.strGroupCode " + "order by c.strItemCode,c.strItemName ");
+			sql.append("SELECT c.strItemCode,c.strItemName,c.dblRate,c.dblQuantity,c.dblAmount,c.dblTaxAmount,c.dblDiscAmt,c.isModifier,c.strSequenceNo,d.strSubGroupCode,e.strSubGroupName,e.strGroupCode,f.strGroupName FROM ( "
+					+" SELECT a.strItemCode,a.strItemName,a.dblRate, SUM(a.dblQuantity)dblQuantity, SUM(a.dblAmount)dblAmount, SUM(a.dblTaxAmount)dblTaxAmount, SUM(a.dblDiscountAmt)dblDiscAmt,'false' isModifier,a.strSequenceNo strSequenceNo,a.strClientCode strClientCode "
+					+" FROM tblbilldtl a "
+					+" WHERE a.strBillNo='"+billNo+"' and a.strClientCode='"+clientCode+"' and date(a.dteBillDate)='"+posDate+"'  "  
+					+" GROUP BY a.strItemCode UNION ALL "
+					+" SELECT b.strItemCode,b.strModifierName,b.dblRate, SUM(b.dblQuantity)dblQuantity, SUM(b.dblAmount)dblAmount,0.00 dblTaxAmount, SUM(b.dblDiscAmt)dblDiscAmt,'true' isModifier,b.strSequenceNo strSequenceNo,b.strClientCode strClientCode "
+					+" FROM tblbillmodifierdtl b "
+					+" WHERE b.strBillNo='"+billNo+"'  and b.strClientCode='"+clientCode+"'  and date(b.dteBillDate)='"+posDate+"' "
+					+" GROUP BY b.strItemCode) c,tblitemmaster d,tblsubgrouphd e,tblgrouphd f "
+					+" WHERE "
+					+" LEFT(c.strItemCode,7)=d.strItemCode AND d.strSubGroupCode=e.strSubGroupCode AND e.strGroupCode=f.strGroupCode "
+					+" and  c.strClientCode=d.strClientCode and  d.strClientCode=e.strClientCode and  e.strClientCode=f.strClientCode "
+					+" ORDER BY c.strItemCode,c.strItemName");
 			List listPendBillData = objBaseService.funGetList(sql, "sql");
 			if (listPendBillData != null && listPendBillData.size() > 0)
 			{
@@ -153,9 +164,9 @@ public class clsPOSModifyBillController
 					listOfBillItemDetails.add(objItemDtl);
 				}
 			}
-
 			sql.setLength(0);
-			sql.append("select a.strOperationType " + "from tblbillhd a " + "where a.strBillNo='" + billNo + "' " + "and date(a.dteBillDate)='" + posDate + "' " + "and a.strPOSCode='" + posCode + "'");
+			sql.append("select a.strOperationType from tblbillhd a where a.strBillNo='" + billNo + "' and date(a.dteBillDate)='" + posDate + "' " + "and a.strPOSCode='" + posCode + "' and a.strClientCode='"+clientCode+"'");
+
 			List listOperationType = objBaseService.funGetList(sql, "sql");
 			if (listOperationType != null && listOperationType.size() > 0)
 			{
@@ -191,7 +202,7 @@ public class clsPOSModifyBillController
 			String billNo = objBean.getStrBillNo();
 
 			boolean isBillSeries = false;
-			clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(posCode, clientCode);
+			clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup( clientCode,posCode);
 			
 			if (objSetupHdModel.getStrEnableBillSeries().equalsIgnoreCase("Y"))
 			{

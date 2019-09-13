@@ -76,7 +76,7 @@ public class clsPOSAreaWiseGroupWiseSalesReportController
 	@Autowired
 	intfBaseService objBaseService;
 
-	
+	HashMap<String,String> hmPOSData = new HashMap<String, String>();
 
 	@RequestMapping(value = "/frmAreaWiseGroupWiseSales", method = RequestMethod.GET)
 	public ModelAndView funOpenForm(Map<String, Object> model, HttpServletRequest request)throws Exception
@@ -92,18 +92,22 @@ public class clsPOSAreaWiseGroupWiseSalesReportController
 			urlHits = "1";
 		}
 		model.put("urlHits", urlHits);
-		HashMap hmPOSData = new HashMap<String, String>();
-		hmPOSData.put("ALL", "ALL");
+		//HashMap hmPOSData = new HashMap<String, String>();
+		List poslist = new ArrayList();
+		poslist.add("All");
+		//hmPOSData.put("ALL", "ALL");
 		List listOfPos = objMasterService.funFillPOSCombo(strClientCode);
 		if(listOfPos!=null)
 		{
 			for(int i =0 ;i<listOfPos.size();i++)
 			{
 				Object[] obj = (Object[]) listOfPos.get(i);
-				hmPOSData.put( obj[0].toString(), obj[1].toString());
+				poslist.add(obj[1].toString());
+				hmPOSData.put( obj[1].toString(), obj[0].toString());
 			}
 		}
-		model.put("posList", hmPOSData);
+		model.put("posList",poslist);
+		//model.put("posList", hmPOSData);
 		
 		Map hmAreaData = new TreeMap<>();
 		List listOfArea = objMasterService.funGetAllAreaForMaster(strClientCode);
@@ -119,6 +123,8 @@ public class clsPOSAreaWiseGroupWiseSalesReportController
 		
 		String posDate = request.getSession().getAttribute("gPOSDate").toString();
 		request.setAttribute("POSDate", posDate);
+		
+		
 
 		if ("2".equalsIgnoreCase(urlHits))
 		{
@@ -145,17 +151,30 @@ public class clsPOSAreaWiseGroupWiseSalesReportController
 			String strClientCode = req.getSession().getAttribute("gClientCode").toString();
 			Map hm = objGlobalFunctions.funGetCommonHashMapForJasperReport(objBean, req, resp);
 			String strPOSName = objBean.getStrPOSName();
+			String POSCode=req.getSession().getAttribute("loginPOS").toString();
 			String posCode = "ALL";
 			posCode = objBean.getStrPOSName();
-			hm.put("posCode", posCode);
+			
+			//hm.put("posCode", posCode);
 			String fromDate = hm.get("fromDate").toString();
 			String toDate = hm.get("toDate").toString();
 			String strUserCode = hm.get("userName").toString();
+			//String strPOSCode = posCode;
+			
+			if(!strPOSName.equalsIgnoreCase("ALL"))
+			{
+			posCode=hmPOSData.get(strPOSName);// funGetPOSCode(strPOSName);
+			}
+			hm.put("posCode", posCode);
+			
 			String strPOSCode = posCode;
-			String shiftNo = hm.get("shiftNo").toString();
+		
+			Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+			
+			String shiftNo = "ALL";
 			String areaName = objBean.getStrAreaCode();
 			List<clsPOSGroupSubGroupWiseSales> listOfGroupWise = new ArrayList<clsPOSGroupSubGroupWiseSales>();
-			listOfGroupWise = funAreaWiseGrouWiseSales(fromDate,toDate,strUserCode,strPOSCode,shiftNo,strClientCode,areaName);
+			listOfGroupWise = funAreaWiseGrouWiseSales(fromDate,toDate,strUserCode,posCode,shiftNo,strClientCode,areaName,objSetupParameter.get("gEnableShiftYN").toString());
 			
 			
 			
@@ -211,8 +230,9 @@ public class clsPOSAreaWiseGroupWiseSalesReportController
 
 	}
 
-	public List funAreaWiseGrouWiseSales(String fromDate,String toDate,String strUserCode,String strPOSCode,String shiftNo,String strClientCode,String areaName) throws Exception
+	public List funAreaWiseGrouWiseSales(String fromDate,String toDate,String strUserCode,String strPOSCode,String shiftNo,String strClientCode,String areaName,String enableShiftYN) throws Exception
 	{
+	
 		StringBuilder sbSqlLive = new StringBuilder();
 	    StringBuilder sbSqlQFile = new StringBuilder();
 	    StringBuilder sbSqlFilters = new StringBuilder();
@@ -223,7 +243,7 @@ public class clsPOSAreaWiseGroupWiseSalesReportController
 	    sbSqlQFile.setLength(0);
 	    sbSqlFilters.setLength(0);
 	    
-	    Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, strPOSCode, "gEnableShiftYN");
+	    //Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, strPOSCode, "gEnableShiftYN");
 
 	    sbSqlQFile.append("SELECT c.strGroupCode,c.strGroupName,sum( b.dblQuantity)"
 		    + " ,sum( b.dblAmount)-sum(b.dblDiscountAmt) "
@@ -294,14 +314,21 @@ public class clsPOSAreaWiseGroupWiseSalesReportController
 	    {
 		sbSqlFilters.append(" AND a.strPOSCode = '" + strPOSCode + "' ");
 	    }
-
-	    if (objSetupParameter.get("gEnableShiftYN").toString().equals("Y"))
+	    if(enableShiftYN.equalsIgnoreCase("Y"))
+	    {
+	    if (enableShiftYN.equalsIgnoreCase("Y") && (!shiftNo.equalsIgnoreCase("All")))
+			{
+		    	sbSqlFilters.append("and a.intShiftCode = '" + shiftNo + "' ");
+			}
+	    }
+	   /* if (objSetupParameter.get("gEnableShiftYN").toString().equals("Y"))
 	    {
 		if (objSetupParameter.get("gEnableShiftYN").toString().equals("Y") && (!shiftNo.equalsIgnoreCase("All")))
 		{
 		    sbSqlFilters.append(" and a.intShiftCode = '" + shiftNo + "' ");
+			
 		}
-	    }
+	    }*/
 
 	    if (!areaName.equalsIgnoreCase("All"))
 	    {
@@ -471,8 +498,8 @@ public class clsPOSAreaWiseGroupWiseSalesReportController
 	   
 
 	    listGroupWiseSales = objBaseService.funGetList(sqlModQFile,"sql");
-	    while (listGroupWiseSales.size()>0)
-	    {
+	    if(listGroupWiseSales.size()>0)
+	     {
 	    	for(int i=0;i<listGroupWiseSales.size();i++)
 	    	{	
 	    		Object[] obj = (Object[]) listGroupWiseSales.get(i);

@@ -9,9 +9,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Property Setup</title>
-<link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/jquery-confirm.min.css"/>"/>
-<script type="text/javascript" src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
-<script type="text/javascript" src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
+<link rel="stylesheet" type="text/css"
+	href="<spring:url value="/resources/css/jquery-confirm.min.css"/>" />
+<script type="text/javascript"
+	src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
+<script type="text/javascript"
+	src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
 
 <style>
 #tab_container {
@@ -29,8 +32,7 @@ ul.tab li.active {
 	border-radius: 0 0px;
 	transition: all 0.9s ease 0s;
 	background: black;
-	color:white;
-	
+	color: white;
 }
 
 ul.tab li {
@@ -49,18 +51,17 @@ ul.tab li {
 	font-size: 12px;
 	font-weight: bold;
 	color: #fff;
-	cursor: pointer;
-	//background: red;
-	
+	cursor: pointer; //
+	background: red;
 }
- ul.tab li.a:FOCUS
-{
-background-color: black;
-}  
 
-.active:HOVER{
-  background-color: black;
-  color: white;
+ul.tab li.a:FOCUS {
+	background-color: black;
+}
+
+.active:HOVER {
+	background-color: black;
+	color: white;
 }
 
 .ui-autocomplete {
@@ -144,7 +145,7 @@ background-color: black;
 						.booleanValue();
 				session.removeAttribute("success");
 				if (test) {%>
-				confirmDialog(message,"");
+	confirmDialog(message, "");
 <%}
 			}%>
 	});
@@ -638,8 +639,8 @@ background-color: black;
 						$("#cmbMM").val(response.strMinutes);
 						$("#cmbAMPM").val(response.strAMPM);
 						if (response.strPropertyWiseSalesOrderYN == 'Y') {
-							$("#strPropertyWiseSalesOrderYN")
-									.prop('checked', true);
+							$("#strPropertyWiseSalesOrderYN").prop('checked',
+									true);
 						} else
 							$("#strPropertyWiseSalesOrderYN").prop('checked',
 									false);
@@ -661,9 +662,10 @@ background-color: black;
 							$("#chkEnablePMSIntegration")
 									.prop('checked', false);
 
-						$("#cmbHoursUrgentOrder")
-								.val(response.strHoursUrgentOrder);
-						$("#cmbMinutesUrgentOrder").val(response.strMinutesUrgentOrder);
+						$("#cmbHoursUrgentOrder").val(
+								response.strHoursUrgentOrder);
+						$("#cmbMinutesUrgentOrder").val(
+								response.strMinutesUrgentOrder);
 						$("#cmbToAMPM").val(response.strAMPMUrgent);
 
 						if (response.chkPrintTimeOnBill == 'Y') {
@@ -730,6 +732,7 @@ background-color: black;
 								response.strEmailServerName);
 						$("#txtReceiverEmailId").val(
 								response.strReceiverEmailId);
+						$("#txtDBBackupReceiverEmailId").val(response.strDBBackupReceiverEmailId);
 						$("#txtBodyPart").val(response.strBodyPart);
 
 						$("#cmbCardIntfType").val(response.strCardIntfType);
@@ -865,7 +868,7 @@ background-color: black;
 						$("#cmbDineInAreaForDirectBiller").val(
 								response.strDineInAreaForDirectBiller);
 						$("#cmbHomeDeliAreaForDirectBiller").val(
-								response.strHomeDeliAreaForDirectBille);
+								response.strHomeDeliAreaForDirectBiller);
 						$("#cmbTakeAwayAreaForDirectBiller").val(
 								response.strTakeAwayAreaForDirectBiller);
 
@@ -928,15 +931,15 @@ background-color: black;
 						} else
 							$("#chkLockTableForWaiter").prop('checked', false);
 						if (response.strAreaWiseCostCenterKOTPrintingYN == 'Y') {
-							$("#strAreaWiseCostCenterKOTPrintingYN").prop('checked', true);
+							$("#strAreaWiseCostCenterKOTPrintingYN").prop(
+									'checked', true);
 						} else
-							$("#strAreaWiseCostCenterKOTPrintingYN").prop('checked',
-									false);
+							$("#strAreaWiseCostCenterKOTPrintingYN").prop(
+									'checked', false);
 						if (response.strMergeAllKOTSToBill == 'Y') {
 							$("#strMergeAllKOTSToBill").prop('checked', true);
 						} else
-							$("#strMergeAllKOTSToBill").prop('checked',
-									false);
+							$("#strMergeAllKOTSToBill").prop('checked', false);
 						if (response.strPrintOriginalOnBill == 'Y') {
 							$("#chkPrintOriginalOnBill").prop('checked', true);
 						} else
@@ -961,7 +964,6 @@ background-color: black;
 								response.strAuthenticationKey);
 						$("#txtSalt").val(response.strSalt);
 
-										
 						$("#txtWERAMerchantOutletId").val(
 								response.strWERAMerchantOutletId);
 						$("#cmbPostMMSSalesEffectCostOrLoc").val(
@@ -970,23 +972,108 @@ background-color: black;
 							$("#chkEnableNFCInterface").prop('checked', true);
 						} else
 							$("#chkEnableNFCInterface").prop('checked', false);
-						
-						
+
 						if (response.strUserWiseShowBill == 'Y') {
 							$("#strUserWiseShowBill").prop('checked', true);
 						} else
 							$("#strUserWiseShowBill").prop('checked', false);
-						
-						$("#cmbHomeDeliveryAreaForDirectBiller").val(response.strHomeDeliveryAreaForDirectBiller);
+
+						$("#cmbHomeDeliveryAreaForDirectBiller").val(
+								response.strHomeDeliveryAreaForDirectBiller);
 						$("#cmbEffectOfSales").val(response.strEffectOfSales);
-						
+
 						if (response.strSkipWaiterAndPax == 'Y') {
 							$("#strSkipWaiterAndPax").prop('checked', true);
-						} else{
-							$("#strSkipWaiterAndPax").prop('checked',false);	
+						} else {
+							$("#strSkipWaiterAndPax").prop('checked', false);
+						}
+						if (response.strShortNameOnDirectBillerAndBill == 'Y') {
+							$("#strShortNameOnDirectBillerAndBill").prop(
+									'checked', true);
+						} else {
+							$("#strShortNameOnDirectBillerAndBill").prop(
+									'checked', false);
 						}
 
+						if (response.strClearAllTrasactionAtDayEnd == 'Y') {
+							$("#strClearAllTrasactionAtDayEnd").prop('checked',
+									true);
+						} else {
+							$("#strClearAllTrasactionAtDayEnd").prop('checked',
+									false);
+						}
+
+						if (response.strCashDenominationCompulsary == 'Y') {
+							$("#strCashDenominationCompulsary").prop('checked',
+									true);
+						} else {
+							$("#strCashDenominationCompulsary").prop('checked',
+									false);
+						}
+
+						if (response.strCashManagementCompulsary == 'Y') {
+							$("#strCashManagementCompulsary").prop('checked',
+									true);
+						} else {
+							$("#strCashManagementCompulsary").prop('checked',
+									false);
+						}
+						if(response.strPrintFullVoidBill == 'Y'){
+							$("#strPrintFullVoidBill").prop('checked',
+									true);
+						} else {
+							$("#strPrintFullVoidBill").prop('checked',
+									false);
+						}
+						if(response.strShowNotificationsOnTransaction == 'Y'){
+							$("#strShowNotificationsOnTransaction").prop('checked',
+									true);
+						} else {
+							$("#strShowNotificationsOnTransaction").prop('checked',
+									false);
+						}
 						
+						if (response.strVoidBill == 'Y') {
+							$("#chkVoidBill").prop('checked', true);
+						} else
+							$("#chkVoidBill").prop('checked', false);
+						if (response.strSettleBill == 'Y') {
+							$("#chkSettleBill").prop('checked', true);
+						} else
+							$("#chkSettleBill").prop('checked', false);
+						if (response.strModifyBill == 'Y') {
+							$("#chkModifyBill").prop('checked', true);
+						} else
+							$("#chkModifyBill").prop('checked', false);
+						if (response.strComplimentaryBill == 'Y') {
+							$("#chkComplimentaryBill").prop('checked', true);
+						} else
+							$("#chkComplimentaryBill").prop('checked', false);
+
+						if (response.strDayEndSMSYN == 'Y') {
+							$("#chkDayEndSMSYN").prop('checked', true);
+						} else
+							$("#chkDayEndSMSYN").prop('checked', false);
+
+						if (response.strVoidKOTSMSYN == 'Y') {
+							$("#chkVoidKOTSMSYN").prop('checked', true);
+						} else
+							$("#chkVoidKOTSMSYN").prop('checked', false);
+
+						if (response.strNCKOTSMSYN == 'Y') {
+							$("#chkNCKOTSMSYN").prop('checked', true);
+						} else
+							$("#chkNCKOTSMSYN").prop('checked', false);
+						if (response.strVoidAdvOrderSMSYN == 'Y') {
+							$("#chkVoidAdvOrderSMSYN").prop('checked', true);
+						} else
+							$("#chkVoidAdvOrderSMSYN").prop('checked', false);
+						
+						$("#txtEmailSmtpPort").val(response.strEmailSmtpPort);
+						$("#txtEmailSmtpHost").val(response.strEmailSmtpHost);
+
+						
+
 						funLoadPrinterDtl();
 						//funSetSelectedBillSeries();
 
@@ -1107,8 +1194,7 @@ background-color: black;
 	function funFillPOSData() {
 
 		var searchurl = getContextPath() + "/loadPOSPropertySetupData.html";
-		$
-				.ajax({
+		$.ajax({
 					type : "GET",
 					url : searchurl,
 					dataType : "json",
@@ -1126,10 +1212,11 @@ background-color: black;
 						$("#cmbCountry").val(response.strCountry);
 						$("#txtTelephone").val(response.strTelephone);
 						$("#txtEmail").val(response.strEmail);
-						$("#cmbNatureOfBussness").val(response.strNatureOfBussness);
+						$("#cmbNatureOfBussness").val(
+								response.strNatureOfBussness);
 
 						$("#txtBillFooter").val(response.strBillFooter);
-						
+
 						$("#cmbBillPaperSize").val(response.intBiilPaperSize);
 						$("#cmbPrintMode").val(response.strBillPrintMode);
 						$("#cmbColumnSize").val(response.intColumnSize);
@@ -1384,7 +1471,7 @@ background-color: black;
 						if (response.chkCheckDebitCardBalOnTrans == 'Y') {
 							$("#chkCheckDebitCardBalOnTrans").prop('checked',
 									true);
-						}else
+						} else
 							$("#chkCheckDebitCardBalOnTrans").prop('checked',
 									false);
 
@@ -1398,8 +1485,8 @@ background-color: black;
 
 						/* $("#txtNoOfDelDaysForUrgentOrder").val(
 								response.intNoOfDelDaysForUrgentOrder); */
-					    $("#txtNoOfDelDaysForAdvOrder").val(
-										response.intNoOfDelDaysForAdvOrder);
+						$("#txtNoOfDelDaysForAdvOrder").val(
+								response.intNoOfDelDaysForAdvOrder);
 
 						if (response.chkShiftWiseDayEnd == 'Y') {
 							$("#chkShiftWiseDayEnd").prop('checked', true);
@@ -1409,7 +1496,7 @@ background-color: black;
 
 						if (response.chkProductionLinkup == 'Y') {
 							$("#chkProductionLinkup").prop('checked', true);
-						}else
+						} else
 							$("#chkProductionLinkup").prop('checked', false);
 
 						if (response.chkSetUpToTimeForAdvOrder == 'Y') {
@@ -1426,8 +1513,9 @@ background-color: black;
 						$("#cmbMM").val(response.strMinutes);
 						$("#cmbAMPM").val(response.strAMPM);
 						$("#txtSMSMobileNo").val(response.longSMSMobileNo);
-						
-						$("#cmbHomeDeliveryAreaForDirectBiller").val(response.strHomeDeliveryAreaForDirectBiller);
+
+						$("#cmbHomeDeliveryAreaForDirectBiller").val(
+								response.strHomeDeliveryAreaForDirectBiller);
 
 						if (response.strEnableBillSeries == 'Y') {
 							$("#chkEnableBillSeries").prop('checked', true);
@@ -1440,9 +1528,10 @@ background-color: black;
 						if (response.chkEnablePMSIntegration == 'Y') {
 							$("#chkEnablePMSIntegration").prop('checked', true);
 						}
-						$("#cmbHoursUrgentOrder")
-								.val(response.strHoursUrgentOrder);
-						$("#cmbMinutesUrgentOrder").val(response.strMinutesUrgentOrder);
+						$("#cmbHoursUrgentOrder").val(
+								response.strHoursUrgentOrder);
+						$("#cmbMinutesUrgentOrder").val(
+								response.strMinutesUrgentOrder);
 						$("#cmbToAMPM").val(response.strAMPMUrgent);
 
 						if (response.chkPrintTimeOnBill == 'Y') {
@@ -1489,6 +1578,7 @@ background-color: black;
 								response.strEmailServerName);
 						$("#txtReceiverEmailId").val(
 								response.strReceiverEmailId);
+						$("#txtDBBackupReceiverEmailId").val(response.strDBBackupReceiverEmailId);
 						$("#txtBodyPart").val(response.strBodyPart);
 
 						$("#cmbCardIntfType").val(response.strCardIntfType);
@@ -1585,12 +1675,10 @@ background-color: black;
 								response.strJioActivationCode);
 						$("#txtJioDeviceID").val(response.strJioDeviceID);
 
-						
-
 						$("#cmbDineInAreaForDirectBiller").val(
 								response.strDineInAreaForDirectBiller);
 						$("#cmbHomeDeliAreaForDirectBiller").val(
-								response.strHomeDeliAreaForDirectBille);
+								response.strHomeDeliAreaForDirectBiller);
 						$("#cmbTakeAwayAreaForDirectBiller").val(
 								response.strTakeAwayAreaForDirectBiller);
 
@@ -1693,9 +1781,8 @@ background-color: black;
 							$("#chkEnableTableReservationForCustomer").prop(
 									'checked', false);
 
-						
 						$("#cmbEffectOfSales").val(response.strEffectOfSales);
-						
+
 						if (response.strEnableLockTable == 'Y') {
 							$("#chkEnableLockTable").prop('checked', true);
 						} else
@@ -1732,7 +1819,8 @@ background-color: black;
 						} else
 							$("#chkAutoShowPopItems").prop('checked', false);
 
-						$("#txtShowPopItemsOfDays").val(response.intShowPopItemsOfDays);
+						$("#txtShowPopItemsOfDays").val(
+								response.intShowPopItemsOfDays);
 						$("#txtConsolidatedKOTPrinterPort").val(
 								response.strConsolidatedKOTPrinterPort);
 						$("#cmbConsolidatedKOTPrinterPort").val(
@@ -1758,19 +1846,16 @@ background-color: black;
 
 						/* $("cmbWeraIntegrationYN").val(
 								response.strWERAOnlineOrderIntegration);
-					 $("txtWERAAuthenticationAPIKey").val(
+						$("txtWERAAuthenticationAPIKey").val(
 								response.strWERAAuthenticationAPIKey); 
-					  */
-					 
-					  //alert(response.strWERAAuthenticationAPIKey);
-					 $("#cmbWeraIntegrationYN").val(
+						 */
+
+						//alert(response.strWERAAuthenticationAPIKey);
+						$("#cmbWeraIntegrationYN").val(
 								response.strWERAOnlineOrderIntegration);
-					
-					
-					 
-					 
-					/* 	$("txtWeraMerchantOutletId").val(
-								response.strWeraMerchantOutletId); */
+
+						/* 	$("txtWeraMerchantOutletId").val(
+									response.strWeraMerchantOutletId); */
 						$("#txtSuperMerchantCode").val(
 								response.strSuperMerchantCode);
 						$("#cmbPostMMSSalesEffectCostOrLoc").val(
@@ -1824,13 +1909,12 @@ background-color: black;
 						$("#txtEmailSmtpHost").val(response.strEmailSmtpHost);
 
 						if (response.strShowNotificationsOnTransaction == 'Y') {
-							$("#chkShowNotificationsOnTransaction").prop(
+							$("#strShowNotificationsOnTransaction").prop(
 									'checked', true);
 						} else
-							$("#chkShowNotificationsOnTransaction").prop(
+							$("#strShowNotificationsOnTransaction").prop(
 									'checked', false);
-						
-						
+
 						if (response.strPrintOriginalOnBill == 'Y') {
 							$("#chkPrintOriginalOnBill").prop('checked', true);
 						} else
@@ -1866,47 +1950,86 @@ background-color: black;
 						if (response.strMergeAllKOTSToBill == 'Y') {
 							$("#strMergeAllKOTSToBill").prop('checked', true);
 						} else
-							$("#strMergeAllKOTSToBill").prop('checked',
-									false);
+							$("#strMergeAllKOTSToBill").prop('checked', false);
 						if (response.strAreaWiseCostCenterKOTPrintingYN == 'Y') {
-							$("#strAreaWiseCostCenterKOTPrintingYN").prop('checked', true);
+							$("#strAreaWiseCostCenterKOTPrintingYN").prop(
+									'checked', true);
 						} else
-							$("#strAreaWiseCostCenterKOTPrintingYN").prop('checked',
-									false);
+							$("#strAreaWiseCostCenterKOTPrintingYN").prop(
+									'checked', false);
 						if (response.strPOSWiseItemToMMSProductLinkUpYN == 'Y') {
-							$("#strPOSWiseItemToMMSProductLinkUpYN").prop('checked', true);
+							$("#strPOSWiseItemToMMSProductLinkUpYN").prop(
+									'checked', true);
 						} else
-							$("#strPOSWiseItemToMMSProductLinkUpYN").prop('checked',
-									false);
+							$("#strPOSWiseItemToMMSProductLinkUpYN").prop(
+									'checked', false);
 						if (response.strSkipWaiterAndPax == 'Y') {
 							$("#strSkipWaiterAndPax").prop('checked', true);
 						} else
-							$("#strSkipWaiterAndPax").prop('checked',
-									false);
+							$("#strSkipWaiterAndPax").prop('checked', false);
 						if (response.strPropertyWiseSalesOrderYN == 'Y') {
-							$("#strPropertyWiseSalesOrderYN").prop('checked', true);
+							$("#strPropertyWiseSalesOrderYN").prop('checked',
+									true);
 						} else
 							$("#strPropertyWiseSalesOrderYN").prop('checked',
 									false);
-						
+
 						if (response.strMultipleBillPrinting == 'Y') {
-							$("#strMultipleBillPrinting")
-									.prop('checked', true);
+							$("#strMultipleBillPrinting").prop('checked', true);
 						} else
-							$("#strMultipleBillPrinting").prop('checked',
-									false);
+							$("#strMultipleBillPrinting")
+									.prop('checked', false);
 						if (response.strMultipleKOTPrintYN == 'Y') {
 							$("#strMultipleKOTPrintYN").prop('checked', true);
 						} else
-							$("#strMultipleKOTPrintYN").prop('checked',
-									false);
+							$("#strMultipleKOTPrintYN").prop('checked', false);
 						if (response.strUserWiseShowBill == 'Y') {
 							$("#strUserWiseShowBill").prop('checked', true);
 						} else
 							$("#strUserWiseShowBill").prop('checked', false);
 						$("#dblMaxDiscount").val(response.dblMaxDiscount);
+
+						if (response.strShortNameOnDirectBillerAndBill == 'Y') {
+							$("#strShortNameOnDirectBillerAndBill").prop(
+									'checked', true);
+						} else {
+							$("#strShortNameOnDirectBillerAndBill").prop(
+									'checked', false);
+						}
+
+						if (response.strClearAllTrasactionAtDayEnd == 'Y') {
+							$("#strClearAllTrasactionAtDayEnd").prop('checked',
+									true);
+						} else {
+							$("#strClearAllTrasactionAtDayEnd").prop('checked',
+									false);
+						}
+
+						if (response.strCashDenominationCompulsary == 'Y') {
+							$("#strCashDenominationCompulsary").prop('checked',
+									true);
+						} else {
+							$("#strCashDenominationCompulsary").prop('checked',
+									false);
+						}
+
+						if (response.strCashManagementCompulsary == 'Y') {
+							$("#strCashManagementCompulsary").prop('checked',
+									true);
+						} else {
+							$("#strCashManagementCompulsary").prop('checked',
+									false);
+						}
+						if(response.strPrintFullVoidBill == 'Y'){
+							$("#strPrintFullVoidBill").prop('checked',
+									true);
+						} else {
+							$("#strPrintFullVoidBill").prop('checked',
+									false);
+						}
+
 						funLoadPrinterDtl();
-						
+
 						//funSetSelectedBillSeries();
 					},
 					error : function(jqXHR, exception) {
@@ -2326,22 +2449,19 @@ background-color: black;
 		}
 	}
 
-    function btnAddBtnFor_Send_Table_Reservation(){
-	    var firstvalue = "";
-	
-		if ($("#txtTableReservationSMS").val().trim() == "")
-		{
-		     firstvalue = "%%" + $("#cmbSendTableReservation").val();
-			 $("#txtTableReservationSMS").val(firstvalue);
-		}
-		else
-		{
+	function btnAddBtnFor_Send_Table_Reservation() {
+		var firstvalue = "";
+
+		if ($("#txtTableReservationSMS").val().trim() == "") {
+			firstvalue = "%%" + $("#cmbSendTableReservation").val();
+			$("#txtTableReservationSMS").val(firstvalue);
+		} else {
 			firstvalue = "%%" + $("#cmbSendTableReservation").val();
 			var getValue = $("#txtTableReservationSMS").val();
 			$("#txtTableReservationSMS").val(getValue + firstvalue);
-	
+
 		}
-	}  
+	}
 
 	function funShowImagePreview(input) {
 
@@ -2632,31 +2752,27 @@ background-color: black;
 										style="margin-bottom: 10px; width: 30%;">
 										<s:input class="large" colspan="3" type="text"
 											id="txtClientCode" path="strClientCode"
-											ondblclick="funHelp('POSTaxMaster.a')" readonly="true"/>
+											ondblclick="funHelp('POSTaxMaster.a')" readonly="true" />
 									</div>
-									
+
 									<div class="element-input col-lg-6"
 										style="margin-bottom: 10px; width: 30%;">
 										<s:input class="large" colspan="3" type="text"
 											id="txtClientName" path="strClientName" readonly="true" />
 									</div>
-									
-									<div style="width: 70%; height:50%">
-									<table style="width: 90px;">
-										<tr style="width: 90px;">
-											<td><img id="clientImage" src="" width="100px"
-												height="100px" alt="Client Image" /></td>
-										</tr>
-										<tr>
-											<td>
-											
-													<input style="width: 80px;" id="companyLogo"
-														name="companyLogo" type="file" accept="image/png"
-														onchange="funShowImagePreview(this);" />
-											
-											</td>
-										</tr>
-									</table>
+
+									<div style="width: 70%; height: 50%">
+										<table style="width: 90px;">
+											<tr style="width: 90px;">
+												<td><img id="clientImage" src="" width="100px"
+													height="100px" alt="Client Image" /></td>
+											</tr>
+											<tr>
+												<td><input style="width: 80px;" id="companyLogo"
+													name="companyLogo" type="file" accept="image/png"
+													onchange="funShowImagePreview(this);" /></td>
+											</tr>
+										</table>
 									</div>
 								</div>
 								<div class="row"
@@ -2923,16 +3039,17 @@ background-color: black;
 								</div>
 								<div class="element-input col-lg-6"
 									style="margin-bottom: 10px; width: 40%;">
-									<%-- <s:textarea id="txtBillFooter" path="strBillFooter" />--%>  
-									                               	
-                                <s:textarea class="large" type="text" id="txtBillFooter"
+									<%-- <s:textarea id="txtBillFooter" path="strBillFooter" />--%>
+
+									<s:textarea class="large" type="text" id="txtBillFooter"
 										path="strBillFooter" style="height:100px" />
 								</div>
-								<div class="element-input col-lg-6" style="width: 30%;margin-left: 10%">
+								<div class="element-input col-lg-6"
+									style="width: 30%; margin-left: 10%">
 									<label class="title">Column Size</label>
 								</div>
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 20%;margin-left: -10%">
+									style="margin-bottom: 10px; width: 20%; margin-left: -10%">
 									<s:select id="cmbColumnSize" path="intColumnSize">
 
 										<option value=40>40</option>
@@ -2965,7 +3082,7 @@ background-color: black;
 										<option value="Landscape">Landscape</option>
 									</s:select>
 								</div>
-								
+
 
 							</div>
 
@@ -3110,7 +3227,7 @@ background-color: black;
 									<s:checkbox element="li" id="chkPrintInclusiveOfAllTaxesOnBill"
 										path="chkPrintInclusiveOfAllTaxesOnBill" value="Yes" />
 								</div>
-<div class="element-input col-lg-6" style="width: 30%;">
+								<div class="element-input col-lg-6" style="width: 30%;">
 									<label class="title">Effect On PSP </label>
 								</div>
 								<div class="element-input col-lg-6" style="width: 20%;">
@@ -3120,7 +3237,7 @@ background-color: black;
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box;">
-							<%-- 	<div class="element-input col-lg-6" style="width: 30%;">
+								<%-- 	<div class="element-input col-lg-6" style="width: 30%;">
 									<label class="title">Effect On PSP </label>
 								</div>
 								<div class="element-input col-lg-6" style="width: 20%;">
@@ -3134,7 +3251,8 @@ background-color: black;
 									<s:checkbox element="li" id="chkPrintVatNo"
 										path="chkPrintVatNo" value="Yes" />
 								</div>
-								<div class="element-input col-lg-6" style="width: 20%; margin-bottom: 10px;margin-left: -10%;">
+								<div class="element-input col-lg-6"
+									style="width: 20%; margin-bottom: 10px; margin-left: -10%;">
 									<s:input type="text" id="txtVatNo" name="txtVatNo"
 										path="strVatNo" />
 								</div>
@@ -3278,7 +3396,7 @@ background-color: black;
 								</div>
 								<div class="element-input col-lg-6"
 									style="margin-bottom: 10px; width: 30%; margin-left: -20%">
-									<s:input type="number"  id="dblMaxDiscount"
+									<s:input type="number" id="dblMaxDiscount"
 										path="dblMaxDiscount" />
 								</div>
 							</div>
@@ -3334,7 +3452,7 @@ background-color: black;
 									<label class="title">Customer Series</label>
 								</div>
 								<div class="element-input col-lg-6" style="width: 20%;">
-									<s:input type="text" id="txtCustSeries" path="longCustSeries" />
+									<s:input type="number" id="txtCustSeries" path="longCustSeries"  />
 								</div>
 								<div class="element-input col-lg-6"
 									style="margin-bottom: 10px; width: 40%; margin-left: 10%">
@@ -3550,6 +3668,17 @@ background-color: black;
 									</s:select>
 								</div>
 
+							</div>
+							<div class="row"
+								style="background-color: #fff; display: -webkit-box;">
+								<div class="element-input col-lg-6" style="width: 20%;">
+									<label class="title">Clear All Transaction AT Day End</label>
+								</div>
+								<div class="element-input col-lg-6"
+									style="margin-bottom: 10px; width: 30%; ">
+									<s:checkbox element="li" id="strClearAllTrasactionAtDayEnd"
+										path="strClearAllTrasactionAtDayEnd" value="Yes" />
+								</div>
 							</div>
 						</div>
 
@@ -3861,8 +3990,8 @@ background-color: black;
 								</div>
 								<div class="element-input col-lg-6"
 									style="width: 30%; margin-bottom: 10px;">
-									<s:checkbox element="li" id="strScanQRYN"
-										path="strScanQRYN" value="Yes" />
+									<s:checkbox element="li" id="strScanQRYN" path="strScanQRYN"
+										value="Yes" />
 								</div>
 
 							</div>
@@ -4016,7 +4145,7 @@ background-color: black;
 								<div class="element-input col-lg-6"
 									style="width: 15%; margin-bottom: 10px;">
 									<s:checkbox element="li" id="chkSetUpToTimeForAdvOrder"
-										path="chkSetUpToTimeForAdvOrder" value="Yes"  />
+										path="chkSetUpToTimeForAdvOrder" value="Yes" />
 								</div>
 
 							</div>
@@ -4394,8 +4523,7 @@ background-color: black;
 								</div>
 								<div class="element-input col-lg-6"
 									style="width: 10%; margin-bottom: 10px;">
-									<s:input type="text" id="txtRoundOff"
-										path="dblRoundOff"  />
+									<s:input type="text" id="txtRoundOff" path="dblRoundOff" />
 								</div>
 
 								<div class="element-input col-lg-6"
@@ -4405,7 +4533,7 @@ background-color: black;
 								<div class="element-input col-lg-6"
 									style="width: 10%; margin-bottom: 5px;">
 									<s:input type="text" id="txtShowPopItemsOfDays"
-										path="intShowPopItemsOfDays"  />
+										path="intShowPopItemsOfDays" />
 								</div>
 								<div class="element-input col-lg-6"
 									style="width: 30%; margin-left: 10%">
@@ -4418,7 +4546,7 @@ background-color: black;
 
 					</div> <!-- End of POS Setup 3 tab --> <!-- 	Start of property setup tab 4 -->
 					<div id="tab6" class="tab_content">
-						<div style="float: left; margin-left: 20%; margin-top: -37%">
+						<div style="float: left; margin-left: 17%; margin-top: -37%">
 
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box; margin-bottom: 10px;">
@@ -4436,7 +4564,8 @@ background-color: black;
 								</div>
 								<div class="element-input col-lg-6"
 									style="margin-bottom: 10px; width: 30%; margin-left: -10%">
-									<s:checkbox element="li" id="strAreaWiseCostCenterKOTPrintingYN"
+									<s:checkbox element="li"
+										id="strAreaWiseCostCenterKOTPrintingYN"
 										path="strAreaWiseCostCenterKOTPrintingYN" value="Yes" />
 								</div>
 								<div class="element-input col-lg-6"
@@ -4650,8 +4779,8 @@ background-color: black;
 								<div class="element-input col-lg-6" style="width: 30%;">
 									<label class="title">No Of Decimal Places</label>
 								</div>
-								<div class="element-input col-lg-6" 
-									style="margin-bottom: 10px; width: 20%; margin-left: -5%;size: 1%;">
+								<div class="element-input col-lg-6"
+									style="margin-bottom: 10px; width: 20%; margin-left: -5%; size: 1%;">
 									<s:input type="text" id="txtNoOfDecimalPlaces"
 										path="intNoOfDecimalPlaces" />
 								</div>
@@ -4692,11 +4821,11 @@ background-color: black;
 									<label class="title">Show Notifications On Transaction</label>
 								</div>
 
-							<%-- 	<div class="element-input col-lg-6"
+								 	<div class="element-input col-lg-6"
 									style="margin-bottom: 10px; width: 40%; margin-left: -5%">
 									<s:checkbox element="li" id="strShowNotificationsOnTransaction"
-										path="chkShowNotificationsOnTransaction" value="Yes" />
-								</div> --%>
+										path="strShowNotificationsOnTransaction" value="Yes" />
+								</div> 
 
 
 							</div>
@@ -4768,28 +4897,58 @@ background-color: black;
 
 
 							</div>
-
-						</div>
-
-						<%-- <table>
-
-							<div class="element-input col-lg-6" style="width: 30%;">
-									<label class="title">Print Items On Move KOT,Move
-										Table,Move KOT Items</label>
+							<div class="row"
+								style="background-color: #fff; display: -webkit-box; margin-bottom: 10px;">
+								<div class="element-input col-lg-6" style="width: 30%;">
+									<label class="title">Cash Denomination Compulsory on
+										Blank Day End</label>
 								</div>
+
 								<div class="element-input col-lg-6"
 									style="margin-bottom: 10px; width: 40%; margin-left: -5%">
-									<s:checkbox element="li" id="chkPrintItemsOnMoveKOTMoveTable"
-										path="chkPrintItemsOnMoveKOTMoveTable" value="Yes" />
-								</div> 
+									<s:checkbox element="li" id="strCashDenominationCompulsary"
+										path="strCashDenominationCompulsary" value="Yes" />
+								</div>
+								<div class="element-input col-lg-6"
+									style="width: 30%; margin-left: -20%">
+									<label class="title">Cash Management Compulsory on
+										Blank Day End</label>
+								</div>
+
+								<div class="element-input col-lg-6"
+									style="margin-bottom: 10px; width: 40%; margin-left: 0%">
+									<s:checkbox element="li" id="strCashManagementCompulsary"
+										path="strCashManagementCompulsary" value="Yes" />
+								</div>
+								<div class="element-input col-lg-6"
+									style="width: 30%; margin-left: -30%">
+									<label class="title">Print Full Void Bill </label>
+								</div>
+
+								<div class="element-input col-lg-6"
+									style="margin-bottom: 10px; width: 40%; margin-left: -5%">
+									<s:checkbox element="li" id="strPrintFullVoidBill"
+										path="strPrintFullVoidBill" value="Yes" />
+								</div>
 								
-								<td><label>Service Charge Tax</label></td>
+                                
+							</div>
+							<div class="row"
+								style="background-color: #fff; display: -webkit-box; margin-bottom: 10px;">
+								<div class="element-input col-lg-6" style="width: 30%;">
+									<label class="title">Item Short Name on Direct Biller &
+										Bill</label>
+								</div>
 
-								<td><s:select id="cmbRemoveServiceChargeTaxCode"
-										path="strRemoveServiceChargeTaxCode" items="${taxList}">
-									</s:select></td>
+								<div class="element-input col-lg-6"
+									style="margin-bottom: 10px; width: 40%; margin-left: -5%">
+									<s:checkbox element="li" id="strShortNameOnDirectBillerAndBill"
+										path="strShortNameOnDirectBillerAndBill" value="Yes" />
+								</div>
 
-						</table> --%>
+							</div>
+
+						</div>
 					</div> <!-- End of POS Setup 4 tab --> <!-- 	Start of Email Setup tab -->
 
 					<div id="tab7" class="tab_content">
@@ -4815,7 +4974,7 @@ background-color: black;
 								</div>
 								<div class="element-input col-lg-6"
 									style="margin-bottom: 10px; width: 60%;">
-									<s:input class="large" type="text" id="txtEmailPassword"
+									<s:input class="large" type="password" id="txtEmailPassword"
 										path="strEmailPassword" />
 								</div>
 							</div>
@@ -4828,7 +4987,7 @@ background-color: black;
 								</div>
 								<div class="element-input col-lg-6"
 									style="margin-bottom: 10px; width: 60%;">
-									<s:input class="large" type="text" id="txtEmailConfirmPassword"
+									<s:input class="large" type="password" id="txtEmailConfirmPassword"
 										path="" />
 								</div>
 							</div>
@@ -4896,7 +5055,7 @@ background-color: black;
 								<div class="element-input col-lg-6"
 									style="margin-bottom: 10px; width: 60%;">
 									<s:input class="large" type="text"
-										id="txtDBBackupReceiverEmailId" path="strReceiverEmailId" />
+										id="txtDBBackupReceiverEmailId" path="strDBBackupReceiverEmailId" />
 								</div>
 							</div>
 
@@ -5170,7 +5329,8 @@ background-color: black;
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box; margin-bottom: 10px;">
 								<div class="element-input col-lg-6" style="width: 40%;">
-									<label class="title" style="width: 100%">Bill Settlement SMS </label>
+									<label class="title" style="width: 100%">Bill
+										Settlement SMS </label>
 								</div>
 
 								<div class="element-input col-lg-6"
@@ -5207,7 +5367,8 @@ background-color: black;
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box; margin-bottom: 10px;">
 								<div class="element-input col-lg-6" style="width: 40%;">
-									<label class="title" style="width: 100%">Table Reservation SMS </label>
+									<label class="title" style="width: 100%">Table
+										Reservation SMS </label>
 								</div>
 
 								<div class="element-input col-lg-6"
@@ -5934,7 +6095,8 @@ background-color: black;
 								</div>
 								<div class="element-input col-lg-6"
 									style="margin-bottom: 10px; width: 60%;">
-									<s:select id="cmbWeraIntegrationYN" path="strWERAOnlineOrderIntegration">
+									<s:select id="cmbWeraIntegrationYN"
+										path="strWERAOnlineOrderIntegration">
 										<option value="N">No</option>
 										<option value="Y">Yes</option>
 									</s:select>
@@ -5983,8 +6145,8 @@ background-color: black;
 		<br />
 		<p align="center">
 			<input id="submitBtn" type="submit" value="UPDATE" />
-					
-			
+
+
 		</p>
 	</s:form>
 

@@ -1045,44 +1045,8 @@
 
 function funPrintKOT(costCenterCode,costCenterName,areaCode,tableNo,kotNo)
 	{
-	
-	 funOpenKOTPrint(costCenterCode,costCenterName,areaCode,tableNo,kotNo);
-		
-		/* var searchurl=getContextPath()+"/downloadPDF.html?fileName=kotSlip.pdf"+"&tableNo="+tableNo+"&kotNo="+kotNo+"&costCenterCode="+costCenterCode				+"&costCenterName="+costCenterName+"&areaCode="+areaCode;
-		$.ajax({
-			 type: "GET",
-		        url: searchurl,
-		        contentType: 'application/json',
-		        async: true,
-		    success: function (response)
-		    {
-		    	 window.location.href=searchurl;
-		    	 var w= window.open(getContextPath()+"/printPDF.html?fileName=kotSlip.pdf");
-				 w.print();  
-				 w.close();
-		    },
-		    error: function(jqXHR, exception)
-		    {
-		        if (jqXHR.status === 0) {
-		            alert('Not connect.n Verify Network.');
-		        } else if (jqXHR.status == 404) {
-		            alert('Requested page not found. [404]');
-		        } else if (jqXHR.status == 500) {
-		            alert('Internal Server Error [500].');
-		        } else if (exception === 'parsererror') {
-		            alert('Requested JSON parse failed.');
-		        } else if (exception === 'timeout') {
-		            alert('Time out error.');
-		        } else if (exception === 'abort') {
-		            alert('Ajax request aborted.');
-		        } else {
-		            alert('Uncaught Error.n' + jqXHR.responseText);
-		        }		            
-		    }
-
-                       }); */
-		
-   }
+		 funOpenKOTPrint(costCenterCode,costCenterName,areaCode,tableNo,kotNo);
+	}
 	
 
 function funOpenKOTPrint(costCenterCode,costCenterName,areaCode,tableNo,kotNo){
@@ -1888,7 +1852,7 @@ function funOpenKOTPrint(costCenterCode,costCenterName,areaCode,tableNo,kotNo){
 		var rowCount = tblBillItemDtl.rows.length;
 		if(rowCount>1)
 		{
-			if(confirm( "Do you want to save order?"))
+			if(confirm("Do you want to save order?"))
 			{
 				return;
 			}
@@ -1950,7 +1914,7 @@ function funOpenKOTPrint(costCenterCode,costCenterName,areaCode,tableNo,kotNo){
 		var rowCount = tblBillItemDtl.rows.length;
 		if(rowCount>1)
 		{
-			if(confirm( "Do you want to save order?"))
+			if(confirm("Do you want to save order?"))
 			{
 				return;
 			}
@@ -2041,7 +2005,7 @@ function funOpenKOTPrint(costCenterCode,costCenterName,areaCode,tableNo,kotNo){
 		var rowCount = tblBillItemDtl.rows.length;
 		if(rowCount>1)
 		{
-			if(confirm( "Do you want to save order?"))
+			if(confirm("Do you want to save order?"))
 			{
 				return;
 			}

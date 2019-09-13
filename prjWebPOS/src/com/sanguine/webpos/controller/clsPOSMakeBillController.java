@@ -53,7 +53,7 @@ public class clsPOSMakeBillController {
 		
 		clsSetupHdModel objSetupHdModel=null;
 		try{
-			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(posCode, clientCode);
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,posCode);
 		}catch(Exception e){
 			e.printStackTrace();
 		}

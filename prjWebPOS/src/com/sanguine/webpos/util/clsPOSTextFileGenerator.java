@@ -56,7 +56,7 @@ public class clsPOSTextFileGenerator
     {
 		String billFormat = "";
 		
-		clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(posCode, clientCode);
+		clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,posCode);
 		
 		sql.setLength(0);
 		billFormat=objSetupHdModel.getStrBillFormatType();

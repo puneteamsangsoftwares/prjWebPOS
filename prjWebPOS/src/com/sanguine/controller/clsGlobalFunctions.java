@@ -552,7 +552,7 @@ public class clsGlobalFunctions
 	{
 		StringBuilder decimalFormatBuilderForDoubleValue = new StringBuilder("0");
 		try{
-			clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(POSCode, strClientCode);
+			clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
 			int gNoOfDecimalPlace = objSetupHdModel.getDblNoOfDecimalPlace();
 			for (int i = 0; i < gNoOfDecimalPlace; i++)
 			{

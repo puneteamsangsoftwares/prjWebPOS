@@ -1,13 +1,38 @@
 package com.sanguine.webpos.model;
+import java.io.Serializable;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
 
 import com.sanguine.base.model.clsBaseModel;
 
-public class clsPOSSMSSetupModel extends clsBaseModel
+@Entity
+@Table(name = "tblsmssetup")
+@IdClass(clsPOSSMSSetupModel_ID.class)
+public class clsPOSSMSSetupModel extends clsBaseModel implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+
+	public clsPOSSMSSetupModel()
+	{
+	}
+
+	public clsPOSSMSSetupModel(clsPOSSMSSetupModel_ID objModelID)
+	{
+		strClientCode = objModelID.getStrClientCode();
+		strPOSCode = objModelID.getStrPOSCode();
+		strTransactionName=objModelID.getStrTransactionName();
+	}
+	@Id
+	@AttributeOverrides({ @AttributeOverride(name = "strClientCode", column = @Column(name = "strClientCode")), @AttributeOverride(name = "strPOSCode", column = @Column(name = "strPOSCode")), @AttributeOverride(name = "strTransactionName", column = @Column(name = "strTransactionName")) })
+	//Variable Declaration
 	@Column(name = "strPOSCode")
-private String strPOSCode;
+    private String strPOSCode;
 
 	@Column(name = "strClientCode")
 	private String strClientCode;
@@ -29,6 +54,13 @@ private String strPOSCode;
 	
 	@Column(name = "strDataPostFlag")
 	private String strDataPostFlag;
+	
+	@Column(name = "dteDateCreated")
+	private String dteDateCreated;
+	
+	@Column(name = "dteDateEdited")
+	private String dteDateEdited;
+
 
 	public String getStrPOSCode()
 	{
@@ -108,6 +140,26 @@ private String strPOSCode;
 	public void setStrDataPostFlag(String strDataPostFlag)
 	{
 		this.strDataPostFlag = strDataPostFlag;
+	}
+
+	public String getDteDateCreated()
+	{
+		return dteDateCreated;
+	}
+
+	public void setDteDateCreated(String dteDateCreated)
+	{
+		this.dteDateCreated = dteDateCreated;
+	}
+
+	public String getDteDateEdited()
+	{
+		return dteDateEdited;
+	}
+
+	public void setDteDateEdited(String dteDateEdited)
+	{
+		this.dteDateEdited = dteDateEdited;
 	}
 
 }
