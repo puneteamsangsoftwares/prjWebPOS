@@ -4,22 +4,23 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import com.sanguine.webpos.bean.clsPOSGroupWaiseSalesBean;
+import com.sanguine.webpos.bean.clsPOSGroupSubGroupWiseSales;
 
-public class clsPOSGroupWiseComparator  implements Comparator<clsPOSGroupWaiseSalesBean> {
 
-	 private List<Comparator<clsPOSGroupWaiseSalesBean>> listComparators;
+public class clsPOSGroupWiseComparator  implements Comparator<clsPOSGroupSubGroupWiseSales> {
+
+	 private List<Comparator<clsPOSGroupSubGroupWiseSales>> listComparators;
 
 	    @SafeVarargs
-	    public clsPOSGroupWiseComparator(Comparator<clsPOSGroupWaiseSalesBean>... comparators)
+	    public clsPOSGroupWiseComparator(Comparator<clsPOSGroupSubGroupWiseSales>... comparators)
 	    {
 	        this.listComparators = Arrays.asList(comparators);
 	    }
 
 	    @Override
-	    public int compare(clsPOSGroupWaiseSalesBean o1, clsPOSGroupWaiseSalesBean o2)
+	    public int compare(clsPOSGroupSubGroupWiseSales o1, clsPOSGroupSubGroupWiseSales o2)
 	    {
-	        for (Comparator<clsPOSGroupWaiseSalesBean> comparator : listComparators)
+	        for (Comparator<clsPOSGroupSubGroupWiseSales> comparator : listComparators)
 	        {
 	            int result = comparator.compare(o1, o2);
 	            if (result != 0)

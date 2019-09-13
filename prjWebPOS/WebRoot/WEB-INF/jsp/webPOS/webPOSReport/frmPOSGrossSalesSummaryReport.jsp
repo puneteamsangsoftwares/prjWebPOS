@@ -74,36 +74,36 @@
 
 		<br />
 		<br />
-		<div class="title" style="margin-left: 190px;">
+		<div class="title" style="margin-left: 30%;">
 		
 			<div class="row" style="background-color: #fff;display: block;">
-				<div class="element-input col-lg-6" style="width: 15%;" > 
+				<div class="element-input col-lg-6" style="width: 20%;margin-top:1.5% " > 
     				<label class="title">POS Name</label>
     			</div>
-    			<div class="element-input col-lg-6" style="margin-bottom:  10px;width: 20%"> 
+    			<div class="element-input col-lg-6" style="margin-bottom:  10px;width: 30%"> 
 					<s:select id="cmbPOSName" path="strPOSName" items="${posList}" >
 				 	</s:select>
 				</div>
 			</div>	
 			 <div class="row" style="background-color: #fff;display: block;">
-			 		<div class="element-input col-lg-6" style="width: 15%;"> 
+			 		<div class="element-input col-lg-6" style="width: 20%;margin-top:1.5%"> 
     					<label class="title">From Date</label>
 	    			</div>
-	    			<div class="element-input col-lg-6" style="margin-bottom:  10px;width: 20%"> 
+	    			<div class="element-input col-lg-6" style="margin-bottom:  10px;width: 30%"> 
 						<s:input id="txtFromDate" required="required" path="fromDate" pattern="\d{1,2}-\d{1,2}-\d{4}" style="width: 100%;" />
 					</div>
 			</div>
 			<div class="row" style="background-color: #fff;display: block;">		
-			 		<div class="element-input col-lg-6" style="width: 15%;"> 
+			 		<div class="element-input col-lg-6" style="width: 20%;margin-top:1.5%"> 
     					<label class="title">To Date</label>
 	    			</div>
-	    			<div class="element-input col-lg-6" style="margin-bottom:  10px;width: 20%"> 
+	    			<div class="element-input col-lg-6" style="margin-bottom:  10px;width: 30%"> 
 						<s:input id="txtToDate" required="required" path="toDate" pattern="\d{1,2}-\d{1,2}-\d{4}" style="width: 100%;"/>
 					</div>
 			 </div>
 				
-			<div class="row" style="background-color: #fff;display:block;">			
-			 		<div class="element-input col-lg-6" style="width: 17%;"> 
+			<%-- <div class="row" style="background-color: #fff;display:block;">			
+			 		<div class="element-input col-lg-6" style="width: 20%;"> 
     					<label id="lblShift" style="display: inline-block; width: 100px">Shift 
 						</label>
 	    			</div>
@@ -112,16 +112,16 @@
 								id="txtShiftCode" path="strShiftCode" />
 					
 					</div>
-			 </div> 	
+			 </div> 	 --%>
 		 </div>
 		
 	
 		<br />
 		<br />
-		<div class="col-lg-10 col-sm-10 col-xs-10" style="width: 70%;margin-left: 240px;"> 
+		<div class="col-lg-10 col-sm-10 col-xs-10" style="width: 70%;margin-left: 242px;"> 
 			 <p align="center">
-				<div class="submit col-lg-4 col-sm-4 col-xs-4"><input type="submit" value="Submit" tabindex="3" /></div>
-				<div class="submit col-lg-4 col-sm-4 col-xs-4"><input type="button" value="Close" onclick="funPOSHome()"/></div>
+				<div class="submit col-lg-4 col-sm-4 col-xs-6"><input type="submit" value="Submit" tabindex="3" /></div>
+				<div class="submit col-lg-4 col-sm-4 col-xs-4"style="margin-left:-8%"><input type="button" value="Close" onclick="funPOSHome()"/></div>
 			 </p>
 		</div>
 		

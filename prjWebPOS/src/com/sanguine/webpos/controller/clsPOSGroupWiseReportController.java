@@ -156,6 +156,7 @@ public class clsPOSGroupWiseReportController
 			List<clsPOSGroupWaiseSalesBean> list = new ArrayList<>();
 			String reportName = servletContext.getRealPath("/WEB-INF/reports/webpos/rptGroupWiseSalesReport.jrxml");
 			String strClientCode = req.getSession().getAttribute("gClientCode").toString();
+			String userCode=req.getSession().getAttribute("gUserCode").toString();
 			String POSCode=req.getSession().getAttribute("loginPOS").toString();	
 			Map hm = objGlobalFunctions.funGetCommonHashMapForJasperReport(objBean, req, resp);
 			String strPOSName = objBean.getStrPOSName();
@@ -192,9 +193,9 @@ public class clsPOSGroupWiseReportController
 			{
 				sgCode = hmSubGroupName.get(strSGName);// funGetSGCode(strSGName);
 			}
-
+              
 			String strSGCode = sgCode;
-			 String clientCode=req.getSession().getAttribute("gClientCode").toString();
+			String clientCode=req.getSession().getAttribute("gClientCode").toString();
 			list = objReportService.funProcessGroupWiseReport( strPOSCode, fromDate, toDate, strUserCode, shiftNo, strSGCode,objSetupParameter.get("gEnableShiftYN").toString());
 			
 			JasperDesign jd = JRXmlLoader.load(reportName);

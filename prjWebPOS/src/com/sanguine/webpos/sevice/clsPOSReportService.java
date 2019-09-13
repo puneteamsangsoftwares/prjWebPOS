@@ -7183,7 +7183,7 @@ public class clsPOSReportService
 
 		return listOfGroupSubGroupWiseSales;
 	}
-
+/*
 	public List funProcessGroupWiseReport(String strPOSCode, String fromDate, String toDate, String strUserCode, String strShiftNo, String strSGCode, String enableShiftYN)
 	{
 		StringBuilder sbSqlLive = new StringBuilder();
@@ -7442,7 +7442,7 @@ public class clsPOSReportService
 		return list;
 	}
 
-	public List funProcessItemWiseReport(String posCode, String fromDate, String toDate, String shiftNo, String printComplimentaryYN, String type, String strUserCode)
+	*/public List funProcessItemWiseReport(String posCode, String fromDate, String toDate, String shiftNo, String printComplimentaryYN, String type, String strUserCode)
 	{
 		List list = new ArrayList();
 		StringBuilder sqlLive = new StringBuilder();
@@ -15214,6 +15214,479 @@ public class clsPOSReportService
 		return mapReturn;
 
 	}*/
+	public List funProcessGroupWiseReport(String strPOSCode, String fromDate, String toDate, String strUserCode, String strShiftNo, String strSGCode, String enableShiftYN)
+	{
+		StringBuilder sbSqlLive = new StringBuilder();
+		StringBuilder sbSqlQFile = new StringBuilder();
+		StringBuilder sbSqlFilters = new StringBuilder();
+		StringBuilder sqlModLive = new StringBuilder();
+		StringBuilder sqlModQFile = new StringBuilder();
+	
+		mapPOSDtlForGroupSubGroup=new HashMap<>();
+		 List<clsPOSGroupSubGroupWiseSales> listOfGroupWise = new ArrayList<clsPOSGroupSubGroupWiseSales>();
+
+		sbSqlLive.setLength(0);
+		sbSqlQFile.setLength(0);
+		sbSqlFilters.setLength(0);
+
+		try
+		{
+		
+		   
+		    sbSqlLive.setLength(0);
+		    sbSqlQFile.setLength(0);
+		    sbSqlFilters.setLength(0);
+		    String subtotalAmount = "sum( b.dblAmount)-sum(b.dblDiscountAmt)";
+		    String netTotalAmount="sum( b.dblAmount)-sum(b.dblDiscountAmt)+sum(b.dblTaxAmount)";
+		    String rate = "b.dblRate";
+		    String amount = "sum(b.dblAmount)";
+		    String discountAmount = "sum(b.dblDiscountAmt)";
+		  /*  if(currency.equalsIgnoreCase("USD"))
+		    {
+			subtotalAmount = "(sum( b.dblAmount)-sum(b.dblDiscountAmt))/a.dblUSDConverionRate";
+			netTotalAmount="(sum( b.dblAmount)-sum(b.dblDiscountAmt)+sum(b.dblTaxAmount))/a.dblUSDConverionRate";
+			rate = "b.dblRate/a.dblUSDConverionRate";
+			amount = "sum(b.dblAmount)/a.dblUSDConverionRate";
+			discountAmount = "sum(b.dblDiscountAmt)/a.dblUSDConverionRate";
+		    }	*/
+		    
+		    sbSqlQFile.append("SELECT c.strGroupCode,c.strGroupName,sum( b.dblQuantity)"
+			    + ","+subtotalAmount+" "
+			    + ",f.strPosName, '" + strUserCode + "',"+rate+" ,"+amount+","+discountAmount+",a.strPOSCode,"
+			    + ""+netTotalAmount+"  "
+			    + "FROM tblqbillhd a,tblqbilldtl b,tblgrouphd c,tblsubgrouphd d"
+			    + ",tblitemmaster e,tblposmaster f "
+			    + "where a.strBillNo=b.strBillNo "
+			    + " and date(a.dteBillDate)=date(b.dteBillDate) "
+			    + " and a.strPOSCode=f.strPOSCode  "
+			    + " and a.strClientCode=b.strClientCode "
+			    + "and b.strItemCode=e.strItemCode "
+			    + "and c.strGroupCode=d.strGroupCode and d.strSubGroupCode=e.strSubGroupCode ");
+
+		    sbSqlLive.append("SELECT c.strGroupCode,c.strGroupName,sum( b.dblQuantity)"
+			    + ","+subtotalAmount+" "
+			    + ",f.strPosName, '" + strUserCode+ "',"+rate+" ,"+amount+","+discountAmount+",a.strPOSCode,"
+			    + " "+netTotalAmount+"  "
+			    + "FROM tblbillhd a,tblbilldtl b,tblgrouphd c,tblsubgrouphd d"
+			    + ",tblitemmaster e,tblposmaster f "
+			    + "where a.strBillNo=b.strBillNo "
+			    + " and date(a.dteBillDate)=date(b.dteBillDate) "
+			    + " and a.strPOSCode=f.strPOSCode  "
+			    + " and a.strClientCode=b.strClientCode   "
+			    + "and b.strItemCode=e.strItemCode "
+			    + "and c.strGroupCode=d.strGroupCode "
+			    + " and d.strSubGroupCode=e.strSubGroupCode ");
+
+		    String subtotalAmt = "sum(b.dblAmount)-sum(b.dblDiscAmt)";
+		    String rateAmt = "b.dblRate";
+		    String amt = "sum(b.dblAmount)";
+		    String discountAmt = "sum(b.dblDiscAmt)";
+		    /*if(currency.equalsIgnoreCase("USD"))
+		    {
+			subtotalAmt = "(sum(b.dblAmount)-sum(b.dblDiscAmt))/a.dblUSDConverionRate";
+			rateAmt = "b.dblRate/a.dblUSDConverionRate";
+			amt = "sum(b.dblAmount)/a.dblUSDConverionRate";
+			discountAmt = "sum(b.dblDiscAmt)/a.dblUSDConverionRate";
+		    }	
+		    */
+		    sqlModLive.append("select c.strGroupCode,c.strGroupName"
+			    + ",sum(b.dblQuantity),"+subtotalAmt+",f.strPOSName"
+			    + ",'" +strUserCode + "','0' ,"+amt+","+discountAmt+",a.strPOSCode,"
+			    + " "+subtotalAmt+"  "
+			    + " from tblbillmodifierdtl b,tblbillhd a,tblposmaster f,tblitemmaster d"
+			    + ",tblsubgrouphd e,tblgrouphd c "
+			    + " where a.strBillNo=b.strBillNo "
+			    + " and date(a.dteBillDate)=date(b.dteBillDate) "
+			    + " and a.strPOSCode=f.strPosCode  "
+			    + " and a.strClientCode=b.strClientCode  "
+			    + " and LEFT(b.strItemCode,7)=d.strItemCode "
+			    + " and d.strSubGroupCode=e.strSubGroupCode "
+			    + " and e.strGroupCode=c.strGroupCode "
+			    + " and b.dblamount>0 ");
+
+		    sqlModQFile.append("select c.strGroupCode,c.strGroupName"
+			    + ",sum(b.dblQuantity),"+subtotalAmt+",f.strPOSName"
+			    + ",'" +strUserCode+ "','0' ,"+amt+","+discountAmt+",a.strPOSCode,"
+			    + " "+subtotalAmt+" "
+			    + " from tblqbillmodifierdtl b,tblqbillhd a,tblposmaster f,tblitemmaster d"
+			    + ",tblsubgrouphd e,tblgrouphd c "
+			    + " where a.strBillNo=b.strBillNo "
+			    + " and date(a.dteBillDate)=date(b.dteBillDate) "
+			    + " and a.strPOSCode=f.strPosCode   "
+			    + " and a.strClientCode=b.strClientCode   "
+			    + " and LEFT(b.strItemCode,7)=d.strItemCode "
+			    + " and d.strSubGroupCode=e.strSubGroupCode "
+			    + " and e.strGroupCode=c.strGroupCode "
+			    + " and b.dblamount>0 ");
+
+		    sbSqlFilters.append(" and date( a.dteBillDate ) BETWEEN '" + fromDate + "' AND '" + toDate + "' ");
+		    if (!strPOSCode.equals("ALL"))
+		    {
+			     sbSqlFilters.append(" AND a.strPOSCode = '" + strPOSCode + "' ");
+		    }
+
+		    if (enableShiftYN.equalsIgnoreCase("Y") && (!strShiftNo.equalsIgnoreCase("All")))
+			{
+				sbSqlFilters.append(" and a.intShiftCode = '" + strShiftNo + "' ");
+			}
+
+			if (!strSGCode.equalsIgnoreCase("ALL"))
+			{
+				sbSqlFilters.append("AND d.strSubGroupCode='" + strSGCode + "' ");
+			}
+			sbSqlFilters.append(" Group BY c.strGroupCode, c.strGroupName, a.strPoscode ");
+		   
+
+
+		    sbSqlLive.append(sbSqlFilters);
+		    sbSqlQFile.append(sbSqlFilters);
+
+		    sqlModLive.append(sbSqlFilters);
+		    sqlModQFile.append(sbSqlFilters);
+
+
+			Map<String, clsPOSGroupSubGroupWiseSales> mapGroup = new HashMap<>();
+
+			List listSqlLive = objBaseService.funGetList(sbSqlLive, "sql");
+			if (listSqlLive.size() > 0)
+			{
+				
+					/*Object[] obj = (Object[]) listSqlLive.get(i);
+
+					String groupCode = obj[0].toString();
+					String groupName = obj[1].toString();
+					double qty = Double.parseDouble(obj[2].toString());
+					double netTotal = Double.parseDouble(obj[3].toString());
+					String posName = obj[4].toString();
+					double subTotal = Double.parseDouble(obj[7].toString());
+					double discAmt = Double.parseDouble(obj[8].toString());
+					// double salesAmt = Double.parseDouble(obj[3].toString());
+
+					if (mapGroup.containsKey(groupCode))
+					{
+						clsPOSGroupWaiseSalesBean objClsGroupWaiseSalesBean = mapGroup.get(groupCode);
+						objClsGroupWaiseSalesBean.setGroupName(groupName);
+						objClsGroupWaiseSalesBean.setPosName(posName);
+						objClsGroupWaiseSalesBean.setQty(objClsGroupWaiseSalesBean.getQty() + qty);
+						objClsGroupWaiseSalesBean.setSubTotal(objClsGroupWaiseSalesBean.getSubTotal() + subTotal);
+						objClsGroupWaiseSalesBean.setDiscAmt(objClsGroupWaiseSalesBean.getDiscAmt() + discAmt);
+						// objClsGroupWaiseSalesBean.setNetTotal(objClsGroupWaiseSalesBean.getNetTotal()
+						// + netTotal);
+						objClsGroupWaiseSalesBean.setSalesAmt(objClsGroupWaiseSalesBean.getSalesAmt() + netTotal);
+
+						mapGroup.put(groupCode, objClsGroupWaiseSalesBean);
+					}
+					else
+					{
+						clsPOSGroupWaiseSalesBean objClsGroupWaiseSalesBean = new clsPOSGroupWaiseSalesBean();
+						objClsGroupWaiseSalesBean.setGroupName(groupName);
+						objClsGroupWaiseSalesBean.setPosName(posName);
+						objClsGroupWaiseSalesBean.setQty(qty);
+						objClsGroupWaiseSalesBean.setSubTotal(subTotal);
+						objClsGroupWaiseSalesBean.setDiscAmt(discAmt);
+						// objClsGroupWaiseSalesBean.setNetTotal(netTotal);
+						objClsGroupWaiseSalesBean.setSalesAmt(netTotal);
+
+						mapGroup.put(groupCode, objClsGroupWaiseSalesBean);
+					}
+*/
+					 boolean flgRecords = false;
+					 for (int i = 0; i < listSqlLive.size(); i++)
+					{
+							flgRecords = true;
+							Object[] obj = (Object[]) listSqlLive.get(i);
+							if (mapPOSDtlForGroupSubGroup.containsKey(obj[9].toString()))//posCode
+							{
+							    String posCode = obj[9].toString();
+							    String groupCode =obj[0].toString();;
+							    List<Map<String, clsPOSGroupSubGroupWiseSales>> listOfGroup = mapPOSDtlForGroupSubGroup.get(posCode);
+							    boolean isGroupExists = false;
+							    int groupIndex = 0;
+							    for (int j = 0; j < listOfGroup.size(); j++)
+							    {
+								if (listOfGroup.get(j).containsKey(groupCode))
+								{
+								    isGroupExists = true;
+								    groupIndex = j;
+								    break;
+								}
+							    }
+							    if (isGroupExists)
+							    {
+								Map<String, clsPOSGroupSubGroupWiseSales> mapGroupCodeDtl = listOfGroup.get(groupIndex);
+								clsPOSGroupSubGroupWiseSales objGroupCodeDtl = mapGroupCodeDtl.get(groupCode);
+								objGroupCodeDtl.setGroupCode(obj[0].toString());
+								objGroupCodeDtl.setGroupName(obj[1].toString());
+								objGroupCodeDtl.setPosName(obj[4].toString());
+								objGroupCodeDtl.setQty(objGroupCodeDtl.getQty() +  Double.parseDouble(obj[2].toString()));
+								objGroupCodeDtl.setSubTotal(objGroupCodeDtl.getSubTotal() +  Double.parseDouble(obj[7].toString()));
+								objGroupCodeDtl.setSalesAmt(objGroupCodeDtl.getSalesAmt() +  Double.parseDouble(obj[3].toString()));
+								objGroupCodeDtl.setDiscAmt(objGroupCodeDtl.getDiscAmt() +  Double.parseDouble(obj[8].toString()));
+								objGroupCodeDtl.setGrandTotal(objGroupCodeDtl.getGrandTotal() +  Double.parseDouble(obj[10].toString()));
+							    }
+							    else
+							    {
+								Map<String, clsPOSGroupSubGroupWiseSales> mapGroupCodeDtl = new LinkedHashMap<>();
+								clsPOSGroupSubGroupWiseSales objGroupCodeDtl = new clsPOSGroupSubGroupWiseSales(
+										obj[0].toString(),obj[1].toString(), obj[4].toString(), Double.parseDouble(obj[2].toString()),Double.parseDouble(obj[7].toString()), Double.parseDouble(obj[3].toString()), Double.parseDouble(obj[8].toString()), Double.parseDouble(obj[10].toString()));
+								mapGroupCodeDtl.put(obj[0].toString(), objGroupCodeDtl);
+								listOfGroup.add(mapGroupCodeDtl);
+							    }
+							}
+							else
+							{
+							    List<Map<String, clsPOSGroupSubGroupWiseSales>> listOfGroupDtl = new ArrayList<>();
+							    Map<String, clsPOSGroupSubGroupWiseSales> mapGroupCodeDtl = new LinkedHashMap<>();
+							    clsPOSGroupSubGroupWiseSales objGroupCodeDtl = new clsPOSGroupSubGroupWiseSales
+							    		(obj[0].toString(),obj[1].toString(), obj[4].toString(), Double.parseDouble(obj[2].toString()),Double.parseDouble(obj[7].toString()), Double.parseDouble(obj[3].toString()), Double.parseDouble(obj[8].toString()), Double.parseDouble(obj[10].toString()));
+							    mapGroupCodeDtl.put(obj[0].toString(), objGroupCodeDtl);
+							    listOfGroupDtl.add(mapGroupCodeDtl);
+							    mapPOSDtlForGroupSubGroup.put( obj[9].toString(), listOfGroupDtl);
+							}
+						    }
+						
+				}
+		
+			List listSqlQFile = objBaseService.funGetList(sbSqlQFile, "sql");
+			if (listSqlQFile.size() > 0)
+			{
+
+				boolean flgRecords = false;
+				 for (int i = 0; i < listSqlQFile.size(); i++)
+				{
+						flgRecords = true;
+						Object[] obj = (Object[]) listSqlQFile.get(i);
+						if (mapPOSDtlForGroupSubGroup.containsKey(obj[9].toString()))//posCode
+						{
+						    String posCode = obj[9].toString();
+						    String groupCode =obj[0].toString();;
+						    List<Map<String, clsPOSGroupSubGroupWiseSales>> listOfGroup = mapPOSDtlForGroupSubGroup.get(posCode);
+						    boolean isGroupExists = false;
+						    int groupIndex = 0;
+						    for (int j = 0; j < listOfGroup.size(); j++)
+						    {
+							if (listOfGroup.get(j).containsKey(groupCode))
+							{
+							    isGroupExists = true;
+							    groupIndex = j;
+							    break;
+							}
+						    }
+						    if (isGroupExists)
+						    {
+							Map<String, clsPOSGroupSubGroupWiseSales> mapGroupCodeDtl = listOfGroup.get(groupIndex);
+							clsPOSGroupSubGroupWiseSales objGroupCodeDtl = mapGroupCodeDtl.get(groupCode);
+							objGroupCodeDtl.setGroupCode(obj[0].toString());
+							objGroupCodeDtl.setGroupName(obj[1].toString());
+							objGroupCodeDtl.setPosName(obj[4].toString());
+							objGroupCodeDtl.setQty(objGroupCodeDtl.getQty() +  Double.parseDouble(obj[2].toString()));
+							objGroupCodeDtl.setSubTotal(objGroupCodeDtl.getSubTotal() +  Double.parseDouble(obj[7].toString()));
+							objGroupCodeDtl.setSalesAmt(objGroupCodeDtl.getSalesAmt() +  Double.parseDouble(obj[3].toString()));
+							objGroupCodeDtl.setDiscAmt(objGroupCodeDtl.getDiscAmt() +  Double.parseDouble(obj[8].toString()));
+							objGroupCodeDtl.setGrandTotal(objGroupCodeDtl.getGrandTotal() +  Double.parseDouble(obj[10].toString()));
+						    }
+						    else
+						    {
+							Map<String, clsPOSGroupSubGroupWiseSales> mapGroupCodeDtl = new LinkedHashMap<>();
+							clsPOSGroupSubGroupWiseSales objGroupCodeDtl = new clsPOSGroupSubGroupWiseSales(
+									obj[0].toString(),obj[1].toString(), obj[4].toString(), Double.parseDouble(obj[2].toString()),Double.parseDouble(obj[7].toString()), Double.parseDouble(obj[3].toString()), Double.parseDouble(obj[8].toString()), Double.parseDouble(obj[10].toString()));
+							mapGroupCodeDtl.put(obj[0].toString(), objGroupCodeDtl);
+							listOfGroup.add(mapGroupCodeDtl);
+						    }
+						}
+						else
+						{
+						    List<Map<String, clsPOSGroupSubGroupWiseSales>> listOfGroupDtl = new ArrayList<>();
+						    Map<String, clsPOSGroupSubGroupWiseSales> mapGroupCodeDtl = new LinkedHashMap<>();
+						    clsPOSGroupSubGroupWiseSales objGroupCodeDtl = new clsPOSGroupSubGroupWiseSales
+						    		(obj[0].toString(),obj[1].toString(), obj[4].toString(), Double.parseDouble(obj[2].toString()),Double.parseDouble(obj[7].toString()), Double.parseDouble(obj[3].toString()), Double.parseDouble(obj[8].toString()), Double.parseDouble(obj[10].toString()));
+						    mapGroupCodeDtl.put(obj[0].toString(), objGroupCodeDtl);
+						    listOfGroupDtl.add(mapGroupCodeDtl);
+						    mapPOSDtlForGroupSubGroup.put( obj[9].toString(), listOfGroupDtl);
+						}
+					    }
+				}
+		
+
+			List listSqlModLive = objBaseService.funGetList(sqlModLive, "sql");
+			if (listSqlModLive.size() > 0)
+			{
+
+				boolean flgRecords = false;
+				 for (int i = 0; i < listSqlModLive.size(); i++)
+				{
+						flgRecords = true;
+						Object[] obj = (Object[]) listSqlModLive.get(i);
+						if (mapPOSDtlForGroupSubGroup.containsKey(obj[9].toString()))//posCode
+						{
+						    String posCode = obj[9].toString();
+						    String groupCode =obj[0].toString();;
+						    List<Map<String, clsPOSGroupSubGroupWiseSales>> listOfGroup = mapPOSDtlForGroupSubGroup.get(posCode);
+						    boolean isGroupExists = false;
+						    int groupIndex = 0;
+						    for (int j = 0; j < listOfGroup.size(); j++)
+						    {
+							if (listOfGroup.get(j).containsKey(groupCode))
+							{
+							    isGroupExists = true;
+							    groupIndex = j;
+							    break;
+							}
+						    }
+						    if (isGroupExists)
+						    {
+							Map<String, clsPOSGroupSubGroupWiseSales> mapGroupCodeDtl = listOfGroup.get(groupIndex);
+							clsPOSGroupSubGroupWiseSales objGroupCodeDtl = mapGroupCodeDtl.get(groupCode);
+							objGroupCodeDtl.setGroupCode(obj[0].toString());
+							objGroupCodeDtl.setGroupName(obj[1].toString());
+							objGroupCodeDtl.setPosName(obj[4].toString());
+							objGroupCodeDtl.setQty(objGroupCodeDtl.getQty() +  Double.parseDouble(obj[2].toString()));
+							objGroupCodeDtl.setSubTotal(objGroupCodeDtl.getSubTotal() +  Double.parseDouble(obj[7].toString()));
+							objGroupCodeDtl.setSalesAmt(objGroupCodeDtl.getSalesAmt() +  Double.parseDouble(obj[3].toString()));
+							objGroupCodeDtl.setDiscAmt(objGroupCodeDtl.getDiscAmt() +  Double.parseDouble(obj[8].toString()));
+							objGroupCodeDtl.setGrandTotal(objGroupCodeDtl.getGrandTotal() +  Double.parseDouble(obj[10].toString()));
+						    }
+						    else
+						    {
+							Map<String, clsPOSGroupSubGroupWiseSales> mapGroupCodeDtl = new LinkedHashMap<>();
+							clsPOSGroupSubGroupWiseSales objGroupCodeDtl = new clsPOSGroupSubGroupWiseSales(
+									obj[0].toString(),obj[1].toString(), obj[4].toString(), Double.parseDouble(obj[2].toString()),Double.parseDouble(obj[7].toString()), Double.parseDouble(obj[3].toString()), Double.parseDouble(obj[8].toString()), Double.parseDouble(obj[10].toString()));
+							mapGroupCodeDtl.put(obj[0].toString(), objGroupCodeDtl);
+							listOfGroup.add(mapGroupCodeDtl);
+						    }
+						}
+						else
+						{
+						    List<Map<String, clsPOSGroupSubGroupWiseSales>> listOfGroupDtl = new ArrayList<>();
+						    Map<String, clsPOSGroupSubGroupWiseSales> mapGroupCodeDtl = new LinkedHashMap<>();
+						    clsPOSGroupSubGroupWiseSales objGroupCodeDtl = new clsPOSGroupSubGroupWiseSales
+						    		(obj[0].toString(),obj[1].toString(), obj[4].toString(), Double.parseDouble(obj[2].toString()),Double.parseDouble(obj[7].toString()), Double.parseDouble(obj[3].toString()), Double.parseDouble(obj[8].toString()), Double.parseDouble(obj[10].toString()));
+						    mapGroupCodeDtl.put(obj[0].toString(), objGroupCodeDtl);
+						    listOfGroupDtl.add(mapGroupCodeDtl);
+						    mapPOSDtlForGroupSubGroup.put( obj[9].toString(), listOfGroupDtl);
+						}
+					    }
+				}
+			
+
+			List listSqlModQFile = objBaseService.funGetList(sqlModQFile, "sql");
+			if (listSqlModQFile.size() > 0)
+			{
+				boolean flgRecords = false;
+			 for (int i = 0; i < listSqlModQFile.size(); i++)
+			{
+					flgRecords = true;
+					Object[] obj = (Object[]) listSqlModQFile.get(i);
+					if (mapPOSDtlForGroupSubGroup.containsKey(obj[9].toString()))//posCode
+					{
+					    String posCode = obj[9].toString();
+					    String groupCode =obj[0].toString();;
+					    List<Map<String, clsPOSGroupSubGroupWiseSales>> listOfGroup = mapPOSDtlForGroupSubGroup.get(posCode);
+					    boolean isGroupExists = false;
+					    int groupIndex = 0;
+					    for (int j = 0; j < listOfGroup.size(); j++)
+					    {
+						if (listOfGroup.get(j).containsKey(groupCode))
+						{
+						    isGroupExists = true;
+						    groupIndex = j;
+						    break;
+						}
+					    }
+					    if (isGroupExists)
+					    {
+						Map<String, clsPOSGroupSubGroupWiseSales> mapGroupCodeDtl = listOfGroup.get(groupIndex);
+						clsPOSGroupSubGroupWiseSales objGroupCodeDtl = mapGroupCodeDtl.get(groupCode);
+						objGroupCodeDtl.setGroupCode(obj[0].toString());
+						objGroupCodeDtl.setGroupName(obj[1].toString());
+						objGroupCodeDtl.setPosName(obj[4].toString());
+						objGroupCodeDtl.setQty(objGroupCodeDtl.getQty() +  Double.parseDouble(obj[2].toString()));
+						objGroupCodeDtl.setSubTotal(objGroupCodeDtl.getSubTotal() +  Double.parseDouble(obj[7].toString()));
+						objGroupCodeDtl.setSalesAmt(objGroupCodeDtl.getSalesAmt() +  Double.parseDouble(obj[3].toString()));
+						objGroupCodeDtl.setDiscAmt(objGroupCodeDtl.getDiscAmt() +  Double.parseDouble(obj[8].toString()));
+						objGroupCodeDtl.setGrandTotal(objGroupCodeDtl.getGrandTotal() +  Double.parseDouble(obj[10].toString()));
+					    }
+					    else
+					    {
+						Map<String, clsPOSGroupSubGroupWiseSales> mapGroupCodeDtl = new LinkedHashMap<>();
+						clsPOSGroupSubGroupWiseSales objGroupCodeDtl = new clsPOSGroupSubGroupWiseSales(
+								obj[0].toString(),obj[1].toString(), obj[4].toString(), Double.parseDouble(obj[2].toString()),Double.parseDouble(obj[7].toString()), Double.parseDouble(obj[3].toString()), Double.parseDouble(obj[8].toString()), Double.parseDouble(obj[10].toString()));
+						mapGroupCodeDtl.put(obj[0].toString(), objGroupCodeDtl);
+						listOfGroup.add(mapGroupCodeDtl);
+					    }
+					}
+					else
+					{
+					    List<Map<String, clsPOSGroupSubGroupWiseSales>> listOfGroupDtl = new ArrayList<>();
+					    Map<String, clsPOSGroupSubGroupWiseSales> mapGroupCodeDtl = new LinkedHashMap<>();
+					    clsPOSGroupSubGroupWiseSales objGroupCodeDtl = new clsPOSGroupSubGroupWiseSales
+					    		(obj[0].toString(),obj[1].toString(), obj[4].toString(), Double.parseDouble(obj[2].toString()),Double.parseDouble(obj[7].toString()), Double.parseDouble(obj[3].toString()), Double.parseDouble(obj[8].toString()), Double.parseDouble(obj[10].toString()));
+					    mapGroupCodeDtl.put(obj[0].toString(), objGroupCodeDtl);
+					    listOfGroupDtl.add(mapGroupCodeDtl);
+					    mapPOSDtlForGroupSubGroup.put( obj[9].toString(), listOfGroupDtl);
+					}
+				    }
+				}
+			
+			// (Map.Entry<String, clsPOSBillItemTaxDtl> entry : hmBillItemTaxDtl.entrySet())
+			Iterator<Map.Entry<String, List<Map<String, clsPOSGroupSubGroupWiseSales>>>> it = mapPOSDtlForGroupSubGroup.entrySet().iterator();
+		    while (it.hasNext())
+		    {
+			Map.Entry<String, List<Map<String, clsPOSGroupSubGroupWiseSales>>> entry = it.next();
+			String posCode1 = entry.getKey();
+			List<Map<String, clsPOSGroupSubGroupWiseSales>> listOfGroup = entry.getValue();
+			for (int i = 0; i < listOfGroup.size(); i++)
+			{
+				clsPOSGroupSubGroupWiseSales objGroupDtl = listOfGroup.get(i).entrySet().iterator().next().getValue();
+
+			    Object[] arrObjRows =
+			    {
+				objGroupDtl.getGroupName(), objGroupDtl.getPosName(), objGroupDtl.getQty(), objGroupDtl.getSalesAmt(), objGroupDtl.getSubTotal(), objGroupDtl.getDiscAmt()
+			    };
+			    listOfGroupWise.add(objGroupDtl);
+			}
+		    }
+
+		    Comparator<clsPOSGroupSubGroupWiseSales> groupNameComparator = new Comparator<clsPOSGroupSubGroupWiseSales>()
+		    {
+
+			@Override
+			public int compare(clsPOSGroupSubGroupWiseSales o1, clsPOSGroupSubGroupWiseSales o2)
+			{
+			    return o1.getGroupName().compareToIgnoreCase(o2.getGroupName());
+			}
+		    };
+		    Collections.sort(listOfGroupWise, new clsPOSGroupWiseComparator(groupNameComparator)
+		    );
+		    
+		    
+			/*for (Map.Entry<String, List<Map<String, clsPOSGroupSubGroupWiseSales>>> entry : mapPOSDtlForGroupSubGroup.entrySet())
+			{
+				list.add((clsPOSGroupSubGroupWiseSales) entry.getValue());
+			}
+
+			Comparator<clsPOSGroupSubGroupWiseSales> groupComparator = new Comparator<clsPOSGroupSubGroupWiseSales>()
+			{
+
+				@Override
+				public int compare(clsPOSGroupSubGroupWiseSales o1, clsPOSGroupSubGroupWiseSales o2)
+				{
+					return o1.getGroupName().compareToIgnoreCase(o2.getGroupName());
+				}
+			};
+
+			Collections.sort(list, new clsPOSGroupWiseComparator(groupComparator));*/
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return listOfGroupWise;
+		
+	
+	}
+
 	public Map funSalesReport(String fromDate, String toDate, String strPOSCode, String strShiftNo, String strUserCode,
 			String field, String strPayMode, String strOperator, String strFromBill, String strToBill,
 			String reportType, String Type, String Customer, String ConsolidatePOS, String ReportName,

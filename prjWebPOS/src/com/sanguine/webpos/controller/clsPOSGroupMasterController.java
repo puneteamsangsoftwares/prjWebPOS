@@ -154,7 +154,7 @@ public class clsPOSGroupMasterController {
 			req.getSession().setAttribute("success", true);
 			req.getSession().setAttribute("successMessage"," "+groupCode);
 			
-			String sql = "update tblmasteroperationstatus set dteDateEdited='"+objGlobal.funGetCurrentDateTime("yyyy-MM-dd")+"'  where strTableName='Group' ";
+			String sql = "update tblmasteroperationstatus set dteDateEdited='"+objGlobal.funGetCurrentDateTime("yyyy-MM-dd")+"'  where strTableName='Group' and strClientCode='" + clientCode + "' ";
 			objBaseServiceImpl.funExecuteUpdate(sql,"sql");
 									
 			return new ModelAndView("redirect:/frmGroup.html?saddr="+urlHits);

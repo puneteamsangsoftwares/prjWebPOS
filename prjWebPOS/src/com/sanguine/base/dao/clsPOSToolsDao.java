@@ -7101,7 +7101,7 @@ public class clsPOSToolsDao{
         try
         {
             String sql = "select count(*) from tblinternal "
-                    + "where strTransactionType='" + masterName + "'";
+                    + "where strTransactionType='" + masterName + "' and strClientCode='"+clientCode+"'";
             Query rs = webPOSSessionFactory.getCurrentSession().createSQLQuery(sql);
             List list = rs.list();
             if (list!=null)
@@ -7117,7 +7117,7 @@ public class clsPOSToolsDao{
                     Query rsInsert = webPOSSessionFactory.getCurrentSession().createSQLQuery(sql);
                     if (clientCode.equals("024.001"))
                     {
-                    	webPOSSessionFactory.getCurrentSession().createSQLQuery("update tblinternal set dblLastNo=9856 where strTransactionType='AdvReceipt'");
+                    	webPOSSessionFactory.getCurrentSession().createSQLQuery("update tblinternal set dblLastNo=9856 where strTransactionType='AdvReceipt' and strClientCode='"+clientCode+"'");
                     }
                 }
             }
@@ -7199,7 +7199,7 @@ public class clsPOSToolsDao{
 	
 	private void funCreateAreaForAll(String clientCode,String userCode,String dateCreated,String dateEdited) throws Exception
     {
-      String areaCode = funGenerateAreaCode();
+      String areaCode = funGenerateAreaCode(clientCode);
       Query rsArea = webPOSSessionFactory.getCurrentSession().createSQLQuery("select count(strAreaCode) from tblareamaster where strAreaName=''");
       List list = rsArea.list();
       if (list!=null)
@@ -7224,14 +7224,14 @@ public class clsPOSToolsDao{
     
 	
 	
-	 private String funGenerateAreaCode()
+	 private String funGenerateAreaCode(String clientCode)
      {
          String areaCode = "";
          int code = 0;
          int areaCodeCnt =0;
          try
          {
-             String sql_Area = "select count(dblLastNo) from tblinternal where strTransactionType='Area'";
+             String sql_Area = "select count(dblLastNo) from tblinternal where strTransactionType='Area' and strClientCode='"+clientCode+"'";
              Query rsAreaCode = webPOSSessionFactory.getCurrentSession().createSQLQuery(sql_Area);
              List list = rsAreaCode.list();
              if (list!=null)
@@ -7245,7 +7245,7 @@ public class clsPOSToolsDao{
              } 
       				if (areaCodeCnt > 0)
       				{
-      					sql_Area = "select dblLastNo from tblinternal where strTransactionType='Area'";
+      					sql_Area = "select dblLastNo from tblinternal where strTransactionType='Area' and strClientCode='"+clientCode+"'";
       					 rsAreaCode = webPOSSessionFactory.getCurrentSession().createSQLQuery(sql_Area);
       					 List listAreaCode = rsAreaCode.list();
       					for(int i=0; i<listAreaCode.size(); i++)
@@ -7257,13 +7257,13 @@ public class clsPOSToolsDao{
       					
       					code = code + 1;
       					areaCode = "A" + String.format("%03d", code);
-      					sql_Area = "update tblinternal set dblLastNo='" + code + "' where strTransactionType='Area'";
+      					sql_Area = "update tblinternal set dblLastNo='" + code + "' where strTransactionType='Area' and strClientCode='"+clientCode+"'";
       					  rsAreaCode = webPOSSessionFactory.getCurrentSession().createSQLQuery(sql_Area);
       				}
       				else
       				{
       					areaCode = "A001";
-      					sql_Area = "insert into tblinternal values('Area'," + 1 + ")";
+      					sql_Area = "insert into tblinternal values('Area'," + 1 + ","+clientCode+") where strClientCode='"+clientCode+"'";
       					  rsAreaCode = webPOSSessionFactory.getCurrentSession().createSQLQuery(sql_Area);
       				}
             

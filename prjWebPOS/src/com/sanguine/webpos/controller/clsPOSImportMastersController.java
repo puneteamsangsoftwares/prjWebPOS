@@ -1460,7 +1460,7 @@ public class clsPOSImportMastersController {
 		    }
 		   
 		    sqlBuilder.setLength(0);
-		    sqlBuilder.append("update tblinternal set dblLastNo=" + docNo + " where strTransactionType='Area'");
+		    sqlBuilder.append("update tblinternal set dblLastNo=" + docNo + " where strTransactionType='Area' and strClientCode='"+clientCode+"'");
 		    objBaseServiceImpl.funExecuteUpdate(sqlBuilder.toString(), "sql");
 
 		    flgReturn = true;

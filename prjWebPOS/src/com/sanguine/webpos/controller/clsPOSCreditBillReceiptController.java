@@ -228,7 +228,7 @@ public class clsPOSCreditBillReceiptController
 	        	String clientCode = req.getSession().getAttribute("gClientCode").toString();
 	        	String userCode=req.getSession().getAttribute("gUserCode").toString();
 	        	String posDate=req.getSession().getAttribute("gPOSDate").toString();
-	        	String receiptNo = funGenerateReceiptNo();
+	        	String receiptNo = funGenerateReceiptNo(clientCode);
 	        	String chequeNo = "";
 	            String chequeDate = "1990-01-01 00:00:00";
 	        	
@@ -258,13 +258,13 @@ public class clsPOSCreditBillReceiptController
 	 
 	   
 	 
-	 private String funGenerateReceiptNo()
+	 private String funGenerateReceiptNo(String clientCode)
 	  {
         String receiptNo = "";
         StringBuilder sqlBuilder =new StringBuilder();
         try
         {
-        	sqlBuilder.append("select count(dblLastNo) from tblinternal where strTransactionType='CreditReceipt'");
+        	sqlBuilder.append("select count(dblLastNo) from tblinternal where strTransactionType='CreditReceipt' and strClientCode='"+clientCode+"'");
         	List listBill=objBaseService.funGetList(sqlBuilder, "sql");
     		if(null != listBill && listBill.size()>0)
 			{
@@ -273,7 +273,7 @@ public class clsPOSCreditBillReceiptController
 			    if (!listBill.get(0).toString().equals("0"))
 				{
 			    	sqlBuilder.setLength(0);
-			    	sqlBuilder.append("select dblLastNo from tblinternal where strTransactionType='CreditReceipt'");
+			    	sqlBuilder.append("select dblLastNo from tblinternal where strTransactionType='CreditReceipt' and strClientCode='"+clientCode+"'");
 			    	List listReceipt=objBaseService.funGetList(sqlBuilder, "sql");
 		    		if(listReceipt.size()>0)
 					{
@@ -285,7 +285,7 @@ public class clsPOSCreditBillReceiptController
 			              //clsGlobalVarClass.gUpdatekot = true;
 			              //clsGlobalVarClass.gKOTCode = code;
 			              sqlBuilder.setLength(0);
-			              sqlBuilder.append("update tblinternal set dblLastNo='" + code + "' where strTransactionType='CreditReceipt'");
+			              sqlBuilder.append("update tblinternal set dblLastNo='" + code + "' where strTransactionType='CreditReceipt' and strClientCode='"+clientCode+"'");
 			              objBaseService.funExecuteUpdate(sqlBuilder.toString(),"sql");
 					  }
 					}
@@ -296,7 +296,7 @@ public class clsPOSCreditBillReceiptController
 	                receiptNo = "CR00001";
 	                //clsGlobalVarClass.gUpdatekot = false;
 	                sqlBuilder.setLength(0);
-		            sqlBuilder.append("insert into tblinternal values('CreditReceipt'," + 1 + ")");
+		            sqlBuilder.append("insert into tblinternal values('CreditReceipt'," + 1 + ","+clientCode+") where strClientCode='"+clientCode+"'");
 		            objBaseService.funExecuteUpdate(sqlBuilder.toString(),"sql");
 	            }
 			  }
