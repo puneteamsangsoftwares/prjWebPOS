@@ -356,7 +356,7 @@ public class clsPOSJasperFormat3ForBill implements clsPOSBillGenerationFormat
 			hm.put("TAX_INVOICE", "TAX INVOICE");
 
 			// Client Details
-			objSetupHdModel = objMasterService.funGetPOSWisePropertySetup(strPosCode, strClientCode);
+			objSetupHdModel = objMasterService.funGetPOSWisePropertySetup(strClientCode,strPosCode);
 			hm.put("ClientName", objSetupHdModel.getStrClientName());
 			hm.put("ClientAddressLine1", objSetupHdModel.getStrAddressLine1());
 			hm.put("ClientAddressLine2", objSetupHdModel.getStrAddressLine2());

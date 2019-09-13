@@ -2072,7 +2072,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 		String dateTime = POSDate + " " + currentDateTime.split(" ")[1];
 
 		boolean isBillSeries = false;
-		clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(POSCode, clientCode);
+		clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,POSCode);
 		
 		if (objSetupHdModel.getStrEnableBillSeries().equalsIgnoreCase("Y"))
 		{

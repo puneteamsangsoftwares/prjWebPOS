@@ -48,7 +48,7 @@ public class clsPOSChangeCustomerOnBillController {
 			String clientCode = request.getSession().getAttribute("gClientCode").toString();
 			String POSCode = request.getSession().getAttribute("gPOSCode").toString();
 			
-			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(POSCode, clientCode);
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,POSCode);
 			
 		}catch(NullPointerException e){
 			urlHits="1";

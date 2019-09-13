@@ -202,7 +202,7 @@ public class clsPOSModifyBillController
 			String billNo = objBean.getStrBillNo();
 
 			boolean isBillSeries = false;
-			clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(posCode, clientCode);
+			clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup( clientCode,posCode);
 			
 			if (objSetupHdModel.getStrEnableBillSeries().equalsIgnoreCase("Y"))
 			{

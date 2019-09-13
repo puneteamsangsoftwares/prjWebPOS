@@ -714,7 +714,7 @@ public class clsUserController
 			superUserYN=true;
 		}
 		
-		clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(POSCode, clientCode);
+		clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,POSCode);
 		if(null!=objSetupHdModel)
 		{/*
 			clsPOSGlobalFunctionsController.hmPOSSetupValues.put("gClientCode",objSetupHdModel.getStrClientCode());

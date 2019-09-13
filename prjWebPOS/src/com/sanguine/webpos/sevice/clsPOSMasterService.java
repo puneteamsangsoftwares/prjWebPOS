@@ -540,7 +540,7 @@ public class clsPOSMasterService
 		return objSubGroupMasterModel;
 	}
 
-	public clsSetupHdModel funGetPOSWisePropertySetup(String POSCode, String clientCode) throws Exception
+	public clsSetupHdModel funGetPOSWisePropertySetup(String clientCode, String POSCode) throws Exception
 	{
 		clsSetupHdModel objSetupHdModel = new clsSetupHdModel();
 		try{

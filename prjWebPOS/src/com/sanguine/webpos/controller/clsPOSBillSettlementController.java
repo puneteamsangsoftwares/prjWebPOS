@@ -155,7 +155,7 @@ public class clsPOSBillSettlementController
 			StringBuilder sql = new StringBuilder();
 			try
 			{
-				clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strPosCode, clientCode);
+				clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,strPosCode);
 				String gShowBillsType = objSetupHdModel.getStrShowBillsDtlType();
 				String gCMSIntegrationYN = objSetupHdModel.getStrCMSIntegrationYN();
 				hmUnsettleBill.put("gShowBillsType", gShowBillsType);
