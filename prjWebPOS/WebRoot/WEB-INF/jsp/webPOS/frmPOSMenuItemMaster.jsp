@@ -29,8 +29,6 @@
 			  }
 			});
 		
-		  $('input#txtItemCode').mlKeyboard({layout: 'en_US'});
-		  $('input#txtExternalCode').mlKeyboard({layout: 'en_US'});
 		  $('input#txtItemName').mlKeyboard({layout: 'en_US'});
 		  $('input#txtShortName').mlKeyboard({layout: 'en_US'});
 		  $('input#txtPurchaseRate').mlKeyboard({layout: 'en_US'});
@@ -39,8 +37,6 @@
 		  $('input#txtItemDetails').mlKeyboard({layout: 'en_US'});
 		  $('input#txtMaxLevel').mlKeyboard({layout: 'en_US'});
 		  $('textarea#txtItemDetails').mlKeyboard({layout: 'en_US'});
-		  
-		
 		}); 
 
 	function funSetData(code){
@@ -66,21 +62,16 @@
 		        {
 		        	if(response.strItemCode=='Invalid Code')
 		        	{
-		        		confirmDialog("Invalid Item Code ");
+		        		confirmDialog("Invalid Item Code ","");
 		        		$("#txtItemCode").val('');
 		        	}
 		        	else
 		        	{
-		        	/* 	      chkItemForSale txtItemType txtSubGroupCode
-		 				txtTaxIndicator txtPurchaseRate txtRevenueHead txtSalePrice
-		 				txtMinLevel txtProcTimeMin txtMaxLevel chkStockInEnable  chkOpenItem 
-		 				chkItemWiseKOTYN txtItemDetails txtItemDetails */	
 		        		$("#txtItemCode").val(response.strItemCode);
 			        	$("#txtExternalCode").val(response.strExternalCode);
 			        	$("#txtItemName").val(response.strItemName);
 			        	$("#txtItemName").focus();
 			        	$("#txtShortName").val(response.strShortName);
-			        	//$("#chkRawMaterial").val(response.strRawMaterial);
 			        	if(response.strRawMaterial=='Y')
 			        	{
 			        		$("#chkRawMaterial").attr('checked', true);
@@ -89,8 +80,6 @@
 			        	{
 			        		$("#chkRawMaterial").attr('unchecked', false);
 			        	}
-			        	
-			        	//$("#chkItemForSale").val(response.strItemForSale);
 			        	if(response.strItemForSale=='Y')
 			        	{
 			        		$("#chkItemForSale").attr('checked', true);
@@ -111,7 +100,6 @@
 			        	$("#txtProcTimeMin").val(response.intProcTimeMin);
 			        	$("#txtMaxLevel").val(response.dblMaxLevel);
 			        	$("#txtUOM").val(response.strUOM);
-			        	//$("#chkStockInEnable").val(response.strStockInEnable);
 			        	if(response.strStockInEnable=='Y')
 			        	{
 			        		$("#chkStockInEnable").attr('checked', true);
@@ -120,7 +108,6 @@
 			        	{
 			        		$("#chkStockInEnable").attr('unchecked', false);
 			        	}
-			        	//$("#chkOpenItem").val(response.strOpenItem);
 			         	if(response.strOpenItem=='Y')
 			        	{
 			        		$("#chkOpenItem").attr('checked', true);
@@ -129,7 +116,6 @@
 			        	{
 			        		$("#chkOpenItem").attr('unchecked', false);
 			        	}
-			        //	$("#chkItemWiseKOTYN").val(response.strItemWiseKOTYN);
 			        	if(response.strItemWiseKOTYN=='Y')
 			        	{
 			        		$("#chkItemWiseKOTYN").attr('checked', true);
@@ -205,16 +191,15 @@
 		var message='';
 		<%if (session.getAttribute("success") != null) {
 				if (session.getAttribute("successMessage") != null) {%>
-				message='<%=session.getAttribute("successMessage").toString()%>';
-<%session.removeAttribute("successMessage");
+					message='<%=session.getAttribute("successMessage").toString()%>';
+					<%session.removeAttribute("successMessage");
 				}
 				boolean test = ((Boolean) session.getAttribute("success"))
 						.booleanValue();
 				session.removeAttribute("success");
 				if (test) {%>
-				confirmDialog("Data Saved \n\n"
-								+ message);
-<%}
+					confirmDialog("Data Saved \n\n"+ message,"");
+				<%}
 			}%>
 	});
 

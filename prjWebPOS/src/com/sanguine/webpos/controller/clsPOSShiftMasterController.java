@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sanguine.base.service.clsBaseServiceImpl;
+import com.sanguine.bean.clsUserHdBean;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.service.clsGlobalFunctionsService;
 import com.sanguine.webpos.bean.clsPOSShiftMasterBean;
@@ -88,22 +89,13 @@ public class clsPOSShiftMasterController{
 		{
 			urlHits=req.getParameter("saddr").toString();
 			String clientCode=req.getSession().getAttribute("gClientCode").toString();
-			String webStockUserCode=req.getSession().getAttribute("gUserCode").toString();
+			String webPOSUserCode=req.getSession().getAttribute("gUserCode").toString();
 			shiftCode=objBean.getIntShiftCode();
 			if (shiftCode.trim().isEmpty())
-		    {
-		    	List list=objUtilityController.funGetDocumentCode("POSShiftMaster");
-		    	if (list.size()>(0))
-				{
-				    int code =  Integer.parseInt(list.get(0).toString());
-				    code++;
-				    shiftCode=String.valueOf(code);
-				}
-				else
-				{
-					shiftCode = "1";
-				}	
-		    }
+			{
+				long intCode =objUtilityController.funGetDocumentCodeFromInternal("Shift",clientCode);
+				shiftCode = String.valueOf(intCode);
+			}
 			String StartTime=objBean.getStrtimeShiftStart()+" "+objBean.getStrAMPMStart();
 		    String StartEnd= objBean.getStrtimeShiftEnd()+" "+objBean.getStrAMPMEnd();
 			clsShiftMasterModel objModel = new clsShiftMasterModel(new clsShiftMasterModel_ID(shiftCode,clientCode));
@@ -112,15 +104,12 @@ public class clsPOSShiftMasterController{
 	        objModel.setTmeShiftStart(StartTime);
 	        objModel.setTmeShiftEnd(StartEnd);
 	        objModel.setStrBillDateTimeType(objBean.getStrBillDateTimeType());
-	     
-		    objModel.setStrUserCreated(webStockUserCode);
-		    objModel.setStrUserEdited(webStockUserCode);
+		    objModel.setStrUserCreated(webPOSUserCode);
+		    objModel.setStrUserEdited(webPOSUserCode);
 		    objModel.setDteDateCreated(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
 		    objModel.setDteDateEdited(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
-	
 		    obMasterService.funSaveShiftMaster(objModel);
 		    
-		
 			req.getSession().setAttribute("success", true);
 			req.getSession().setAttribute("successMessage"," "+shiftCode);
 			
@@ -132,9 +121,8 @@ public class clsPOSShiftMasterController{
 		}
 		catch(Exception ex)
 		{
-			urlHits="1";
 			ex.printStackTrace();
-			return new ModelAndView("redirect:/frmFail.html");
+			return new ModelAndView("frmLogin", "command", new clsUserHdBean());
 		}
 	}
 	

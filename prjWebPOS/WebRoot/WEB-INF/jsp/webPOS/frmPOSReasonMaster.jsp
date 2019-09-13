@@ -10,12 +10,9 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>REASON MASTER</title>
-<link rel="stylesheet" type="text/css"
-	href="<spring:url value="/resources/css/jquery-confirm.min.css"/>" />
-<script type="text/javascript"
-	src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
-<script type="text/javascript"
-	src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
+<link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/jquery-confirm.min.css"/>" />
+<script type="text/javascript" src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
+<script type="text/javascript" src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
 <style>
 .ui-autocomplete {
 	max-height: 200px;
@@ -37,9 +34,7 @@ var paramTick="unticked";
 /*On form Load It Reset form :Ritesh 22 Nov 2014*/
  $(document).ready(function () {
     
-
-		  $('input#txtReasonCode').mlKeyboard({layout: 'en_US'});
-		  $('input#txtReasonName').mlKeyboard({layout: 'en_US'});
+		$('input#txtReasonName').mlKeyboard({layout: 'en_US'});
 		  
 		  $("form").submit(function(event){
 			  if($("#txtReasonName").val().trim()=="")
@@ -60,8 +55,6 @@ var paramTick="unticked";
 	**/
 	function funResetFields()
 	{
-	
-		
 		$("#chkCashManagement").attr('checked', false);
 		$("#chkUnsettleBill").attr('checked', false);
 		$("#chkComplementary").attr('checked', false);
@@ -79,7 +72,7 @@ var paramTick="unticked";
 		$("#chkVoidStockIn").attr('checked', false);
 		$("#chkVoidStockOut").attr('checked', false); 
 		
- } 
+ 	} 
 	
 	
 		/**
@@ -90,8 +83,6 @@ var paramTick="unticked";
 	       window.open("searchform.html?formname="+transactionName+"&searchText=","","dialogHeight:600px;dialogWidth:600px;dialogLeft:400px;")
 	    }
 		
-		
-		
 		/**
 		* Success Message After Saving Record
 		**/
@@ -101,19 +92,15 @@ var paramTick="unticked";
 			<%if (session.getAttribute("success") != null) {
 				if (session.getAttribute("successMessage") != null) {%>
 					message='<%=session.getAttribute("successMessage").toString()%>';
-<%session.removeAttribute("successMessage");
+					<%session.removeAttribute("successMessage");
 				}
-				boolean test = ((Boolean) session.getAttribute("success"))
-						.booleanValue();
+				boolean test = ((Boolean) session.getAttribute("success")).booleanValue();
 				session.removeAttribute("success");
 				if (test) {%>
-	           confirmDialog("Data Saved \n\n" + message, "");
-<%}
+	           		confirmDialog("Data Saved \n\n" + message, "");
+				<%}
 			}%>
-	/* 	$("[type='reset']").click(function(){
-								$("#chkStockIn").attr('unchecked', false);
-							}); */
-					});
+		});
 
 	/**
 	 * Get and Set data from help file and load data Based on Selection Passing Value(Reason Code)

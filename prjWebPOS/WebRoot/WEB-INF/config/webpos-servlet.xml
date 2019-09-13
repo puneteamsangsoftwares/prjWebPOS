@@ -134,6 +134,7 @@
 				<!-- <value>com.sanguine.webpos.model.clsRegisterDebitCardModel</value> -->
 				<value>com.sanguine.webpos.model.clsUserDetailHdModel</value>
 				<value>com.sanguine.webpos.model.clsPOSSMSSetupModel</value>
+				<value>com.sanguine.webpos.model.clsFactoryMasterModel</value>
 
 
 

@@ -23,10 +23,6 @@ $(document).ready(function () {
 		fieldName=transactionName;
 		window.open("searchform.html?formname="+transactionName+"&searchText=","","dialogHeight:600px;dialogWidth:600px;dialogLeft:400px;");
 	}
-	
-	
-	
-	
 
 	/**
 	* Get and Set data from help file and load data Based on Selection Passing Value(Group Code)
@@ -97,7 +93,7 @@ $(document).ready(function () {
 			session.removeAttribute("success");
 			if (test) 
 			{
-				%>confirmDialog("Data Saved \n\n"+message);<%
+				%>confirmDialog("Data Saved \n\n"+message,"");<%
 			}
 		}%>
 		

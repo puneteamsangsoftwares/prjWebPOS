@@ -7185,6 +7185,9 @@ public class clsFillDatabaseTablesStructureUpdate
 				+" ADD PRIMARY KEY (`strPosCode`, `strClientCode`);";
 		mapStructureUpdater.get("tblStructure").add(sql);
 		
+		sql="ALTER TABLE `tblreasonmaster` CHANGE COLUMN `strTransactionType` `strTransactionType` VARCHAR(20) NOT NULL DEFAULT '' AFTER `strOperational`;";
+		mapStructureUpdater.get("tblStructure").add(sql);
+		
 		//sql="ALTER TABLE `tbltaxtemp` ADD COLUMN `strClientCode` VARCHAR(10) NOT NULL AFTER `strItemName`;";
 		//mapStructureUpdater.get("tblStructure").add(sql);
 		

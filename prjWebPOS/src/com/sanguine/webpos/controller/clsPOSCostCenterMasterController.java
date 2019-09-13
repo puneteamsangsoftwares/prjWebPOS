@@ -97,42 +97,9 @@ public class clsPOSCostCenterMasterController {
 			String costCenterCode=objBean.getStrCostCenterCode();
 		    if (costCenterCode.trim().isEmpty())
 			{
-				List list=objUtilityController.funGetDocumentCode("POSCostCenterMaster");
-				 if (!list.get(0).toString().equals("0"))
-					{
-						String strCode = "0";
-						code = list.get(0).toString();
-						StringBuilder sb = new StringBuilder(code);
-						String ss = sb.delete(0, 1).toString();
-						for (int i = 0; i < ss.length(); i++)
-						{
-							if (ss.charAt(i) != '0')
-							{
-								strCode = ss.substring(i, ss.length());
-								break;
-							}
-						}
-						int intCode = Integer.parseInt(strCode);
-						intCode++;
-						if(intCode<10)
-						{
-						costCenterCode = "C0" + intCode;
-						}
-						else
-						{
-							costCenterCode = "C" + intCode;
-						}
-						
-					}
-				    else
-				    {
-				    	code="0";
-				    	costCenterCode = "C01";
-				    }
-				
+				long intCode =objUtilityController.funGetDocumentCodeFromInternal("CostCenter",clientCode);
+				costCenterCode = "C" + String.format("%03d", intCode);
 			}
-					    
-		    
 		    clsCostCenterMasterModel objModel = new clsCostCenterMasterModel(new clsCostCenterMasterModel_ID(costCenterCode, clientCode));
 		    objModel.setStrCostCenterName(objBean.getStrCostCenterName());
 		    objModel.setStrPrinterPort(objBean.getStrPrinterPort());
@@ -162,7 +129,7 @@ public class clsPOSCostCenterMasterController {
 		{
 			urlHits="1";
 			ex.printStackTrace();
-			return new ModelAndView("redirect:/frmLogin.html");
+			return new ModelAndView("frmLogin", "command", new clsUserHdBean());
 		}
 	}
 

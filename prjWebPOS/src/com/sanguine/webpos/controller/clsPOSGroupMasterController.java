@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sanguine.base.service.clsBaseServiceImpl;
+import com.sanguine.bean.clsUserHdBean;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSGroupMasterBean;
 import com.sanguine.webpos.model.clsAreaMasterModel;
@@ -78,74 +79,19 @@ public class clsPOSGroupMasterController {
 		{
 			urlHits=req.getParameter("saddr").toString();
 			String clientCode=req.getSession().getAttribute("gClientCode").toString();
-			String webStockUserCode=req.getSession().getAttribute("gUserCode").toString();
+			String webPOSUserCode=req.getSession().getAttribute("gUserCode").toString();
 			String groupCode = objBean.getStrGroupCode();
-			
 			if (groupCode.trim().isEmpty())
-		    {
-		    	//groupCode = objGroupMasterDao.funGenerateGroupCode();
-		    	List list=objUtilityController.funGetDocumentCode("POSGroupMaster");
-		    	if(list.size()>0)
-		    	{
-		    		if (!list.get(0).toString().equals("0"))
-					{
-					    String strCode = "0";
-					    String code = list.get(0).toString();
-					    StringBuilder sb = new StringBuilder(code);
-					    String ss = sb.delete(0, 1).toString();
-					    for (int i = 0; i < ss.length(); i++)
-					    {
-							if (ss.charAt(i) != '0')
-							{
-							    strCode = ss.substring(i, ss.length());
-							    break;
-							}
-					    }
-					    
-					    int intCode = Integer.parseInt(strCode);
-					    intCode++;
-					    if (intCode < 10)
-					    {
-					    	groupCode = "G000000" + intCode;
-					    }
-					    else if (intCode < 100)
-					    {
-					    	groupCode = "G00000" + intCode;
-					    }
-					    else if (intCode < 1000)
-					    {
-					    	groupCode = "G0000" + intCode;
-					    }
-					    else if (intCode < 10000)
-					    {
-					    	groupCode = "G000" + intCode;
-					    }
-					    else if (intCode < 100000)
-					    {
-					    	groupCode = "G00" + intCode;
-					    }
-					    else if (intCode < 1000000)
-					    {
-					    	groupCode = "G0" + intCode;
-					    }
-					}
-					else
-					{
-					    groupCode = "G0000001";
-					}
-		    	}
-		    	else
-				{
-				    groupCode = "G0000001";
-				}
-		    	
-		    }
+			{
+				long intCode =objUtilityController.funGetDocumentCodeFromInternal("Group",clientCode);
+				groupCode = "G" + String.format("%07d", intCode);
+			}
 		    clsGroupMasterModel objModel = new clsGroupMasterModel(new clsGroupMasterModel_ID(groupCode, clientCode));
 		    objModel.setStrGroupName(objBean.getStrGroupName());
 		    objModel.setStrOperationalYN(objGlobal.funIfNull(objBean.getStrOperational(),"N","Y"));
 		    objModel.setStrGroupShortName(objBean.getStrShortName());
-		    objModel.setStrUserCreated(webStockUserCode);
-		    objModel.setStrUserEdited(webStockUserCode);
+		    objModel.setStrUserCreated(webPOSUserCode);
+		    objModel.setStrUserEdited(webPOSUserCode);
 		    objModel.setDteDateCreated(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
 		    objModel.setDteDateEdited(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
 		    objModel.setStrDataPostFlag("N");
@@ -161,9 +107,8 @@ public class clsPOSGroupMasterController {
 		}
 		catch(Exception ex)
 		{
-			urlHits="1";
 			ex.printStackTrace();
-			return new ModelAndView("redirect:/frmFail.html");
+			return new ModelAndView("frmLogin", "command", new clsUserHdBean());
 		}
 	}
 	

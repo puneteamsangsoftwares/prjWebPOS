@@ -1170,7 +1170,7 @@ public class clsSearchFormController
 
 			case "POSFactoryMaster":
 
-				list = objBaseService.funGetSerachList("POSFactory", clientCode);
+				list = objBaseService.funGetSerachList("getAllFactoryMaster", clientCode);
 				for (int i = 0; i < list.size(); i++)
 				{
 					Object obj[] = (Object[]) list.get(i);

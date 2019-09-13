@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sanguine.base.service.clsBaseServiceImpl;
+import com.sanguine.bean.clsUserHdBean;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSDeliveryBoyChargesBean;
 import com.sanguine.webpos.bean.clsPOSDeliveryBoyMasterBean;
@@ -92,55 +93,9 @@ public class clsPOSDeliveryBoyMasterController
 			String dpCode = objBean.getStrDPCode();
 			if (dpCode.trim().isEmpty())
 			{
-				List list = objUtilityController.funGetDocumentCode("POSDeliveryBoyMaster");
-
-				if (!list.get(0).toString().equals("0"))
-				{
-					String strCode = "0";
-					String code = list.get(0).toString();
-					StringBuilder sb = new StringBuilder(code);
-					String ss = sb.delete(0, 2).toString();
-					for (int i = 0; i < ss.length(); i++)
-					{
-						if (ss.charAt(i) != '0')
-						{
-							strCode = ss.substring(i, ss.length());
-							break;
-						}
-					}
-					int intCode = Integer.parseInt(strCode);
-					intCode++;
-					if (intCode < 10)
-					{
-						dpCode = "DB00000" + intCode;
-					}
-					else if (intCode < 100)
-					{
-						dpCode = "DB0000" + intCode;
-					}
-					else if (intCode < 1000)
-					{
-						dpCode = "DB000" + intCode;
-					}
-					else if (intCode < 10000)
-					{
-						dpCode = "DB00" + intCode;
-					}
-					else if (intCode < 100000)
-					{
-						dpCode = "DB0" + intCode;
-					}
-					else if (intCode < 1000000)
-					{
-						dpCode = "DB" + intCode;
-					}
-				}
-				else
-				{
-					dpCode = "DB000001";
-				}
+				long intCode =objUtilityController.funGetDocumentCodeFromInternal("DeliveryBoy",clientCode);
+				dpCode = "DB" + String.format("%07d", intCode);
 			}
-
 			clsDeliveryBoyMasterModel objModel = new clsDeliveryBoyMasterModel(new clsDeliveryBoyMasterModel_ID(dpCode, clientCode));
 			objModel.setStrOperational(objBean.getStrOperational());
 			objModel.setStrDPName(objBean.getStrDPName());
@@ -156,7 +111,6 @@ public class clsPOSDeliveryBoyMasterController
 			objModel.setStrDBCategoryCode("");
 			objModel.setStrDeliveryArea("");
 			objModel.setStrState("");
-			
 			
 			List<clsPOSDeliveryBoyChargesBean> list = objBean.getListDeliveryBoyCharges();
 			List<clsDeliveryBoyChargesModel> listDeliveryChargesDtl = new ArrayList<clsDeliveryBoyChargesModel>();
@@ -195,9 +149,8 @@ public class clsPOSDeliveryBoyMasterController
 		}
 		catch (Exception ex)
 		{
-			urlHits = "1";
 			ex.printStackTrace();
-			return new ModelAndView("redirect:/frmFail.html");
+			return new ModelAndView("frmLogin", "command", new clsUserHdBean());
 		}
 	}
 

@@ -1,13 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="s"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Factory Master</title>
+<link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/jquery-confirm.min.css"/>"/>
+<script type="text/javascript" src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
+<script type="text/javascript" src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
 <style>
-
 .ui-autocomplete {
     max-height: 200px;
     overflow-y: auto;
@@ -23,24 +26,21 @@
     height: 200px;
 }
 </style>
+
 <script type="text/javascript">
 
-/*On form Load It Reset form :Ritesh 22 Nov 2014*/
-
-	
- $(document).ready(function () {
-	  $('input#txtFactoryCode').mlKeyboard({layout: 'en_US'});
+ 	$(document).ready(function () {
 	  $('input#txtFactoryName').mlKeyboard({layout: 'en_US'});
 	  
 	  $("form").submit(function(event){
 		  if($("#txtFactoryName").val().trim()=="")
 			{
-			  confirmDialog("Please Enter Factory Name");
+			  confirmDialog("Please Enter Factory Name","");
 				return false;
 			}
 		  if($("#txtFactoryName").val().length > 30)
 			{
-				alert("Factory Name length must be less than 30");
+				alert("Factory Name length must be less than 30","");
 				return false;
 			}
 		  else{
@@ -57,8 +57,7 @@
 	**/
 	function funResetFields()
 	{
-		$("#txtFactoryName").focus();
-		
+		$("#txtFactoryName").val("");
     }
 	
 	
@@ -83,7 +82,7 @@
 				        dataType: "json",
 				        success: function(response)
 				        {
-				        	if(response.strAreaCode=='Invalid Code')
+				        	if(response.strFactoryCode=='Invalid Code')
 				        	{
 				        		alert("Invalid Area Code");
 				        		$("#txtFactoryCode").val('');
@@ -92,9 +91,6 @@
 				        	{
 					        	$("#txtFactoryCode").val(response.strFactoryCode);
 					        	$("#txtFactoryName").val(response.strFactoryName);
-					        	$("#txtFactoryName").focus();
-					        	
-					        	
 				        	}
 						},
 						error: function(jqXHR, exception) {
@@ -147,7 +143,7 @@
 				session.removeAttribute("success");
 				if (test) 
 				{
-					%>alert("Data Saved \n\n"+message);<%
+					%>confirmDialog("Data Saved \n\n"+message,"");<%
 				}
 			}%>
 		});
@@ -201,9 +197,6 @@
 				        }
 						
 			      });
-			
-			
-			
 			return flg;
 		}
 		
@@ -212,8 +205,6 @@
 		**/
 		
 </script>
-
-
 </head>
 
 <body >

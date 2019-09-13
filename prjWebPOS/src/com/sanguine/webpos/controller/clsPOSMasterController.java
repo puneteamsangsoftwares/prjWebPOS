@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sanguine.base.service.clsBaseServiceImpl;
+import com.sanguine.bean.clsUserHdBean;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSMasterBean;
 import com.sanguine.webpos.bean.clsPOSReorderTimeBean;
@@ -75,45 +76,14 @@ public class clsPOSMasterController {
 		try
 		{
 			String clientCode=req.getSession().getAttribute("gClientCode").toString();
-			String webStockUserCode=req.getSession().getAttribute("gUserCode").toString();
+			String webPOSUserCode=req.getSession().getAttribute("gUserCode").toString();
 			String posCode = objBean.getStrPosCode();
 			if (posCode.trim().isEmpty())
-		    {
-		    	List list=objUtilityController.funGetDocumentCode("POSMaster");
-				 if (!list.get(0).toString().equals("0"))
-					{
-						String strCode = "0";
-						String code = list.get(0).toString();
-						StringBuilder sb = new StringBuilder(code);
-						String ss = sb.delete(0, 1).toString();
-						for (int i = 0; i < ss.length(); i++)
-						{
-							if (ss.charAt(i) != '0')
-							{
-								strCode = ss.substring(i, ss.length());
-								break;
-							}
-						}
-						int intCode = Integer.parseInt(strCode);
-						intCode++;
-						if (intCode < 10)
-						{
-							posCode = "P0" + intCode;
-						}
-						else if (intCode < 100)
-						{
-							posCode = "P" + intCode;
-						}
-						
-						
-					}
-				    else
-				    {
-				    	posCode = "P01";
-				    }
-		    }
-		    
-		    clsPOSMasterModel objModel=new clsPOSMasterModel(new clsPOSMasterModel_ID(posCode,clientCode));
+			{
+				long intCode =objUtilityController.funGetDocumentCodeFromInternal("POS",clientCode);
+				posCode = "P" + String.format("%02d", intCode);
+			}
+			clsPOSMasterModel objModel=new clsPOSMasterModel(new clsPOSMasterModel_ID(posCode,clientCode));
 		    objModel.setStrPosCode(posCode);
 
 		    objModel.setStrPosName(objBean.getStrPosName());
@@ -139,35 +109,32 @@ public class clsPOSMasterController {
 		    objModel.setDteDateEdited(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
 		    objModel.setStrPlayZonePOS(objGlobal.funIfNull(objBean.getStrPlayZonePOS(),"N","Y"));
 		    objModel.setStrPropertyCode(objBean.getStrPropertyCode());
-		    objModel.setStrUserCreated(webStockUserCode);
-		    objModel.setStrUserEdited(webStockUserCode);
+		    objModel.setStrUserCreated(webPOSUserCode);
+		    objModel.setStrUserEdited(webPOSUserCode);
 		    
 		    List<clsPOSSettlementDetailsBean> list=objBean.getListSettlementDtl();
 		    Set<clsPosSettlementDetailsModel> listsettlementDtl = new HashSet<clsPosSettlementDetailsModel>();
 		    if(list!=null)
 		    {
-		    for(int i=0;i<list.size();i++)
-		    {
-		    	clsPOSSettlementDetailsBean obj =list.get(i);
-		    	clsPosSettlementDetailsModel objSettlementModel = new clsPosSettlementDetailsModel();
-		    	
-		    	if(obj.getStrApplicableYN()!=null)
-		    	{
-		    		objSettlementModel.setStrSettlementCode(obj.getStrSettlementCode());
-			    	objSettlementModel.setStrSettlementDesc(obj.getStrSettlementDesc());
-			    	if(obj.getStrApplicableYN())
+			    for(int i=0;i<list.size();i++)
+			    {
+			    	clsPOSSettlementDetailsBean obj =list.get(i);
+			    	clsPosSettlementDetailsModel objSettlementModel = new clsPosSettlementDetailsModel();
+			    	if(obj.getStrApplicableYN()!=null)
 			    	{
-			    	objSettlementModel.setStrDataPostFlag("Y");
+			    		objSettlementModel.setStrSettlementCode(obj.getStrSettlementCode());
+				    	objSettlementModel.setStrSettlementDesc(obj.getStrSettlementDesc());
+				    	if(obj.getStrApplicableYN())
+				    	{
+				    	objSettlementModel.setStrDataPostFlag("Y");
+				    	}
+				    	else
+				    	{
+				    		objSettlementModel.setStrDataPostFlag("N");	
+				    	}
+				    	listsettlementDtl.add(objSettlementModel);
 			    	}
-			    	else
-			    	{
-			    		objSettlementModel.setStrDataPostFlag("N");	
-			    	}
-			    	listsettlementDtl.add(objSettlementModel);
-		    	}
-		    	
-		    	
-		    }
+			    }
 		    }
 		    
 		    objModel.setListsettlementDtl(listsettlementDtl);
@@ -182,18 +149,16 @@ public class clsPOSMasterController {
 
 					objReorderTimeModel.setTmeFromTime(obj.getTmeFromTime());
 					objReorderTimeModel.setTmeToTime(obj.getTmeToTime());
-					objReorderTimeModel.setStrUserCreated(webStockUserCode);
-					objReorderTimeModel.setStrUserEdited(webStockUserCode);
+					objReorderTimeModel.setStrUserCreated(webPOSUserCode);
+					objReorderTimeModel.setStrUserEdited(webPOSUserCode);
 					objReorderTimeModel.setDteDateCreated(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
 					objReorderTimeModel.setDteDateEdited(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
 					objReorderTimeModel.setStrDataPostFlag("Y");
 					listReorderTimeDtl.add(objReorderTimeModel);
-
 				}
 		    }
 		    
 		    objModel.setListReorderTimeDtl(listReorderTimeDtl);;
-		    
 		    objMasterService.funSaveUpdatePosMasterData(objModel);
 		    
 		    req.getSession().setAttribute("success", true);
@@ -207,7 +172,7 @@ public class clsPOSMasterController {
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
-			return new ModelAndView("redirect:/frmFail.html");
+			return new ModelAndView("frmLogin", "command", new clsUserHdBean());
 		}
 	}
 	

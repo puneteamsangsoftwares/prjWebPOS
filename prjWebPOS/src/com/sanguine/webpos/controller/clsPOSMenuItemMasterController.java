@@ -163,54 +163,10 @@ public class clsPOSMenuItemMasterController{
 			String webStockUserCode=req.getSession().getAttribute("gUserCode").toString();
 			String itemCode = objBean.getStrItemCode();
 			if (itemCode.trim().isEmpty())
-		    {
-	        	List list=objUtilityController.funGetDocumentCode("POSMenuItemMaster");
-				if (!list.get(0).toString().equals("0"))
-				{
-					String strCode = "0";
-				    String code = list.get(0).toString();
-				    StringBuilder sb = new StringBuilder(code);
-				    String ss = sb.delete(0, 1).toString();
-				    for (int i = 0; i < ss.length(); i++)
-				    {
-						if (ss.charAt(i) != '0')
-						{
-						    strCode = ss.substring(i, ss.length());
-						    break;
-						}
-				    }
-				    int intCode = Integer.parseInt(strCode);
-		            intCode++;
-		            if (intCode < 10)
-		            {
-		                itemCode = "I00000" + intCode;
-		            }
-		            else if (intCode < 100)
-		            {
-		                itemCode = "I0000" + intCode;
-		            }
-		            else if (intCode < 1000)
-		            {
-		                itemCode = "I000" + intCode;
-		            }
-		            else if (intCode < 10000)
-		            {
-		                itemCode = "I00" + intCode;
-		            }
-		            else if (intCode < 100000)
-		            {
-		                itemCode = "I0" + intCode;
-		            }
-		            else if (intCode < 1000000)
-		            {
-		                itemCode = "I" + intCode;
-		            }
-		        }
-		        else
-		        {
-		            itemCode = "I000001";
-		        }
-		    }
+			{
+				long intCode =objUtilityController.funGetDocumentCodeFromInternal("Item",clientCode);
+				itemCode = "I" + String.format("%06d", intCode);
+			}
 	        clsMenuItemMasterModel objModel = new clsMenuItemMasterModel(new clsMenuItemMasterModel_ID(itemCode, clientCode));
 		    objModel.setStrItemCode(itemCode);
 		    objModel.setStrItemName(objBean.getStrItemName());
@@ -267,9 +223,6 @@ public class clsPOSMenuItemMasterController{
 		    objModel.setDblReceivedConversion(objBean.getDblReceivedConversion());
 		    objModel.setDblRecipeConversion(objBean.getDblRecipeConversion());
 		    objModel.setStrHSNNo(objBean.getStrHSNNo());
-     
-		    
-		    
 		    objModel.setImgImage("");
 		    objMasterService.funSaveUpdateMenuItemMaster(objModel);
 						

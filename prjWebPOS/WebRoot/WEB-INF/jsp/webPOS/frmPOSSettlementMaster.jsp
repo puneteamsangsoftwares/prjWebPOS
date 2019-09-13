@@ -17,10 +17,10 @@
 <script type="text/javascript">
 	$(document).ready(function() 
 	{
-	  /* $('input#txtSettelmentCode').mlKeyboard({layout: 'en_US'});
+	  /* $('input#txtSettelmentCode').mlKeyboard({layout: 'en_US'});*/
 	  $('input#txtSettelmentDesc').mlKeyboard({layout: 'en_US'});
 	  $('input#txtConversionRatio').mlKeyboard({layout: 'en_US'});
-	  $('input#txtAccountCode').mlKeyboard({layout: 'en_US'}); */
+	  $('input#txtAccountCode').mlKeyboard({layout: 'en_US'}); 
 		$(".tab_content").hide();
 		$(".tab_content:first").show();
 
@@ -61,21 +61,17 @@ $(document).ready(function()
 			<%if (session.getAttribute("success") != null) {
 				if (session.getAttribute("successMessage") != null) {%>
 					message='<%=session.getAttribute("successMessage").toString()%>';
-<%session.removeAttribute("successMessage");
+					<%session.removeAttribute("successMessage");
 				}
-				boolean test = ((Boolean) session.getAttribute("success"))
-						.booleanValue();
+				boolean test = ((Boolean) session.getAttribute("success")).booleanValue();
 				session.removeAttribute("success");
 				if (test) {%>
-	confirmDialog(
-								"Data Saved \n\n" + message, "");
-<%}
+					confirmDialog("Data Saved \n\n" + message, "");
+				<%}
 			}%>
 	});
 
 
-	  
-	  
 	var fieldName;
 
 	function funSetData(code) {

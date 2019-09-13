@@ -1,8 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="s"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -23,19 +21,16 @@ $(document).ready(function () {
 		  if($("#txtGroupName").val().trim()=="")
 		  {
 			  confirmDialog("Please Enter Group Name","");
-				return false;
+			  return false;
 		  }
-		 else
-		 {
-			
-			  flg=funCallFormAction();
-			  return flg;
-		  }
+		  else
+		  {
+			 flg=funCallFormAction();
+			 return flg;
+		   }
 		});
 	  
 	}); 
-	
-
 
 	/**
 	* Reset The Group Name TextField
@@ -145,17 +140,16 @@ $(document).ready(function () {
 				if(session.getAttribute("successMessage") != null)
 				{%>
 					message='<%=session.getAttribute("successMessage").toString()%>';
-<%session.removeAttribute("successMessage");
+					<%session.removeAttribute("successMessage");
 				}
 				boolean test = ((Boolean) session.getAttribute("success")).booleanValue();
 				session.removeAttribute("success");
 				if (test) 
 				{%>
-				confirmDialog("Data Saved \n\n"
-								+ message);
-<%}
+					confirmDialog("Data Saved \n\n"+ message);
+				<%}
 			}%>
-	});
+		});
 
 	/**
 	 *  Check Validation Before Saving Record
@@ -168,8 +162,7 @@ $(document).ready(function () {
 
 		$.ajax({
 			type : "GET",
-			url : getContextPath() + "/CheckPosGroupName.html?name=" + name
-					+ "&code=" + code,
+			url : getContextPath() + "/CheckPosGroupName.html?name=" + name+ "&code=" + code,
 			async : false,
 			dataType : "text",
 			success : function(response) {

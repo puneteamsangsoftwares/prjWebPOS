@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sanguine.base.service.clsBaseServiceImpl;
+import com.sanguine.bean.clsUserHdBean;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSAreaMasterBean;
 import com.sanguine.webpos.bean.clsPOSReasonMasterBean;
@@ -85,48 +86,13 @@ public class clsPOSReasonMasterController
 
 			urlHits = req.getParameter("saddr").toString();
 			String clientCode = req.getSession().getAttribute("gClientCode").toString();
-			String webStockUserCode = req.getSession().getAttribute("gUserCode").toString();
+			String webPOSUserCode = req.getSession().getAttribute("gUserCode").toString();
 			reasonCode = objBean.getStrReasonCode();
 			if (reasonCode.trim().isEmpty())
 			{
-				List list = obUtilityController.funGetDocumentCode("POSReasoneMaster");
-				if (!list.get(0).toString().equals("0"))
-				{
-					String strCode = "00";
-					String code = list.get(0).toString();
-					StringBuilder sb = new StringBuilder(code);
-					String ss = sb.delete(0, 1).toString();
-					for (int i = 0; i < ss.length(); i++)
-					{
-						if (ss.charAt(i) != '0')
-						{
-							strCode = ss.substring(i, ss.length());
-							break;
-						}
-					}
-					int intCode = Integer.parseInt(strCode);
-
-					intCode++;
-					if (intCode < 10)
-					{
-						reasonCode = "R00" + intCode;
-					}
-					else if (intCode > 9 && intCode < 100)
-					{
-						reasonCode = "R0" + intCode;
-					}
-					else
-					{
-						reasonCode = "R" + intCode;
-					}
-				}
-				else
-				{
-					reasonCode = "R001";
-				}
-
+				long intCode =obUtilityController.funGetDocumentCodeFromInternal("Reason",clientCode);
+				reasonCode = "R" + String.format("%03d", intCode);
 			}
-
 			clsReasonMasterModel objModel = new clsReasonMasterModel(new clsReasonMasterModel_ID(reasonCode, clientCode));
 			objModel.setStrReasonName(objBean.getStrReasonName());
 			objModel.setDteDateCreated(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
@@ -145,8 +111,8 @@ public class clsPOSReasonMasterController
 			objModel.setStrTransferEntry(objBean.getStrTransferEntry());
 			objModel.setStrTransferType(objBean.getStrTransferType());
 			objModel.setStrUnsettleBill(objGlobal.funIfNull(objBean.getStrUnsettleBill(), "N", "Y"));
-			objModel.setStrUserCreated(webStockUserCode);
-			objModel.setStrUserEdited(webStockUserCode);
+			objModel.setStrUserCreated(webPOSUserCode);
+			objModel.setStrUserEdited(webPOSUserCode);
 			objModel.setStrVoidAdvOrder(objGlobal.funIfNull(objBean.getStrVoidAdvOrder(), "N", "Y"));
 			objModel.setStrVoidBill(objGlobal.funIfNull(objBean.getStrVoidBill(), "N", "Y"));
 			objModel.setStrVoidStkIn(objGlobal.funIfNull(objBean.getStrVoidStkIn(), "N", "Y"));
@@ -160,16 +126,14 @@ public class clsPOSReasonMasterController
 			req.getSession().setAttribute("successMessage", " " + reasonCode);
 
 			String sql = "update tblmasteroperationstatus set dteDateEdited='" + objGlobal.funGetCurrentDateTime("yyyy-MM-dd") + "'  where strTableName='Reason' " + " and strClientCode='" + clientCode + "'";
-			
 			objBaseServiceImpl.funExecuteUpdate(sql, "sql");
 
 			return new ModelAndView("redirect:/frmPOSReasonMaster.html?saddr=" + urlHits);
 		}
 		catch (Exception ex)
 		{
-			urlHits = "1";
 			ex.printStackTrace();
-			return new ModelAndView("redirect:/frmFail.html");
+			return new ModelAndView("frmLogin", "command", new clsUserHdBean());
 		}
 	}
 

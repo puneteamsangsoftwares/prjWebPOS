@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sanguine.base.service.clsBaseServiceImpl;
+import com.sanguine.bean.clsUserHdBean;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSCustomerAreaMasterAmountBean;
 import com.sanguine.webpos.bean.clsPOSCustomerAreaMasterBean;
@@ -100,68 +101,17 @@ public class clsPOSCustomerAreaMasterController {
 		
 				String customerAreaCode = objBean.getStrCustomerAreaCode();
 				if (customerAreaCode.trim().isEmpty())
-			    {
-			    	
-			    	List list=objUtilityController.funGetDocumentCode("POSCustAreaMaster");
-			    	if (!list.get(0).toString().equals("0"))
-					{
-					    String strCode = "00";
-					    String code = list.get(0).toString();
-					    StringBuilder sb = new StringBuilder(code);
-					    String ss = sb.delete(0, 2).toString();
-					    for (int i = 0; i < ss.length(); i++)
-					    {
-							if (ss.charAt(i) != '0')
-							{
-							    strCode = ss.substring(i, ss.length());
-							    break;
-							}
-					    }
-					    
-					    int intCode = Integer.parseInt(strCode);
-					    intCode++;
-					    if (intCode < 10)
-					    {
-					    	customerAreaCode = "B000000" + intCode;
-					    }
-					    else if (intCode < 100)
-					    {
-					    	customerAreaCode = "B00000" + intCode;
-					    }
-					    else if (intCode < 1000)
-					    {
-					    	customerAreaCode = "B0000" + intCode;
-					    }
-					    else if (intCode < 10000)
-					    {
-					    	customerAreaCode = "B000" + intCode;
-					    }
-					    else if (intCode < 100000)
-					    {
-					    	customerAreaCode = "B00" + intCode;
-					    }
-					    else if (intCode < 1000000)
-					    {
-					    	customerAreaCode = "B0" + intCode;
-					    }
-					   
-					}
-					else
-					{
-						customerAreaCode = "B0000001";
-					}
-
-			    }
+				{
+					long intCode =objUtilityController.funGetDocumentCodeFromInternal("CustomerArea",clientCode);
+					customerAreaCode = "B" + String.format("%07d", intCode);
+				}
 			    clsCustomerAreaMasterModel objModel = new clsCustomerAreaMasterModel(new clsCustomerAreaMasterModel_ID(customerAreaCode,clientCode));
-			    
 			    objModel.setStrBuildingName(objBean.getStrCustomerAreaName());
 			    objModel.setStrAddress( objBean.getStrAddress());
 			    objModel.setDblHomeDeliCharge(objBean.getStrHomeDeliveryCharges());
 			    objModel.setStrZoneCode(objBean.getStrZone());
 			    objModel.setDblDeliveryBoyPayOut(objBean.getDblDeliveryBoyPayOut());
 			    objModel.setDblHelperPayOut(objBean.getStrHelperPayOut());
-			   
-			    
 			    objModel.setStrClientCode(clientCode);
 			    objModel.setStrUserCreated(webStockUserCode);
 			    objModel.setStrUserEdited(webStockUserCode);
@@ -174,27 +124,25 @@ public class clsPOSCustomerAreaMasterController {
 				
 				 if(listdata!=null)
 				 {
-				 for(int i=0; i<listdata.size(); i++)
-				 {
-				 clsCustomerAreaMasterAmountModel objModelAmount = new clsCustomerAreaMasterAmountModel();	
-				 clsPOSCustomerAreaMasterAmountBean obj = new clsPOSCustomerAreaMasterAmountBean();
-				 obj=(clsPOSCustomerAreaMasterAmountBean)listdata.get(i);
-			    	
-				   
-		    	 	objModelAmount.setDblBillAmount(obj.getDblAmount());
-				    objModelAmount.setDblBillAmount1(obj.getDblAmount1());
-				    objModelAmount.setDblDeliveryCharges(obj.getDblDeliveryCharges());
-				    objModelAmount.setStrCustTypeCode(obj.getStrCustomerType());						   
-				    objModelAmount.setStrUserCreated(webStockUserCode);
-				    objModelAmount.setStrUserEdited(webStockUserCode);
-				    objModelAmount.setDteDateCreated(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
-				    objModelAmount.setDteDateEdited(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
-				    objModelAmount.setStrDataPostFlag("N");
-				    objModelAmount.setStrSymbol("N");
-				    objModelAmount.setDblKilometers(0);
-				    
-				    listCustAreaDtl.add(objModelAmount);
-				  }
+					 for(int i=0; i<listdata.size(); i++)
+					 {
+						 clsCustomerAreaMasterAmountModel objModelAmount = new clsCustomerAreaMasterAmountModel();	
+						 clsPOSCustomerAreaMasterAmountBean obj = new clsPOSCustomerAreaMasterAmountBean();
+						 obj=(clsPOSCustomerAreaMasterAmountBean)listdata.get(i);
+						 objModelAmount.setDblBillAmount(obj.getDblAmount());
+					     objModelAmount.setDblBillAmount1(obj.getDblAmount1());
+					     objModelAmount.setDblDeliveryCharges(obj.getDblDeliveryCharges());
+					     objModelAmount.setStrCustTypeCode(obj.getStrCustomerType());						   
+					     objModelAmount.setStrUserCreated(webStockUserCode);
+					     objModelAmount.setStrUserEdited(webStockUserCode);
+					     objModelAmount.setDteDateCreated(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
+					     objModelAmount.setDteDateEdited(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
+					     objModelAmount.setStrDataPostFlag("N");
+					     objModelAmount.setStrSymbol("N");
+					     objModelAmount.setDblKilometers(0);
+					     
+					     listCustAreaDtl.add(objModelAmount);
+					  }
 				 }
 				 
 				 objModel.setListcustomerDtl(listCustAreaDtl);
@@ -212,7 +160,7 @@ public class clsPOSCustomerAreaMasterController {
 			{
 				urlHits="1";
 				ex.printStackTrace();
-				return new ModelAndView("redirect:/frmFail.html");
+				return new ModelAndView("frmLogin", "command", new clsUserHdBean());
 			}
 		}
 		

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sanguine.base.service.clsBaseServiceImpl;
+import com.sanguine.bean.clsUserHdBean;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSSettlementDetailsBean;
 import com.sanguine.webpos.bean.clsPOSSettlementMasterBean;
@@ -71,45 +72,12 @@ public class clsPOSSettlementMasterController {
 			String clientCode=req.getSession().getAttribute("gClientCode").toString();
 			String strUserCode=req.getSession().getAttribute("gUserCode").toString();
 			settlementCode=objBean.getStrSettelmentCode();
-			
 			if (settlementCode.trim().isEmpty())
 			{
-				List list=obUtilityController.funGetDocumentCode("POSSettlementMaster");
-				 if (!list.get(0).toString().equals("0"))
-					{
-						String strCode = "0";
-						String code = list.get(0).toString();
-						StringBuilder sb = new StringBuilder(code);
-						String ss = sb.delete(0, 1).toString();
-						for (int i = 0; i < ss.length(); i++)
-						{
-							if (ss.charAt(i) != '0')
-							{
-								strCode = ss.substring(i, ss.length());
-								break;
-							}
-						}
-						int intCode = Integer.parseInt(strCode);
-						intCode++;
-						if (intCode < 10)
-						{
-							settlementCode = "S0" + intCode;
-						}
-						else if (intCode < 100)
-						{
-							settlementCode = "S" + intCode;
-						}
-						
-						
-					}
-				    else
-				    {
-				    	settlementCode = "S01";
-				    }
+				long intCode =objUtilityController.funGetDocumentCodeFromInternal("Settlement",clientCode);
+				settlementCode = "S" + String.format("%02d", intCode);
 			}
-			
 			clsSettlementMasterModel objModel = new clsSettlementMasterModel(new clsSettlementMasterModel_ID(settlementCode, clientCode));
-			
 			objModel.setDblConvertionRatio(objBean.getDblConversionRatio());
 			objModel.setDteDateCreated(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
 			objModel.setDteDateEdited(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
@@ -146,7 +114,7 @@ public class clsPOSSettlementMasterController {
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
-			return new ModelAndView("redirect:/frmFail.html");
+			return new ModelAndView("frmLogin", "command", new clsUserHdBean());
 		}
 	}
 	

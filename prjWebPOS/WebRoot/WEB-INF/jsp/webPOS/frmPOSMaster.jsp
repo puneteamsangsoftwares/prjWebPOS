@@ -31,10 +31,8 @@
 }
 </style>
 <script type="text/javascript">
-	$(document).ready(function() {
-
-		
-		
+	$(document).ready(function() 
+	{
 		$(".tab_content").hide();
 		$(".tab_content:first").show();
 
@@ -70,7 +68,7 @@
 	**/
 	function funResetFields()
 	{
-		$("#txtPOSCode").focus();
+		$("#txtPOSCode").val("");
 		
     }
 	
@@ -143,7 +141,7 @@
 				session.removeAttribute("success");
 				if (test) 
 				{
-					%>confirmDialog("Data Saved \n\n"+message);<%
+					%>confirmDialog("Data Saved \n\n"+message,"");<%
 				}
 			}%>
 		});
@@ -158,14 +156,12 @@
 						if(($("#cmbHH").val()=="HH") || ($("#cmbMM").val()=="MM"))
 					    {
 							confirmDialog("Please select From Time","");
-					   		
-					       	return false;
+					   		return false;
 						}
 						else if(($("#cmbToHH").val()=="HH") || ($("#cmbToMM").val()=="MM"))
 					    {
 							confirmDialog("Please select To Time","");
-					   		
-					       	return false;
+					   		return false;
 						}
 						else
 						{

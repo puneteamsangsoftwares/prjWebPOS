@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sanguine.base.service.clsBaseServiceImpl;
+import com.sanguine.bean.clsUserHdBean;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSDiscountDtlsOnBill;
 import com.sanguine.webpos.bean.clsPOSReportBean;
@@ -94,52 +95,8 @@ public class clsPOSDiscountMasterController {
 			String discountCode = objBean.getStrDiscountCode();
 			if (discountCode.trim().isEmpty())
 			{
-				List list=objUtilityController.funGetDocumentCode("POSDiscountMaster");
-				if (!list.get(0).toString().equals("0"))
-				{
-					String strCode = "0";
-					String code = list.get(0).toString();
-					StringBuilder sb = new StringBuilder(code);
-					String ss = sb.delete(0, 2).toString();
-					for (int i = 0; i < ss.length(); i++)
-					{
-						if (ss.charAt(i) != '0')
-						{
-							strCode = ss.substring(i, ss.length());
-							break;
-						}
-					}
-					int intCode = Integer.parseInt(strCode);
-					intCode++;
-					if (intCode < 10)
-	                {
-	                    discountCode = "D00000" + intCode;
-	                }
-	                else if (intCode < 100)
-	                {
-	                    discountCode = "D0000" + intCode;
-	                }
-	                else if (intCode < 1000)
-	                {
-	                    discountCode = "D000" + intCode;
-	                }
-	                else if (intCode < 10000)
-	                {
-	                    discountCode = "D00" + intCode;
-	                }
-	                else if (intCode < 100000)
-	                {
-	                    discountCode = "D0" + intCode;
-	                }
-	                else if (intCode < 1000000)
-	                {
-	                    discountCode = "D" + intCode;
-	                }
-	            }
-	            else
-	            {
-	               discountCode = "D000001"; 
-	            }
+				long intCode =objUtilityController.funGetDocumentCodeFromInternal("Discount",clientCode);
+				discountCode = "D" + String.format("%07d", intCode);
 			}
 			clsDiscountMasterModel objModel = new clsDiscountMasterModel(new clsDiscountMasterModel_ID(discountCode, clientCode));
 			objModel.setStrDiscCode(discountCode);
@@ -196,7 +153,7 @@ public class clsPOSDiscountMasterController {
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
-			return new ModelAndView("redirect:/frmFail.html");
+			return new ModelAndView("frmLogin", "command", new clsUserHdBean());
 		}
 	}
 	

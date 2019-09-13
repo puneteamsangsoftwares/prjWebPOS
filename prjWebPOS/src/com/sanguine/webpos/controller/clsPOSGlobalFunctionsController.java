@@ -344,7 +344,6 @@ public class clsPOSGlobalFunctionsController
 				}
 				break;
 			case "POSUserRegistrationMaster":
-
 				if (!code.equals(""))
 				{
 					sql = "select count(*) from tblgrouphd a where a.strUserCode !='" + code + "' and a.strUserName='" + name + "' and a.strClientCode='" + clientCode + "'";
@@ -352,6 +351,16 @@ public class clsPOSGlobalFunctionsController
 				else
 				{
 					sql = "select count(LOWER(strUserName)) from tblgrouphd where strUserName='" + name + "' and strClientCode='" + clientCode + "'";
+				}
+				break;
+			case "POSReasonMaster":
+				if (!code.equals(""))
+				{
+					sql = "select count(*) from tblreasonmaster a where a.strReasonCode!='" + code + "' and a.strReasonName='" + name + "' and a.strClientCode='" + clientCode + "'";
+				}
+				else
+				{
+					sql = "select count(LOWER(strReasonName)) from tblreasonmaster where strReasonName='" + name + "' and strClientCode='" + clientCode + "'";
 				}
 				break;
 

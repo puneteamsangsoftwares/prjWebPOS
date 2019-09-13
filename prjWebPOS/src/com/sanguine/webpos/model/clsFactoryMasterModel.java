@@ -33,7 +33,6 @@ public class clsFactoryMasterModel extends clsBaseModel implements Serializable
 	{
 		strFactoryCode = objModelID.getStrFactoryCode();
 		strClientCode = objModelID.getStrClientCode();
-
 	}
 
 	@Id

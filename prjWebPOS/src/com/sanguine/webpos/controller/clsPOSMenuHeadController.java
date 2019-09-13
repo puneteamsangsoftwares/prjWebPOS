@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.sanguine.base.service.clsBaseServiceImpl;
 import com.sanguine.base.service.intfBaseService;
+import com.sanguine.bean.clsUserHdBean;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSMenuHeadBean;
 import com.sanguine.webpos.comparator.clsPOSMenuHeadSequenceComparator;
@@ -87,20 +88,20 @@ public class clsPOSMenuHeadController {
 		{
 			if(objBean.getStrSubMenuHeadName()=="")
 			{
-			List<clsPOSMenuHeadBean> listOfBean = objBean.getListMenuMasterDtl();
-			if(listOfBean.size()>0)
-			{
-				for(int i=0;i<listOfBean.size();i++)
+				List<clsPOSMenuHeadBean> listOfBean = objBean.getListMenuMasterDtl();
+				if(listOfBean.size()>0)
 				{
-					clsPOSMenuHeadBean obj = listOfBean.get(i);
-					StringBuilder sql = new StringBuilder("update tblmenuhd set intSequence=" + i + " where strMenuCode='" + obj.getStrMenuHeadCode() + "'");
-					objSer.funExecuteUpdate(sql.toString(), "sql");
+					for(int i=0;i<listOfBean.size();i++)
+					{
+						clsPOSMenuHeadBean obj = listOfBean.get(i);
+						StringBuilder sql = new StringBuilder("update tblmenuhd set intSequence=" + i + " where strMenuCode='" + obj.getStrMenuHeadCode() + "'");
+						objSer.funExecuteUpdate(sql.toString(), "sql");
+					}
 				}
-			}
-			req.getSession().setAttribute("success", true);
-			req.getSession().setAttribute("successMessage"," "+"Sequence Updated Successfully");
-									
-			return new ModelAndView("redirect:/frmPOSMenuHead.html");
+				req.getSession().setAttribute("success", true);
+				req.getSession().setAttribute("successMessage"," "+"Sequence Updated Successfully");
+										
+				return new ModelAndView("redirect:/frmPOSMenuHead.html");
 			}
 		}
 		
@@ -111,57 +112,10 @@ public class clsPOSMenuHeadController {
 				String clientCode=req.getSession().getAttribute("gClientCode").toString();
 				String webStockUserCode=req.getSession().getAttribute("gUserCode").toString();
 				String subMenuCode = objBean.getStrSubMenuHeadCode();
-				
 				if (subMenuCode.trim().isEmpty())
 				{
-					
-					List list=objUtilityController.funGetDocumentCode("POSSubMenuHead");
-					if (!list.get(0).toString().equals("0"))
-					{
-						String strCode = "0";
-						String code = list.get(0).toString();
-						StringBuilder sb = new StringBuilder(code);
-						String ss = sb.delete(0, 2).toString();
-						for (int i = 0; i < ss.length(); i++)
-						{
-							if (ss.charAt(i) != '0')
-							{
-								strCode = ss.substring(i, ss.length());
-								break;
-							}
-						}
-	
-						int intCode = Integer.parseInt(strCode);
-						intCode++;
-						if (intCode < 10)
-						{
-							subMenuCode = "SM00000" + intCode;
-						}
-						else if (intCode < 100)
-						{
-							subMenuCode = "SM0000" + intCode;
-						}
-						else if (intCode < 1000)
-						{
-							subMenuCode = "SM000" + intCode;
-						}
-						else if (intCode < 10000)
-						{
-							subMenuCode = "SM00" + intCode;
-						}
-						else if (intCode < 100000)
-						{
-							subMenuCode = "SM0" + intCode;
-						}
-						else if (intCode < 1000000)
-						{
-							subMenuCode = "SM" + intCode;
-						}
-					}
-					else
-					{
-						subMenuCode = "SM000001";
-					}
+					long intCode =objUtilityController.funGetDocumentCodeFromInternal("SubMenuHead",clientCode);
+					subMenuCode = "SM" + String.format("%06d", intCode);
 				}
 				clsSubMenuHeadMasterModel objModel = new clsSubMenuHeadMasterModel(new clsSubMenuHeadMasterModel_ID(subMenuCode, clientCode));
 				objModel.setStrSubMenuHeadCode(subMenuCode);
@@ -184,12 +138,11 @@ public class clsPOSMenuHeadController {
 										
 				return new ModelAndView("redirect:/frmPOSMenuHead.html");
 			}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			return new ModelAndView("redirect:/frmFail.html");
-		}				
-		  
+			catch(Exception ex)
+			{
+				ex.printStackTrace();
+				return new ModelAndView("frmLogin", "command", new clsUserHdBean());
+			}		  
 		}
 		// save for Sub menu code
 		else if(objBean.getStrMenuHeadName()!="")
@@ -201,54 +154,8 @@ public class clsPOSMenuHeadController {
 				String menuCode = objBean.getStrMenuHeadCode();
 				if (menuCode.trim().isEmpty())
 				{
-					
-					List list=objUtilityController.funGetDocumentCode("POSMenuHeadMaster");
-					
-					if (!list.get(0).toString().equals("0"))
-					{
-						String strCode = "0";
-						String code = list.get(0).toString();
-						StringBuilder sb = new StringBuilder(code);
-						String ss = sb.delete(0, 1).toString();
-						for (int i = 0; i < ss.length(); i++)
-						{
-							if (ss.charAt(i) != '0')
-							{
-								strCode = ss.substring(i, ss.length());
-								break;
-							}
-						}
-						int intCode = Integer.parseInt(strCode);
-						intCode++;
-						if (intCode < 10)
-						{
-							menuCode = "M00000" + intCode;
-						}
-						else if (intCode < 100)
-						{
-							menuCode = "M0000" + intCode;
-						}
-						else if (intCode < 1000)
-						{
-							menuCode = "M000" + intCode;
-						}
-						else if (intCode < 10000)
-						{
-							menuCode = "M00" + intCode;
-						}
-						else if (intCode < 100000)
-						{
-							menuCode = "M0" + intCode;
-						}
-						else if (intCode < 1000000)
-						{
-							menuCode  = "M" + intCode;
-						}
-					}
-					else
-					{
-						menuCode = "M000001";
-					}
+					long intCode =objUtilityController.funGetDocumentCodeFromInternal("MenuHead",clientCode);
+					menuCode = "M" + String.format("%06d", intCode);
 				}
 				clsMenuHeadMasterModel objModel = new clsMenuHeadMasterModel(new clsMenuHeadMasterModel_ID(menuCode, clientCode));
 				objModel.setStrMenuName(objBean.getStrMenuHeadName());
@@ -273,16 +180,16 @@ public class clsPOSMenuHeadController {
 		  catch(Exception ex)
 		  {
 			ex.printStackTrace();
-			return new ModelAndView("redirect:/frmFail.html");
+			return new ModelAndView("frmLogin", "command", new clsUserHdBean());
 		  }
 			
 		}
 		else
 		{
-			return new ModelAndView("redirect:/frmFail.html");
+			return new ModelAndView("frmLogin", "command", new clsUserHdBean());
 		}
 			
- }
+	}
 	
 	
 
@@ -303,8 +210,6 @@ public class clsPOSMenuHeadController {
 			objPOSMenuHeadBean=new clsPOSMenuHeadBean();
 			objPOSMenuHeadBean.setStrMenuHeadCode("Invalid Code");
 		}
-	
-	
 		return objPOSMenuHeadBean;
 	}
 	

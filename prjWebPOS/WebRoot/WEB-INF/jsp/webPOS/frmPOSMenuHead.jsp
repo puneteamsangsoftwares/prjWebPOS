@@ -101,14 +101,8 @@ $(document).ready(function()
 $(document).ready(function () {
 	
 	$('input#txtMenuHeadCode').mlKeyboard({layout: 'en_US'});
-	$('input#txtMenuHeadName').mlKeyboard({layout: 'en_US'});
-	$('input#txtSubMenuHeadCode').mlKeyboard({layout: 'en_US'});
-	$('input#txtSubMenuHeadName').mlKeyboard({layout: 'en_US'});
 	$('input#txtSubMenuHeadName').mlKeyboard({layout: 'en_US'});
 	$('input#strSubMenuHeadShortName').mlKeyboard({layout: 'en_US'});
-	
-   $("#txtMenuHeadName").focus();
-   //$("#tab3").click(function funSetTable());
     $("#t3").on("click", function(){
        $("#tableLoad").load(funLoadMenuHeadData());
      }); 
@@ -121,8 +115,8 @@ $(document).ready(function () {
 **/
 function funResetFields()
 {
-	$("#txtMenuHeadName").focus();
-	$("#cmbOperational").val('N');
+	$("#txtMenuHeadName").val("");
+	$("#cmbOperational").val('No');
 }
 
 function funForSubMenuHeadValidation()
@@ -533,8 +527,7 @@ function funRemoveProductRows()
 			        {
 			        	if(response==false)
 			        		{
-			        			alert("Menu Name Already Exist!");
-			        			$('#txtMenuHeadName').focus();
+			        		confirmDialog("Menu Name Already Exist!","");
 			        			flg= false;
 				    		}
 				    	else
@@ -575,7 +568,7 @@ function funRemoveProductRows()
 			        {
 			        	if(response==false)
 			        		{
-			        			alert("Sub Menu Name Already Exist!");
+			        			confirmDialog("Sub Menu Name Already Exist!","");
 			        			$('#txtSubMenuHeadName').focus();
 			        			flg= false;
 				    		}

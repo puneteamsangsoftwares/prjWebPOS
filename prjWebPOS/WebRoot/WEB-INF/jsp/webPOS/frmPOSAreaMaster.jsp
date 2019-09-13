@@ -13,7 +13,6 @@
 <script type="text/javascript" src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
 		
 <style>
-
 .ui-autocomplete {
     max-height: 200px;
     overflow-y: auto;

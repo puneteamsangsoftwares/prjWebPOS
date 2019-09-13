@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.sanguine.base.service.clsBaseServiceImpl;
+import com.sanguine.bean.clsUserHdBean;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.service.clsGlobalFunctionsService;
 import com.sanguine.webpos.bean.clsPOSAreaMasterBean;
@@ -99,40 +100,25 @@ public class clsPOSFactoryMasterController
 		{
 			urlHits = req.getParameter("saddr").toString();
 			String clientCode = req.getSession().getAttribute("gClientCode").toString();
-			String webStockUserCode = req.getSession().getAttribute("gUserCode").toString();
-			String factoryCode = objBean.getStrDataPostFlag();
+			String webPOSUserCode = req.getSession().getAttribute("gUserCode").toString();
+			String factoryCode = objBean.getStrFactoryCode();
 			if (factoryCode.trim().isEmpty())
 			{
-
-				List list = objUtilityController.funGetDocumentCode("POSNotificationMaster");
-				if (list.size() > 0)
-				{
-					String strMaxFactoryCode = list.get(0).toString();
-				if (strMaxFactoryCode.equals("0"))
-                    {
-                        factoryCode = "F" + String.format("%06d", (Integer.parseInt((String) list.get(0)) + 1));
-                    }
-                    else
-                    {
-                        strMaxFactoryCode = strMaxFactoryCode.substring(1);
-                        int intMaxFactoryCode = Integer.parseInt(strMaxFactoryCode);
-                        intMaxFactoryCode++;
-                        factoryCode = "F" + String.format("%06d", intMaxFactoryCode);
-                    }
-				}
-
+				long intCode =objUtilityController.funGetDocumentCodeFromInternal("Factory",clientCode);
+				factoryCode = "F" + String.format("%06d", intCode);
 			}
-
 			
-				clsFactoryMasterModel objModel = new clsFactoryMasterModel(new clsFactoryMasterModel_ID(factoryCode, clientCode));
-				objModel.setStrFactoryName(objBean.getStrFactoryName());
-				objModel.setDteDateCreated(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
-				objModel.setDteDateEdited(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
-				objModel.setStrDataPostFlag("");
-				objModel.setStrUserCreated(webStockUserCode);
-				objModel.setStrUserEdited(webStockUserCode);
-				req.getSession().setAttribute("success", true);
-				req.getSession().setAttribute("successMessage"," "+factoryCode);
+			clsFactoryMasterModel objModel = new clsFactoryMasterModel(new clsFactoryMasterModel_ID(factoryCode, clientCode));
+			objModel.setStrFactoryName(objBean.getStrFactoryName());
+			objModel.setDteDateCreated(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
+			objModel.setDteDateEdited(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
+			objModel.setStrDataPostFlag("N");
+			objModel.setStrUserCreated(webPOSUserCode);
+			objModel.setStrUserEdited(webPOSUserCode);
+			objMasterService.funSaveUpdateFactorMaster(objModel);
+			
+			req.getSession().setAttribute("success", true);
+			req.getSession().setAttribute("successMessage"," "+factoryCode);
 		
 			String sql = "update tblmasteroperationstatus set dteDateEdited='" + objGlobal.funGetCurrentDateTime("yyyy-MM-dd") + "'  where strTableName='Factory' "
 					+" and strClientCode='" + clientCode + "'";
@@ -142,9 +128,8 @@ public class clsPOSFactoryMasterController
 		}
 		catch (Exception ex)
 		{
-			urlHits = "1";
 			ex.printStackTrace();
-			return new ModelAndView("redirect:/frmFail.html");
+			return new ModelAndView("frmLogin", "command", new clsUserHdBean());
 		}
 	}
 
@@ -152,19 +137,15 @@ public class clsPOSFactoryMasterController
 	@RequestMapping(value = "/loadPOSFactoryMasterData", method = RequestMethod.GET)
 	public @ResponseBody clsPOSFactoryMasterBean funSetSearchFields(@RequestParam("POSFactoryCode") String factoryCode, HttpServletRequest req)
 	{
-		String clientCode = req.getSession().getAttribute("clientCode").toString();
-		clsPOSFactoryMasterBean objPOSFactoryMaster = null;
+		String clientCode = req.getSession().getAttribute("gClientCode").toString();
+		clsPOSFactoryMasterBean objPOSFactoryMaster = new clsPOSFactoryMasterBean();
 		clsFactoryMasterModel objModel= (clsFactoryMasterModel) objMasterService.funSelectedFactoryMasterData(factoryCode,clientCode);
+		objPOSFactoryMaster.setStrFactoryCode(objModel.getStrFactoryCode());
 		objPOSFactoryMaster.setStrFactoryName(objModel.getStrFactoryName());
 		objPOSFactoryMaster.setStrUserCreated(objModel.getStrUserCreated());
 		objPOSFactoryMaster.setStrUserEdited(objModel.getStrUserEdited());
 		objPOSFactoryMaster.setDteDateCreated(objModel.getDteDateCreated());
-
-		
-		
 		return objPOSFactoryMaster;
-
-		
 	}
 
 	@RequestMapping(value = "/checkFactoryName", method = RequestMethod.GET)

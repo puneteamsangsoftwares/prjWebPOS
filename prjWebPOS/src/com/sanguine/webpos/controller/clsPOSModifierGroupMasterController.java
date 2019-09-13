@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sanguine.base.service.clsBaseServiceImpl;
+import com.sanguine.bean.clsUserHdBean;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.model.clsAreaMasterModel;
 import com.sanguine.webpos.model.clsAreaMasterModel_ID;
@@ -87,71 +88,19 @@ public class clsPOSModifierGroupMasterController
 	public ModelAndView funAddUpdate(@ModelAttribute("command") @Valid clsPOSModifierGroupMasterBean objBean, BindingResult result, HttpServletRequest req)
 	{
 		String urlHits = "1";
-
 		try
 		{
 			urlHits = req.getParameter("saddr").toString();
 			String clientCode=req.getSession().getAttribute("gClientCode").toString();
-			String webStockUserCode=req.getSession().getAttribute("gUserCode").toString();
-
-	        
+			String webPOSUserCode=req.getSession().getAttribute("gUserCode").toString();
 			String groupModifierCode = objBean.getStrModifierGroupCode();
 			String code="";
 			if (groupModifierCode.trim().isEmpty())
 			{
-				List list=objUtilityController.funGetDocumentCode("POSModifierGroupMaster");
-				 if (!list.get(0).toString().equals("0"))
-					{
-						String strCode = "0";
-						code = list.get(0).toString();
-						StringBuilder sb = new StringBuilder(code);
-						String ss = sb.delete(0, 2).toString();
-						for (int i = 0; i < ss.length(); i++)
-						{
-							if (ss.charAt(i) != '0')
-							{
-								strCode = ss.substring(i, ss.length());
-								break;
-							}
-						}
-						int intCode = Integer.parseInt(strCode);
-						intCode++;
-
-		                if (intCode < 10)
-		                {
-		                	groupModifierCode = "MG00000" + intCode;
-		                }
-		                else if (intCode < 100)
-		                {
-		                	groupModifierCode = "MG0000" + intCode;
-		                }
-		                else if (intCode < 1000)
-		                {
-		                	groupModifierCode = "MG000" + intCode;
-		                }
-		                else if (intCode < 10000)
-		                {
-		                	groupModifierCode = "MG00" + intCode;
-		                }
-		                else if (intCode < 100000)
-		                {
-		                	groupModifierCode = "MG0" + intCode;
-		                }
-		                else if (intCode < 1000000)
-		                {
-		                	groupModifierCode = "MG" + intCode;
-		                }
-						
-					}
-				  else
-		            {
-					  groupModifierCode = "MG000001";
-		            }
-				
+				long intCode =objUtilityController.funGetDocumentCodeFromInternal("ModifierGroup",clientCode);
+				groupModifierCode = "MG" + String.format("%06d", intCode);
 			}
-        
 			clsModifierGroupMasterHdModel objModel = new clsModifierGroupMasterHdModel(new clsModifierGroupMasterModel_ID(groupModifierCode, clientCode));
-
 			objModel.setStrModifierGroupName(objBean.getStrModifierGroupName());
 			objModel.setStrModifierGroupShortName(objBean.getStrModifierGroupShortName());
 			objModel.setStrApplyMaxItemLimit(objBean.getStrApplyMaxItemLimit());
@@ -159,15 +108,16 @@ public class clsPOSModifierGroupMasterController
 			objModel.setStrOperational(objBean.getStrOperationType());
 			objModel.setStrApplyMinItemLimit(objBean.getStrApplyMinItemLimit());
 			objModel.setIntItemMinLimit(objBean.getStrMinItemLimit());
-
 			objModel.setIntSequenceNo(objBean.getStrSequenceNo());
-
 			objModel.setDteDateCreated(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
 			objModel.setDteDateEdited(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
 			objModel.setStrDataPostFlag("N");
-			objModel.setStrUserCreated(webStockUserCode);
-			objModel.setStrUserEdited(webStockUserCode);
+			objModel.setStrUserCreated(webPOSUserCode);
+			objModel.setStrUserEdited(webPOSUserCode);
 			objMasterService.funSaveUpdateGroupModifierMaster(objModel);
+			req.getSession().setAttribute("success", true);
+			req.getSession().setAttribute("successMessage"," "+groupModifierCode);
+			
 			String sql = "update tblmasteroperationstatus set dteDateEdited='" + objGlobal.funGetCurrentDateTime("yyyy-MM-dd") + "'  where strTableName='Group Modifier' " + " and strClientCode='" + clientCode + "'";
 			objBaseServiceImpl.funExecuteUpdate(sql, "sql");
 
@@ -176,7 +126,7 @@ public class clsPOSModifierGroupMasterController
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
-			return new ModelAndView("redirect:/frmFail.html");
+			return new ModelAndView("frmLogin", "command", new clsUserHdBean());
 		}
 	}
 

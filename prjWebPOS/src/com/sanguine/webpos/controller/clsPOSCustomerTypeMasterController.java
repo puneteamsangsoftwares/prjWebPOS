@@ -91,32 +91,32 @@ public class clsPOSCustomerTypeMasterController {
 			String webStockUserCode=req.getSession().getAttribute("gUserCode").toString();
 			String customerTypeMasterCode = objBean.getStrCustomerTypeMasterCode();
 						
-			 if (customerTypeMasterCode.trim().isEmpty())
-			    {
-			    	long lngCode=objUtilityController.funGetDocumentCodeFromInternal("custtype",clientCode);
-			    	if(lngCode>0)
-			    	{
-			    		customerTypeMasterCode = "CT" + String.format("%03d", lngCode);
-			    	}
-			    }
-			    clsCustomerTypeMasterModel objModel = new clsCustomerTypeMasterModel(new clsCustomerTypeMasterModel_ID(customerTypeMasterCode,clientCode));
-			    //clsCustomerTypeMasterModel objModel = new clsCustomerTypeMasterModel(new clsCustomerTypeMasterModel_ID(customerTypeMasterCode, clientCode));
-			    objModel.setStrCustType(objBean.getStrCustomerType());
-			    objModel.setDblDiscPer(objBean.getDblDiscount());
-			    objModel.setStrPlayZoneCustType(objBean.getStrPlayZoneCustType());
-			    objModel.setStrClientCode(clientCode);
-			    objModel.setStrUserCreated(webStockUserCode);
-			    objModel.setStrUserEdited(webStockUserCode);
-			    objModel.setDteDateCreated(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
-			    objModel.setDteDateEdited(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
-			    objModel.setStrDataPostFlag("N");
-			    objMasterService.funSaveUpdateCustomerTypeMaster(objModel);
-				
-				req.getSession().setAttribute("success", true);
-				req.getSession().setAttribute("successMessage"," "+customerTypeMasterCode);
-				
-				String sql = "update tblmasteroperationstatus set dteDateEdited='"+objGlobal.funGetCurrentDateTime("yyyy-MM-dd")+"'  where strTableName='CustomerType' ";
-				objBaseServiceImpl.funExecuteUpdate(sql,"sql");
+			if (customerTypeMasterCode.trim().isEmpty())
+		    {
+		    	long lngCode=objUtilityController.funGetDocumentCodeFromInternal("CustomerType",clientCode);
+		    	if(lngCode>0)
+		    	{
+		    		customerTypeMasterCode = "CT" + String.format("%03d", lngCode);
+		    	}
+		    }
+		    clsCustomerTypeMasterModel objModel = new clsCustomerTypeMasterModel(new clsCustomerTypeMasterModel_ID(customerTypeMasterCode,clientCode));
+		    //clsCustomerTypeMasterModel objModel = new clsCustomerTypeMasterModel(new clsCustomerTypeMasterModel_ID(customerTypeMasterCode, clientCode));
+		    objModel.setStrCustType(objBean.getStrCustomerType());
+		    objModel.setDblDiscPer(objBean.getDblDiscount());
+		    objModel.setStrPlayZoneCustType(objBean.getStrPlayZoneCustType());
+		    objModel.setStrClientCode(clientCode);
+		    objModel.setStrUserCreated(webStockUserCode);
+		    objModel.setStrUserEdited(webStockUserCode);
+		    objModel.setDteDateCreated(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
+		    objModel.setDteDateEdited(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
+		    objModel.setStrDataPostFlag("N");
+		    objMasterService.funSaveUpdateCustomerTypeMaster(objModel);
+			
+			req.getSession().setAttribute("success", true);
+			req.getSession().setAttribute("successMessage"," "+customerTypeMasterCode);
+			
+			String sql = "update tblmasteroperationstatus set dteDateEdited='"+objGlobal.funGetCurrentDateTime("yyyy-MM-dd")+"'  where strTableName='CustomerType' ";
+			objBaseServiceImpl.funExecuteUpdate(sql,"sql");
 				
 			return new ModelAndView("redirect:/frmPOSCustomerTypeMaster.html?saddr="+urlHits);
 		}
@@ -127,28 +127,29 @@ public class clsPOSCustomerTypeMasterController {
 			return new ModelAndView("frmLogin", "command", new clsUserHdBean());
 		}
 	}
+	
 	//Assign filed function to set data onto form for edit transaction.
-			@RequestMapping(value = "/loadPOSCustomerTypeMasterData", method = RequestMethod.GET)
-			public @ResponseBody clsPOSCustomerTypeMasterBean funSetSearchFields(@RequestParam("POSCustomerTypeCode") String CustomerTypeCode,HttpServletRequest req)throws Exception
-			{
-				String clientCode=req.getSession().getAttribute("gClientCode").toString();
-				clsPOSCustomerTypeMasterBean objPOSCustomerTypeMaster = new clsPOSCustomerTypeMasterBean();
-				
-				clsCustomerTypeMasterModel objModel= (clsCustomerTypeMasterModel) objMasterService.funSelectedCustomerTypeMasterData(CustomerTypeCode,clientCode);
-				objPOSCustomerTypeMaster = new clsPOSCustomerTypeMasterBean();
-				objPOSCustomerTypeMaster.setStrCustomerTypeMasterCode(objModel.getStrCustTypeCode());
-				objPOSCustomerTypeMaster.setStrCustomerType(objModel.getStrCustType());
-				objPOSCustomerTypeMaster.setDblDiscount(objModel.getDblDiscPer());
-				objPOSCustomerTypeMaster.setStrPlayZoneCustType(objModel.getStrPlayZoneCustType());
-				
-				if(null==objPOSCustomerTypeMaster)
-				{
-					objPOSCustomerTypeMaster = new clsPOSCustomerTypeMasterBean();
-					objPOSCustomerTypeMaster.setStrCustomerTypeMasterCode("Invalid Code");
-				}
-				
-				return objPOSCustomerTypeMaster;
-			}
+	@RequestMapping(value = "/loadPOSCustomerTypeMasterData", method = RequestMethod.GET)
+	public @ResponseBody clsPOSCustomerTypeMasterBean funSetSearchFields(@RequestParam("POSCustomerTypeCode") String CustomerTypeCode,HttpServletRequest req)throws Exception
+	{
+		String clientCode=req.getSession().getAttribute("gClientCode").toString();
+		clsPOSCustomerTypeMasterBean objPOSCustomerTypeMaster = new clsPOSCustomerTypeMasterBean();
+		
+		clsCustomerTypeMasterModel objModel= (clsCustomerTypeMasterModel) objMasterService.funSelectedCustomerTypeMasterData(CustomerTypeCode,clientCode);
+		objPOSCustomerTypeMaster = new clsPOSCustomerTypeMasterBean();
+		objPOSCustomerTypeMaster.setStrCustomerTypeMasterCode(objModel.getStrCustTypeCode());
+		objPOSCustomerTypeMaster.setStrCustomerType(objModel.getStrCustType());
+		objPOSCustomerTypeMaster.setDblDiscount(objModel.getDblDiscPer());
+		objPOSCustomerTypeMaster.setStrPlayZoneCustType(objModel.getStrPlayZoneCustType());
+		
+		if(null==objPOSCustomerTypeMaster)
+		{
+			objPOSCustomerTypeMaster = new clsPOSCustomerTypeMasterBean();
+			objPOSCustomerTypeMaster.setStrCustomerTypeMasterCode("Invalid Code");
+		}
+		
+		return objPOSCustomerTypeMaster;
+	}
 
 	
 }
