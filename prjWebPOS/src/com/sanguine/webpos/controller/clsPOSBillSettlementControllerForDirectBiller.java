@@ -1052,7 +1052,7 @@ public class clsPOSBillSettlementControllerForDirectBiller
 			objBillingAPI.funSaveBill(isBillSeries, "", listBillSeriesBillDtl, voucherNo, listOfWholeKOTItemDtl, objBean, request, hmPromoItem);
 
 			/* printing bill............... */
-			objTextFileGeneration.funGenerateAndPrintBill(voucherNo, POSCode, clientCode);
+			//objTextFileGeneration.funGenerateAndPrintBill(voucherNo, POSCode, clientCode);
 		}
 
 		Map<String, Object> model = new HashMap<String, Object>();

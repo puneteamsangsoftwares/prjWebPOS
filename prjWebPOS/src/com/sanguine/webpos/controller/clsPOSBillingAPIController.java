@@ -333,14 +333,9 @@ public class clsPOSBillingAPIController
 		{
 			
 			String sqlSettlementModes = "";
-			JSONObject jsSettelementOptionsDtl = new JSONObject();
 			StringBuilder sqlBuilder = new StringBuilder();
 			try
 			{
-
-				//String gPickSettlementsFromPOSMaster = objPOSSetupUtility.funGetParameterValuePOSWise(clientCode, posCode, "gPickSettlementsFromPOSMaster");
-
-				//String gEnablePMSIntegrationYN = objPOSSetupUtility.funGetParameterValuePOSWise(clientCode, posCode, "gEnablePMSIntegrationYN");
 
 				if (gPickSettlementsFromPOSMaster.equals("Y"))
 				{
@@ -355,57 +350,33 @@ public class clsPOSBillingAPIController
 				sqlBuilder.append(sqlSettlementModes);
 				List listSettlement = objBaseService.funGetList(sqlBuilder, "sql");
 				clsPOSSettelementOptions objSettl;
-				//List listSettlementObject = new ArrayList<clsPOSSettelementOptions>();
 				JSONArray jArrSettlementObject=new JSONArray();
 				if (listSettlement.size() > 0)
 				{
 					for (int i = 0; i < listSettlement.size(); i++)
 					{
 						Object[] obj = (Object[]) listSettlement.get(i);
-						List listSttleData = new ArrayList();
-
 						if (gEnablePMSIntegrationYN.equals("Y"))
 						{
 							if (superUser)
 							{
-								//listSettelmentOptions.add(obj[1].toString());
 								objSettl = new clsPOSSettelementOptions(obj[0].toString(), obj[2].toString(), Double.parseDouble(obj[3].toString()), obj[1].toString(), obj[4].toString());
 								jArrSettlementObject.add(objSettl);
-								//jsSettelementOptionsDtl.put(obj[1].toString(), jArrSettlementObject);
 							}
 							else
 							{
-								//listSettelmentOptions.add(obj[1].toString());
 								objSettl = new clsPOSSettelementOptions(obj[0].toString(), obj[2].toString(), Double.parseDouble(obj[3].toString()), obj[1].toString(), obj[4].toString());
 								jArrSettlementObject.add(objSettl);
-								//jsSettelementOptionsDtl.put(obj[1].toString(), jArrSettlementObject);
 							}
 						}
 						else
 						{
-							//listSettelmentOptions.add(obj[1].toString());
 							objSettl = new clsPOSSettelementOptions(obj[0].toString(), obj[2].toString(), Double.parseDouble(obj[3].toString()), obj[1].toString(), obj[4].toString());
-
 							jArrSettlementObject.add(objSettl);
-							//jsSettelementOptionsDtl.put(obj[1].toString(), jArrSettlementObject);
 						}
 					}
 				}
-
-				List listSettelment = new ArrayList();
-
-				//int noOfSettlementMode = listSettelmentOptions.size();
-				/*JSONArray jArrSettlMod = new JSONArray();
-				for (int i = 0; i < noOfSettlementMode; i++)
-				{
-					listSettelment.add(listSettelmentOptions.get(i));
-					jArrSettlMod.add(listSettelmentOptions.get(i));
-				}*/
-//				jsonOb.put("SettleDesc", jArrSettlMod);
-//				jsonOb.put("SettleObj", jsSettelementOptionsDtl);
-
 				jsonOb.put("listSettleObj", jArrSettlementObject);
-
 			}
 			catch (Exception e)
 			{
@@ -415,13 +386,11 @@ public class clsPOSBillingAPIController
 			{
 				return jsonOb;
 			}
-		
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
-
 		return jsonOb;
 	}
 

@@ -2140,7 +2140,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 
 		Map<String, List<clsPOSKOTItemDtl>> mapBillSeries = null;
 		List<clsPOSBillSeriesBillDtl> listBillSeriesBillDtl = new ArrayList<clsPOSBillSeriesBillDtl>();
-
+		String voucherNo = "";
 		if (isBillSeries)
 		{
 			if ((mapBillSeries = objBillingAPI.funGetBillSeriesList(listOfWholeKOTItemDtl, POSCode,clientCode)).size() > 0)
@@ -2224,7 +2224,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 		}
 		else // No Bill Series
 		{
-			String voucherNo = objBillingAPI.funGenerateBillNo(POSCode,clientCode);
+			voucherNo = objBillingAPI.funGenerateBillNo(POSCode,clientCode);
 
 			/* To save normal bill */
 			objBillingAPI.funSaveBill(isBillSeries, "", listBillSeriesBillDtl, voucherNo, listOfWholeKOTItemDtl, objBean, request, hmPromoItem);
@@ -2241,7 +2241,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 			}
 
 			/* printing bill............... */
-			objTextFileGeneration.funGenerateAndPrintBill(voucherNo, POSCode, clientCode);
+		//	objTextFileGeneration.funGenerateAndPrintBill(voucherNo, POSCode, clientCode);
 		}
 
 		if (objBean.getTransactionType().equalsIgnoreCase("Make Bill"))
@@ -2250,53 +2250,10 @@ public class clsPOSBillSettlementControllerForMakeKOT
 		}
 		else
 		{
-			return new ModelAndView("redirect:/frmWebPOSBilling.html?saddr=1");
+			return  new ModelAndView("redirect:/frmWebPOSBilling.html?saddr=1&voucherNo="+voucherNo);
 		}
 	}
 
-	// kot ptinging logic
-
-	private void funCreateTempFolder()
-	{
-		try
-		{
-			String filePath = System.getProperty("user.dir");
-			File Text_KOT = new File(filePath + "/downloads/pdf/");
-			if (!Text_KOT.exists())
-			{
-				Text_KOT.mkdirs();
-			}
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/printPDF", method = RequestMethod.GET)
-	public void downloadPDFResource(HttpServletResponse response, HttpServletRequest request)
-	{
-		String fileName = request.getParameter("fileName").toString();
-		String filePath = System.getProperty("user.dir") + "/downloads/pdf/";
-		try
-		{
-			Path file = Paths.get(filePath, fileName);
-			response.setContentType("application/pdf");
-			response.addHeader("Content-Disposition", " filename=" + fileName);
-			if (Files.exists(file))
-			{
-				Files.copy(file, response.getOutputStream());
-				response.getOutputStream().flush();
-			}
-
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-	}
 
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/downloadPDF", method = RequestMethod.GET)

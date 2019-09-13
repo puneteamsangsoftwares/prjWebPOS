@@ -6,84 +6,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<%-- <style type="text/css">
-.test
-{    
-	border-right: 0px solid black;
-}
-
-<!-- Test -->
-
- /* /* The Modal (background) */
-.modal {
-  display: none; /* Hidden by default */
-  position: relative; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-/* Modal Content */
-.modal-content {
-  position: relative;
-  background-color: #fefefe;
-  margin: auto;
-  padding: 0;
-  border: 1px solid #888;
-  width: 60%;
-  top:20%;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-  -webkit-animation-name: animatetop;
-  -webkit-animation-duration: 0.4s;
-  animation-name: animatetop;
-  animation-duration: 0.4s
-}
-
-/* The Close Button */
-.close {
-  color: white;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.modal-header {
-  padding: 2px 16px;
-  background-color: #66BAF3;
-  color: white;
-  font-size:12px;
-}
-
-.modal-body {padding: 2px 16px; height: 500px;
-    overflow-y: auto;}
-
-.modal-footer {
-  padding: 2px 16px;
-  /* background-color: #66BAF3; */
-  color: white;
-} */
-
-
-</style> --%>
 
 
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
 <title>BILL SETTLEMENT</title>
-<link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/bootstrap.min.css"/>"/>
+
 	<script type="text/javascript" src="<spring:url value="/resources/js/jquery.min.js"/>"></script>
 	<script type="text/javascript" src="<spring:url value="/resources/js/bootstrap.min.js.js"/>"></script>
 
@@ -129,11 +57,11 @@
 				 funSetProperty();
 				 funVisibleDeliveryCharges('block');
 				 funSetDate();
-				 document.getElementById("lblTip").style.display='none';
-				 document.getElementById("txtTip").style.display='none';
+				 document.getElementById("lblTip").style.display='block';
+				 document.getElementById("txtTip").style.display='block';
 				 //
-				 document.getElementById("divSettlementButtons").style.display='none';
-				 document.getElementById("divAmt").style.display='none';
+				 document.getElementById("divSettlementButtons").style.display='block';
+				 document.getElementById("divAmt").style.display='block';
 				 
 				 //${command.jsonArrForSettleButtons}
 				/*  if (!objListSettle.getStrSettelmentType().equals("Debit Card"))
@@ -193,7 +121,7 @@
 	
          document.getElementById("divTblSettlement").style.display='none';
          document.getElementById("divCheque").style.display='none';
-         //document.getElementById("divAmt").style.display='block';
+        // document.getElementById("divAmt").style.display='none';
          document.getElementById("divCoupen").style.display='none';
          document.getElementById("divGiftVoucher").style.display='none';
          document.getElementById("divRoomSettlement").style.display='none';
@@ -296,8 +224,8 @@
 	                
 	                document.getElementById("divRemarks").style.display='block';
 	               // PanelRemaks.setLocation(PanelCheque.getLocation());//document.all["lblCard"].style.display='none';
-	                document.getElementById("divRemarks").style.top='345px';
-	                document.getElementById("divRemarks").style.left='415px';
+	           //     document.getElementById("divRemarks").style.top='345px';
+	            //    document.getElementById("divRemarks").style.left='415px';
 	                $("#txtRemark").focus();
 	                //document.getElementById("txtRemark").focus();
 	               
@@ -324,11 +252,11 @@
 	                document.getElementById("divRoomSettlement").style.display='none';
 	                document.getElementById("divJioMoneySettlement").style.display='none';
 	                document.getElementById("divRemarks").style.display='block';
-	                document.getElementById("divCard").style.top='350px';
-	                document.getElementById("divCard").style.left='415px';
+	              //  document.getElementById("divCard").style.top='350px';
+	             //   document.getElementById("divCard").style.left='415px';
 	                $("#txtRemark").focus();
-	                document.getElementById("divRemarks").style.top=' 425px';
-	                document.getElementById("divRemarks").style.left='415px';
+	             //   document.getElementById("divRemarks").style.top=' 425px';
+	             //   document.getElementById("divRemarks").style.left='415px';
 	              break;
 	
 	            case "Coupon":
@@ -351,8 +279,8 @@
 	                document.getElementById("divRoomSettlement").style.display='none';
 	                document.getElementById("divJioMoneySettlement").style.display='none';
 	                document.getElementById("divRemarks").style.display='none';
-	                document.getElementById("divCoupen").style.top='145px';
-	                document.getElementById("divCoupen").style.left='415px';
+	               // document.getElementById("divCoupen").style.top='145px';
+	               // document.getElementById("divCoupen").style.left='415px';
 	                break;
 	
 	            case "Cheque":
@@ -375,8 +303,8 @@
 	                document.getElementById("divRoomSettlement").style.display='none';
 	                document.getElementById("divJioMoneySettlement").style.display='none';
 	                document.getElementById("divRemarks").style.display='none';
-	                document.getElementById("divCoupen").style.top='145px';
-	                document.getElementById("divCoupen").style.left='415px';
+	              //  document.getElementById("divCoupen").style.top='145px';
+	             //   document.getElementById("divCoupen").style.left='415px';
 	              
 	                break;
 	
@@ -401,8 +329,8 @@
 	                document.getElementById("divRoomSettlement").style.display='none';
 	                document.getElementById("divJioMoneySettlement").style.display='none';
 	                document.getElementById("divRemarks").style.display='none';
-	                document.getElementById("divGiftVoucher").style.top='145px';
-	                document.getElementById("divGiftVoucher").style.left='415px';
+	            //    document.getElementById("divGiftVoucher").style.top='145px';
+	              //  document.getElementById("divGiftVoucher").style.left='415px';
 	                break;
 	                
 
@@ -427,8 +355,8 @@
 	                document.getElementById("divRoomSettlement").style.display='none';
 	                document.getElementById("divJioMoneySettlement").style.display='none';
 	                document.getElementById("divRemarks").style.display='block';
-	                document.getElementById("divRemarks").style.top='225px';
-	                document.getElementById("divRemarks").style.left='415px';
+	            //    document.getElementById("divRemarks").style.top='225px';
+	           //     document.getElementById("divRemarks").style.left='415px';
                    break;
 
                 case "Credit":
@@ -451,8 +379,8 @@
                     } 
                     
                     document.getElementById("divCustomer").style.display='block';
-                    document.getElementById("divCustomer").style.top='205px';
-	                document.getElementById("divCustomer").style.left='415px';
+                 //   document.getElementById("divCustomer").style.top='205px';
+	              //  document.getElementById("divCustomer").style.left='415px';
 	               
 	                document.all["lblCard"].style.display='none';
 	                document.all["lblCardBalance"].style.display='none';
@@ -469,8 +397,8 @@
 	                document.getElementById("divRoomSettlement").style.display='none';
 	                document.getElementById("divJioMoneySettlement").style.display='none';
 	                document.getElementById("divRemarks").style.display='block';
-	                document.getElementById("divRemarks").style.top='245px';
-	                document.getElementById("divRemarks").style.left='415px';
+	         //       document.getElementById("divRemarks").style.top='245px';
+	         //       document.getElementById("divRemarks").style.left='415px';
 	                $("#txtRemark").focus();
                     break;
 	                
@@ -754,8 +682,8 @@
 	                document.getElementById("txtTip").style.display='none';
 	               
                     document.getElementById("divDiscount").style.display='none';
-	                document.getElementById("divJioMoneySettlement").style.top='150px';
-	                document.getElementById("divJioMoneySettlement").style.left='740px';
+	         //       document.getElementById("divJioMoneySettlement").style.top='150px';
+	          //      document.getElementById("divJioMoneySettlement").style.left='740px';
 	                       
 
                     break;
@@ -781,8 +709,8 @@
 	                document.getElementById("divRoomSettlement").style.display='none';
 	                document.getElementById("divJioMoneySettlement").style.display='none';
 	                document.getElementById("divRemarks").style.display='block';
-	                document.getElementById("divRemarks").style.top='145px';
-	                document.getElementById("divRemarks").style.left='415px';
+	          //      document.getElementById("divRemarks").style.top='145px';
+	           //     document.getElementById("divRemarks").style.left='415px';
                   
                     break;
                 
@@ -2534,7 +2462,7 @@ function funDiscOkClicked()
 			 		</table>
 				</div>
 				<!-- div remarks -->
-				<div id="divRemarks" style=" border: 0px solid #ccc;height:90px;width:220px; position:absolute; top:425px; left:790px;" >
+				<div id="divRemarks" style=" border: 0px solid #ccc;height:90px;width:220px; position:absolute; top:440px; left:550px;" >
 					<table style="width:95%;height:88px;font-size:11px; font-weight: bold;">
 						<tr>
 					 		<td><label id="lblRemark" style=" display: inline-block;width: 100%;text-align: left;">Remark </label></td>
@@ -2665,7 +2593,7 @@ function funDiscOkClicked()
 				 	</table>
 			 	</div>
 			 	<!--Div Tbl Settlement  -->
-				 <div id="divTblSettlement" style=" border: 0px solid #ccc;height:100px;width:350px; position:absolute; top:480px;left:660px;overflow-x: auto; overflow-y: auto;" >
+				<!--  <div id="divTblSettlement" style=" border: 0px solid #ccc;height:100px;width:350px; position:absolute; top:480px;left:660px;overflow-x: auto; overflow-y: auto;" >
 				 	<table id="tblSettlement" class="transTable" style="width: 98%; height:98%; border-collapse: collapse;overflow: auto;margin-left: auto;margin-right: auto;
 							font-size: 10px;font-weight: bold;">
 				 		<tr>
@@ -2693,7 +2621,7 @@ function funDiscOkClicked()
 						 	<th>Tax Calculation</th>
 				 		</tr>
 				 	</table>
-				 </div>	
+				 </div>	 -->
 				 <!-- div Extra 2 -->
 				 <div id="divExtra2" style="border: 0px solid #ccc; height:170px; width: 115px; position:absolute;top:345px;left:660px; ">
 				 	
@@ -2790,32 +2718,6 @@ function funDiscOkClicked()
 	
 </tr>
 </table>
-
-	<%-- <div id="mySecModal" class="modal">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content" >
-				<div class="modal-header">
-				    <span class="close">&times;</span>
-				    <h4>Bill</h4>
-			  	</div>
-			  	<div class="modal-body" >
-			  		<embed src="D:\\setup\\eclipse\\Bill\\Bill_P0109204__2019-01-13_SANGUINE.pdf"
-                               frameborder="0" width="400px" height="400px">
-			  		
-			  		<!-- <div class="modal-footer">
-                            <button type="button" class="btn btn-default" >Close</button>
-                    </div> -->
-                    
-                    <div class="modal-footer">
-			        <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
-			        <button type="button" class="btn btn-primary">Save changes</button>
-			      	</div>
-			  	</div>
-			
-			</div>
-		</div>
-	</div>  --%>
-	
 	
 	<div id="mySecModal" class="modal fade" role="dialog">
             <div class="modal-dialog modal-lg">
@@ -2870,28 +2772,6 @@ function funDiscOkClicked()
 				<s:hidden id="hidBillNo" path="strBillNo"   />
 				
 				
-				
-				
-				
-
-<%-- 		 		<s:hidden id="hidDeliveryBoyName" path="strDeliveryBoyName"/> --%>
-<!--  Test -->
-		<%-- <div id="myModal" class="modal">
-		<div class="modal-content" >
-			  <div class="modal-header">
-			    <span class="close">&times;</span>
-			    <h2>Modal Header</h2>
-			  </div>
-			  <div class="modal-body">
-			    <p>Some text in the Modal Body</p>
-			    <p>Some other text...</p>
-			  </div>
-			  <div class="modal-footer">
-			    <h3>Modal Footer</h3>
-			  </div>
-		</div>
-	</div> --%>
-
 
 </s:form>
 

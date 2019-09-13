@@ -14,17 +14,14 @@ var selectedRowIndex="";
 
 	$(function() 
 	{
-	
 		funFillUnsettleBillGrid();
-	
 	});
+	
 	function funFillUnsettleBillGrid()
 	{
-		
 		var searchUrl="";
 	    var tableName="";
 	   
-	    
 	    searchUrl=getContextPath()+"/fillUnsettleBillData.html?";
 		$.ajax({
 		        type: "GET",
@@ -33,10 +30,7 @@ var selectedRowIndex="";
 		        data:"tableName="+tableName,
 			    success: function(response)
 			    {
-			    	$.each(response, function(i,item)
-					{
-			    		funAddFullRow(response.listUnsettlebill,response.gShowBillsType,response.gCMSIntegrationYN);
-					});
+		    		funAddFullRow(response.listUnsettlebill,response.gShowBillsType,response.gCMSIntegrationYN);
 			    },
 			    error: function(jqXHR, exception) {
 		            if (jqXHR.status === 0) {
@@ -62,8 +56,6 @@ var selectedRowIndex="";
 	
 	function funAddFullRow(data,gShowBillsType,gCMSIntegrationYN)
 	{
-		
-		
 			$('#tblData tbody').empty()
 			var table = document.getElementById("tblHeader");
 			var rowCount = table.rows.length;
@@ -89,8 +81,8 @@ var selectedRowIndex="";
            }
            else//Delivery Detail Wise
            {
-            	  row.insertCell(0).innerHTML= "<input name=\readonly=\"readonly\" class=\"Box \" size=\"15%\" id=\"BillNo\" value=Bill No >";
-            	  row.insertCell(1).innerHTML= "<input name=\readonly=\"readonly\" class=\"Box \" size=\"15%\" id=\"TableName\" value=Table >";
+           	  row.insertCell(0).innerHTML= "<input name=\readonly=\"readonly\" class=\"Box \" size=\"15%\" id=\"BillNo\" value=Bill No >";
+           	  row.insertCell(1).innerHTML= "<input name=\readonly=\"readonly\" class=\"Box \" size=\"15%\" id=\"TableName\" value=Table >";
             	  
 	           if (gCMSIntegrationYN=='Y')
                {
@@ -111,44 +103,53 @@ var selectedRowIndex="";
 			rowCount++;
 			
 			var table2 = document.getElementById("tblData");
-		if(table != table2)
-		{	
-		    for(var i=0;i<data.length;i++)
-		    {
-		    	row = table.insertRow(rowCount);
-		    	var rowData=data[i];
-		    	
-		    	for(var j=0;j<rowData.length;j++)
-		    	{
-		    		  if(gShowBillsType=="Table Detail Wise")
-		              {
-		    			  row.insertCell(j).innerHTML= "<input name=\readonly=\"readonly\" class=\"Box \" size=\"15%\" id=\""+rowData[j]+"\" value='"+rowData[j]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
-				      }
-		    		  else
-		    		  {
-		    			  row.insertCell(j).innerHTML= "<input name=\readonly=\"readonly\" class=\"Box \" size=\"15%\" id=\""+rowData[j]+"\" value='"+rowData[j]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
-		    		  }
-		    	}
-		    	rowCount++;		    
-            }
-		}   
-
+			if(table != table2)
+			{	
+			    for(var i=0;i<data.length;i++)
+			    {
+			    	row = table.insertRow(rowCount);
+			    	var rowData=data[i];
+			    	
+			    	for(var j=0;j<rowData.length;j++)
+			    	{
+			    		  if(gShowBillsType=="Table Detail Wise")
+			              {
+			    			  row.insertCell(j).innerHTML= "<input name=\readonly=\"readonly\" class=\"Box \" size=\"15%\" id=\""+rowData[j]+"\" value='"+rowData[j]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+					      }
+			    		  else
+			    		  {
+			    			  row.insertCell(j).innerHTML= "<input name=\readonly=\"readonly\" class=\"Box \" size=\"15%\" id=\""+rowData[j]+"\" value='"+rowData[j]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+			    		  }
+			    	}
+			    	rowCount++;		    
+	            }
+			}   
 	}
 	
 	function funGetSelectedRowIndex(obj)
 	{
 		 var index = obj.parentNode.parentNode.rowIndex;
-		 var table = document.getElementById("tblData");
-		 if((selectedRowIndex>0) && (index!=selectedRowIndex))
+		 var table = document.getElementById("tblHeader");
+		 selectedRowIndex=index;
+		 
+		 var rowlenth=table.rows.length;
+		 for(var i=0;i<rowlenth;i++){
+			 row = table.rows[i];
+			 row.style.backgroundColor='#ffffff';
+			 row.hilite = true;
+		 }
+		 
+		 
+		 row = table.rows[selectedRowIndex];
+		 row.style.backgroundColor='#ffd966';
+		 row.hilite = true;
+		 
+		 /* if((selectedRowIndex>0) && (index!=selectedRowIndex))
 		 {
 			 if(selectedRowIndex%2==0)
 			 {
-				 row = table.rows[selectedRowIndex];
-				 row.style.backgroundColor='#A3D0F7';
-				 selectedRowIndex=index;
-				 row = table.rows[selectedRowIndex];
-				 row.style.backgroundColor='#ffd966';
-				 row.hilite = true;
+				 
+				 
 			 }
 			 else
 			 {
@@ -167,7 +168,7 @@ var selectedRowIndex="";
 			 row = table.rows[selectedRowIndex];
 			 row.style.backgroundColor='#ffd966';
 			 row.hilite = true;
-		 }
+		 } */
 		 
 		 
 		 funOpenBillSettlement()
@@ -175,10 +176,7 @@ var selectedRowIndex="";
 	}
 	 function funOpenBillSettlement()
 	 {
-		 
-			var searchUrl="";
-			
-	    	var tableName = document.getElementById("tblData");
+		 	var tableName = document.getElementById("tblHeader");
 	       	var dataBilNo= tableName.rows[selectedRowIndex].cells[0].innerHTML; 
 	        var btnBackground=dataBilNo.split('value=');
 	        var billData=btnBackground[1].split("onclick");
@@ -340,7 +338,7 @@ var selectedRowIndex="";
 <br/>
 
 <s:form name=" BillSettlement" method="GET" action="fillBillSettlementData.html?saddr=${urlHits}"  target="_blank" class="formoid-default-skyblue" style="background-color:#FFFFFF;font-size:14px;font-family:'Open Sans','Helvetica Neue','Helvetica',Arial,Verdana,sans-serif;color:#666666;max-width:99%;min-width:25%;">
-    <div style=" background-color: #C0E2FE; border: 1px solid #ccc; display: block; margin: auto; width: 90%;">
+    <div style=" background-color: #ffffff; border: 1px solid #ccc; display: block; margin: auto; width: 90%;">
 	
 	<table id="tblHeader" style="width: 100%; border: 1px solid black; table-layout: fixed; height:5%; overflow: scroll">
 	
