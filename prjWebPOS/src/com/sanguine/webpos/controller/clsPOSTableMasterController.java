@@ -56,47 +56,47 @@ public class clsPOSTableMasterController
 
 		public ModelAndView funOpenForm(@ModelAttribute("command") @Valid clsPOSTableMasterBean objBean,BindingResult result,Map<String,Object> model, HttpServletRequest request)throws Exception
 		{
-				   String clientCode=request.getSession().getAttribute("gClientCode").toString();
-			      
-		           List listArea=objMasterService.funLoadClientWiseArea(clientCode);
-				    //Area List
-				     Map areaList = new HashMap<>();
-				     areaList.put("All", "All");
-				     if(null!=listArea)
+		   String clientCode=request.getSession().getAttribute("gClientCode").toString();
+	      
+           List listArea=objMasterService.funLoadClientWiseArea(clientCode);
+		    //Area List
+		     Map areaList = new HashMap<>();
+		     areaList.put("All", "All");
+		     if(null!=listArea)
+		     {
+				for (int cnt = 0; cnt < listArea.size(); cnt++)
+				{
+					clsAreaMasterModel obModel = (clsAreaMasterModel) listArea.get(cnt);
+					areaList.put(obModel.getStrAreaCode(), obModel.getStrAreaName());
+				}
+		     }
+		     //POS LIST
+			List listPOS=objMasterService.funFullPOSCombo(clientCode);	
+			 Map posList = new HashMap<>();
+				if(null!=listPOS)
+				{
+					for (int cnt = 0; cnt < listPOS.size(); cnt++)
+					{
+						Object Obj[] = (Object[]) listPOS.get(cnt);
+						posList.put(Obj[0].toString(),Obj[1].toString());
+					}
+				}
+				//Waiter List
+				List listWaiter=objMasterService.funGetWaiterList(clientCode);
+				     Map waiterList = new HashMap<>();
+				     waiterList.put("All", "All");
+				     if(null!=listWaiter)
 				     {
-						for (int cnt = 0; cnt < listArea.size(); cnt++)
+				    	 clsWaiterMasterModel obModel;
+						for (int cnt = 0; cnt < listWaiter.size(); cnt++)
 						{
-							clsAreaMasterModel obModel = (clsAreaMasterModel) listArea.get(cnt);
-							areaList.put(obModel.getStrAreaCode(), obModel.getStrAreaName());
+							obModel=(clsWaiterMasterModel) listWaiter.get(cnt);
+							waiterList.put(obModel.getStrWaiterNo(), obModel.getStrWShortName());
 						}
 				     }
-				     //POS LIST
-					List listPOS=objMasterService.funFullPOSCombo(clientCode);	
-					 Map posList = new HashMap<>();
-						if(null!=listPOS)
-						{
-							for (int cnt = 0; cnt < listPOS.size(); cnt++)
-							{
-								Object Obj[] = (Object[]) listPOS.get(cnt);
-								posList.put(Obj[0].toString(),Obj[1].toString());
-							}
-						}
-						//Waiter List
-						List listWaiter=objMasterService.funGetWaiterList(clientCode);
-						     Map waiterList = new HashMap<>();
-						     waiterList.put("All", "All");
-						     if(null!=listWaiter)
-						     {
-						    	 clsWaiterMasterModel obModel;
-								for (int cnt = 0; cnt < listWaiter.size(); cnt++)
-								{
-									obModel=(clsWaiterMasterModel) listWaiter.get(cnt);
-									waiterList.put(obModel.getStrWaiterNo(), obModel.getStrWShortName());
-								}
-						     }
-				model.put("areaList", areaList);
-				model.put("posList",posList);
-				model.put("waiterList", waiterList);
+			model.put("areaList", areaList);
+			model.put("posList",posList);
+			model.put("waiterList", waiterList);
 					
 		return new ModelAndView("frmPOSTableMaster");
 	}
@@ -110,74 +110,19 @@ public class clsPOSTableMasterController
 			{
 				String clientCode=req.getSession().getAttribute("gClientCode").toString();
 				String userCode=req.getSession().getAttribute("gUserCode").toString();
-		
 				tableCode=objBean.getStrTableNo();
-				
-				 if (tableCode.trim().isEmpty())
-				    {
-				    	
-				    	List list=obUtility.funGetDocumentCode("POSTableMaster");
-						 if (!list.get(0).toString().equals("0"))
-							{
-								String strCode = "0";
-								Object[] obj=(Object[])list.get(0);
-								String code = obj[0].toString();
-								intSeq= (int)obj[1]+1;
-								StringBuilder sb = new StringBuilder(code);
-								String ss = sb.delete(0, 2).toString();
-								for (int i = 0; i < ss.length(); i++)
-								{
-									if (ss.charAt(i) != '0')
-									{
-										strCode = ss.substring(i, ss.length());
-										break;
-									}
-								}
-								int intCode = Integer.parseInt(strCode);
-								intCode++;
-								if (intCode < 10)
-								{
-									tableCode = "TB000000" + intCode;
-								}
-								else if (intCode < 100)
-								{
-									tableCode = "TB00000" + intCode;
-								}
-								else if (intCode < 1000)
-								{
-									tableCode = "TB0000" + intCode;
-								}
-								else if (intCode < 10000)
-								{
-									tableCode = "TB000" + intCode;
-								}
-								else if (intCode < 100000)
-								{
-									tableCode = "TB00" + intCode;
-								}
-								else if (intCode < 1000000)
-								{
-									tableCode = "TB0" + intCode;
-								}
-								else if (intCode < 10000000)
-								{
-									tableCode = "TB" + intCode;
-								}
-							}
-						    else
-						    {
-						    	tableCode = "TB0000001";
-						    	intSeq=0;
-						    }
-				    }
-				 
+				if (tableCode.trim().isEmpty())
+				{
+					long intCode =obUtility.funGetDocumentCodeFromInternal("Table",clientCode);
+					tableCode = "TB" + String.format("%07d", intCode);
+				}
 				 clsTableMasterModel objModel=new clsTableMasterModel(new clsTableMasterModel_ID(tableCode, clientCode));
 				 objModel.setIntSequence(intSeq);
 				 objModel.setStrTableName( objBean.getStrTableName());
 				 objModel.setStrWaiterNo( objBean.getStrWaiterName());
 				 objModel.setStrPOSCode(objBean.getStrPOSCode());
 				 objModel.setIntPaxNo(objBean.getIntPaxCapacity());
-				objModel.setStrOperational(objGlobal.funIfNull(objBean.getStrOperational(),"N","Y"));
+				 objModel.setStrOperational(objGlobal.funIfNull(objBean.getStrOperational(),"N","Y"));
 				 objModel.setStrAreaCode(objBean.getStrAreaName());
 				 objModel.setStrStatus("Normal");
 				 objModel.setDteDateCreated(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));

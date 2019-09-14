@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sanguine.base.service.clsBaseServiceImpl;
+import com.sanguine.bean.clsUserHdBean;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSAreaMasterBean;
 import com.sanguine.webpos.bean.clsPOSGroupMasterBean;
@@ -100,48 +101,13 @@ public class clsPOSTaxMasterController{
 			urlHits=req.getParameter("saddr").toString();
 			String clientCode=req.getSession().getAttribute("gClientCode").toString();
 			String userCode=req.getSession().getAttribute("gUserCode").toString();
-			
-			 
 			taxCode = objBean.getStrTaxCode();
-			
 			if (taxCode.trim().isEmpty())
-		    {
-		    	List list=objUtility.funGetDocumentCode("POSTaxMaster");
-		    	
-		    	  if (!list.get(0).toString().equals("0"))
-					{
-						String strCode = "0";
-						String code = list.get(0).toString();
-						StringBuilder sb = new StringBuilder(code);
-						String ss = sb.delete(0, 1).toString();
-						for (int i = 0; i < ss.length(); i++)
-						{
-							if (ss.charAt(i) != '0')
-							{
-								strCode = ss.substring(i, ss.length());
-								break;
-							}
-						}
-						int intCode = Integer.parseInt(strCode);
-						intCode++;
-						if (intCode < 10)
-						{
-							taxCode = "T0" + intCode;
-						}
-						else if (intCode < 100)
-						{
-							taxCode = "T" + intCode;
-						}
-						
-					}
-					else
-					{
-						taxCode = "T01";
-					}
-		    }
-			
-			 clsTaxMasterModel objModel=new clsTaxMasterModel(new clsTaxMasterModel_ID(taxCode,clientCode));
-			    
+			{
+				long intCode =objUtility.funGetDocumentCodeFromInternal("Tax",clientCode);
+				taxCode = "T" + String.format("%02d", intCode);
+			}
+				clsTaxMasterModel objModel=new clsTaxMasterModel(new clsTaxMasterModel_ID(taxCode,clientCode));
 			    objModel.setStrAccountCode(objBean.getStrAccountCode());
 			    objModel.setStrDataPostFlag("Y");
 			    objModel.setStrItemType(objBean.getStrItemType());
@@ -152,7 +118,6 @@ public class clsPOSTaxMasterController{
 			    objModel.setStrTaxOnSP( objBean.getStrTaxOnSP());
 			    objModel.setStrTaxOnTax(objGlobal.funIfNull(objBean.getStrTaxOnTax(),"N","Y"));
 			    objModel.setStrTOTOnSubTotal(objGlobal.funIfNull(objBean.getStrTOTOnSubTotal(), "N","Y"));
-
 			    objModel.setStrTaxRounded(objGlobal.funIfNull(objBean.getStrTaxRounded(),"N","Y"));
 			    objModel.setStrTaxShortName(objBean.getStrTaxShortName());
 			    objModel.setStrTaxType(objBean.getStrTaxType());
@@ -160,7 +125,6 @@ public class clsPOSTaxMasterController{
 			    objModel.setDblPercent(objBean.getDblPercent());
 			    objModel.setDteValidFrom( objBean.getDteValidFrom());
 			    objModel.setDteValidTo(objBean.getDteValidTo());
-			    
 			    objModel.setDteDateCreated(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
 			    objModel.setDteDateEdited(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
 			    objModel.setStrUserCreated(userCode);
@@ -170,7 +134,7 @@ public class clsPOSTaxMasterController{
 			    String areaCode="";
 			    if(null!=arealist)
 			    {
-			    for(int i=0; i<arealist.size(); i++){
+			    	for(int i=0; i<arealist.size(); i++){
 				    	clsPOSAreaMasterBean obj= new clsPOSAreaMasterBean();
 				    	obj=(clsPOSAreaMasterBean)arealist.get(i);
 				    	if(obj.getStrApplicableYN()!=null){
@@ -221,22 +185,17 @@ public class clsPOSTaxMasterController{
 				    		String settlementCode=obj.getStrSettlementCode();
 					    	String settlementDesc=obj.getStrSettlementDesc();
 					    	clsTaxSettlementDetailsModel objSettlementModel = new clsTaxSettlementDetailsModel();
-					    	
 					    	objSettlementModel.setStrSettlementCode(settlementCode);
 					    	objSettlementModel.setStrApplicable("true");
-					    	
 					    	objSettlementModel.setStrSettlementName(settlementDesc);
 					    	objSettlementModel.setStrUserEdited(userCode);
 					    	objSettlementModel.setStrUserCreated(userCode);
-					    	  
 					    	objSettlementModel.setDteDateCreated(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
-					    	
 					    	objSettlementModel.setDteDateEdited(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
 					    	objSettlementModel.setDteFrom( objBean.getDteValidFrom());
 					    	objSettlementModel.setDteTo( objBean.getDteValidTo());
 					    	setSettlementDtl.add(objSettlementModel);
 				    	}
-				    	
 				    }
 			    }
 			    objModel.setListsettlementDtl(setSettlementDtl);
@@ -256,16 +215,12 @@ public class clsPOSTaxMasterController{
 			    		String gpCode=obj.getStrGroupCode();
 				    	String gpDesc=obj.getStrGroupName();
 				    	clsTaxOnGroupModel objSettlementModel = new clsTaxOnGroupModel();
-				    	
 				    	objSettlementModel.setStrGroupCode(gpCode);
 				    	objSettlementModel.setStrApplicable("true");
-				    	
 				    	objSettlementModel.setStrGroupName(gpDesc);
 				    	objSettlementModel.setStrUserEdited(userCode);
 				    	objSettlementModel.setStrUserCreated(userCode);
-				    	  
 				    	objSettlementModel.setDteDateCreated(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
-				    	
 				    	objSettlementModel.setDteDateEdited(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
 				    	objSettlementModel.setDteFrom( objBean.getDteValidFrom());
 				    	objSettlementModel.setDteTo( objBean.getDteValidTo());
@@ -283,27 +238,22 @@ public class clsPOSTaxMasterController{
 		    
 		    if(null!=poslist)
 		    {
-		    for(int i=0; i<poslist.size(); i++)
-		    {
-		    	clsPOSMasterBean obj= new clsPOSMasterBean();
-		    	obj=(clsPOSMasterBean)poslist.get(i);
-		    	if(obj.getStrApplicableYN()!=null)
-		    	{
-		    		
-		    		clsTaxPosDetailsModel objPosModel = new clsTaxPosDetailsModel();
-			    	objPosModel.setStrTaxDesc(objBean.getStrTaxDesc());
-			    	objPosModel.setStrPOSCode(obj.getStrPosCode());
-			    	listTaxPosDtl.add(objPosModel);
-		    		
-		    	}
-		    	
-		    }
+			    for(int i=0; i<poslist.size(); i++)
+			    {
+			    	clsPOSMasterBean obj= new clsPOSMasterBean();
+			    	obj=(clsPOSMasterBean)poslist.get(i);
+			    	if(obj.getStrApplicableYN()!=null)
+			    	{
+			    		clsTaxPosDetailsModel objPosModel = new clsTaxPosDetailsModel();
+				    	objPosModel.setStrTaxDesc(objBean.getStrTaxDesc());
+				    	objPosModel.setStrPOSCode(obj.getStrPosCode());
+				    	listTaxPosDtl.add(objPosModel);
+			    	}	
+			    }
 		    }
 		    
 		    objModel.setListTaxPosDtl(listTaxPosDtl);
-		   	
-		    objModel.setStrBillNote(objBean.getStrBillNote()); 
-		    
+		   	objModel.setStrBillNote(objBean.getStrBillNote()); 
 		    objMasterService.funSaveTaxMaster(objModel);				
 			req.getSession().setAttribute("success", true);
 			req.getSession().setAttribute("successMessage"," "+taxCode);
@@ -317,9 +267,8 @@ public class clsPOSTaxMasterController{
 		}
 		catch(Exception ex)
 		{
-			urlHits="1";
 			ex.printStackTrace();
-			return new ModelAndView("redirect:/frmFail.html");
+			return new ModelAndView("frmLogin", "command", new clsUserHdBean());
 		}
 	}
 	

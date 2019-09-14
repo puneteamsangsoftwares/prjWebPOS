@@ -327,10 +327,8 @@ public class clsPOSUserRegistrationController
 	@RequestMapping(value = "/savePOSUserRegistrationMaster", method = RequestMethod.POST)
 	public ModelAndView funAddUpdate1(@ModelAttribute("command") @Valid clsPOSUserRegistrationBean objBean, BindingResult result, HttpServletRequest req, @RequestParam("companyLogo") MultipartFile file)
 	{
-
 		try
 		{
-
 			String clientCode = req.getSession().getAttribute("gClientCode").toString();
 			String strLoginUser = req.getSession().getAttribute("gUserCode").toString();
 			String userCode = objBean.getStrUserCode();
@@ -355,18 +353,13 @@ public class clsPOSUserRegistrationController
 			String encKey = "04081977";
 			String Password=objBean.getStrPassword();
 			Password = clsPOSGlobalSingleObject.getObjPasswordEncryptDecreat().encrypt(encKey, Password);
-	      
 			objModel.setStrPassword(Password);
-
 			objModel.setStrConfirmPassword(Password);
-
 			objModel.setStrWaiterNo(objBean.getStrWaiterNo());
 			objModel.setStrImgUserIconPath(objBean.getStrImgUserIconPath());
-
 			objModel.setDteDateCreated(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
 			objModel.setDteDateEdited(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
 			objModel.setDteValidDate((objGlobal.funGetCurrentDateTime("yyyy-MM-dd")));
-
 			objModel.setStrUserCreated(strLoginUser);
 			objModel.setStrUserEdited(strLoginUser);
 			if(objBean.getStrSuperType()== null)
@@ -464,9 +457,7 @@ public class clsPOSUserRegistrationController
 						objUserMaster.setStrView("true");
 						objUserMaster.setStrPrint("true");
 						objUserMaster.setStrSave("true");
-
 						obBaseService.funSave(objUserMaster);
-
 					}
 				}
 
@@ -483,9 +474,7 @@ public class clsPOSUserRegistrationController
 						objUserTrans.setStrGrant(objBean1.getStrGrant());
 						objUserTrans.setStrTLA(objBean1.getStrTLA());
 						objUserTrans.setStrAuditing(objBean1.getStrAuditing());
-
 						objUserTrans.setStrUserCode(userCode);
-
 						objUserTrans.setIntSequence(5);
 						objUserTrans.setStrAdd("true");
 						objUserTrans.setStrEdit("true");
@@ -633,12 +622,10 @@ public class clsPOSUserRegistrationController
 						clsSuperUserDetailHdModel objSuperUserReport = new clsSuperUserDetailHdModel();
 						objSuperUserReport.setStrFormName(objBean1.getStrFormName());
 						objSuperUserReport.setStrButtonName(objBean1.getStrButtonName());
-
 						objSuperUserReport.setStrGrant("true");
 						objSuperUserReport.setStrAuditing("true");
 						objSuperUserReport.setStrTLA((objBean1.getStrTLA()));
 						objSuperUserReport.setStrUserCode(userCode);
-
 						objSuperUserReport.setIntSequence(5);
 						objSuperUserReport.setStrAdd("true");
 						objSuperUserReport.setStrEdit("true");
@@ -661,13 +648,10 @@ public class clsPOSUserRegistrationController
 
 						objSuperUserUtilites.setStrFormName(objBean1.getStrFormName());
 						objSuperUserUtilites.setStrButtonName(objBean1.getStrButtonName());
-
 						objSuperUserUtilites.setStrGrant("true");
 						objSuperUserUtilites.setStrTLA((objBean1.getStrTLA()));
 						objSuperUserUtilites.setStrAuditing(objBean1.getStrAuditing());
-
 						objSuperUserUtilites.setStrUserCode(userCode);
-
 						objSuperUserUtilites.setIntSequence(5);
 						objSuperUserUtilites.setStrAdd("true");
 						objSuperUserUtilites.setStrEdit("true");
@@ -675,15 +659,9 @@ public class clsPOSUserRegistrationController
 						objSuperUserUtilites.setStrView("true");
 						objSuperUserUtilites.setStrPrint("true");
 						objSuperUserUtilites.setStrSave("true");
-
 						obBaseService.funSave(objSuperUserUtilites);
-
 					}
-				}	
-				
-				
-				
-
+				}
 			}
 
 			objMasterService.funSaveUpdateUserRegistrationMaster(objModel);

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sanguine.base.service.clsBaseServiceImpl;
+import com.sanguine.bean.clsUserHdBean;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.service.clsGlobalFunctionsService;
 import com.sanguine.webpos.bean.clsPOSWaiterMasterBean;
@@ -100,60 +101,25 @@ public class clsPOSWaiterMasterController
 		{
 			urlHits=req.getParameter("saddr").toString();
 			String clientCode=req.getSession().getAttribute("gClientCode").toString();
-			String webStockUserCode=req.getSession().getAttribute("gUserCode").toString();
+			String webPOSkUserCode=req.getSession().getAttribute("gUserCode").toString();
 			String waiterNo = objBean.getStrWaiterNo();
-			
 			if (waiterNo.trim().isEmpty())
-		    {
-		    	List list=objUtilityController.funGetDocumentCode("POSWaiterMaster");
-				 if (!list.get(0).toString().equals("0"))
-					{
-						String strCode = "0";
-						String code = list.get(0).toString();
-						StringBuilder sb = new StringBuilder(code);
-						String ss = sb.delete(0, 1).toString();
-						for (int i = 0; i < ss.length(); i++)
-						{
-							if (ss.charAt(i) != '0')
-							{
-								strCode = ss.substring(i, ss.length());
-								break;
-							}
-						}
-						int intCode = Integer.parseInt(strCode);
-						intCode++;
-						if (intCode < 10)
-						{
-							waiterNo = "W0" + intCode;
-						}
-						else if (intCode < 100)
-						{
-							waiterNo = "W" + intCode;
-						}
-						
-						
-					}
-				    else
-				    {
-				    	waiterNo = "W01";
-				    }
-		    }
-		    
-		    clsWaiterMasterModel objModel=new clsWaiterMasterModel(new clsWaiterMasterModel_ID(waiterNo, clientCode));
+			{
+				long intCode =objUtilityController.funGetDocumentCodeFromInternal("Waiter",clientCode);
+				waiterNo = "W" + String.format("%03d", intCode);
+			}
+			clsWaiterMasterModel objModel=new clsWaiterMasterModel(new clsWaiterMasterModel_ID(waiterNo, clientCode));
 		    objModel.setStrWShortName(objBean.getStrWShortName());
 		    objModel.setStrWFullName(objBean.getStrWShortName());
 		    objModel.setStrDebitCardString(objBean.getStrDebitCardString());
 		    objModel.setStrPOSCode(objBean.getStrPOSCode());
-		   
 		    objModel.setStrOperational(objGlobal.funIfNull(objBean.getStrOperational(),"N","Y"));
-		   
 		    objModel.setStrStatus("Normal");
 		    objModel.setDteDateCreated(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
 		    objModel.setDteDateEdited(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
 		    objModel.setStrDataPostFlag("N");
-		    objModel.setStrUserCreated(webStockUserCode);
-		    objModel.setStrUserEdited(webStockUserCode);
-		    
+		    objModel.setStrUserCreated(webPOSkUserCode);
+		    objModel.setStrUserEdited(webPOSkUserCode);
 		    objMasterService.funSaveUpdateWaiterMaster(objModel);
 
 			req.getSession().setAttribute("success", true);
@@ -162,19 +128,14 @@ public class clsPOSWaiterMasterController
 			String sql = "update tblmasteroperationstatus set dteDateEdited='"+objGlobal.funGetCurrentDateTime("yyyy-MM-dd")+"'  where strTableName='Waiter' "
 					+" and strClientCode='" + clientCode + "'";
 			objBaseServiceImpl.funExecuteUpdate(sql,"sql");
-			
 			return new ModelAndView("redirect:/frmPOSWaiterMaster.html?saddr="+urlHits);
 		}
 		catch(Exception ex)
 		{
-			urlHits="1";
 			ex.printStackTrace();
-			return new ModelAndView("redirect:/frmFail.html");
+			return new ModelAndView("frmLogin", "command", new clsUserHdBean());
 		}
 	}
-	
-	
-	
 	
 	//Assign filed function to set data onto form for edit transaction.
 		@RequestMapping(value = "/loadPOSWaiterMasterData", method = RequestMethod.GET)

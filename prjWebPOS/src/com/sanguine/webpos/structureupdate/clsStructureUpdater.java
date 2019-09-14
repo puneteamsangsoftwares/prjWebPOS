@@ -378,6 +378,10 @@ public class clsStructureUpdater
 		funCheckMasterEntry("Reason", strClientCode);
 		funCheckMasterEntry("Settlement", strClientCode);
 		funCheckMasterEntry("Shift", strClientCode);
+		funCheckMasterEntry("SubGroup", strClientCode);
+		funCheckMasterEntry("Table", strClientCode);
+		funCheckMasterEntry("Tax", strClientCode);
+		funCheckMasterEntry("Waiter", strClientCode);
 
 	}
 
@@ -446,6 +450,7 @@ public class clsStructureUpdater
 		funCheckMasterTableEntry("BillSeries", strClinetCode);
 		// funCheckMasterTableEntry("POS",strClinetCode);
 		funCheckMasterTableEntry("SubMenuHead", strClinetCode);
+		funCheckMasterTableEntry("Shift", strClinetCode);
 	}
 
 	private int funCheckMasterTableEntry(String tableName, String strClinetCode)

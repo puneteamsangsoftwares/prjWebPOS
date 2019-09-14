@@ -230,17 +230,15 @@ var field;
 			<%if (session.getAttribute("success") != null) {
 				if (session.getAttribute("successMessage") != null) {%>
 					message='<%=session.getAttribute("successMessage").toString()%>';
-<%session.removeAttribute("successMessage");
+					<%session.removeAttribute("successMessage");
 				}
-				boolean test = ((Boolean) session.getAttribute("success"))
-						.booleanValue();
+				boolean test = ((Boolean) session.getAttribute("success")).booleanValue();
 				session.removeAttribute("success");
 				if (test) {%>
-	confirmDialog("Data Saved \n\n"
-								+ message);
-<%}
-			}%>
-	});
+					confirmDialog("Data Saved \n\n"+ message,"");
+					<%}
+				}%>
+		});
 
 	function funSetTaxData(code) {
 

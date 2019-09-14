@@ -36,7 +36,6 @@ $(document).ready(function () {
 	
 	
 	$(document).ready(function () {
-		  $('input#txtSubGroupCode').mlKeyboard({layout: 'en_US'});
 		  $('input#txtSubGroupName').mlKeyboard({layout: 'en_US'});
 		  $('input#txtIncetives').mlKeyboard({layout: 'en_US'});
 		}); 
@@ -63,7 +62,6 @@ $(document).ready(function () {
 			        	{
 				        	$("#txtSubGroupCode").val(response.strSubGroupCode);
 				        	$("#txtSubGroupName").val(response.strSubGroupName);
-				        	$("#txtSubGroupName").focus();
 				        	$("#txtIncentives").val(response.strIncentives);
 				      }
 					},
@@ -134,7 +132,7 @@ $(document).ready(function () {
 				        {
 				        	if(response=="true")
 				        		{
-				        			alert("Sub group Name Already Exist!");
+				        			confirmDialog("Sub group Name Already Exist!","");
 				        			$('#txtSubGroupName').focus();
 				        			flg= false;
 					    		}
@@ -163,8 +161,6 @@ $(document).ready(function () {
 						
 			      });
 			}
-			
-			
 			return flg;
 		}
 
@@ -190,9 +186,6 @@ $(document).ready(function () {
 <br/>
 
 	<s:form name="POSSubGroupMaster" method="POST" action="savePOSSubGroup.html" class="formoid-default-skyblue" style="background-color:#FFFFFF;font-size:14px;font-family:'Open Sans','Helvetica Neue','Helvetica',Arial,Verdana,sans-serif;color:#666666;max-width:880px;min-width:150px;margin-top:2%;">
-	
-	 
-		
 		<div class="title">
 		
 			<div class="row" style="background-color: #fff; margin-left: 25%;display: -webkit-box">

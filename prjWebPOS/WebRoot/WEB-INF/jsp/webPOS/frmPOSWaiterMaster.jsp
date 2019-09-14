@@ -15,7 +15,6 @@
 	var fieldName;
 
 	$(document).ready(function() {
-		 $('input#txtWaiterNo').mlKeyboard({layout: 'en_US'});
 		  $('input#txtWShortName').mlKeyboard({layout: 'en_US'});
 		  $('input#txtWFullName').mlKeyboard({layout: 'en_US'});
 		  $('input#txtDebitCardString').mlKeyboard({layout: 'en_US'});
@@ -148,7 +147,7 @@
 			        {
 			        	if(response=="false")
 			        		{
-			        		confirmDialog("Waiter Short Name Already Exist!");
+			        		    confirmDialog("Waiter Short Name Already Exist!","");
 			        			$('#txtWShortName').focus();
 			        			flg= false;
 				    		}

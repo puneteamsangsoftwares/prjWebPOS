@@ -14,10 +14,9 @@
 <script type="text/javascript" src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
 <script type="text/javascript">
 	$(document).ready(function() 
-		{
-		 $('input#txtTableNo').mlKeyboard({layout: 'en_US'});
-		  $('input#txtTableName').mlKeyboard({layout: 'en_US'});
-		  $('input#txtPaxNo').mlKeyboard({layout: 'en_US'});
+	{
+		$('input#txtTableName').mlKeyboard({layout: 'en_US'});
+		$('input#txtPaxNo').mlKeyboard({layout: 'en_US'});
 		  
 		$(".tab_content").hide();
 		$(".tab_content:first").show();
@@ -65,15 +64,13 @@ $(document).ready(function()
 			<%if (session.getAttribute("success") != null) {
 				if (session.getAttribute("successMessage") != null) {%>
 					message='<%=session.getAttribute("successMessage").toString()%>';
-<%session.removeAttribute("successMessage");
+					<%session.removeAttribute("successMessage");
 				}
-				boolean test = ((Boolean) session.getAttribute("success"))
-						.booleanValue();
+				boolean test = ((Boolean) session.getAttribute("success")).booleanValue();
 				session.removeAttribute("success");
 				if (test) {%>
-				confirmDialog("Data Saved \n\n"
-								+ message);
-<%}
+					confirmDialog("Data Saved \n\n"+ message,"");
+				<%}
 			}%>
 	});
 
@@ -184,9 +181,7 @@ $(document).ready(function()
 				var tableName1 = table.rows[selectedRowIndex + 1].cells[2].innerHTML;
 				var areaName1 = table.rows[selectedRowIndex + 1].cells[3].innerHTML;
 				var posName1 = table.rows[selectedRowIndex + 1].cells[4].innerHTML;
-				funMoveRowDown(tableNo, tableName, areaName, posName,
-						selectedRowIndex, tableNo1, tableName1, areaName1,
-						posName1);
+				funMoveRowDown(tableNo, tableName, areaName, posName,selectedRowIndex, tableNo1, tableName1, areaName1,posName1);
 			}
 
 		}

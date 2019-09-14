@@ -47,7 +47,6 @@ $(document).ready(function () {
 				        	$("#txtShiftCode").val(response.intShiftCode);
 				        	$("#txtPOSCode").val(response.strPOSCode);
 				        	$("#txttimeShiftStart").val(response.strtimeShiftStart);
-				        	$("#txttimeShiftStart").focus();
 				        	$("#txttimeShiftEnd").val(response.strtimeShiftEnd);
 // 				        	$("#txtBillDateTimeType").val(response.strBillDateTimeType);
 				        	$("#cmbtimeShiftStart").val(response.strAMPMStart);
@@ -96,8 +95,6 @@ $(document).ready(function () {
 				%>confirmDialog("Data Saved \n\n"+message,"");<%
 			}
 		}%>
-		
-		
 	});
 
 	$(function() {
@@ -111,13 +108,13 @@ $(document).ready(function () {
 		  var flag=true;
 		  if($("#txttimeShiftStart").val().trim()=="")
 			{
-			  confirmDialog("Please Enter Shift Start Time");
+			  confirmDialog("Please Enter Shift Start Time","");
 			  flag=false;
 			 
 			}
 		  if($("#txttimeShiftEnd").val().trim()=="")
 			{
-			  confirmDialog("Please Enter Shift End Time");
+			  confirmDialog("Please Enter Shift End Time","");
 			  flag=false;
 			}
 		  return flag;

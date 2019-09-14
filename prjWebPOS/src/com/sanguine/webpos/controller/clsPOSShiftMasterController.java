@@ -108,12 +108,13 @@ public class clsPOSShiftMasterController{
 		    objModel.setStrUserEdited(webPOSUserCode);
 		    objModel.setDteDateCreated(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
 		    objModel.setDteDateEdited(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
+		    objModel.setStrClientCode(clientCode);
 		    obMasterService.funSaveShiftMaster(objModel);
 		    
 			req.getSession().setAttribute("success", true);
 			req.getSession().setAttribute("successMessage"," "+shiftCode);
 			
-			String sql = "update tblmasteroperationstatus set dteDateEdited='"+objGlobal.funGetCurrentDateTime("yyyy-MM-dd")+"'  where strTableName='Shift Master' "
+			String sql = "update tblmasteroperationstatus set dteDateEdited='"+objGlobal.funGetCurrentDateTime("yyyy-MM-dd")+"'  where strTableName='Shift' "
 					+" and strClientCode='" + clientCode + "'";
 			objBaseServiceImpl.funExecuteUpdate(sql,"sql");
 			

@@ -3,6 +3,8 @@ package com.sanguine.webpos.structureupdate;
 import java.util.List;
 import java.util.Map;
 
+import com.sanguine.controller.clsGlobalFunctions;
+
 public class clsFillDatabaseTablesStructureUpdate
 {
 

@@ -99,7 +99,6 @@ public class clsShiftMasterModel extends clsBaseModel implements Serializable{
 		this. strPOSCode = (String) setDefaultValue( strPOSCode, "NA");
 	}
 
-	
 	public String getTmeShiftStart() {
 		return tmeShiftStart;
 	}
@@ -151,9 +150,7 @@ public class clsShiftMasterModel extends clsBaseModel implements Serializable{
 		this.dteDateEdited=dteDateEdited;
 	}
 
-
-	
-public String getStrClientCode() {
+	public String getStrClientCode() {
 		return strClientCode;
 	}
 
