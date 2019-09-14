@@ -92,6 +92,13 @@ var fieldName="";
 
 $(document).ready(function() 
 {
+	
+	$("#Closer").click(function () {
+        $("#dialog").dialog("destroy");
+        return false;
+    });
+	
+	
 	/*  var styles = document.styleSheets;
 	var href = "";
     for (var i = 0; i < styles.length; i++) 
@@ -751,58 +758,13 @@ function funFillModalTable(strItemName,dblQuantity,dblAmount)
 			    
 			    <!-- Modal -->
 			    
-        <!-- <div id="myBillingModal" class="modal fade" role="dialog">
-            <div class="modal-dialog modal-lg">
 
-                Modal content
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Modal Header</h4>
-                    </div>
-                    <div class="modal-body">
-
-                        <embed src="~/Content/Article List.pdf"
-                               frameborder="0" width="100%" height="400px">
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
- -->
-			    
-	<!-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		        <h4 class="modal-title" id="myModalLabel">Modal title</h4> 
-		      </div>
-		      <div class="modal-body">
-		        <div style="text-align: center;">
-		<iframe src="" 
-		style="width:500px; height:500px;" id="ifBillPrint" frameborder="0"></iframe>
-		</div>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		        <button type="button" class="btn btn-primary">Save changes</button>
-		      </div>
-		    </div>
-		  </div>
-		</div> -->
 			   
-	  <div id="dialog" style="width: 315px; min-height: 100.25px; max-height: 100%; height: 509px;">
-	    <!-- <div style="height:100%"> -->
-	        <!-- <iframe id="plugin"></iframe> -->
-	        <!-- <embed  id="frame" frameborder="0" width="100%" height="400px"> -->
-	        <embed width="100%" height="100%" name="plugin" id="plugin"  type="application/pdf" internalinstanceid="100">
-	    <!-- </div> -->
-	</div>
+	  <div id="dialog" style="width: 0px; min-height: 0px; max-height: 0%; height: 0px;">
+	      
+	       <embed width="100%" height="100%" name="plugin" id="plugin"  type="application/pdf" internalinstanceid="100">
+	   	   <!-- <button id="Closer">Close Dialog</button> -->
+	 </div>
 			    </div>
 			    </td>
 			   </tr>

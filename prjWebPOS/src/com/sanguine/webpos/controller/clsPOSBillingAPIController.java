@@ -94,7 +94,7 @@ public class clsPOSBillingAPIController
 			//String gAreaWisePricing = objPOSSetupUtility.funGetParameterValuePOSWise(clientCode, posCode, "gAreaWisePricing");
 			if (gAreaWisePricing.equalsIgnoreCase("N"))
 			{
-				sql_ItemDtl = "SELECT a.strItemCode,b.strItemName,a.strTextColor,a.strPriceMonday,a.strPriceTuesday," + " a.strPriceWednesday,a.strPriceThursday,a.strPriceFriday, " + " a.strPriceSaturday,a.strPriceSunday,a.tmeTimeFrom,a.strAMPMFrom,a.tmeTimeTo,a.strAMPMTo," + " a.strCostCenterCode,a.strHourlyPricing,a.strSubMenuHeadCode,a.dteFromDate,a.dteToDate,b.strStockInEnable ,a.strMenuCode ,b.strSubGroupCode,c.strGroupCode ,c.strSubGroupName,d.strGroupName" + " FROM tblmenuitempricingdtl a ,tblitemmaster b left outer join tblsubgrouphd c on b.strSubGroupCode=c.strSubGroupCode and b.strClientCode=c.strClientCode left outer join  tblgrouphd d  on c.strGroupCode= d.strGroupCode and c.strClientCode=d.strClientCode  " + " WHERE  a.strItemCode=b.strItemCode " + " and a.strAreaCode='" + gAreaCodeForTrans + "' " + " and (a.strPosCode='" + posCode + "' or a.strPosCode='All') " + " and date(dteFromDate)<='" + posDate + "' and date(dteToDate)>='" + posDate + "' and a.strClientCode='"+clientCode+"' " + " ORDER BY b.strItemName ASC";
+				sql_ItemDtl = "SELECT a.strItemCode,b.strItemName,a.strTextColor,a.strPriceMonday,a.strPriceTuesday," + " a.strPriceWednesday,a.strPriceThursday,a.strPriceFriday, " + " a.strPriceSaturday,a.strPriceSunday,a.tmeTimeFrom,a.strAMPMFrom,a.tmeTimeTo,a.strAMPMTo," + " a.strCostCenterCode,a.strHourlyPricing,a.strSubMenuHeadCode,a.dteFromDate,a.dteToDate,b.strStockInEnable ,a.strMenuCode ,b.strSubGroupCode,c.strGroupCode ,c.strSubGroupName,d.strGroupName" + " FROM tblmenuitempricingdtl a ,tblitemmaster b left outer join tblsubgrouphd c on b.strSubGroupCode=c.strSubGroupCode and b.strClientCode=c.strClientCode left outer join  tblgrouphd d  on c.strGroupCode= d.strGroupCode and c.strClientCode=d.strClientCode  " + " WHERE  a.strItemCode=b.strItemCode " + " and a.strAreaCode='" + gAreaCodeForTrans + "' " + " and (a.strPosCode='" + posCode + "' or a.strPosCode='All') " + " and date(dteFromDate)<='" + posDate + "' and date(dteToDate)>='" + posDate + "' and a.strClientCode=b.strClientCode and a.strClientCode='"+clientCode+"'  ORDER BY b.strItemName ASC";
 			}
 			else
 			{
@@ -103,7 +103,7 @@ public class clsPOSBillingAPIController
 
 				sql_ItemDtl = "SELECT a.strItemCode,b.strItemName,a.strTextColor,a.strPriceMonday,a.strPriceTuesday," + " a.strPriceWednesday,a.strPriceThursday,a.strPriceFriday, " + " a.strPriceSaturday,a.strPriceSunday,a.tmeTimeFrom,a.strAMPMFrom,a.tmeTimeTo,a.strAMPMTo," + " a.strCostCenterCode,a.strHourlyPricing,a.strSubMenuHeadCode,a.dteFromDate,a.dteToDate,b.strStockInEnable ,a.strMenuCode,b.strSubGroupCode,c.strGroupCode,c.strSubGroupName,d.strGroupName " + " FROM tblmenuitempricingdtl a ,tblitemmaster b left outer join tblsubgrouphd c on b.strSubGroupCode=c.strSubGroupCode " + " left outer join  tblgrouphd d  on c.strGroupCode= d.strGroupCode  " + " WHERE a.strAreaCode='" + gDirectAreaCode + "' " + "  and a.strItemCode=b.strItemCode "
 				// + "WHERE (a.strAreaCode='" + clsAreaCode + "') "
-						+ " and (a.strPosCode='" + posCode + "' or a.strPosCode='All') " + " and date(a.dteFromDate)<='" + posDate + "' and date(a.dteToDate)>='" + posDate + "' and a.strClientCode='"+clientCode+"' " + " ORDER BY b.strItemName ASC";
+						+ " and (a.strPosCode='" + posCode + "' or a.strPosCode='All') " + " and date(a.dteFromDate)<='" + posDate + "' and date(a.dteToDate)>='" + posDate + "' and a.strClientCode=b.strClientCode and a.strClientCode='"+clientCode+"' " + " ORDER BY b.strItemName ASC";
 			}
 
 			sqlBuilder.setLength(0);
@@ -1192,7 +1192,7 @@ public class clsPOSBillingAPIController
 				objBillTaxDtl.setStrTaxCode(objTaxCalculationDtls.getTaxCode());
 				objBillTaxDtl.setDblTaxableAmount(objTaxCalculationDtls.getTaxableAmount());
 				objBillTaxDtl.setDblTaxAmount(dblTaxAmt);
-				objBillTaxDtl.setStrDataPostFlag("");
+				objBillTaxDtl.setStrDataPostFlag("N");
 
 				listObjBillTaxBillDtls.add(objBillTaxDtl);
 
@@ -1220,8 +1220,8 @@ public class clsPOSBillingAPIController
 			objBillHd.setStrOperationType(rootBeanObjectForReference.getOperationType());//DineIn,HomeDelivery/TakeAway
 			objBillHd.setStrUserCreated(userCode);
 			objBillHd.setStrUserEdited(userCode);
-			objBillHd.setDteDateCreated(dateTime);
-			objBillHd.setDteDateEdited(dateTime);
+			objBillHd.setDteDateCreated(currentDateTime);
+			objBillHd.setDteDateEdited(currentDateTime);
 			objBillHd.setStrClientCode(clientCode);
 			objBillHd.setStrTableNo(rootBeanObjectForReference.getStrTableNo());
 			objBillHd.setStrWaiterNo(rootBeanObjectForReference.getStrWaiter());

@@ -82,6 +82,7 @@
 		function loadofBillSettlemntTab()
 		{
 			 funSetProperty();
+			
 			 funVisibleDeliveryCharges('block');
 			 funSetDate();
 			 document.getElementById("lblTip").style.display='none';
@@ -102,7 +103,7 @@
 		
 	function funSetProperty()
 	{
-		funsetSettlement();
+		 
 		  settlementName="other";
 		  cmsStopCredit="N";
 		  cmsMemberCreditLimit = 0;
@@ -136,16 +137,21 @@
         // txtPaidAmt.setFocusable(true);
          flgGiftVoucherOK=false;
         
+        
        
 	}
-	function funsetSettlement(){
+	function funSetBillingSettlement(){
 		  var objPOSSettelementOptions='${cashSettlement}';
 		  var arr=objPOSSettelementOptions.split(',');
 				 if(arr[1]=="Cash"){
 					 
 					funSettleOptionSelected(arr[0],arr[1],arr[2],arr[3],arr[4]);
 				 }
-			
+				 
+				 
+				 document.getElementById("btnOpenBillItems").style.display='none';
+				 $("#btnPrint").val("Settle");
+				 
 	}
 	function funNumpadButtonClicked(ObjNumPadBtn)
 	{
@@ -1505,15 +1511,15 @@
             var arrSettleOptions=new Array();
             arrSettleOptions=hmSettlemetnOptions.get(settleName);
             
-		    col1.innerHTML = "<input readonly=\"readonly\"  size=\"30px\" style=\"text-align:left;border:none;\" name=\"listSettlementDtlOnBill["+(rowCount)+"].strSettelmentDesc\" id=\"strSettelmentDesc."+(rowCount)+"\" value='"+arrSettleOptions[0]+"' />"; //settleName
+		    col1.innerHTML = "<input readonly=\"readonly\"  size=\"30px\" style=\"text-align:left;border:none;\" name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].strSettelmentDesc\" id=\"strSettelmentDesc."+(rowCountSettle)+"\" value='"+arrSettleOptions[0]+"' />"; //settleName
 		    /* col2.innerHTML = "<input readonly=\"readonly\"  style=\"text-align: right; color:blue; height:20px; border:none;\"  />"; */
-		    col3.innerHTML = "<input readonly=\"readonly\"  size=\"9.5px\" style=\"text-align: right; color:black; height:30px;border:none;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].dblPaidAmt\" id=\"dblSettlementAmt."+(rowCount)+"\" value='"+arrSettleOptions[3]+"'/>"; //paid Amt
+		    col3.innerHTML = "<input readonly=\"readonly\"  size=\"9.5px\" style=\"text-align: right; color:black; height:30px;border:none;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].dblPaidAmt\" id=\"dblPaidAmt."+(rowCountSettle)+"\" value='"+arrSettleOptions[3]+"'/>"; //paid Amt
 		    /*col4.innerHTML = "<input readonly=\"readonly\"  size=\"1px\"      style=\"text-align: right; color:blue; height:20px;\"  />";
 		    col5.innerHTML = "<input readonly=\"readonly\"  size=\"1px\"      style=\"text-align: right; color:blue; height:20px;\"  />"; */
-		    col5.innerHTML = "<input type=\"hidden\" style=\"text-align: right; color:blue; height:20px;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].strSettelmentCode\" id=\"strSettelmentCode."+(rowCount)+"\" value='"+arrSettleOptions[1]+"' />"; //code
-		    col6.innerHTML = "<input type=\"hidden\" style=\"text-align: right; color:blue; height:20px;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].strSettelmentType\" id=\"strSettelmentType."+(rowCount)+"\" value='"+arrSettleOptions[7]+"' />"; //type
-		    col7.innerHTML = "<input type=\"hidden\" style=\"text-align: right; color:blue; height:20px;\"   name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].dblPaidAmt\" id=\"dblSettlementAmt."+(rowCount)+"\" value="+arrSettleOptions[2]+" />"; //settl amt
-		    col8.innerHTML = "<input type=\"hidden\" style=\"text-align: right; color:blue; height:20px;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].dblRefundAmt\" id=\"dblRefundAmt."+(rowCount)+"\" value="+arrSettleOptions[5]+" />"; //refund amt
+		    col5.innerHTML = "<input type=\"hidden\" style=\"text-align: right; color:blue; height:20px;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].strSettelmentCode\" id=\"strSettelmentCode."+(rowCountSettle)+"\" value='"+arrSettleOptions[1]+"' />"; //code
+		    col6.innerHTML = "<input type=\"hidden\" style=\"text-align: right; color:blue; height:20px;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].strSettelmentType\" id=\"strSettelmentType."+(rowCountSettle)+"\" value='"+arrSettleOptions[7]+"' />"; //type
+		    col7.innerHTML = "<input type=\"hidden\" style=\"text-align: right; color:blue; height:20px;\"   name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].dblSettlementAmt\" id=\"dblSettlementAmt."+(rowCountSettle)+"\" value="+arrSettleOptions[2]+" />"; //settl amt
+		    col8.innerHTML = "<input type=\"hidden\" style=\"text-align: right; color:blue; height:20px;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].dblRefundAmt\" id=\"dblRefundAmt."+(rowCountSettle)+"\" value="+arrSettleOptions[5]+" />";   //refund amt
 		    
 		    document.getElementById("divRemarks").style.display='none';
 		    document.getElementById("divAmt").style.display='none';

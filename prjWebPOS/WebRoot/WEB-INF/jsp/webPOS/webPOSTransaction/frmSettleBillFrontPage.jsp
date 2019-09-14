@@ -323,7 +323,7 @@ var selectedRowIndex="";
 
 		 	    
 		 	funRefreshSettlementItemGrid();
-		 	
+		 	funSetBillingSettlement();
 		
 	 }
 

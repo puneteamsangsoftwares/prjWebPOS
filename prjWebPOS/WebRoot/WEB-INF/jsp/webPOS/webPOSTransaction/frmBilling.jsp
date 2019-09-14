@@ -1043,47 +1043,47 @@
 
 
 
-function funPrintKOT(costCenterCode,costCenterName,areaCode,tableNo,kotNo)
+/* function funPrintKOT(costCenterCode,costCenterName,areaCode,tableNo,kotNo)
 	{
 		 funOpenKOTPrint(costCenterCode,costCenterName,areaCode,tableNo,kotNo);
-	}
+	} */
 	
 
-function funOpenKOTPrint(costCenterCode,costCenterName,areaCode,tableNo,kotNo){
-	//alert(voucherNo);
-	var url=window.location.origin+getContextPath()+"/downloadPDF.html?fileName=kotSlip.pdf"+"&tableNo="+tableNo+"&kotNo="+kotNo+"&costCenterCode="+costCenterCode+"&costCenterName="+costCenterName+"&areaCode="+areaCode;
+function funOpenKOTPrint(areaCode,tableNo,kotNo){
+	
+	 funDineInButtonClicked();
+	
+	 var url=window.location.origin+getContextPath()+"/showKOTfile.html?tableNo="+tableNo+"&kotNo="+kotNo+"&areaCode="+areaCode;
 	//alert(url);
 	 $("#plugin").attr("src", url);
-	
-	$("#dialog").dialog({
-		 	autoOpen: true,
+	 $("#dialog").dialog({
+		 	autoOpen: false,
 	        maxWidth:600,
 	        maxHeight: 500,
 	        width: 600,
 	        height: 500,
-	        modal: true,
+	        modal: false,
 	        buttons: {
-	            "Print": function() {
-	                //$(this).dialog("close");
-	            	//window.print();  
- 					//$("#plugin").print();
+	            /* "Print": function() {
+	            	
  					printJS('plugin', 'html');
-	            },
+	            }, */
 	            Cancel: function() {
-	                $(this).dialog("close");
+	                $(this).dialog("destroy");
+	                $('#dialog').dialog('destroy');
 	            }
 	        },
 	        close: function() {
+	        	 $(this).dialog("destroy");
 	        }
-	});
-}
+		});
+	 
+	 $("#dialog").dialog('open');
+	}
 	//Done button for Make KOT
 	function funDoneBtnKOT(ncKot,gTakeAway,globalDebitCardNo,cmsMemCode,cmsMemName,reasonCode,homeDeliveryForTax,arrListHomeDelDetails,total)
     {
-		 
-		 
-		 
-		   var listItmeDtl=[];
+		    var listItmeDtl=[];
 			var tblBillItemDtl=document.getElementById('tblBillItemDtl');
 			var rowCount = tblBillItemDtl.rows.length;
 			for(var i=2;i<rowCount;i++)
@@ -1154,6 +1154,9 @@ function funOpenKOTPrint(costCenterCode,costCenterName,areaCode,tableNo,kotNo){
 				    singleObj['rate'] =itemAmt/itemQty;
 				    
 				    singleObj['tableNo'] =tableNo;
+				    if(PaxNo==''){
+				    	PaxNo=0;
+				    }
 				    singleObj['PaxNo'] =PaxNo;
 				    singleObj['kotNo'] =kotNo;
 				    singleObj['WaiterNo'] =WaiterNo;
@@ -1200,16 +1203,18 @@ function funOpenKOTPrint(costCenterCode,costCenterName,areaCode,tableNo,kotNo){
 		        	 
 		        	
 		        	/* Disable while in development */ 
-		        	funGetCostCenterListForKOT(gTableNo,$('#txtKOTNo').text());
+		        	//funGetCostCenterListForKOT(gTableNo,);
 		        	
-		        	 if(gMultiWaiterSelOnMakeKOT=="")
+		        	 
+		        	
+		        	if(gMultiWaiterSelOnMakeKOT=="")
 		    		{
 		    			gMultiWaiterSelOnMakeKOT="N";
 		    		}
 		    		
 		    		$("#txtItemSearch").keyup(function()
 		    		{
-		    					searchTable($(this).val());
+    					searchTable($(this).val());
 		    		});
 		    		 document.getElementById("divItemDtl").style.display='block';
 		    		 document.getElementById("divPLU").style.display='none';
@@ -1224,7 +1229,11 @@ function funOpenKOTPrint(costCenterCode,costCenterName,areaCode,tableNo,kotNo){
 		    		 
 					 $('#tblOldKOTItemDtl').empty();
 					 
-					 funDineInButtonClicked();
+					 funOpenKOTPrint(gAreaCode,gTableNo,$('#txtKOTNo').text());
+					 
+					
+					 
+					 
 	        	}
 	        	else
 	        	{	        		

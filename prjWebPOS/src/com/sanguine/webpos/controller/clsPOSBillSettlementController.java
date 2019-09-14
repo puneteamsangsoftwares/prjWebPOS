@@ -335,13 +335,13 @@ public class clsPOSBillSettlementController
 			{
 				isComplementarySettle = true;
 			}
-
+			String strSettlement="";
 			for (clsPOSSettlementDtlsOnBill objBillSettlementDtl : listObjBillSettlementDtl)
 			{
 				clsBillSettlementDtlModel objSettleModel = new clsBillSettlementDtlModel();
 
-				if(objBillSettlementDtl.getStrSettelmentCode()!=null && objBillSettlementDtl.getPaidAmt()>0){
-				
+				if(objBillSettlementDtl.getStrSettelmentCode()!=null && objBillSettlementDtl.getDblPaidAmt()>0){
+					strSettlement=objBillSettlementDtl.getStrSettelmentDesc();
 					objSettleModel.setStrSettlementCode(objBillSettlementDtl.getStrSettelmentCode());
 					if (isComplementarySettle)
 					{
@@ -392,13 +392,13 @@ public class clsPOSBillSettlementController
 
 			objBillHdModel.setStrSettelmentMode("");
 
-			if (listObjBillSettlementDtl != null && listObjBillSettlementDtl.size() == 0)
+			if (listBillSettlementDtlModel != null && listBillSettlementDtlModel.size() == 0)
 			{
 				objBillHdModel.setStrSettelmentMode("");
 			}
-			else if (listObjBillSettlementDtl != null && listObjBillSettlementDtl.size() == 1)
+			else if (listBillSettlementDtlModel != null && listBillSettlementDtlModel.size() == 1)
 			{
-				objBillHdModel.setStrSettelmentMode(listObjBillSettlementDtl.get(0).getStrSettelmentDesc());
+				objBillHdModel.setStrSettelmentMode(strSettlement);
 			}
 			else
 			{

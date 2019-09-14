@@ -70,7 +70,7 @@ public class clsPOSJasperGenerator
 	{
 		String billFormat = "";
 		sql.setLength(0);
-		sql.append("select a.strBillFormatType,a.strMultipleBillPrinting from tblsetup a ;");
+		sql.append("select a.strBillFormatType,a.strMultipleBillPrinting from tblsetup a where a.strClientCode='"+clientCode+"' and a.strPOSCode='"+posCode+"'; ");
 		List list = objBaseService.funGetList(sql, "sql");
 		if (list.size() > 0)
 		{

@@ -1307,7 +1307,8 @@ public class clsPOSBillSettlementControllerForMakeKOT
 			String gMenuItemSortingOn = objPOSSetupUtility.funGetParameterValuePOSWise(clientCode, posCode, "gMenuItemSortingOn");
 			if (gMenuItemSortingOn.equalsIgnoreCase("subgroupWise"))
 			{
-				sqlItems = "SELECT b.strItemCode,c.strItemName,b.strTextColor,b.strPriceMonday,b.strPriceTuesday," + "b.strPriceWednesday,b.strPriceThursday,b.strPriceFriday,  " + "b.strPriceSaturday,b.strPriceSunday,b.tmeTimeFrom,b.strAMPMFrom,b.tmeTimeTo,b.strAMPMTo," + "b.strCostCenterCode,b.strHourlyPricing,b.strSubMenuHeadCode,b.dteFromDate,b.dteToDate,c.strStockInEnable " + "FROM tblmenuhd a LEFT OUTER JOIN tblmenuitempricingdtl b ON a.strMenuCode = b.strMenuCode and  a.strClientCode= b.strClientCode " + "RIGHT OUTER JOIN tblitemmaster c ON b.strItemCode = c.strItemCode  and  c.strClientCode= b.strClientCode " + "WHERE ";
+				sqlItems = "SELECT b.strItemCode,c.strItemName,b.strTextColor,b.strPriceMonday,b.strPriceTuesday," + "b.strPriceWednesday,b.strPriceThursday,b.strPriceFriday,  " + "b.strPriceSaturday,b.strPriceSunday,b.tmeTimeFrom,b.strAMPMFrom,b.tmeTimeTo,b.strAMPMTo," + "b.strCostCenterCode,b.strHourlyPricing,b.strSubMenuHeadCode,b.dteFromDate,b.dteToDate,c.strStockInEnable " + "FROM tblmenuhd a LEFT OUTER JOIN tblmenuitempricingdtl b ON a.strMenuCode = b.strMenuCode and  a.strClientCode= b.strClientCode " + "RIGHT OUTER JOIN tblitemmaster c ON b.strItemCode = c.strItemCode  and  c.strClientCode= b.strClientCode " + "WHERE "
+						+ " a.strClientCode='"+clientCode+"' and  ";
 
 				if (flag.equalsIgnoreCase("Popular"))
 				{
@@ -1323,11 +1324,12 @@ public class clsPOSBillSettlementControllerForMakeKOT
 				{
 					sqlItems = sqlItems + " and (b.strAreaCode='" + gAreaCodeForTrans + "' or b.strAreaCode='" + clsAreaCode + "')";
 				}
-				sqlItems = sqlItems + " ORDER BY c.strItemName ASC";
+				sqlItems = sqlItems + "  ORDER BY c.strItemName ASC";
 			}
 			else if (gMenuItemSortingOn.equalsIgnoreCase("subMenuHeadWise"))
 			{
-				sqlItems = "SELECT b.strItemCode,c.strItemName,b.strTextColor,b.strPriceMonday,b.strPriceTuesday," + "b.strPriceWednesday,b.strPriceThursday,b.strPriceFriday,  " + "b.strPriceSaturday,b.strPriceSunday,b.tmeTimeFrom,b.strAMPMFrom,b.tmeTimeTo,b.strAMPMTo," + "b.strCostCenterCode,b.strHourlyPricing,b.strSubMenuHeadCode,b.dteFromDate,b.dteToDate,c.strStockInEnable " + "FROM tblmenuitempricingdtl b,tblitemmaster c " + "WHERE c.strClientCode= b.strClientCode and ";
+				sqlItems = "SELECT b.strItemCode,c.strItemName,b.strTextColor,b.strPriceMonday,b.strPriceTuesday," + "b.strPriceWednesday,b.strPriceThursday,b.strPriceFriday,  " + "b.strPriceSaturday,b.strPriceSunday,b.tmeTimeFrom,b.strAMPMFrom,b.tmeTimeTo,b.strAMPMTo," + "b.strCostCenterCode,b.strHourlyPricing,b.strSubMenuHeadCode,b.dteFromDate,b.dteToDate,c.strStockInEnable " + "FROM tblmenuitempricingdtl b,tblitemmaster c " + "WHERE c.strClientCode= b.strClientCode and "
+						+ " b.strClientCode='"+clientCode+"' and  ";
 
 				if (flag.equalsIgnoreCase("Popular"))
 				{
@@ -2256,7 +2258,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 
 
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/downloadPDF", method = RequestMethod.GET)
+	@RequestMapping(value = "/showKOTfile", method = RequestMethod.GET)
 	public void printPDFResource1(HttpServletResponse response, HttpServletRequest request)
 	{ //String tableNo,String kotNo,String costCenterCode,String costCenterName,String areaCode
 		//funCreateTempFolder();
@@ -2264,11 +2266,8 @@ public class clsPOSBillSettlementControllerForMakeKOT
 		String clientCode = request.getSession().getAttribute("gClientCode").toString();
 		String posCode = request.getSession().getAttribute("loginPOS").toString();
 		String userCode = request.getSession().getAttribute("gUserCode").toString();
-		String fileName = request.getParameter("fileName").toString();
 		String tableNo = request.getParameter("tableNo").toString();
 		String kotNo = request.getParameter("kotNo").toString();
-		String costCenterCode = request.getParameter("costCenterCode").toString();
-		String costCenterName = request.getParameter("costCenterName").toString();
 		String areaCode = request.getParameter("areaCode").toString();
 		String Reprint = "",NCKotYN = "N",labelOnKOT = "KOT";
 		
@@ -2280,8 +2279,8 @@ public class clsPOSBillSettlementControllerForMakeKOT
 			JasperPrint listJPrint=null;
 			for(clsPOSBillDtl objPOSBillDtl:listCost){
 
-				costCenterCode=objPOSBillDtl.getStrItemCode();
-				costCenterName=objPOSBillDtl.getStrItemName();
+				String costCenterCode=objPOSBillDtl.getStrItemCode();
+				String costCenterName=objPOSBillDtl.getStrItemName();
 				areaCode=objPOSBillDtl.getStrArea();
 				
 				String imagePath = servletContext.getRealPath("/WEB-INF/images/company_Logo.png");
