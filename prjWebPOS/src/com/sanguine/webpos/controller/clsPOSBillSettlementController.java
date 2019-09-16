@@ -409,7 +409,8 @@ public class clsPOSBillSettlementController
 
 			/* Save Bill HD */
 			objBaseServiceImpl.funSave(objBillHdModel);
-
+			objBillingAPI.funUpdateTableStatus(objBillHdModel.getStrTableNo(), "Normal",clientCode);
+			
 		}
 		catch (Exception e)
 		{

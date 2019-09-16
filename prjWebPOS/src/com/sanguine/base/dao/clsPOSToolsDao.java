@@ -7689,7 +7689,7 @@ public class clsPOSToolsDao{
 
 	            funTruncateAllTransactionData();
 
-	            boolean flag = funUpdateTableStatus();
+	            funUpdateTableStatus(clientCode);
 
 	            funSaveUserTruncationDtl(hmData);
 	           
@@ -7703,7 +7703,7 @@ public class clsPOSToolsDao{
 	            clsPOSBackupDatabase objDBBackup = new clsPOSBackupDatabase();
 	            objDBBackup.funTakeBackUpDB(clientCode);
 
-	            flag = funUpdateTableStatus();
+	            funUpdateTableStatus(clientCode);
 
 	            funSaveUserTruncationDtl(hmData);
 	            
@@ -9037,11 +9037,11 @@ private void funDeleteReservationData(String posCode, String fromDate, String to
     }
 }
 
-private boolean funUpdateTableStatus()
+public boolean funUpdateTableStatus(String clientCode)
 {
     try
     {
-        String updateTableStatus = "update tbltablemaster set strStatus='Normal' ";
+        String updateTableStatus = "update tbltablemaster set strStatus='Normal' where strClientCode='"+clientCode+"' ";
         int i = webPOSSessionFactory.getCurrentSession().createSQLQuery(updateTableStatus).executeUpdate();
 
     }

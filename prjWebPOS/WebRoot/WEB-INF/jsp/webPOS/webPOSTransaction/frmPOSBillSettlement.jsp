@@ -1485,6 +1485,7 @@
 			
 			var tblSettleItemDtl=document.getElementById('tblSettleItemTable');
 			var rowCount = tblSettleItemDtl.rows.length;
+			//totalItemRow is total item row count
 		    while((totalItemRow+1) < rowCount){
 		    	rowCount=rowCount-1;
 		    	tblSettleItemDtl.deleteRow(rowCount);
@@ -1495,6 +1496,12 @@
 				rowCount--;
 			} */
 		
+			$.each(hmSettlemetnOptions,function(i,val){
+				
+				alert(i);
+				alert(val);
+			});
+			
 			var insertRow = tblSettleItemDtl.insertRow(rowCount);
 			var col1=insertRow.insertCell(0);
 		    var col2=insertRow.insertCell(1);
