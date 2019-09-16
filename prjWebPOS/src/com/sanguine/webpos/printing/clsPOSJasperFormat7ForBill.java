@@ -21,6 +21,8 @@ import javax.print.attribute.standard.Copies;
 import javax.print.attribute.standard.MediaSizeName;
 import javax.print.attribute.standard.PrinterName;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.swing.JFrame;
 
 import net.sf.jasperreports.engine.JRExporter;
@@ -56,7 +58,7 @@ import com.sanguine.webpos.model.clsSetupModel_ID;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 
 @Controller
-public class clsPOSJasperFormat7ForBill implements clsPOSBillGenerationFormat
+public class clsPOSJasperFormat7ForBill
 {
 	@Autowired
 	intfBaseService objBaseService;
@@ -74,7 +76,7 @@ public class clsPOSJasperFormat7ForBill implements clsPOSBillGenerationFormat
 
 	private String strPrintOrderNoOnBillYN;
 
-	public void funGenerateBill(String strBillNo, String reprint, String transactionType, String strPosCode, String strBillDate, String strClientCode, String strServerBillPrinterName, boolean isOriginal)
+	public HttpServletResponse funGenerateBill(String strBillNo, String reprint, String transactionType, String strPosCode, String strBillDate, String strClientCode, String strServerBillPrinterName, boolean isOriginal,HttpServletResponse response)
 	{
 		HashMap hm = new HashMap();
 		List list = new ArrayList();
@@ -755,28 +757,27 @@ public class clsPOSJasperFormat7ForBill implements clsPOSBillGenerationFormat
 
 				JasperDesign jd = JRXmlLoader.load(servletContext.getResourceAsStream("/WEB-INF/reports/billFormat/rptBillFormat7JasperReport.jrxml"));
 				JasperReport jr = JasperCompileManager.compileReport(jd);
-				JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(listData);
-				final JasperPrint print = JasperFillManager.fillReport(jr, hm, beanCollectionDataSource);
-				JRViewer viewer = new JRViewer(print);
-				JFrame jf = new JFrame();
-				jf.getContentPane().add(viewer);
-				jf.validate();
-				new Thread()
-				{
-					@Override
-					public void run()
-					{
-						funPrintJasperExporterInThread(print);
-					}
-				}.start();
-
-			
-
+				final JasperPrint print = JasperFillManager.fillReport(jr, hm, new JRBeanCollectionDataSource(listData));
+				String filePath = System.getProperty("user.dir") + "/downloads/pdf/";
+				ServletOutputStream servletOutputStream = response.getOutputStream();
+				JRExporter exporter = new JRPdfExporter();
+				exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, print);
+				exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM,response.getOutputStream()); // your output goes here
+				
+				//exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT_LIST, mainJaperPrint);
+				exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, servletOutputStream);
+				exporter.setParameter(JRPdfExporterParameter.IGNORE_PAGE_MARGINS, Boolean.TRUE);
+				exporter.exportReport();
+				servletOutputStream.flush();
+				servletOutputStream.close();
+				response.setContentType("application/pdf");
+				response.addHeader("Content-Disposition", "attachment; filename=billprint.pdf" );
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
+		return response;
 	}
 
 	public void funPrintJasperExporterInThread(JasperPrint print)

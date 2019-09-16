@@ -2522,7 +2522,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 			}
 
 			sql.setLength(0);
-			sql.append("SELECT a.strItemName,d.strCostCenterCode,d.strPrimaryPrinterPort,d.strSecondaryPrinterPort,d.strCostCenterName,a.strNCKotYN, "
+			sql.append("SELECT a.strItemName,e.strCostCenterCode,IFNULL(d.strPrimaryPrinterPort,''),IFNULL(d.strSecondaryPrinterPort,''),e.strCostCenterName,a.strNCKotYN, "
 					+ " ifnull(e.strLabelOnKOT,'KOT') strLabelOnKOT ,sum(a.dblPrintQty) FROM tblitemrtemp a "
 					+ " LEFT OUTER JOIN tblmenuitempricingdtl c ON a.strItemCode = c.strItemCode and a.strClientCode=c.strClientCode "
 					+ " left outer join tblprintersetup d on c.strCostCenterCode=d.strCostCenterCode  and d.strClientCode=c.strClientCode "

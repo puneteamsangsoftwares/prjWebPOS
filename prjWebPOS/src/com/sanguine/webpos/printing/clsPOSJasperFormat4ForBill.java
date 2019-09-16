@@ -62,7 +62,7 @@ import com.sanguine.webpos.model.clsSetupModel_ID;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 
 @Controller
-public class clsPOSJasperFormat4ForBill implements clsPOSBillGenerationFormat
+public class clsPOSJasperFormat4ForBill
 {
 	@Autowired
 	intfBaseService objBaseService;
@@ -84,7 +84,7 @@ public class clsPOSJasperFormat4ForBill implements clsPOSBillGenerationFormat
 	
 	String strBillPrinterPort = "";
 
-	public void funGenerateBill(String strBillNo, String reprint, String transactionType, String strPosCode, String strBillDate, String strClientCode, String strServerBillPrinterName, boolean isOriginal)
+	public HttpServletResponse funGenerateBill(String strBillNo, String reprint, String transactionType, String strPosCode, String strBillDate, String strClientCode, String strServerBillPrinterName, boolean isOriginal,HttpServletResponse response)
 	{
 		HashMap hm = new HashMap();
 		List list = new ArrayList();
@@ -93,9 +93,7 @@ public class clsPOSJasperFormat4ForBill implements clsPOSBillGenerationFormat
 		// strBillDate.split(" ")[0];
 		try
 		{
-
 			final String gDecimalFormatString = objGlobalFunctions.funGetGlobalDecimalFormatString(strClientCode,strPosCode);
-
 			clsPOSPropertySetupBean objBean = new clsPOSPropertySetupBean();
 			clsSetupModel_ID ob = new clsSetupModel_ID(strClientCode, strPosCode);
 			clsSetupHdModel objSetupHdModel = new clsSetupHdModel();
@@ -772,42 +770,32 @@ public class clsPOSJasperFormat4ForBill implements clsPOSBillGenerationFormat
 			if (!objSetupParameter.get("gShowBill").toString().equals("Y"))
 			{
 				funGetPrinterDetails(strServerBillPrinterName, strPosCode);
-
 			}
-			// funGetPrinterDetails(strServerBillPrinterName,strPosCode);
-
 			JasperDesign jd = JRXmlLoader.load(servletContext.getResourceAsStream(("/WEB-INF/reports/billFormat/rptBillFormat4JasperReport.jrxml")));
 			JasperReport jr = JasperCompileManager.compileReport(jd);
-			List<JasperPrint> jprintlist = new ArrayList<JasperPrint>();
-
-			JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(listData);
-			final JasperPrint print = JasperFillManager.fillReport(jr, hm, beanCollectionDataSource);
-			jprintlist.add(print);
-			String extension = ".pdf";
-			if (!strDocType.equals("PDF"))
-			{
-				strDocType = "EXCEL";
-				extension = ".xls";
-			}
-
-			JRViewer viewer = new JRViewer(print);
-			JFrame jf = new JFrame();
-			jf.getContentPane().add(viewer);
-			jf.validate();
-			new Thread()
-			{
-				@Override
-				public void run()
-				{
-					funPrintJasperExporterInThread(print);
-				}
-			}.start();
-
+			JasperPrint print = JasperFillManager.fillReport(jr, hm, new JRBeanCollectionDataSource(listData));
+			String filePath = System.getProperty("user.dir") + "/downloads/pdf/";
+			ServletOutputStream servletOutputStream = response.getOutputStream();
+			
+			JRExporter exporter = new JRPdfExporter();
+			exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, print);
+			exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM,response.getOutputStream()); // your output goes here
+			
+			//exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT_LIST, mainJaperPrint);
+			exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, servletOutputStream);
+			exporter.setParameter(JRPdfExporterParameter.IGNORE_PAGE_MARGINS, Boolean.TRUE);
+			exporter.exportReport();
+			servletOutputStream.flush();
+			servletOutputStream.close();
+			response.setContentType("application/pdf");
+			response.addHeader("Content-Disposition", "attachment; filename=billprint.pdf" );
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
+		
+		return response;
 	}
 
 	public void funPrintJasperExporterInThread(JasperPrint print)

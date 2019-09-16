@@ -84,18 +84,18 @@ public class clsPOSJasperGenerator
 		switch (billFormat)
 		{
 			case "Jasper 1":
-				objJasper1.funGenerateBill(billNo, reprint, transactionType, posCode, strBillDate, clientCode, strBillPrinterPort, false);
+				response=objJasper1.funGenerateBill(billNo, reprint, transactionType, posCode, strBillDate, clientCode, strBillPrinterPort, false,response);
 				break;
 			case "Jasper 2":
-				objJasper2.funGenerateBill(billNo, reprint, transactionType, posCode, strBillDate, clientCode, strBillPrinterPort, false);
+				response=objJasper2.funGenerateBill(billNo, reprint, transactionType, posCode, strBillDate, clientCode, strBillPrinterPort, false,response);
 				break;
 	
 			case "Jasper 3":
-				objJasper3.funGenerateBill(billNo, reprint, transactionType, posCode, strBillDate, clientCode, strBillPrinterPort, false);
+				response=objJasper3.funGenerateBill(billNo, reprint, transactionType, posCode, strBillDate, clientCode, strBillPrinterPort, false,response);
 				break;
 	
 			case "Jasper 4":
-				objJasper4.funGenerateBill(billNo, reprint, transactionType, posCode, strBillDate, clientCode, strBillPrinterPort, false);
+				response=objJasper4.funGenerateBill(billNo, reprint, transactionType, posCode, strBillDate, clientCode, strBillPrinterPort, false,response);
 				break;
 	
 			case "Jasper 5":
@@ -103,16 +103,15 @@ public class clsPOSJasperGenerator
 				break;
 	
 			case "Jasper 6":
-	
-				objJasper6.funGenerateBill(billNo, reprint, transactionType, posCode, strBillDate, clientCode, strBillPrinterPort, false);
+				response=objJasper6.funGenerateBill(billNo, reprint, transactionType, posCode, strBillDate, clientCode, strBillPrinterPort, false,response);
 				break;
 	
 			case "Jasper 7":
-				objJasper7.funGenerateBill(billNo, reprint, transactionType, posCode, strBillDate, clientCode, strBillPrinterPort, false);
+				response=objJasper7.funGenerateBill(billNo, reprint, transactionType, posCode, strBillDate, clientCode, strBillPrinterPort, false,response);
 				break;
 	
 			case "Jasper 11":
-				objJasper11.funGenerateBill(billNo, reprint, transactionType, posCode, strBillDate, clientCode, strBillPrinterPort, false);
+				response=objJasper11.funGenerateBill(billNo, reprint, transactionType, posCode, strBillDate, clientCode, strBillPrinterPort, false,response);
 				break;
 		}
 		return response;	
