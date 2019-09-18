@@ -4073,7 +4073,7 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 													{
 												%>														
 														<c:if test="${itemCounter lt sizeOfTables}">																																		
-															<td style="padding: 5px;"><input type="button" id="${command.jsonArrForTableDtl[itemCounter].strTableNo}"  value="${command.jsonArrForTableDtl[itemCounter].strTableName}" style=" width: 100px; height: 100px; white-space: normal;border-radius: 40px;" class="btn btn-primary "  onclick="funTableNoClicked(this,${itemCounter})"  /></td>																																																			
+															<td style="padding: 5px;"><input type="button" id="${command.jsonArrForTableDtl[itemCounter].strTableNo}"  value="${command.jsonArrForTableDtl[itemCounter].strTableName}" style=" width: 100px; height: 50px; white-space: normal;border-radius: 40px;" class="btn btn-primary "  onclick="funTableNoClicked(this,${itemCounter})"  /></td>																																																			
 														<c:set var="itemCounter" value="${itemCounter +1}"></c:set>
 														</c:if>													
 												<%  }

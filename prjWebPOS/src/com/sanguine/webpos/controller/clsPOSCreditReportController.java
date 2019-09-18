@@ -33,7 +33,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.POSGlobal.controller.clsGlobalVarClass;
 import com.sanguine.base.service.clsSetupService;
 import com.sanguine.base.service.intfBaseService;
 import com.sanguine.controller.clsGlobalFunctions;
@@ -242,17 +241,19 @@ public class clsPOSCreditReportController
             String fromDate = hm.get("fromDate").toString();
             String toDate = hm.get("toDate").toString();
             
-            boolean isDayEndHappend = isDayEndHappened(toDate);
-    	    if (!isDayEndHappend)
-    	    {
-    	    	hm.put("isDayEndHappend", "DAY END NOT DONE.");
-    	    }
-            
             String posCode = hm.get("posCode").toString();
             String shiftNo = hm.get("shiftNo").toString();
             String posName = hm.get("posName").toString();
             String fromDateToDisplay = hm.get("fromDateToDisplay").toString();
     	    String toDateToDisplay = hm.get("toDateToDisplay").toString();
+    	    
+            boolean isDayEndHappend = isDayEndHappened(toDate,posCode);
+    	    if (!isDayEndHappend)
+    	    {
+    	    	hm.put("isDayEndHappend", "DAY END NOT DONE.");
+    	    }
+            
+           
             
     	    DateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
     	    Date date = new Date();
@@ -340,7 +341,7 @@ public class clsPOSCreditReportController
         return listOfCreditData;
     }
 	
-	public boolean isDayEndHappened(String toDate)
+	public boolean isDayEndHappened(String toDate,String posCode)
     {
 
 	boolean isDayEndHappend = false;
@@ -349,7 +350,7 @@ public class clsPOSCreditReportController
 	    StringBuilder sql = new StringBuilder("select a.strPOSCode,date(a.dtePOSDate),a.strDayEnd "
 		    + "from tbldayendprocess a "
 		    + "where a.strDayEnd='Y' "
-		    + "and a.strPOSCode='" + clsGlobalVarClass.gPOSCode + "' "
+		    + "and a.strPOSCode='" + posCode + "' "
 		    + "and date(a.dtePOSDate)='" + toDate + "' ");
 	   
 	    List listsql = objBaseService.funGetList(sql, "sql");

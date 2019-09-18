@@ -924,7 +924,7 @@ public class clsPOSBillSettlementControllerForDirectBiller
 			objBillDtl.setStrItemCode(itemCode);
 			objBillDtl.setStrItemName(itemName);
 			objBillDtl.setStrAdvBookingNo("");
-			objBillDtl.setDblRate(objDirectBillerItem.getRate());
+			objBillDtl.setDblRate(objDirectBillerItem.getAmount()/objDirectBillerItem.getQuantity());
 			objBillDtl.setDblItemQuantity(objDirectBillerItem.getQuantity());
 			objBillDtl.setDblAmount(objDirectBillerItem.getAmount());
 			objBillDtl.setDblTaxAmount(0);

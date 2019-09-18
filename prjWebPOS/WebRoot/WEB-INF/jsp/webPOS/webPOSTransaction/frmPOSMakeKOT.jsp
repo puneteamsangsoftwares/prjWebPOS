@@ -3113,19 +3113,19 @@ function funShowMenuHead()
 														<c:if test="${itemCounter lt sizeOfMenuItems}">	
 																
 															<c:if test="${command.jsonArrForTableDtl[itemCounter].strStatus eq 'Normal'}"> 		
-																<td><input type="button" id="${command.jsonArrForTableDtl[itemCounter].strTableNo}"  value="${command.jsonArrForTableDtl[itemCounter].strTableName}&#x00A;&#x00A;${command.jsonArrForTableDtl[itemCounter].intPaxNo}" style="width: 100px;height: 100px; "  onclick="funTableClicked(this,${itemCounter})" /></td>																				
+																<td><input type="button" id="${command.jsonArrForTableDtl[itemCounter].strTableNo}"  value="${command.jsonArrForTableDtl[itemCounter].strTableName}&#x00A;&#x00A;${command.jsonArrForTableDtl[itemCounter].intPaxNo}" style="width: 100px;height: 50px; "  onclick="funTableClicked(this,${itemCounter})" /></td>																				
 															</c:if>
 																 	
 															<c:if test="${command.jsonArrForTableDtl[itemCounter].strStatus eq 'Occupied'}">
-															 	<td><input type="button" id="${command.jsonArrForTableDtl[itemCounter].strTableNo}" value="${command.jsonArrForTableDtl[itemCounter].strTableName}&#13;&#10;${command.jsonArrForTableDtl[itemCounter].intPaxNo}" style="width: 100px;height: 100px; background: #ff0d0d;"  onclick="funTableClicked(this,${itemCounter})" /></td>																						 																											 		
+															 	<td><input type="button" id="${command.jsonArrForTableDtl[itemCounter].strTableNo}" value="${command.jsonArrForTableDtl[itemCounter].strTableName}&#13;&#10;${command.jsonArrForTableDtl[itemCounter].intPaxNo}" style="width: 100px;height: 50px; background: #ff0d0d;"  onclick="funTableClicked(this,${itemCounter})" /></td>																						 																											 		
 															</c:if> 
 																
 															<c:if test="${command.jsonArrForTableDtl[itemCounter].strStatus eq 'Billed'}">
-															 	<td><input type="button" id="${command.jsonArrForTableDtl[itemCounter].strTableNo}" value="${command.jsonArrForTableDtl[itemCounter].strTableName}&#13;&#10;${command.jsonArrForTableDtl[itemCounter].intPaxNo}" style="width: 100px;height: 100px; background: #0080ff;"  onclick="funTableClicked(this,${itemCounter})" /></td>																						 																											 		
+															 	<td><input type="button" id="${command.jsonArrForTableDtl[itemCounter].strTableNo}" value="${command.jsonArrForTableDtl[itemCounter].strTableName}&#13;&#10;${command.jsonArrForTableDtl[itemCounter].intPaxNo}" style="width: 100px;height: 50px; background: #0080ff;"  onclick="funTableClicked(this,${itemCounter})" /></td>																						 																											 		
 															</c:if>
 																
 															<c:if test="${command.jsonArrForTableDtl[itemCounter].strStatus eq 'Reserve'}">
-															 	<td><input type="button" id="${command.jsonArrForTableDtl[itemCounter].strTableNo}" value="${command.jsonArrForTableDtl[itemCounter].strTableName}&#x00A;&#x00A;${command.jsonArrForTableDtl[itemCounter].intPaxNo}" style="width: 100px;height: 100px; background: #00ff40;"  onclick="funTableClicked(this,${itemCounter})" /></td>																						 																											 		
+															 	<td><input type="button" id="${command.jsonArrForTableDtl[itemCounter].strTableNo}" value="${command.jsonArrForTableDtl[itemCounter].strTableName}&#x00A;&#x00A;${command.jsonArrForTableDtl[itemCounter].intPaxNo}" style="width: 100px;height: 50px; background: #00ff40;"  onclick="funTableClicked(this,${itemCounter})" /></td>																						 																											 		
 															</c:if>
 																
 															<c:set var="itemCounter" value="${itemCounter +1}"></c:set>

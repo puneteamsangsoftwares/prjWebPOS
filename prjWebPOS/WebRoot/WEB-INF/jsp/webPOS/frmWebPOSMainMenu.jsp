@@ -120,12 +120,12 @@
 	   
 	}
 
-	var items_per_page = 24;
+	var items_per_page = 50;
 	function getOptionsFromForm()
 	{
 	    var opt = {callback: pageselectCallback};
 		opt['items_per_page'] = items_per_page;
-		opt['num_display_entries'] = 24;
+		opt['num_display_entries'] = 50;
 		opt['num_edge_entries'] = 3;
 		opt['prev_text'] = "Prev";
 		opt['next_text'] = "Next";
@@ -151,8 +151,8 @@
 		    	
 		    	var formTitle=formSerachlist[i].strShortName;
 		    	
-		    	newcontent += "<a href="+requestMapping+" class=\"button  btnLightBlue hvr-shutter-in-vertical hvr-grow\" style=\"margin: 2%;    width: 11%;\"><img id=\"Desktop\" src="+srcImg+" title='"+formTitle+"' style=\"width: 60.5%; margin-top: 15%; margin-left: 25px;\" >";
-		    	newcontent += "<br><div style=\"width:80%; margin-left:5%; margin-right:10%; \"><font style=\"color: #000000b5; font-size: 14px;\" class=\"dont-break-out\">"+formTitle+"</font></div> </a>";
+		    	newcontent += "<a href="+requestMapping+" class=\"button  btnLightBlue hvr-shutter-in-vertical hvr-grow\" style=\"margin: 1%;  width: 113px; height: 123px; \"><img id=\"Desktop\" src="+srcImg+" title='"+formTitle+"' style=\"width: 60.5%; margin-top: 15%; margin-left: 20%;\" >";
+		    	newcontent += "<div style=\"width:80%; margin-left:5%; margin-right:10%; height:40%;  \"><font style=\"color: #000000b5; font-size: 13px;\" class=\"dont-break-out\">"+formTitle+"</font></div> </a>";
 		    } 
 		    	
 		   } 
@@ -170,7 +170,7 @@
 	<body >
 	
 	
-	<div id="Searchresult" style="width: 90%; overflow-x: hidden; overflow-y: hidden;  margin-left:  auto;"></div> 
+	<div id="Searchresult" style="width: 90%;height: 100%; overflow-x: hidden; overflow-y: hidden;  margin-left:  auto;"></div> 
 					<hr style="border: 1px solid #ccc; margin-top: 0rem; ">
 		<div id="Pagination" class="pagination" style="width: 55%; margin-left: auto;" >
 			

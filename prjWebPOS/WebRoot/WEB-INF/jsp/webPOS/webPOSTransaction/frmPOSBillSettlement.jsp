@@ -12,6 +12,31 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
 <title>BILL SETTLEMENT</title>
 
+<style type="text/css">
+
+#divOrder::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,0.6);
+    background-color: #CCCCCC;
+}
+
+#divOrder::-webkit-scrollbar
+{
+    width: 05px;
+    background-color: #F5F5F5;
+}
+
+#divOrder::-webkit-scrollbar-thumb
+{
+    background-color: #FFF;
+    background-image: -webkit-linear-gradient(90deg,
+                                              rgba(0, 0, 0, 1) 0%,
+                                              rgba(0, 0, 0, 1) 25%,
+                                              transparent 100%,
+                                              rgba(0, 0, 0, 1) 75%,
+                                              transparent)
+}
+</style>
 	<script type="text/javascript" src="<spring:url value="/resources/js/jquery.min.js"/>"></script>
 	<script type="text/javascript" src="<spring:url value="/resources/js/bootstrap.min.js.js"/>"></script>
 
@@ -1496,38 +1521,44 @@
 				rowCount--;
 			} */
 		
-			$.each(hmSettlemetnOptions,function(i,val){
+			var arrSettleOptions=new Array();
+			var iterator1=hmSettlemetnOptions.values();
+			for(var k =0;k<hmSettlemetnOptions.size;k++){
 				
-				alert(i);
-				alert(val);
-			});
+				var arrSettleOptions=iterator1.next().value;
+				
+				var insertRow = tblSettleItemDtl.insertRow(rowCount);
+				var col1=insertRow.insertCell(0);
+			    var col2=insertRow.insertCell(1);
+			    var col3=insertRow.insertCell(2);
+			    var col4=insertRow.insertCell(3);
+			    var col5=insertRow.insertCell(4); 
+			    var col6=insertRow.insertCell(5);
+			    var col7=insertRow.insertCell(6);
+			    var col8=insertRow.insertCell(7);
+			    
+			    var remark="";//  $('#txtRemark').val();
+	            var dteExpiryDate=  "";//$('#dteExpiryDate').val();
+	            
+	           
+	            //arrSettleOptions=hmSettlemetnOptions.get(settleName);
+	            
+			    col1.innerHTML = "<input readonly=\"readonly\"  size=\"30px\" style=\"text-align:left;border:none;\" name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].strSettelmentDesc\" id=\"strSettelmentDesc."+(rowCountSettle)+"\" value='"+arrSettleOptions[0]+"' />"; //settleName
+			    /* col2.innerHTML = "<input readonly=\"readonly\"  style=\"text-align: right; color:blue; height:20px; border:none;\"  />"; */
+			    col3.innerHTML = "<input readonly=\"readonly\"  size=\"9.5px\" style=\"text-align: right; color:black; height:30px;border:none;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].dblPaidAmt\" id=\"dblPaidAmt."+(rowCountSettle)+"\" value='"+arrSettleOptions[3]+"'/>"; //paid Amt
+			    /*col4.innerHTML = "<input readonly=\"readonly\"  size=\"1px\"      style=\"text-align: right; color:blue; height:20px;\"  />";
+			    col5.innerHTML = "<input readonly=\"readonly\"  size=\"1px\"      style=\"text-align: right; color:blue; height:20px;\"  />"; */
+			    col5.innerHTML = "<input type=\"hidden\" style=\"text-align: right; color:blue; height:20px;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].strSettelmentCode\" id=\"strSettelmentCode."+(rowCountSettle)+"\" value='"+arrSettleOptions[1]+"' />"; //code
+			    col6.innerHTML = "<input type=\"hidden\" style=\"text-align: right; color:blue; height:20px;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].strSettelmentType\" id=\"strSettelmentType."+(rowCountSettle)+"\" value='"+arrSettleOptions[7]+"' />"; //type
+			    col7.innerHTML = "<input type=\"hidden\" style=\"text-align: right; color:blue; height:20px;\"   name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].dblSettlementAmt\" id=\"dblSettlementAmt."+(rowCountSettle)+"\" value="+arrSettleOptions[2]+" />"; //settl amt
+			    col8.innerHTML = "<input type=\"hidden\" style=\"text-align: right; color:blue; height:20px;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].dblRefundAmt\" id=\"dblRefundAmt."+(rowCountSettle)+"\" value="+arrSettleOptions[5]+" />";   //refund amt
+			    
+				
+			}
 			
-			var insertRow = tblSettleItemDtl.insertRow(rowCount);
-			var col1=insertRow.insertCell(0);
-		    var col2=insertRow.insertCell(1);
-		    var col3=insertRow.insertCell(2);
-		    var col4=insertRow.insertCell(3);
-		    var col5=insertRow.insertCell(4); 
-		    var col6=insertRow.insertCell(5);
-		    var col7=insertRow.insertCell(6);
-		    var col8=insertRow.insertCell(7);
-		    
-		    var remark="";//  $('#txtRemark').val();
-            var dteExpiryDate=  "";//$('#dteExpiryDate').val();
-            
-            var arrSettleOptions=new Array();
-            arrSettleOptions=hmSettlemetnOptions.get(settleName);
-            
-		    col1.innerHTML = "<input readonly=\"readonly\"  size=\"30px\" style=\"text-align:left;border:none;\" name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].strSettelmentDesc\" id=\"strSettelmentDesc."+(rowCountSettle)+"\" value='"+arrSettleOptions[0]+"' />"; //settleName
-		    /* col2.innerHTML = "<input readonly=\"readonly\"  style=\"text-align: right; color:blue; height:20px; border:none;\"  />"; */
-		    col3.innerHTML = "<input readonly=\"readonly\"  size=\"9.5px\" style=\"text-align: right; color:black; height:30px;border:none;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].dblPaidAmt\" id=\"dblPaidAmt."+(rowCountSettle)+"\" value='"+arrSettleOptions[3]+"'/>"; //paid Amt
-		    /*col4.innerHTML = "<input readonly=\"readonly\"  size=\"1px\"      style=\"text-align: right; color:blue; height:20px;\"  />";
-		    col5.innerHTML = "<input readonly=\"readonly\"  size=\"1px\"      style=\"text-align: right; color:blue; height:20px;\"  />"; */
-		    col5.innerHTML = "<input type=\"hidden\" style=\"text-align: right; color:blue; height:20px;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].strSettelmentCode\" id=\"strSettelmentCode."+(rowCountSettle)+"\" value='"+arrSettleOptions[1]+"' />"; //code
-		    col6.innerHTML = "<input type=\"hidden\" style=\"text-align: right; color:blue; height:20px;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].strSettelmentType\" id=\"strSettelmentType."+(rowCountSettle)+"\" value='"+arrSettleOptions[7]+"' />"; //type
-		    col7.innerHTML = "<input type=\"hidden\" style=\"text-align: right; color:blue; height:20px;\"   name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].dblSettlementAmt\" id=\"dblSettlementAmt."+(rowCountSettle)+"\" value="+arrSettleOptions[2]+" />"; //settl amt
-		    col8.innerHTML = "<input type=\"hidden\" style=\"text-align: right; color:blue; height:20px;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].dblRefundAmt\" id=\"dblRefundAmt."+(rowCountSettle)+"\" value="+arrSettleOptions[5]+" />";   //refund amt
-		    
+				//alert(iterator1.next().value);
+			
+			
 		    document.getElementById("divRemarks").style.display='none';
 		    document.getElementById("divAmt").style.display='none';
 		    
@@ -2365,12 +2396,12 @@ function funDiscOkClicked()
 <div id="divMain" class="formoid-default-skyblue" >
 <table>
 	<tr>
-		<td><br></td>
-		<td></td>
+		<!-- <td><br></td>
+		<td></td> -->
 	</tr>
 	<tr>
 		<td>
-			<div id="divOrder" style=" border: 1px solid #ccc; height: 650px;  overflow-x: auto; width: 100%;">
+			<div id="divOrder" style=" border: 2px solid #ccc; height: 650px;  overflow-x: auto; width: 100%;">
 				<label id="billNoForDisplay" style=" display: inline-block;width: 175px;text-align: left;" >Bill No: ${billNo}</label>
 				<label id="tableNameForDisplay" style=" display: inline-block;width: 175px;text-align: left;">Table No: ${gTableName}</label>
 				<br/>
@@ -2401,7 +2432,7 @@ function funDiscOkClicked()
 			</div>
 		</td>
 		<td>
-		  <div id="divSettlement" style=" border: 1px solid #ccc; height: 650px;  overflow-x: auto; overflow-y: auto; width: 690px; margin:2px; margin-right:30px;">
+		  <div id="divSettlement" style="border: 2px solid #ccc;height: 650px;overflow-x: auto;overflow-y: auto;width: 90%;margin: 3px;margin-right: 30px;">
 				<div id="divSettlementButtons" style="text-align: right; height:50px; overflow-x: auto; overflow-y: auto; width: 100%;">
 					 	<table id="tblSettlementButtons"  cellpadding="0" cellspacing="2"  >				 																																	
 								<tr>							
@@ -2505,7 +2536,7 @@ function funDiscOkClicked()
 			 		</table>
 				</div>
 				<!-- div remarks -->
-				<div id="divRemarks" style=" border: 0px solid #ccc;height:90px;width:220px; position:absolute; top:440px; left:550px;" >
+				<div id="divRemarks" style=" border: 0px solid #ccc;height:90px;width:220px; position:absolute; top:440px; padding-left: 7px;" >
 					<table style="width:95%;height:88px;font-size:11px; font-weight: bold;">
 						<tr>
 					 		<td><label id="lblRemark" style=" display: inline-block;width: 100%;text-align: left;">Remark </label></td>

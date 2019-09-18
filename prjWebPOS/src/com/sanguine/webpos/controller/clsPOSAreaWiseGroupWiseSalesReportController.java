@@ -27,8 +27,6 @@ import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -36,15 +34,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.POSReport.controller.clsGroupSubGroupItemBean;
 import com.sanguine.base.service.clsSetupService;
 import com.sanguine.base.service.intfBaseService;
 import com.sanguine.controller.clsGlobalFunctions;
-import com.sanguine.webpos.bean.clsPOSBillItemDtlBean;
 import com.sanguine.webpos.bean.clsPOSGroupSubGroupWiseSales;
-import com.sanguine.webpos.bean.clsPOSVoidBillDtl;
 import com.sanguine.webpos.bean.clsPOSReportBean;
-import com.sanguine.webpos.comparator.clsPOSBillComparator;
 import com.sanguine.webpos.comparator.clsPOSGroupSubGroupWiseSalesComparator;
 import com.sanguine.webpos.model.clsAreaMasterModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
@@ -237,7 +231,6 @@ public class clsPOSAreaWiseGroupWiseSalesReportController
 	    StringBuilder sbSqlQFile = new StringBuilder();
 	    StringBuilder sbSqlFilters = new StringBuilder();
 	    Map mapPOSDtlForGroupSubGroup = new LinkedHashMap<>();
-	    List<clsGroupSubGroupItemBean> listOfGroupWiseSales = new ArrayList<clsGroupSubGroupItemBean>();
 	    List<clsPOSGroupSubGroupWiseSales> listOfGroupWise = new ArrayList<clsPOSGroupSubGroupWiseSales>();
 	    sbSqlLive.setLength(0);
 	    sbSqlQFile.setLength(0);

@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.POSGlobal.view.frmOkPopUp;
 import com.sanguine.service.clsGlobalFunctionsService;
 import com.sanguine.webpos.util.clsPOSUtilityController;
 
@@ -325,8 +324,8 @@ public class clsStructureUpdater
 		}
 		catch (Exception s)
 		{
-			frmOkPopUp objOkPopUp = new frmOkPopUp(null, "Error In Strucure Update", "Error!!", 2);
-			objOkPopUp.setVisible(true);
+			//frmOkPopUp objOkPopUp = new frmOkPopUp(null, "Error In Strucure Update", "Error!!", 2);
+			//objOkPopUp.setVisible(true);
 
 			s.printStackTrace();
 		}
