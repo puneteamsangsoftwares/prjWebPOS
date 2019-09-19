@@ -2077,6 +2077,10 @@ public class clsSearchFormController
 					sbSql=new StringBuilder("select a.strCustomerCode,a.strCustomerName from tblcustomermaster a where a.strClientCode='"+strClientCode+"' and a.strCustomerName like '%"+searchBy+"%' ");
 					break;
 					
+				case "areaName" :
+					sbSql=new StringBuilder("select a.strAreaCode,a.strAreaName from tblareamaster a where a.strClientCode='"+strClientCode+"' and a.strAreaName like '%"+searchBy+"%' ");
+					break;
+					
 			}
 			
 			List list = objBaseService.funGetList(sbSql, "sql");

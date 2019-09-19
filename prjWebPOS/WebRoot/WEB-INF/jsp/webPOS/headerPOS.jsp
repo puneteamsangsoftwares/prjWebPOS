@@ -28,7 +28,6 @@
 <%-- 		<script type="text/javascript" src="<spring:url value="/resources/js/angular.min.js"/>"></script> --%>
 <script type="text/javascript" src="<spring:url value="/resources/js/angular.min.js"/>"></script>
 <script type="text/javascript" src="<spring:url value="/resources/js/angular-cookies.js"/>"></script>
-
 	
 	
 	<%-- End Default Script For Page  --%>
