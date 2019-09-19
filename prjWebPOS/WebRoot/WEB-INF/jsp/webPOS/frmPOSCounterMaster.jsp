@@ -12,7 +12,7 @@
 <link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/jquery-confirm.min.css"/>"/>
 <script type="text/javascript" src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
 <script type="text/javascript" src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
-		
+<script type="text/javascript" src="<spring:url value="/resources/js/jquery.autocomplete.min.js"/>"></script>		
 <style>
 .ui-autocomplete {
 	max-height: 200px;
@@ -30,10 +30,11 @@
 }
 </style>
 <script type="text/javascript">
+var mapCounterCodeName=new Map();
 	$(document).ready(function() {
 
 		 $('input#txtCounterCode').mlKeyboard({layout: 'en_US'});
-		  $('input#txtCounterName').mlKeyboard({layout: 'en_US'});
+		 // $('input#txtCounterName').mlKeyboard({layout: 'en_US'});
 		 
 		  $("form").submit(function(event){
 			  if($("#txtCounterName").val().trim()=="")
@@ -47,6 +48,33 @@
 				  return flg;
 			  }
 			});
+		  
+		  $('#txtCounterName').autocomplete({
+	 			serviceUrl: '${pageContext.request.contextPath}/getAutoSearchData.html?formname=counterName',  
+	 			paramName: "searchBy",
+	 			delimiter: ",",
+	 		    transformResult: function(response) {
+	 		    	mapCounterCodeName=new Map();
+	 			return {
+	 			  //must convert json to javascript object before process
+	 			  suggestions: $.map($.parseJSON(response), function(item) {
+	 			       // strValue  strCode
+	 			        mapCounterCodeName.set(item.strValue,item.strCode);
+	 			      	return { value: item.strValue, data: item.strCode };
+	 			   })
+	 			            
+	 			 };
+	 			        
+	 	        }
+	 		 });
+			 
+				$('#txtCounterName').blur(function() {
+						var code=mapCounterCodeName.get($('#txtCounterName').val());
+						if(code!='' && code!=null){
+							funSetData(code);
+						}
+						
+				});
 		});
 	
 </script>

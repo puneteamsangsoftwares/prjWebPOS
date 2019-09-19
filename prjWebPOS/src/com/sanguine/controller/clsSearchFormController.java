@@ -2081,6 +2081,24 @@ public class clsSearchFormController
 					sbSql=new StringBuilder("select a.strAreaCode,a.strAreaName from tblareamaster a where a.strClientCode='"+strClientCode+"' and a.strAreaName like '%"+searchBy+"%' ");
 					break;
 					
+				case "costCenterName" :
+					sbSql=new StringBuilder("select a.strCostCenterCode,a.strCostCenterName from tblcostcentermaster a where a.strClientCode='"+strClientCode+"' and a.strCostCenterName like '%"+searchBy+"%' ");
+					break;
+					
+				case "counterName" :
+					sbSql=new StringBuilder("select a.strCounterCode,a.strCounterName from tblcounterhd a where a.strClientCode='"+strClientCode+"' and a.strCounterName like '%"+searchBy+"%' ");
+					break;
+				
+				case "customerAreaName" :
+					sbSql=new StringBuilder("select a.strBuildingCode,a.strBuildingName from tblbuildingmaster a where a.strClientCode='"+strClientCode+"' and a.strBuildingName like '%"+searchBy+"%' ");
+					break;
+				case "customerTypeName" :
+					sbSql=new StringBuilder("select a.strCustTypeCode,a.strCustType from tblcustomertypemaster a where a.strClientCode='"+strClientCode+"' and a.strCustType like '%"+searchBy+"%' ");
+					break;
+					
+				case "deliveryBoyName" :
+					sbSql=new StringBuilder("select a.strDPCode,a.strDPName from tbldeliverypersonmaster a where a.strClientCode='"+strClientCode+"' and a.strDPName like '%"+searchBy+"%' ");
+					break;	
 			}
 			
 			List list = objBaseService.funGetList(sbSql, "sql");

@@ -1149,7 +1149,7 @@ public class clsPOSPropertySetupController
 			objModel.setIntNoOfDelDaysForUrgentOrder(objBean.getIntNoOfDelDaysForUrgentOrder());
 			objModel.setIntPinCode(objBean.getStrPinCode());
 			//objModel.setIntTelephoneNo(objBean.getStrTelephone());
-			objBean.setStrTelephone(objBean.getStrTelephone());
+			objModel.setStrTelephoneNo(objGlobal.funIfNull(objBean.getStrTelephone()," ", objBean.getStrTelephone()));
 			objModel.setStrAddressLine1(objBean.getStrAddrLine1());
 			objModel.setStrAddressLine2(objBean.getStrAddrLine2());
 			objModel.setStrAddressLine3(objBean.getStrAddrLine3());

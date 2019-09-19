@@ -12,7 +12,10 @@
 <link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/jquery-confirm.min.css"/>"/>
 <script type="text/javascript" src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
 <script type="text/javascript" src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
+<script type="text/javascript" src="<spring:url value="/resources/js/jquery.autocomplete.min.js"/>"></script>
 <script type="text/javascript">
+
+    var mapDPCodeName=new Map();
 	$(document).ready(function() 
 		{
 		 $('input#txtTableNo').mlKeyboard({layout: 'en_US'});
@@ -49,6 +52,33 @@
 		    var rowCount = table.rows.length;
 		  if(rowCount<0)
 		  		document.getElementById("btnRemove").disabled = true;  
+		  
+		  $('#txtDPName').autocomplete({
+	 			serviceUrl: '${pageContext.request.contextPath}/getAutoSearchData.html?formname=deliveryBoyName',  
+	 			paramName: "searchBy",
+	 			delimiter: ",",
+	 		    transformResult: function(response) {
+	 		    	mapDPCodeName=new Map();
+	 			return {
+	 			  //must convert json to javascript object before process
+	 			  suggestions: $.map($.parseJSON(response), function(item) {
+	 			       // strValue  strCode
+	 			        mapDPCodeName.set(item.strValue,item.strCode);
+	 			      	return { value: item.strValue, data: item.strCode };
+	 			   })
+	 			            
+	 			 };
+	 			        
+	 	        }
+	 		 });
+			 
+				$('#txtDPName').blur(function() {
+						var code=mapDPCodeName.get($('#txtDPName').val());
+						if(code!='' && code!=null){
+							funSetData(code);
+						}
+						
+				});
 		  
 	});
 	

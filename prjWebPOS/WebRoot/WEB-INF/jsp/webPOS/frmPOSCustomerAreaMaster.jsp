@@ -11,12 +11,13 @@
 <link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/jquery-confirm.min.css"/>"/>
 <script type="text/javascript" src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
 <script type="text/javascript" src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
-		
+<script type="text/javascript" src="<spring:url value="/resources/js/jquery.autocomplete.min.js"/>"></script>		
 <script type="text/javascript">
 var fieldName="";
+var mapCustAreaCodeName=new Map();
  	 $(document).ready(function () {
 	      $('input#txtCustomerAreaCode').mlKeyboard({layout: 'en_US'});
-		  $('input#txtCustomerAreaName').mlKeyboard({layout: 'en_US'});
+		 // $('input#txtCustomerAreaName').mlKeyboard({layout: 'en_US'});
 		  $('input#txtcustomerAddress').mlKeyboard({layout: 'en_US'});
 		  $('input#txtcustomerHomeDeliveryCharges').mlKeyboard({layout: 'en_US'});
 		  $('input#txtcustomerZone').mlKeyboard({layout: 'en_US'});
@@ -26,7 +27,37 @@ var fieldName="";
 		  $('input#txtAmount1').mlKeyboard({layout: 'en_US'});
 		  $('input#txtDeliveryCharges').mlKeyboard({layout: 'en_US'});
 		  
-		}); 
+		  
+		  $('#txtCustomerAreaName').autocomplete({
+	 			serviceUrl: '${pageContext.request.contextPath}/getAutoSearchData.html?formname=customerAreaName',  
+	 			paramName: "searchBy",
+	 			delimiter: ",",
+	 		    transformResult: function(response) {
+	 		    	mapCustAreaCodeName=new Map();
+	 			return {
+	 			  //must convert json to javascript object before process
+	 			  suggestions: $.map($.parseJSON(response), function(item) {
+	 			       // strValue  strCode
+	 			        mapCustAreaCodeName.set(item.strValue,item.strCode);
+	 			      	return { value: item.strValue, data: item.strCode };
+	 			   })
+	 			            
+	 			 };
+	 			        
+	 	        }
+	 		 });
+			 
+				$('#txtCustomerAreaName').blur(function() {
+						var code=mapCustAreaCodeName.get($('#txtCustomerAreaName').val());
+						if(code!='' && code!=null){
+							funSetDataArea(code);
+						}
+						
+				});
+			}); 
+	 	 
+		  
+		
  	    	 
 		
 		//Initialize tab Index or which tab is Active

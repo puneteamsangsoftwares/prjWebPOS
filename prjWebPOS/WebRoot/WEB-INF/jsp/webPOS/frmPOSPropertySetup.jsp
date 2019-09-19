@@ -114,13 +114,24 @@ ul.tab li.a:FOCUS {
 			var activeTab = $(this).attr("data-state");
 			$("#" + activeTab).fadeIn();
 		});
-	
+	    
 		 $("#cmbPosCode").change(function() 
 		   {
 			    funSetSaveUpdateBtn();
 			 
 		   });
-		 
+		/*  $("form").submit(function(event){
+			 if($("#cmbRFIDSetup").val() == 'Y')
+				{
+				if($("#txtRFIDServerName").val().trim() == '')
+					{
+					alert("Please Enter the Server Name");
+					return ;
+					}
+				 }
+			
+		 }); */
+			
 
 		/* $("#cmbConsolidatedKOTPrinterPort").change(function()
 		   {
@@ -131,7 +142,7 @@ ul.tab li.a:FOCUS {
 		  
 		   $("#cmbSelectedType").change(function() {
 			   funFillSelectedTypeDtlTable();
-		        	});
+		         });
 			//$('#clientImage').attr('src', getContextPath()+"/resources/images/company_Logo.png");
 		   //$('#clientImage').attr('src', getContextPath()+"/resources/images/imgClientImage.jpg");
 	});
@@ -162,12 +173,15 @@ ul.tab li.a:FOCUS {
 			dataType : "json",
 			async : true,
 			success : function(response) {
-				if (response.count == 0)
+				if (response.count == 0){
 					$('#submitBtn').val("Save");
-
-				else
+				}
+				else{
 					$('#submitBtn').val("Update");
 
+					
+				 
+				}
 				funFillPOSWiseData();
 			},
 			error : function(jqXHR, exception) {
@@ -195,8 +209,7 @@ ul.tab li.a:FOCUS {
 		var searchurl = getContextPath()
 				+ "/loadPOSWisePropertySetupData.html?posCode="
 				+ $("#cmbPosCode").val();
-		$
-				.ajax({
+		$.ajax({
 					type : "GET",
 					url : searchurl,
 					dataType : "json",
@@ -740,6 +753,8 @@ ul.tab li.a:FOCUS {
 
 						$("#cmbCardIntfType").val(response.strCardIntfType);
 						$("#cmbRFIDSetup").val(response.strRFIDSetup);
+						
+					
 						$("#txtRFIDServerName").val(response.strRFIDServerName);
 						$("#txtRFIDUserName").val(response.strRFIDUserName);
 						$("#txtRFIDPassword").val(response.strRFIDPassword);
@@ -2561,6 +2576,8 @@ ul.tab li.a:FOCUS {
 			}
 		});
 	}
+ 
+
 
 	function funCheckEmailSendingStatus() {
 		if ($("#txtSenderEmailId").val() == '') {
@@ -6148,7 +6165,7 @@ ul.tab li.a:FOCUS {
 		<br />
 		<br />
 		<p align="center">
-			<input id="submitBtn" type="submit" value="UPDATE" />
+			<input id="submitBtn" type="submit" value="UPDATE"  />
 
 
 		</p>

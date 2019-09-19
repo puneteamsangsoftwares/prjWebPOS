@@ -12,6 +12,7 @@
 <link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/jquery-confirm.min.css"/>"/>
 <script type="text/javascript" src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
 <script type="text/javascript" src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
+<script type="text/javascript" src="<spring:url value="/resources/js/jquery.autocomplete.min.js"/>"></script>
 <style>
 .ui-autocomplete {
 	max-height: 200px;
@@ -32,10 +33,10 @@
 
 <script type="text/javascript">
 var fieldName="";
+var mapCostCenterCodeName=new Map();
  $(document).ready(function () {
 	  $('input#txtCostCenterCode').mlKeyboard({layout: 'en_US'});
-	  $('input#txtCostCenterName').mlKeyboard({layout: 'en_US'});
-		
+	//  $('input#txtCostCenterName').mlKeyboard({layout: 'en_US'});
 	  $('input#txtLabelOnKOT').mlKeyboard({layout: 'en_US'});
 	  
 	  $("form").submit(function(event){
@@ -57,8 +58,36 @@ var fieldName="";
 
 		$("#cmbPrinterPort").val("");
 	    $("#cmbSecondaryPrinterPort").val("");
+	    
+		$('#txtCostCenterName').autocomplete({
+ 			serviceUrl: '${pageContext.request.contextPath}/getAutoSearchData.html?formname=costCenterName',  
+ 			paramName: "searchBy",
+ 			delimiter: ",",
+ 		    transformResult: function(response) {
+ 		    	mapCostCenterCodeName=new Map();
+ 			return {
+ 			  //must convert json to javascript object before process
+ 			  suggestions: $.map($.parseJSON(response), function(item) {
+ 			       // strValue  strCode
+ 			        mapCostCenterCodeName.set(item.strValue,item.strCode);
+ 			      	return { value: item.strValue, data: item.strCode };
+ 			   })
+ 			            
+ 			 };
+ 			        
+ 	        }
+ 		 });
+		 
+			$('#txtCostCenterName').blur(function() {
+					var code=mapCostCenterCodeName.get($('#txtCostCenterName').val());
+					if(code!='' && code!=null){
+						funSetData(code);	
+					}
+					
+			});
 	
-	});  
+	}); 
+ 
  
 
  var field;
