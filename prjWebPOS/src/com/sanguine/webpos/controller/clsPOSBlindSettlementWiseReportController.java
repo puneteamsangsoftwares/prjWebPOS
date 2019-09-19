@@ -22,6 +22,7 @@ import com.sanguine.base.service.clsSetupService;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSBillItemDtlBean;
 import com.sanguine.webpos.bean.clsPOSReportBean;
+import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.model.clsShiftMasterModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.sevice.clsPOSReportService;
@@ -89,8 +90,11 @@ public class clsPOSBlindSettlementWiseReportController {
 			}
 			model.put("posList",poslist);
 			
-			 Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-			 model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
+			clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+			String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+			model.put("gEnableShiftYN", gEnableShiftYN);
+			 //Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+			 //model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
 			//Shift 
 
 				List shiftList = new ArrayList();
@@ -143,8 +147,13 @@ public class clsPOSBlindSettlementWiseReportController {
 				String strUserCode = hm.get("userName").toString();
 				String strPOSCode = posCode;
 				String strShiftNo = "ALL";
-				Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-				if(objSetupParameter.get("gEnableShiftYN").toString().equals("Y"))
+				
+				clsSetupHdModel objSetupHdModel=null;
+				objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+				String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+				
+				//Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+				if(gEnableShiftYN.equals("Y"))
 				{
 					strShiftNo=objBean.getStrShiftCode();
 				}
@@ -157,7 +166,7 @@ public class clsPOSBlindSettlementWiseReportController {
 	            DecimalFormat decimalFormat2Dec = new DecimalFormat("0.00");
 	            DecimalFormat decimalFormat0Dec = new DecimalFormat("0");
 
-	            List listSqlLiveData = objReportService.funProcessLiveBlindSettlementWiseReport(posCode,fromDate,toDate,"live",objSetupParameter.get("gEnableShiftYN").toString(),strShiftNo);
+	            List listSqlLiveData = objReportService.funProcessLiveBlindSettlementWiseReport(posCode,fromDate,toDate,"live",gEnableShiftYN,strShiftNo);
 
 	            List<clsPOSBillItemDtlBean> listOfSettlementData = new ArrayList<clsPOSBillItemDtlBean>();
 	            double grossRevenue = 0;
@@ -178,7 +187,7 @@ public class clsPOSBlindSettlementWiseReportController {
 	            	}
 	            }
 
-	            List listSqlQFileData = objReportService.funProcessLiveBlindSettlementWiseReport(posCode,fromDate,toDate,"qFile",objSetupParameter.get("gEnableShiftYN").toString(),strShiftNo);
+	            List listSqlQFileData = objReportService.funProcessLiveBlindSettlementWiseReport(posCode,fromDate,toDate,"qFile",gEnableShiftYN,strShiftNo);
 	            if(listSqlQFileData.size()>0)
 	            {
 	            	for(int i=0;i<listSqlQFileData.size();i++)

@@ -37,6 +37,7 @@ import com.sanguine.base.service.intfBaseService;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSBillDtl;
 import com.sanguine.webpos.bean.clsPOSReportBean;
+import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.model.clsShiftMasterModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.sevice.clsPOSReportService;
@@ -99,12 +100,14 @@ public class clsDebtorAsOnReportController
 		sgNameList.add("ALL");
 
 		model.put("sgNameList", sgNameList);
-
+		clsSetupHdModel objSetupHdModel=null;
+		objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+		
 		String posDate = request.getSession().getAttribute("gPOSDate").toString();
 		request.setAttribute("POSDate", posDate);
 
-		Map objSetupParameter = objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-		model.put("gEnableShiftYN", objSetupParameter.get("gEnableShiftYN").toString());
+		//Map objSetupParameter = objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+		model.put("gEnableShiftYN", objSetupHdModel.getStrShiftWiseDayEndYN());
 		// Shift
 		List<String> shiftList = new ArrayList();
 		shiftList.add("All");
@@ -169,9 +172,11 @@ public class clsDebtorAsOnReportController
 			StringBuilder sbSqlQFile = new StringBuilder();
 
 			List<clsPOSBillDtl> listOfCreditBillReport = new ArrayList<clsPOSBillDtl>();
-
-			Map objSetupParameter = objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-			if (objSetupParameter.get("gEnableShiftYN").toString().equals("Y"))
+			clsSetupHdModel objSetupHdModel=null;
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+			
+			//Map objSetupParameter = objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+			if (objSetupHdModel.getStrShiftWiseDayEndYN().equals("Y"))
 			{
 				shiftNo = objBean.getStrShiftCode();
 			}

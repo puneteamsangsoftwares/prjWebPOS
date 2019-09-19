@@ -40,6 +40,7 @@ import com.sanguine.base.service.intfBaseService;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSBillItemDtlBean;
 import com.sanguine.webpos.bean.clsPOSReportBean;
+import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.model.clsShiftMasterModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.sevice.clsPOSReportService;
@@ -100,9 +101,13 @@ public class clsPOSItemWiseReportController
 			}
 		}
 		model.put("posList", poslist);
+		clsSetupHdModel objSetupHdModel=null;
+		objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+		String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+		model.put("gEnableShiftYN", gEnableShiftYN);
 		
-		Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-		model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
+		//Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+		//model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
 		//Shift 
 				List shiftList = new ArrayList();
 				shiftList.add("All");
@@ -141,6 +146,7 @@ public class clsPOSItemWiseReportController
 		{
 			String reportName = servletContext.getRealPath("/WEB-INF/reports/webpos/rptitemWiseSalesReport.jrxml");
 			StringBuilder sql = new StringBuilder();
+			String POSCode = req.getSession().getAttribute("loginPOS").toString();
 			String type = objBean.getStrDocType();
 			String strClientCode=req.getSession().getAttribute("gClientCode").toString();
 			Map hm = objGlobalFunctions.funGetCommonHashMapForJasperReport(objBean, req, resp);
@@ -167,13 +173,16 @@ public class clsPOSItemWiseReportController
 			//String shiftNo = "ALL";
 			
 			String shiftNo = "ALL",enableShiftYN="N";	
-			Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, posCode, "gEnableShiftYN");
+			clsSetupHdModel objSetupHdModel=null;
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+			
+			//Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, posCode, "gEnableShiftYN");
 			if (!strPOSName.equalsIgnoreCase("ALL"))
 			{
-				if(objSetupParameter.get("gEnableShiftYN").toString().equals("Y"))
+				if(objSetupHdModel.getStrShiftWiseDayEndYN().equals("Y"))
 				{
 					shiftNo=objBean.getStrShiftCode();
-					enableShiftYN=objSetupParameter.get("gEnableShiftYN").toString();
+					enableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
 				}
 			}
 			hm.remove("shiftNo");

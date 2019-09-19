@@ -22,6 +22,7 @@ import com.sanguine.base.service.clsSetupService;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSBillItemDtlBean;
 import com.sanguine.webpos.bean.clsPOSReportBean;
+import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.model.clsShiftMasterModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.sevice.clsPOSReportService;
@@ -89,9 +90,14 @@ public class clsPOSConslidatedDiscountReportController {
 				}
 			}
 			model.put("posList",poslist);
-
-			 Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-			 model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
+            
+			clsSetupHdModel objSetupHdModel=null;
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+			String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+			model.put("gEnableShiftYN", gEnableShiftYN);
+			
+			// Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+			 //model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
 			//Shift 
 
 				List shiftList = new ArrayList();
@@ -145,8 +151,12 @@ public class clsPOSConslidatedDiscountReportController {
 				String strUserCode = hm.get("userName").toString();
 				String strPOSCode = posCode;
 				String strShiftNo = "ALL";
-				Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-				if(objSetupParameter.get("gEnableShiftYN").toString().equals("Y"))
+				clsSetupHdModel objSetupHdModel=null;
+				objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+				String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+				
+				//Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+				if(gEnableShiftYN.toString().equals("Y"))
 				{
 					strShiftNo=objBean.getStrShiftCode();
 				}
@@ -159,7 +169,7 @@ public class clsPOSConslidatedDiscountReportController {
 	            DecimalFormat decimalFormat2Dec = new DecimalFormat("0.00");
 	            DecimalFormat decimalFormat0Dec = new DecimalFormat("0");
 
-	            hm = objReportService.funConsolisdatedDiscountWiseReport(posCode,fromDate,toDate,objSetupParameter.get("gEnableShiftYN").toString(),strShiftNo,reportType,hm);
+	            hm = objReportService.funConsolisdatedDiscountWiseReport(posCode,fromDate,toDate,gEnableShiftYN,strShiftNo,reportType,hm);
 	            
 	            
 	            

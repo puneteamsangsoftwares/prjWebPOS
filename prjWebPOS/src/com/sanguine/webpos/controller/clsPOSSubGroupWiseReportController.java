@@ -24,6 +24,7 @@ import com.sanguine.base.service.clsSetupService;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSGroupSubGroupItemBean;
 import com.sanguine.webpos.bean.clsPOSReportBean;
+import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.model.clsShiftMasterModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.sevice.clsPOSReportService;
@@ -89,8 +90,12 @@ public class clsPOSSubGroupWiseReportController {
 		}
 		model.put("posList",poslist);
 		
-		Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-		model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
+		clsSetupHdModel objSetupHdModel=null;
+		objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+		String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+		model.put("gEnableShiftYN", gEnableShiftYN);
+		//Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+		//model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
 		
 		List shiftList = new ArrayList();
 		shiftList.add("All");
@@ -151,15 +156,19 @@ public class clsPOSSubGroupWiseReportController {
 			
 			DecimalFormat decimalFormat2Decimal = new DecimalFormat("0.00");
             DecimalFormat decimalFormat = new DecimalFormat("0");
-            Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+            clsSetupHdModel objSetupHdModel=null;
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+			String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+			
+           // Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
             String strShiftNo = "1";
-            if(objSetupParameter.get("gEnableShiftYN").toString().equals("Y"))
+            if(gEnableShiftYN.equals("Y"))
 			{
             	strShiftNo=objBean.getStrShiftCode();
 			}
             List<clsPOSGroupSubGroupItemBean> listOfGroupSubGroupWiseSales = new ArrayList<clsPOSGroupSubGroupItemBean>();
 
-            listOfGroupSubGroupWiseSales = objReportService.funProcessSubGroupWiseReport(posCode,fromDate,toDate,strUserCode,strShiftNo,objSetupParameter.get("gEnableShiftYN").toString());
+            listOfGroupSubGroupWiseSales = objReportService.funProcessSubGroupWiseReport(posCode,fromDate,toDate,strUserCode,strShiftNo,gEnableShiftYN);
             
             JasperDesign jd = JRXmlLoader.load(reportName);
 			JasperReport jr = JasperCompileManager.compileReport(jd);

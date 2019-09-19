@@ -83,7 +83,7 @@ public class clsSetupHdModel extends clsBaseModel implements Serializable
 	private String strCountry;
 
 	@Column(name = "intTelephoneNo")
-	private long intTelephoneNo;
+	private String  strTelephoneNo;
 
 	@Column(name = "dteStartDate")
 	private String dteStartDate;
@@ -1008,7 +1008,7 @@ public class clsSetupHdModel extends clsBaseModel implements Serializable
 		this.strCountry = (String) setDefaultValue(strCountry, " ");
 	}
 
-	public long getIntTelephoneNo()
+/*	public long getIntTelephoneNo()
 	{
 		return intTelephoneNo;
 	}
@@ -1016,7 +1016,7 @@ public class clsSetupHdModel extends clsBaseModel implements Serializable
 	public void setIntTelephoneNo(long intTelephoneNo)
 	{
 		this.intTelephoneNo = (Long) setDefaultValue(intTelephoneNo, "0");
-	}
+	}*/
 
 	public String getDteStartDate()
 	{
@@ -3309,6 +3309,16 @@ public class clsSetupHdModel extends clsBaseModel implements Serializable
 	public void setStrDBBackupMailReceiver(String strDBBackupMailReceiver)
 	{
 		this.strDBBackupMailReceiver = strDBBackupMailReceiver;
+	}
+
+	public String getStrTelephoneNo()
+	{
+		return strTelephoneNo;
+	}
+
+	public void setStrTelephoneNo(String strTelephoneNo)
+	{
+		this.strTelephoneNo = strTelephoneNo;
 	}
 
 }

@@ -22,6 +22,7 @@ import com.sanguine.base.service.clsSetupService;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSBillDtl;
 import com.sanguine.webpos.bean.clsPOSReportBean;
+import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.model.clsShiftMasterModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.sevice.clsPOSReportService;
@@ -89,9 +90,12 @@ public class clsPOSWaiterWiseIncentivesReportController
 			}
 		}
 		model.put("posList", poslist);
-
-		Map objSetupParameter = objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-		model.put("gEnableShiftYN", objSetupParameter.get("gEnableShiftYN").toString());
+		clsSetupHdModel objSetupHdModel=null;
+		objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+		String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+		model.put("gEnableShiftYN", gEnableShiftYN);
+		//Map objSetupParameter = objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+		//model.put("gEnableShiftYN", objSetupParameter.get("gEnableShiftYN").toString());
 
 		List shiftList = new ArrayList();
 		shiftList.add("All");
@@ -162,14 +166,18 @@ public class clsPOSWaiterWiseIncentivesReportController
 			String strUserCode = hm.get("userName").toString();
 			String strPOSCode = posCode;
 			String strShiftNo = "ALL", enableShiftYN = "N";
-			Map objSetupParameter = objSetupService.funGetParameterValuePOSWise(strClientCode, posCode, "gEnableShiftYN");
+			clsSetupHdModel objSetupHdModel=null;
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+			
+		
+			//Map objSetupParameter = objSetupService.funGetParameterValuePOSWise(strClientCode, posCode, "gEnableShiftYN");
 			if (!strPOSName.equalsIgnoreCase("ALL"))
 			{
 
-				if (objSetupParameter.get("gEnableShiftYN").toString().equals("Y"))
+				if (objSetupHdModel.getStrShiftWiseDayEndYN().equals("Y"))
 				{
 					strShiftNo = objBean.getStrShiftCode();
-					enableShiftYN = objSetupParameter.get("gEnableShiftYN").toString();
+					enableShiftYN =objSetupHdModel.getStrShiftWiseDayEndYN();
 
 				}
 			}

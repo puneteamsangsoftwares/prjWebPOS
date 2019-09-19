@@ -26,7 +26,7 @@ public class clsPOSPropertySetupBean
 
 	private String strCountry;
 
-	private long strTelephone;
+	private String strTelephone;
 
 	private String strEmail;
 
@@ -642,7 +642,7 @@ public class clsPOSPropertySetupBean
 		this.strCountry = strCountry;
 	}
 
-	public long getStrTelephone()
+	/*public long getStrTelephone()
 	{
 		return strTelephone;
 	}
@@ -650,7 +650,7 @@ public class clsPOSPropertySetupBean
 	public void setStrTelephone(long strTelephone)
 	{
 		this.strTelephone = strTelephone;
-	}
+	}*/
 
 	public String getStrEmail()
 	{
@@ -3133,6 +3133,16 @@ public class clsPOSPropertySetupBean
 	public void setStrDBBackupReceiverEmailId(String strDBBackupReceiverEmailId)
 	{
 		this.strDBBackupReceiverEmailId = strDBBackupReceiverEmailId;
+	}
+
+	public String getStrTelephone()
+	{
+		return strTelephone;
+	}
+
+	public void setStrTelephone(String strTelephone)
+	{
+		this.strTelephone = strTelephone;
 	}
 
 	

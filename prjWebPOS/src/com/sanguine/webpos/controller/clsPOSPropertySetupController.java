@@ -228,7 +228,8 @@ public class clsPOSPropertySetupController
 					objBean.setStrCity(objSetupHdModel.getStrCityName());
 					objBean.setStrState(objSetupHdModel.getStrState());
 					objBean.setStrCountry(objSetupHdModel.getStrCountry());
-					objBean.setStrTelephone((long) objSetupHdModel.getIntTelephoneNo());
+					objBean.setStrTelephone(objSetupHdModel.getStrTelephoneNo());
+					//objBean.setStrTelephone((long) objSetupHdModel.getIntTelephoneNo());
 					objBean.setStrNatureOfBussness(objSetupHdModel.getStrNatureOfBusinnes());
 					objBean.setChkMultiBillPrint(objSetupHdModel.getStrMultipleBillPrinting());
 					objBean.setChkEnableKOT(objSetupHdModel.getStrEnableKOT());
@@ -607,7 +608,8 @@ public class clsPOSPropertySetupController
 			objBean.setStrCity(objSetupHdModel.getStrCityName());
 			objBean.setStrState(objSetupHdModel.getStrState());
 			objBean.setStrCountry(objSetupHdModel.getStrCountry());
-			objBean.setStrTelephone((long) objSetupHdModel.getIntTelephoneNo());
+			objBean.setStrTelephone(objSetupHdModel.getStrTelephoneNo());
+			//objBean.setStrTelephone((long) objSetupHdModel.getIntTelephoneNo());
 			objBean.setStrNatureOfBussness(objSetupHdModel.getStrNatureOfBusinnes());
 			objBean.setChkMultiBillPrint(objSetupHdModel.getStrMultipleBillPrinting());
 			objBean.setChkEnableKOT(objSetupHdModel.getStrEnableKOT());
@@ -1146,7 +1148,8 @@ public class clsPOSPropertySetupController
 			objModel.setIntNoOfDelDaysForAdvOrder(objBean.getIntNoOfDelDaysForAdvOrder());
 			objModel.setIntNoOfDelDaysForUrgentOrder(objBean.getIntNoOfDelDaysForUrgentOrder());
 			objModel.setIntPinCode(objBean.getStrPinCode());
-			objModel.setIntTelephoneNo(objBean.getStrTelephone());
+			//objModel.setIntTelephoneNo(objBean.getStrTelephone());
+			objBean.setStrTelephone(objBean.getStrTelephone());
 			objModel.setStrAddressLine1(objBean.getStrAddrLine1());
 			objModel.setStrAddressLine2(objBean.getStrAddrLine2());
 			objModel.setStrAddressLine3(objBean.getStrAddrLine3());
@@ -1717,8 +1720,8 @@ public class clsPOSPropertySetupController
 								hmData.put("strCityName", objSetupHdModel.getStrCityName());
 								hmData.put("strState", objSetupHdModel.getStrState());
 								hmData.put("strCountry", objSetupHdModel.getStrCountry());
-								hmData.put("intTelephoneNo", objSetupHdModel.getIntTelephoneNo());
-								hmData.put("gMobileNoForSMS", objSetupHdModel.getIntTelephoneNo());
+								hmData.put("intTelephoneNo", objSetupHdModel.getStrTelephoneNo());
+								//hmData.put("gMobileNoForSMS", objSetupHdModel.getIntTelephoneNo());
 								hmData.put("dteStartDate", objSetupHdModel.getDteStartDate());
 								hmData.put("dteEndDate", objSetupHdModel.getDteEndDate());
 								hmData.put("gEndTime", objSetupHdModel.getDteEndDate());

@@ -32,6 +32,7 @@ import com.sanguine.webpos.bean.clsPOSOperatorDtl;
 import com.sanguine.webpos.bean.clsPOSReportBean;
 import com.sanguine.webpos.comparator.clsPOSOperatorComparator;
 import com.sanguine.webpos.model.clsSettlementMasterModel;
+import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.model.clsShiftMasterModel;
 import com.sanguine.webpos.model.clsUserHdModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
@@ -129,8 +130,12 @@ public class clsPOSOperatorWiseReportController {
 		 }
 		 model.put("settlementList",SettlementMap);
 		
-		 Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-			model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
+		    clsSetupHdModel objSetupHdModel=null;
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+			String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+			model.put("gEnableShiftYN", gEnableShiftYN);
+		 //Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+			//model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
 			
 			List shiftList = new ArrayList();
 			shiftList.add("All");
@@ -203,8 +208,12 @@ public class clsPOSOperatorWiseReportController {
 			String strUserCode = hm.get("userName").toString();
 			String strPOSCode = posCode;
 			String strShiftNo = "ALL";
-			Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-			if(objSetupParameter.get("gEnableShiftYN").toString().equals("Y"))
+			clsSetupHdModel objSetupHdModel=null;
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+			String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+			
+			//Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+			if(gEnableShiftYN.equals("Y"))
 			{
 				strShiftNo=objBean.getStrShiftCode();
 			}
@@ -218,7 +227,7 @@ public class clsPOSOperatorWiseReportController {
             double totalNetRevenue = 0.00;
             List listSettlementWiseBills = new ArrayList();
             //for Live
-            listSettlementWiseBills = objReportService.funProcessLiveDataForOperatorWiseReport(posCode,fromDate,toDate,userCode,strShiftNo,settleCode,objSetupParameter.get("gEnableShiftYN").toString());
+            listSettlementWiseBills = objReportService.funProcessLiveDataForOperatorWiseReport(posCode,fromDate,toDate,userCode,strShiftNo,settleCode,gEnableShiftYN);
             if(listSettlementWiseBills.size()>0)
             {
             	for(int i=0;i<listSettlementWiseBills.size();i++)
@@ -270,7 +279,7 @@ public class clsPOSOperatorWiseReportController {
             
 
             //For Q
-            listSettlementWiseBills = objReportService.funProcessQFileDataForOperatorWiseReport(posCode,fromDate,toDate,userCode,strShiftNo,settleCode,objSetupParameter.get("gEnableShiftYN").toString());
+            listSettlementWiseBills = objReportService.funProcessQFileDataForOperatorWiseReport(posCode,fromDate,toDate,userCode,strShiftNo,settleCode,gEnableShiftYN);
             if(listSettlementWiseBills.size()>0)
             {
             	for(int i=0;i<listSettlementWiseBills.size();i++)

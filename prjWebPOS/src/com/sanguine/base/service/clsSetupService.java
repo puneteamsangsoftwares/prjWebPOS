@@ -16,10 +16,10 @@ public class clsSetupService
 
 	
 
-	public JSONObject funGetParameterValuePOSWise(String clientCode, String posCode, String parameterName)
+	/*public JSONObject funGetParameterValuePOSWise(String clientCode, String posCode, String parameterName)
 	{
 		return objSetupDao.funGetParameterValuePOSWise(clientCode,posCode,parameterName);
-	}
+	}*/
 	
 	public JSONObject funGetAllParameterValuesPOSWise(String clientCode, String posCode)
 	{

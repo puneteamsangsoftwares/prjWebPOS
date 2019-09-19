@@ -7,14 +7,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.POSLicence.controller.clsClientDetails;
 import com.POSLicence.controller.clsEncryptDecryptClientCode;
 import com.sanguine.base.service.clsSetupService;
+import com.sanguine.webpos.model.clsSetupHdModel;
+import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.util.clsPOSBackupDatabase;
 import com.sanguine.webpos.util.clsPOSSendMail;
 
@@ -30,7 +34,8 @@ public class clsPOSToolsDao{
 	private SessionFactory webPOSSessionFactory;
 	@Autowired
 	private clsSetupService objSetupService;
-	
+	@Autowired
+	clsPOSMasterService objMasterService;
 	@Autowired
 	clsPOSSendMail objSendMail;
 
@@ -60,9 +65,11 @@ public class clsPOSToolsDao{
 				}
 	        } 	
 		
-	        
-	        Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gClientName"); 
-			String clientName = objSetupParameter.get("gClientName").toString();
+	        clsSetupHdModel objSetupHdModel=null;
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,posCode);
+			String clientName=objSetupHdModel.getStrClientName();
+	        //Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gClientName"); 
+			//String clientName = objSetupParameter.get("gClientName").toString();
 			hmRet=objSendMail.funSendDBBackupAndErrorLogFolder(backupPath,clientCode,clientName,posCode,posName,userCode,posDate);
 			System.out.println("");
 		}
@@ -7136,39 +7143,41 @@ public class clsPOSToolsDao{
         try
         {
             String billNote = "";
-            Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gUseVatAndServiceTaxFromPos"); 
+            clsSetupHdModel objSetupHdModel=null;
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,posCode);
+            //Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gUseVatAndServiceTaxFromPos"); 
             
-            if (objSetupParameter.get("gUseVatAndServiceTaxFromPos").equals("Y"))
+            if (objSetupHdModel.getStrVatAndServiceTaxFromPos().equals("Y"))
             {
-            	objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gPrintVatNoPOS");
-                if (objSetupParameter.get("gPrintVatNoPOS").toString().equals("Y"))
+            	//objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gPrintVatNoPOS");
+                if (objSetupHdModel.getStrPrintVatNo().equals("Y"))
                 {
-                	objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gPOSVatNo");
-                    billNote += "  Vat No. : " + objSetupParameter.get("gPOSVatNo").toString();
+                	//objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gPOSVatNo");
+                    billNote += "  Vat No. : " + objSetupHdModel.getStrPrintVatNo();
                     billNote += "\n";
                 }
-                objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gPrintServiceTaxNoPOS");
-                if (objSetupParameter.get("gPrintServiceTaxNoPOS").toString().equals("Y"))
+                //objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gPrintServiceTaxNoPOS");
+                if (objSetupHdModel.getStrPrintServiceTaxNo().equals("Y"))
                 {
-                	objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gPOSServiceTaxNo");
-                    billNote += "  Service Tax No. : " + objSetupParameter.get("gPOSServiceTaxNo").toString();
+                	//objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gPOSServiceTaxNo");
+                    billNote += "  Service Tax No. : " +objSetupHdModel.getStrServiceTaxNo();
                     billNote += "\n";
                 }
             }
             else
             {
-            	objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gPrintVatNo");
-                if ((boolean) objSetupParameter.get("gPrintVatNo"))
+            	//objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gPrintVatNo");
+                if ( objSetupHdModel.getStrPrintVatNo() != null)
                 {
-                	objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gVatNo");
-                    billNote += "  Vat No. : " + objSetupParameter.get("gVatNo").toString();
+                	//objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gVatNo");
+                    billNote += "  Vat No. : " + objSetupHdModel.getStrVatNo();
                     billNote += "\n";
                 }
-                objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gPrintServiceTaxNo");
-                if ((boolean) objSetupParameter.get("gPrintServiceTaxNo"))
+               // objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gPrintServiceTaxNo");
+                if (objSetupHdModel.getStrPrintServiceTaxNo() != null)
                 {
-                	objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gServiceTaxNo");
-                	billNote += "  Service Tax No. : " + objSetupParameter.get("gServiceTaxNo").toString();
+                	//objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gServiceTaxNo");
+                	billNote += "  Service Tax No. : " + objSetupHdModel.getStrServiceTaxNo();
                     billNote += "\n";
                 }
             }

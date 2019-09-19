@@ -38,6 +38,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.sanguine.base.service.clsSetupService;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSVoidBillDtl;
+import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.model.clsShiftMasterModel;
 import com.sanguine.webpos.bean.clsPOSReportBean;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
@@ -98,8 +99,13 @@ public class clsPOSVoidKOTReportController {
 		listReportSubType.add("Move KOT");
 		model.put("listReportSubType",listReportSubType);
 		
-		Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-		model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
+		clsSetupHdModel objSetupHdModel=null;
+		objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+		String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+		model.put("gEnableShiftYN", gEnableShiftYN);
+		
+		//Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+		//model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
 		
 		List shiftList = new ArrayList();
 		shiftList.add("All");
@@ -163,8 +169,12 @@ public class clsPOSVoidKOTReportController {
 		String strUserCode = hm.get("userName").toString();
 		String strPOSCode = posCode;
 		String strShiftNo = "1";
-		Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-		if(objSetupParameter.get("gEnableShiftYN").toString().equals("Y"))
+		clsSetupHdModel objSetupHdModel=null;
+		objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+		String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+		
+		//Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+		if(gEnableShiftYN.equals("Y"))
 		{
 			strShiftNo=objBean.getStrShiftCode();
 		}

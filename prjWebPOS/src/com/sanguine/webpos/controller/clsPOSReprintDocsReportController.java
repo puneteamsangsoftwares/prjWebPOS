@@ -21,6 +21,7 @@ import com.sanguine.base.service.clsSetupService;
 import com.sanguine.base.service.intfBaseService;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSReportBean;
+import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.sevice.clsPOSReportService;
 
@@ -168,8 +169,12 @@ public class clsPOSReprintDocsReportController {
 			String strUserCode = hm.get("userName").toString();
 			String strPOSCode = posCode;
 			String strShiftNo = "ALL";
-			Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-			if(objSetupParameter.get("gEnableShiftYN").toString().equals("Y"))
+			clsSetupHdModel objSetupHdModel=null;
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+			String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+			
+			//Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+			if(gEnableShiftYN.equals("Y"))
 			{
 				strShiftNo=objBean.getStrShiftCode();
 			}

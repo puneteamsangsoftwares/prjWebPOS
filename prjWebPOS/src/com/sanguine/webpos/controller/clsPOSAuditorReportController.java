@@ -45,6 +45,7 @@ import com.sanguine.webpos.bean.clsPOSVoidBillDtl;
 import com.sanguine.webpos.bean.clsPOSReportBean;
 import com.sanguine.webpos.comparator.clsPOSBillComparator;
 import com.sanguine.webpos.comparator.clsPOSOperatorComparator;
+import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.model.clsShiftMasterModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.sevice.clsPOSReportService;
@@ -112,9 +113,12 @@ public class clsPOSAuditorReportController
 		
 		String posDate = request.getSession().getAttribute("gPOSDate").toString();
 		request.setAttribute("POSDate", posDate);
-		
-		Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-		model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
+		clsSetupHdModel objSetupHdModel=null;
+		objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+		String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+		model.put("gEnableShiftYN",gEnableShiftYN);
+		//Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+		//model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
 		//Shift 
 				List shiftList = new ArrayList();
 				shiftList.add("All");
@@ -175,8 +179,11 @@ public class clsPOSAuditorReportController
 			String strUserCode = hm.get("userName").toString();
 			String strPOSCode = posCode;
 			String shiftNo = "ALL";
-			Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-			if(objSetupParameter.get("gEnableShiftYN").toString().equals("Y"))
+			clsSetupHdModel objSetupHdModel=null;
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,posCode);
+			String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+			//Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+			if( gEnableShiftYN.equals("Y"))
 			{
 				shiftNo=objBean.getStrShiftCode();
 			}

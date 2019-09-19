@@ -31,6 +31,7 @@ import com.sanguine.webpos.model.clsCustomerAreaMasterModel;
 import com.sanguine.webpos.model.clsCustomerAreaMasterModel_ID;
 import com.sanguine.webpos.model.clsCustomerMasterModel;
 import com.sanguine.webpos.model.clsCustomerMasterModel_ID;
+import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.model.clsTableReservationModel;
 import com.sanguine.webpos.model.clsTableReservationModel_ID;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
@@ -254,8 +255,10 @@ public class clsPOSTableReservationController
 			String dateTime = objGlobal.funGetCurrentDateTime("yyyy-MM-dd");
 			if (customerAreaCode.trim().isEmpty())
 			{
-				Map objSetupParameter = objSetupService.funGetParameterValuePOSWise(clientCode, strPOSCode, "gCustAreaCompulsory");
-				if (objSetupParameter.get("gCustAreaCompulsory").toString().equalsIgnoreCase("Y"))
+				clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,strPOSCode);
+				
+				//Map objSetupParameter = objSetupService.funGetParameterValuePOSWise(clientCode, strPOSCode, "gCustAreaCompulsory");
+				if (objSetupHdModel.getStrCustAreaMasterCompulsory().equalsIgnoreCase("Y"))
 				{
 					List list = objUtilityController.funGetDocumentCode("POSCustAreaMaster");
 					if (!list.get(0).toString().equals("0"))

@@ -23,6 +23,7 @@ import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSBillDtl;
 import com.sanguine.webpos.bean.clsPOSReportBean;
 import com.sanguine.webpos.model.clsGroupMasterModel;
+import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.model.clsShiftMasterModel;
 import com.sanguine.webpos.model.clsSubGroupMasterHdModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
@@ -88,8 +89,12 @@ public class clsPOSWaiterWiseItemWiseIncentiveReportController {
 				}
 			}
 			model.put("posList",poslist);
-			 Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-			 model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
+			clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+			String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+			model.put("gEnableShiftYN", gEnableShiftYN);
+			// Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+			 //model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
 			//Shift 
 
 				List shiftList = new ArrayList();
@@ -204,8 +209,11 @@ public class clsPOSWaiterWiseItemWiseIncentiveReportController {
 			}
 			hm.put("posCode", groupCode);
 			
-			Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-			if(objSetupParameter.get("gEnableShiftYN").toString().equals("Y"))
+			clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+			String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+			//Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+			if(gEnableShiftYN.equals("Y"))
 			{
 				strShiftNo=objBean.getStrShiftCode();
 			}
@@ -222,7 +230,7 @@ public class clsPOSWaiterWiseItemWiseIncentiveReportController {
             {
             	String reportName = servletContext.getRealPath("/WEB-INF/reports/webpos/rptItemWiseIncentivesReport.jrxml");
             	
-            	listOfWaiterWiseItemSales = objReportService.funProcessWaiterWiseItemWiseIncentivesSummaryReport(posCode,fromDate,toDate,strShiftNo,objSetupParameter.get("gEnableShiftYN").toString(),groupCode,subGroupCode,reportType);
+            	listOfWaiterWiseItemSales = objReportService.funProcessWaiterWiseItemWiseIncentivesSummaryReport(posCode,fromDate,toDate,strShiftNo,gEnableShiftYN,groupCode,subGroupCode,reportType);
                 
             	JasperDesign jd = JRXmlLoader.load(reportName);
     			JasperReport jr = JasperCompileManager.compileReport(jd);
@@ -280,7 +288,7 @@ public class clsPOSWaiterWiseItemWiseIncentiveReportController {
             {
             	String reportName = servletContext.getRealPath("/WEB-INF/reports/webpos/rptWaiterWiseItemWiseIncentivesSummaryWiseReport.jrxml");
             	
-            	listOfWaiterWiseItemSales = objReportService.funProcessWaiterWiseItemWiseIncentivesSummaryReport(posCode,fromDate,toDate,strShiftNo,objSetupParameter.get("gEnableShiftYN").toString(),groupCode,subGroupCode,reportType);
+            	listOfWaiterWiseItemSales = objReportService.funProcessWaiterWiseItemWiseIncentivesSummaryReport(posCode,fromDate,toDate,strShiftNo,gEnableShiftYN,groupCode,subGroupCode,reportType);
                 
             	JasperDesign jd = JRXmlLoader.load(reportName);
     			JasperReport jr = JasperCompileManager.compileReport(jd);
@@ -338,7 +346,7 @@ public class clsPOSWaiterWiseItemWiseIncentiveReportController {
             {
             	String reportName = servletContext.getRealPath("/WEB-INF/reports/webpos/rptWaiterWiseItemWiseIncentivesReport.jrxml");
             	
-            	listOfWaiterWiseItemSales = objReportService.funProcessWaiterWiseItemWiseIncentivesSummaryReport(posCode,fromDate,toDate,strShiftNo,objSetupParameter.get("gEnableShiftYN").toString(),groupCode,subGroupCode,reportType);
+            	listOfWaiterWiseItemSales = objReportService.funProcessWaiterWiseItemWiseIncentivesSummaryReport(posCode,fromDate,toDate,strShiftNo,gEnableShiftYN,groupCode,subGroupCode,reportType);
             	JasperDesign jd = JRXmlLoader.load(reportName);
     			JasperReport jr = JasperCompileManager.compileReport(jd);
     			List<JasperPrint> jprintlist = new ArrayList<JasperPrint>();

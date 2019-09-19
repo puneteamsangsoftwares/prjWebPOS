@@ -23,6 +23,7 @@ import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSGroupSubGroupItemBean;
 import com.sanguine.webpos.bean.clsPOSReportBean;
 import com.sanguine.webpos.model.clsGroupMasterModel;
+import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.model.clsShiftMasterModel;
 import com.sanguine.webpos.model.clsSubGroupMasterHdModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
@@ -118,8 +119,12 @@ public class clsPOSGroupSubGroupWiseReportController {
 		}
 		model.put("listGroupName",listGroup);
 		
-		Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-		model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
+		clsSetupHdModel objSetupHdModel=null;
+		objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+		String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+		model.put("gEnableShiftYN", gEnableShiftYN);
+		//Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+		//model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
 		
 		List shiftList = new ArrayList();
 		shiftList.add("All");
@@ -196,8 +201,11 @@ public class clsPOSGroupSubGroupWiseReportController {
 			String strUserCode = hm.get("userName").toString();
 			String strPOSCode = posCode;
 			String shiftNo = "ALL";
-			Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-			if(objSetupParameter.get("gEnableShiftYN").toString().equals("Y"))
+			clsSetupHdModel objSetupHdModel=null;
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+			String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+		//	Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+			if(gEnableShiftYN.equals("Y"))
 			{
 				shiftNo=objBean.getStrShiftCode();
 			}
@@ -205,12 +213,12 @@ public class clsPOSGroupSubGroupWiseReportController {
 			hm.put("shiftNo", shiftNo);
 			if(objBean.getStrReportType().equalsIgnoreCase("Detail"))
 			{	
-				listOfGroupSubGroupWiseSales = objReportService.funProcessGroupSubGroupWiseDetailReport(posCode,fromDate,toDate,shiftNo,subGroupCode,groupCode,userCode,objSetupParameter.get("gEnableShiftYN").toString());
+				listOfGroupSubGroupWiseSales = objReportService.funProcessGroupSubGroupWiseDetailReport(posCode,fromDate,toDate,shiftNo,subGroupCode,groupCode,userCode,gEnableShiftYN);
 			}
 			else
 			{
 				reportName = servletContext.getRealPath("/WEB-INF/reports/webpos/rptGroupSubGroupWiseSummaryReport.jrxml");
-				listOfGroupSubGroupWiseSales = objReportService.funProcessGroupSubGroupWiseSummaryReport(posCode,fromDate,toDate,shiftNo,subGroupCode,groupCode,userCode,objSetupParameter.get("gEnableShiftYN").toString());
+				listOfGroupSubGroupWiseSales = objReportService.funProcessGroupSubGroupWiseSummaryReport(posCode,fromDate,toDate,shiftNo,subGroupCode,groupCode,userCode,gEnableShiftYN);
 			}
 		
 	    	 	JasperDesign jd = JRXmlLoader.load(reportName);

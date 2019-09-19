@@ -46,6 +46,7 @@ import com.sanguine.webpos.bean.clsPOSAuditorReportBean;
 import com.sanguine.webpos.bean.clsPOSSalesFlashReportsBean;
 import com.sanguine.webpos.bean.clsPOSTaxCalculationBean;
 import com.sanguine.webpos.bean.clsPOSReportBean;
+import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.model.clsShiftMasterModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.sevice.clsPOSReportService;
@@ -102,8 +103,12 @@ public class clsPOSTaxBreakupSummaryReport {
 				}
 			}
 			model.put("posList",poslist);
-			 Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-			 model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
+			clsSetupHdModel objSetupHdModel=null;
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+			String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+			model.put("gEnableShiftYN", gEnableShiftYN);
+			// Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+			// model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
 			//Shift 
 
 				List shiftList = new ArrayList();
@@ -168,15 +173,19 @@ public class clsPOSTaxBreakupSummaryReport {
 				String strUserCode = hm.get("userName").toString();
 				String strPOSCode = posCode;
 				String strShiftNo = "1";
-				Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-				if(objSetupParameter.get("gEnableShiftYN").toString().equals("Y"))
+				clsSetupHdModel objSetupHdModel=null;
+				objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+				String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+				
+				//Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+				if(gEnableShiftYN.equals("Y"))
 				{
 					strShiftNo=objBean.getStrShiftCode();
 				}
 				hm.remove("shiftNo");
 				hm.put("shiftNo", strShiftNo);
 				List<clsPOSTaxCalculationBean> listOfTaxDtl = new LinkedList<>();
-				listOfTaxDtl = objReportService.funProcessTaxBreakUpSummaryReport(strPOSCode, fromDate, toDate, objSetupParameter.get("gEnableShiftYN").toString(),strShiftNo);
+				listOfTaxDtl = objReportService.funProcessTaxBreakUpSummaryReport(strPOSCode, fromDate, toDate, gEnableShiftYN,strShiftNo);
 				
 	            JasperDesign jd = JRXmlLoader.load(reportName);
 				JasperReport jr = JasperCompileManager.compileReport(jd);

@@ -457,7 +457,7 @@ public class clsPOSJasperFormat5ForBill
 			hm.put("ClientAddressLine2", objSetupHdModel.getStrAddressLine2());
 			hm.put("ClientAddressLine3", objSetupHdModel.getStrAddressLine3());
 			hm.put("ClientCity", objSetupHdModel.getStrCityName());
-			hm.put("TEL NO", String.valueOf(objSetupHdModel.getIntTelephoneNo()));
+			hm.put("TEL NO", objSetupHdModel.getStrTelephoneNo());
 			hm.put("EMAIL ID", objSetupHdModel.getStrEmail());
 			strPrintTimeOnBill = objSetupHdModel.getStrPrintTimeOnBill();
 			strPrintOpenItemsOnBill = objSetupHdModel.getStrPrintOpenItemsOnBill();

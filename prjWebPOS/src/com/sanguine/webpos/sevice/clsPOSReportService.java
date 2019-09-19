@@ -65,6 +65,7 @@ import com.sanguine.webpos.comparator.clsPOSSalesFlashComparator;
 import com.sanguine.webpos.comparator.clsSalesFlashComparator;
 import com.sanguine.webpos.comparator.clsVoidBillComparator;
 import com.sanguine.webpos.comparator.clsWaiterWiseSalesComparator;
+import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.model.clsShiftMasterModel;
 import com.sanguine.webpos.util.clsPOSGroupWiseComparator;
 import com.sanguine.webpos.util.clsPOSSetupUtility;
@@ -76,6 +77,9 @@ public class clsPOSReportService
 
 	@Autowired
 	intfBaseService objBaseService;
+	
+	@Autowired
+	private clsPOSMasterService objMasterService;
 
 	Map<String, List<Map<String, clsPOSBillSettlementDtl>>> mapPOSDtlForSettlement;
 	Map<String, Map<String, clsPOSBillItemDtl>> mapPOSItemDtl;
@@ -20519,7 +20523,20 @@ public class clsPOSReportService
 		List jArr = new ArrayList<>();
 		Map hmData = new HashMap<>();
 		StringBuilder sql = new StringBuilder();
-		Map objSetupParameter = objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gPrintType");
+		clsSetupHdModel objSetupHdModel=null;
+		try
+		{
+			objSetupHdModel = objMasterService.funGetPOSWisePropertySetup(clientCode,posCode);
+			
+		}
+		catch (Exception e1)
+		{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	
+		String gPrintType=objSetupHdModel.getStrPrintType();
+		//Map objSetupParameter = objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gPrintType");
 		if (transactionType.equalsIgnoreCase("KOT"))
 		{
 			if (kotFor.equalsIgnoreCase("Dina"))
@@ -20650,7 +20667,11 @@ public class clsPOSReportService
 					p6 = (String) Array.get(obj, 5);
 					p7 = (String) Array.get(obj, 6);
 				}
-				Map objSetupParameter = objSetupService.funGetParameterValuePOSWise(clientCode, POSCode, "gPrintType");
+				clsSetupHdModel objSetupHdModel=null;
+				objSetupHdModel = objMasterService.funGetPOSWisePropertySetup(clientCode,POSCode);
+				String gPrintType=objSetupHdModel.getStrPrintType();
+				
+				//Map objSetupParameter = objSetupService.funGetParameterValuePOSWise(clientCode, POSCode, "gPrintType");
 				hmData = funGenerateJasperForTableWiseKOT("Dina", tableNo, p3, "", areaCodeForAll, KOTNo, reprint, p4, p5, p6, printYN, p2, p7, posName, POSCode, clientCode, webStockUserCode);
 			}
 		}
@@ -20704,18 +20725,23 @@ public class clsPOSReportService
 			}
 
 			String itemName = "b.strItemName";
-			Map mapSetupParameter = objSetupService.funGetParameterValuePOSWise(clientCode, POSCode, "gPrintShortNameOnKOT");
-			String pringShortNameOnKOT = (String) mapSetupParameter.get("gPrintShortNameOnKOT");
+			clsSetupHdModel objSetupHdModel=null;
+			objSetupHdModel = objMasterService.funGetPOSWisePropertySetup(clientCode,POSCode);
+			String pringShortNameOnKOT=objSetupHdModel.getStrPrintShortNameOnKOT();
+			//Map mapSetupParameter = objSetupService.funGetParameterValuePOSWise(clientCode, POSCode, "gPrintShortNameOnKOT");
+			//String pringShortNameOnKOT = (String) mapSetupParameter.get("gPrintShortNameOnKOT");
 			if ("gPrintShortNameOnKOT".equalsIgnoreCase(pringShortNameOnKOT))
 			{
 				itemName = "d.strShortName";
 			}
 			String sqlKOTItems = "";
 			List<clsPOSBillDtl> listOfKOTDetail = new ArrayList<>();
-			mapSetupParameter = objSetupService.funGetParameterValuePOSWise(clientCode, POSCode, "gAreaWisePricing");
+			objSetupHdModel = objMasterService.funGetPOSWisePropertySetup(clientCode,POSCode);
+			
+			//mapSetupParameter = objSetupService.funGetParameterValuePOSWise(clientCode, POSCode, "gAreaWisePricing");
 
 			sql.setLength(0);
-			if (mapSetupParameter.get("gAreaWisePricing").equals("Y"))
+			if (objSetupHdModel.equals("Y"))
 			{
 				sql.append("select LEFT(a.strItemCode,7)," + itemName + ",a.dblItemQuantity,a.strKOTNo,a.strSerialNo " + " from tblitemrtemp a,tblmenuitempricingdtl b,tblprintersetup c,tblitemmaster d " + " where a.strTableNo='" + tableNo + "' and a.strKOTNo='" + KOTNO + "' and b.strCostCenterCode=c.strCostCenterCode " + " and b.strCostCenterCode='" + CostCenterCode + "' and a.strItemCode=d.strItemCode " + " and (b.strPOSCode='" + POSCode + "' or b.strPOSCode='All') " + " and (b.strAreaCode IN (SELECT strAreaCode FROM tbltablemaster where strTableNo='" + tableNo + "' )) " + " and LEFT(a.strItemCode,7)=b.strItemCode and b.strHourlyPricing='No' " + " order by a.strSerialNo ");
 			}
@@ -20834,9 +20860,11 @@ public class clsPOSReportService
 
 						if (modifierName.startsWith("-->"))
 						{
-
-							mapSetupParameter = objSetupService.funGetParameterValuePOSWise(clientCode, POSCode, "gPrintModQtyOnKOT");
-							if ((boolean) mapSetupParameter.get("gPrintModQtyOnKOT"))
+						
+							objSetupHdModel = objMasterService.funGetPOSWisePropertySetup(clientCode,POSCode);
+							String gPrintModQtyOnKOT=objSetupHdModel.getStrPrintModifierQtyOnKOT();
+							//mapSetupParameter = objSetupService.funGetParameterValuePOSWise(clientCode, POSCode, "gPrintModQtyOnKOT");
+							if (objSetupHdModel.getStrPrintModifierQtyOnKOT() != null)
 							{
 								objBillDtl.setDblQuantity(d1);
 								objBillDtl.setStrItemName(modifierName);
@@ -20851,8 +20879,11 @@ public class clsPOSReportService
 					}
 				}
 			}
-			mapSetupParameter = objSetupService.funGetParameterValuePOSWise(clientCode, POSCode, "gNoOfLinesInKOTPrint");
-			String noOfLinesOnKOTPrint = (String) mapSetupParameter.get("gNoOfLinesInKOTPrint");
+		
+			objSetupHdModel = objMasterService.funGetPOSWisePropertySetup(clientCode,POSCode);
+			long noOfLinesOnKOTPrint=objSetupHdModel.getStrNoOfLinesInKOTPrint();
+			//mapSetupParameter = objSetupService.funGetParameterValuePOSWise(clientCode, POSCode, "gNoOfLinesInKOTPrint");
+			//String noOfLinesOnKOTPrint = (String) mapSetupParameter.get("gNoOfLinesInKOTPrint");
 			hm.put("listOfItemDtl", listOfKOTDetail);
 			listData.add(hm);
 

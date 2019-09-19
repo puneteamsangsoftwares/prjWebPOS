@@ -43,6 +43,8 @@ import com.sanguine.base.service.clsSetupService;
 import com.sanguine.base.service.intfBaseService;
 import com.sanguine.webpos.bean.clsPOSConfigSettingBean;
 import com.sanguine.webpos.model.clsPOSConfigSettingHdModel;
+import com.sanguine.webpos.model.clsSetupHdModel;
+import com.sanguine.webpos.sevice.clsPOSMasterService;
 
 @Controller
 public class clsPOSSendMail
@@ -65,6 +67,8 @@ public class clsPOSSendMail
 	
 	@Autowired
 	intfBaseService obBaseService;
+	@Autowired
+	private clsPOSMasterService objMasterService;
     /*
      public static void main(String args[])
      {
@@ -730,12 +734,14 @@ public class clsPOSSendMail
                      
 
                 //mailed logic
-                
-    	  		Map hmSenderEmailId = objSetupService.funGetParameterValuePOSWise(clientCode,posCode, "gSenderEmailId");
-    	  		final String gSenderEmailId=hmSenderEmailId.get("gSenderEmailId").toString();
-    	
-    	  		Map hmSenderMailPassword = objSetupService.funGetParameterValuePOSWise(clientCode,posCode, "gSenderMailPassword");
-    	  		final String gSenderMailPassword=hmSenderMailPassword.get("gSenderMailPassword").toString();
+                clsSetupHdModel objSetupHdModel=null;
+        		objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,posCode);
+        		final String gSenderEmailId=objSetupHdModel.getStrSenderEmailId();
+    	  		//Map hmSenderEmailId = objSetupService.funGetParameterValuePOSWise(clientCode,posCode, "gSenderEmailId");
+    	  		//final String gSenderEmailId=hmSenderEmailId.get("gSenderEmailId").toString();
+        		final String gSenderMailPassword=objSetupHdModel.getStrEmailPassword();
+    	  		//Map hmSenderMailPassword = objSetupService.funGetParameterValuePOSWise(clientCode,posCode, "gSenderMailPassword");
+    	  		//final String gSenderMailPassword=hmSenderMailPassword.get("gSenderMailPassword").toString();
     	       
                 //String to="ingaleprashant8@gmail.com";//change accordingly
                 String to = "sanguineauditing@gmail.com";//change accordingly

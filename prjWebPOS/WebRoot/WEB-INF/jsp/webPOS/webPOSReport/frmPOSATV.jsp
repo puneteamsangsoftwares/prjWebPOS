@@ -81,114 +81,95 @@
 
 </head>
 
-<body>
+<body >
 	<div id="formHeading">
 		<label>Average Ticket Value Report</label>
 	</div>
-	<s:form name="POSAvgTicketValueReportForm" method="POST"
-		class="formoid-default-skyblue"
-		style="background-color:#FFFFFF;font-size:14px;font-family:'Open Sans','Helvetica Neue','Helvetica',Arial,Verdana,sans-serif;color:#666666;margin-top:2%;max-width:100%;min-width:150px;"
-		action="rptPOSAverageTicketValueReport.html?saddr=${urlHits}" target="_blank">
+	<s:form name="POSAvgTicketValueReportForm" method="POST" action="rptPOSAverageTicketValueReport.html?saddr=${urlHits}" target="_blank" class="formoid-default-skyblue" style="background-color:#FFFFFF;font-size:14px;font-family:'Open Sans','Helvetica Neue','Helvetica',Arial,Verdana,sans-serif;color:#666666;max-width:880px;min-width:150px;margin-top:2%;">
 
 		<br />
-		<br />
-		<div class="title" style="margin-left: 35%; width: 50%">
-			<div class="row"
-				style="background-color: #fff; margin-bottom: 10px; display: block; width: 50%">
-				<div class="element-input col-lg-6">
-					<label class="title">POS Name</label>
-				</div>
-				<div class="element-input col-lg-6"
-					style="width: 50%; margin-left: -10%">
-					<s:select id="cmbPOSName" name="cmbPOSName" path="strPOSName"
-						items="${posList}"></s:select>
+		<div class="title" style="margin-left: 190px;">
+		
+			<div class="row" style="background-color: #fff;display: -webkit-box;">
+				<div class="element-input col-lg-6" style="width: 25%;" > 
+    				<label class="title">POS Name</label>
+    			</div>
+    			<div class="element-input col-lg-6" style="margin-bottom:  10px;width: 30%"> 
+					<s:select id="cmbPOSName" path="strPOSName" items="${posList}" >
+				 	</s:select>
 				</div>
 			</div>
-			<div class="row"
-				style="background-color: #fff; margin-bottom: 10px; display: block; width: 50%">
-				<div class="element-input col-lg-6">
-					<label class="title">From Date</label>
-				</div>
-				<div class="element-input col-lg-6"
-					style="width: 50%; margin-left: -10%">
-					<s:input id="txtFromDate" required="required" path="fromDate"
-						pattern="\d{1,2}-\d{1,2}-\d{4}" />
-				</div>
-			</div>
-			<div class="row"
-				style="background-color: #fff; margin-bottom: 10px; display: block; width: 50%">
-				<div class="element-input col-lg-6">
-					<label class="title">To Date</label>
-				</div>
-				<div class="element-input col-lg-6"
-					style="width: 50%; margin-left: -10%">
-					<s:input id="txtToDate" required="required" path="toDate"
-						pattern="\d{1,2}-\d{1,2}-\d{4}" />
-				</div>
-			</div>
-			<div class="row"
-				style="background-color: #fff; margin-bottom: 10px; display: block; width: 50%">
-				<div class="element-input col-lg-6">
-					<label class="title">Pos Wise</label>
-				</div>
-				<div class="element-input col-lg-6"
-					style="width: 50%; margin-left: -10%">
+			<div class="row" style="background-color: #fff;display: -webkit-box;">
+			 		<div class="element-input col-lg-6" style="width: 25%;"> 
+    					<label class="title">From Date</label>
+	    			</div>
+	    			<div class="element-input col-lg-6" style="margin-bottom:  10px;width: 30%"> 
+						<s:input id="txtFromDate" required="required" path="fromDate" pattern="\d{1,2}-\d{1,2}-\d{4}" style="width: 100%;" />
+					</div>
+		     </div>
+			 <div class="row" style="background-color: #fff;display: -webkit-box;">			
+			 		<div class="element-input col-lg-6" style="width: 25%;"> 
+    					<label class="title">To Date</label>
+	    			</div>
+	    			<div class="element-input col-lg-6" style="margin-bottom:  10px;width: 30%"> 
+						<s:input id="txtToDate" required="required" path="toDate" pattern="\d{1,2}-\d{1,2}-\d{4}" style="width: 100%;"/>
+					</div>
+			 </div>
+			 <div class="row" style="background-color: #fff;display: -webkit-box;">			
+			 		<div class="element-input col-lg-6" style="width: 25%;"> 
+    					<label class="title">Pos Wise</label>
+	    			</div>
+	    			<div class="element-input col-lg-6" style="margin-bottom:  10px;width: 30%"> 
 					<s:select id="cmbPosWise" path="strPosWise">
-						<s:option value="NO">NO</s:option>
-						<s:option value="YES">YES</s:option>
-
-					</s:select>
-				</div>
-			</div>
-			<div class="row"
-				style="background-color: #fff; margin-bottom: 10px; display: block; width: 50%">
-				<div class="element-input col-lg-6">
-					<label class="title">Date Wise</label>
-				</div>
-				<div class="element-input col-lg-6"
-					style="width: 50%; margin-left: -10%">
+				    		<s:option value="NO">NO</s:option>
+				    		<s:option value="YES">YES</s:option>
+				    	</s:select>
+					</div>
+			 </div>
+			  <div class="row" style="background-color: #fff;display: -webkit-box;">			
+			 		<div class="element-input col-lg-6" style="width: 25%;"> 
+    					<label class="title">Date Wise</label>
+	    			</div>
+	    			<div class="element-input col-lg-6" style="margin-bottom:  10px;width: 30%"> 
 					<s:select id="cmbDateWise" path="strDateWise">
-						<s:option value="NO">NO</s:option>
-						<s:option value="YES">YES</s:option>
-					</s:select>
-				</div>
-			</div>
-			<div class="row"
-				style="background-color: #fff; margin-bottom: 10px; display: block; width: 50%">
-				<div class="element-input col-lg-6">
-					<label class="title">Report Type</label>
-				</div>
-				<div class="element-input col-lg-6"
-					style="width: 50%; margin-left: -10%">
-					<s:select id="cmbDocType" path="strDocType">
-						<s:option value="PDF">PDF</s:option>
-						<s:option value="XLS">EXCEL</s:option>
-
-					</s:select>
-				</div>
-			</div>
-			<div class="row"
-				style="background-color: #fff; margin-bottom: 10px; display: block; width: 50%">
-				<div class="element-input col-lg-6">
+				    		<s:option value="NO">NO</s:option>
+				    		<s:option value="YES">YES</s:option>
+				    	</s:select>
+					</div>
+			 </div>
+			 <div class="row" style="background-color: #fff;display: -webkit-box;">			
+			 		<div class="element-input col-lg-6" style="width: 25%;"> 
+    					<label class="title">Report Type</label>
+	    			</div>
+	    			<div class="element-input col-lg-6" style="margin-bottom:  10px;width: 30%"> 
+						<s:select id="cmbDocType" path="strDocType" >
+				    		<s:option value="PDF">PDF</s:option>
+				    		<s:option value="EXCEL">EXCEL</s:option>
+				    	</s:select>
+					</div>
+			 </div>
+			 <div class="row" style="background-color: #fff;display:-webkit-box;">
+				<div class="element-input col-lg-6" style="width:25%">
 					<label class="title">Shift</label>
 				</div>
-				<div class="element-input col-lg-6"
-					style="width: 50%; margin-left: -10%">
+				<div class="element-input col-lg-6" style="margin-bottom: 10px;width: 30%; ">
 					<s:select items="${shiftList}" id="txtShiftCode"
 						path="strShiftCode">
 
 					</s:select>
 				</div>
 			</div>
+					
 		</div>
-
+		
 		<br />
 		<br />
-		<p align="center">
-			<input type="submit" value="Submit" tabindex="3"
-				style="margin-left: -2%" /> <input type="reset" value="Reset"
-				onclick="funResetFields()" style="margin-left: 2%" />
-		</p>
+		<div class="col-lg-10 col-sm-10 col-xs-10" style="width: 70%;margin-left: 160px;"> 
+			 <p align="center">
+				<div class="submit col-lg-4 col-sm-4 col-xs-4"><input type="submit" value="Submit" tabindex="3" /></div>
+				<div class="submit col-lg-4 col-sm-4 col-xs-4"><input type="reset" value="Reset" onclick="funResetFields()"/></div>
+			 </p>
+		</div>
 	</s:form>
 
 </body>

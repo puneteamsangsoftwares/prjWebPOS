@@ -24,6 +24,7 @@ import com.sanguine.webpos.bean.clsPOSBillItemDtlBean;
 import com.sanguine.webpos.bean.clsPOSGroupSubGroupWiseSales;
 import com.sanguine.webpos.bean.clsPOSReportBean;
 import com.sanguine.webpos.bean.clsPOSTaxCalculationBean;
+import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.model.clsShiftMasterModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.sevice.clsPOSReportService;
@@ -91,9 +92,14 @@ public class clsPOSSubGroupWiseSummaryReportController {
 				}
 			}
 			model.put("posList",poslist);
+
+			clsSetupHdModel objSetupHdModel=null;
 			
-			 Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-			 model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+			String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+			model.put("gEnableShiftYN", gEnableShiftYN);
+			//Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+			// model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
 			//Shift 
 
 				List shiftList = new ArrayList();
@@ -155,8 +161,14 @@ public class clsPOSSubGroupWiseSummaryReportController {
 			String strUserCode = hm.get("userName").toString();
 			String strPOSCode = posCode;
 			String strShiftNo = "1";
-			Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-			if(objSetupParameter.get("gEnableShiftYN").toString().equals("Y"))
+
+			clsSetupHdModel objSetupHdModel=null;
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+			String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+			
+			
+			//Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+			if(gEnableShiftYN.equals("Y"))
 			{
 				strShiftNo=objBean.getStrShiftCode();
 			}
@@ -166,7 +178,7 @@ public class clsPOSSubGroupWiseSummaryReportController {
 			List<clsPOSTaxCalculationBean> listOfTaxData = new ArrayList<clsPOSTaxCalculationBean>();
 			List<clsPOSBillItemDtlBean> listOfSettlementData = new ArrayList<clsPOSBillItemDtlBean>();
 			
-			listOfData = objReportService.funProcessSubGroupWiseSummaryReport(posCode,fromDate,toDate,strShiftNo,strUserCode,objSetupParameter.get("gEnableShiftYN").toString());
+			listOfData = objReportService.funProcessSubGroupWiseSummaryReport(posCode,fromDate,toDate,strShiftNo,strUserCode,gEnableShiftYN);
 			hm.put("listOfData",listOfData);
 			
 			listOfTaxData = objReportService.funProcessTaxSummaryForSubGroupWiseSummaryReport(posCode,fromDate,toDate);

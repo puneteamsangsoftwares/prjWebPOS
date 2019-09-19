@@ -17,6 +17,7 @@ import com.sanguine.base.service.clsSetupService;
 import com.sanguine.base.service.intfBaseService;
 import com.sanguine.webpos.bean.clsPOSBillDtl;
 import com.sanguine.webpos.bean.clsPOSTableMasterBean;
+import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.model.clsTableReservationModel;
 import com.sanguine.webpos.util.clsPOSSetupUtility;
 
@@ -29,7 +30,8 @@ public class clsPOSTransactionService
 	@Autowired
 	private intfBaseService objBaseService;
 	
-	
+	@Autowired
+	private clsPOSMasterService objMasterService;
 	
 	@Autowired
 	private clsSetupService objSetupService;
@@ -995,9 +997,10 @@ public class clsPOSTransactionService
 		try
 		{
 			StringBuilder sql = new StringBuilder();
-
-		   Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gShowBillsType"); 
-		   if (objSetupParameter.get("gShowBillsType").toString().equalsIgnoreCase("Table Detail Wise"))
+			clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,posCode);
+			String gShowBillsType=objSetupHdModel.getStrShowBillsDtlType();
+		  //Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gShowBillsType"); 
+		   if (gShowBillsType.equalsIgnoreCase("Table Detail Wise"))
            {
 			   sql.append("select a.strBillNo,ifnull(b.strTableNo,''),ifnull(b.strTableName,''),ifnull(c.strWaiterNo,'') "
                    + " ,ifnull(c.strWShortName,''),ifnull(d.strCustomerCode,''),ifnull(d.strCustomerName,''),a.dblGrandTotal "
@@ -1032,7 +1035,7 @@ public class clsPOSTransactionService
 			
 			Object[] obj=null ;
 			List listData=new ArrayList<>();
-			if (objSetupParameter.get("gShowBillsType").toString().equalsIgnoreCase("Table Detail Wise"))
+			if (gShowBillsType.equalsIgnoreCase("Table Detail Wise"))
             {
 			 if (list!=null)
 				{
@@ -1488,8 +1491,10 @@ public class clsPOSTransactionService
 			                }
 		            		 Query rsCount =null;
 		            		String sql_updateTableStatus = "";
-		            		Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gInrestoPOSIntegrationYN"); 
-		  	        	    if(objSetupParameter.get("gInrestoPOSIntegrationYN").equals("Y"))
+		            		clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,posCode);
+		        			String gInrestoPOSIntegrationYN=objSetupHdModel.getStrInrestoPOSIntegrationYN();
+		            		//Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gInrestoPOSIntegrationYN"); 
+		  	        	    if(gInrestoPOSIntegrationYN.equals("Y"))
 		  	        	    {
 		                         if (tableStatus.equalsIgnoreCase("Reserve"))
 		                         {
@@ -1525,17 +1530,17 @@ public class clsPOSTransactionService
 		  	                //rsCount = webPOSSessionFactory.getCurrentSession().createSQLQuery(sql_updateTableStatus) ;
 		  	                objBaseService.funExecuteUpdate(sql_updateTableStatus, "sql");
 		  	            }
-		  	        	if(objSetupParameter.get("gInrestoPOSIntegrationYN").toString().equalsIgnoreCase("Y"))
+		  	        	if(gInrestoPOSIntegrationYN.equalsIgnoreCase("Y"))
 		  	            {
 		  	                //objUtility.funUpdateTableStatusToInrestoApp(tableNo, tableName, tableStatus,clientCode,posCode);
 		  	            }
 
 		        }
-	        Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gBillSettleSMSYN"); 
-	  	    
-	        if (objSetupParameter.get("gBillSettleSMSYN").toString().equalsIgnoreCase("Y"))
+	       // Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gBillSettleSMSYN"); 
+	        clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,posCode);
+	        if (objSetupHdModel.getStrSendBillSettlementSMS().equalsIgnoreCase("Y"))
 	        {
-	        	String billSettleSMS=(String) objSetupParameter.get("gBillSettleSMSYN");
+	        	String billSettleSMS=objSetupHdModel.getStrSendBillSettlementSMS();
 	           // objUtility.funSendSMS(billNo, billSettleSMS, "",clientCode,posCode);
 	        }
 

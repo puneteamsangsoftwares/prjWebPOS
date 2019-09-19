@@ -41,6 +41,7 @@ import com.sanguine.webpos.bean.clsPOSGroupSubGroupWiseSales;
 import com.sanguine.webpos.bean.clsPOSReportBean;
 import com.sanguine.webpos.comparator.clsPOSGroupSubGroupWiseSalesComparator;
 import com.sanguine.webpos.model.clsAreaMasterModel;
+import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.sevice.clsPOSReportService;
 
@@ -162,13 +163,15 @@ public class clsPOSAreaWiseGroupWiseSalesReportController
 			hm.put("posCode", posCode);
 			
 			String strPOSCode = posCode;
-		
-			Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+			clsSetupHdModel objSetupHdModel=null;
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+			
+			//Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
 			
 			String shiftNo = "ALL";
 			String areaName = objBean.getStrAreaCode();
 			List<clsPOSGroupSubGroupWiseSales> listOfGroupWise = new ArrayList<clsPOSGroupSubGroupWiseSales>();
-			listOfGroupWise = funAreaWiseGrouWiseSales(fromDate,toDate,strUserCode,posCode,shiftNo,strClientCode,areaName,objSetupParameter.get("gEnableShiftYN").toString());
+			listOfGroupWise = funAreaWiseGrouWiseSales(fromDate,toDate,strUserCode,posCode,shiftNo,strClientCode,areaName,objSetupHdModel.getStrShiftWiseDayEndYN());
 			
 			
 			

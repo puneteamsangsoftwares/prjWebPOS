@@ -28,6 +28,7 @@ import com.sanguine.webpos.bean.clsPOSBillItemDtlBean;
 import com.sanguine.webpos.bean.clsPOSGroupSubGroupWiseSales;
 import com.sanguine.webpos.bean.clsPOSReportBean;
 import com.sanguine.webpos.comparator.clsPOSDiscountComparator;
+import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.sevice.clsPOSReportService;
 
@@ -144,8 +145,12 @@ public class clsPOSDiscountWiseReportController
 			String strUserCode = hm.get("userName").toString();
 			String strPOSCode = posCode;
 			String strShiftNo = "ALL";
-			Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-			if(objSetupParameter.get("gEnableShiftYN").toString().equals("Y"))
+			clsSetupHdModel objSetupHdModel=null;
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+			String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+			
+			//Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+			if(gEnableShiftYN.equals("Y"))
 			{
 				strShiftNo=objBean.getStrShiftCode();
 			}
@@ -155,7 +160,7 @@ public class clsPOSDiscountWiseReportController
 				reportName = servletContext.getRealPath("/WEB-INF/reports/webpos/rptBillDiscountReport.jrxml");
 				List<clsPOSBillItemDtlBean> listOfBillItemDtl = new ArrayList<>();
 
-				listOfBillItemDtl = objReportService.funProcessDiscountWiseReport(strPOSCode, fromDate, toDate, "Summary","",strUserCode,strShiftNo,objSetupParameter.get("gEnableShiftYN").toString());
+				listOfBillItemDtl = objReportService.funProcessDiscountWiseReport(strPOSCode, fromDate, toDate, "Summary","",strUserCode,strShiftNo,gEnableShiftYN);
                 JasperDesign jd = JRXmlLoader.load(reportName);
         		JasperReport jr = JasperCompileManager.compileReport(jd);
                 List<JasperPrint> jprintlist = new ArrayList<JasperPrint>();
@@ -214,9 +219,9 @@ public class clsPOSDiscountWiseReportController
 				double totalGrossSales=0.0;
                 List<clsPOSBillItemDtlBean> listOfBillItemDtl = new ArrayList<>();
 
-                listOfBillItemDtl = objReportService.funProcessDiscountWiseReport(strPOSCode, fromDate, toDate, "Detail","",strUserCode,strShiftNo,objSetupParameter.get("gEnableShiftYN").toString());
+                listOfBillItemDtl = objReportService.funProcessDiscountWiseReport(strPOSCode, fromDate, toDate, "Detail","",strUserCode,strShiftNo,gEnableShiftYN);
                 
-                List listLiveGross = objReportService.funProcessDiscountWiseReport(strPOSCode, fromDate, toDate, "Detail","liveGross",strUserCode,strShiftNo,objSetupParameter.get("gEnableShiftYN").toString());
+                List listLiveGross = objReportService.funProcessDiscountWiseReport(strPOSCode, fromDate, toDate, "Detail","liveGross",strUserCode,strShiftNo,gEnableShiftYN);
                 if (listLiveGross.size()>0)
                 {
                 	BigDecimal settleAmt = (BigDecimal) listLiveGross.get(0);	
@@ -226,7 +231,7 @@ public class clsPOSDiscountWiseReportController
                 
                 //q
                 
-                listLiveGross = objReportService.funProcessDiscountWiseReport(strPOSCode, fromDate, toDate, "Detail","qGross",strUserCode,strShiftNo,objSetupParameter.get("gEnableShiftYN").toString());
+                listLiveGross = objReportService.funProcessDiscountWiseReport(strPOSCode, fromDate, toDate, "Detail","qGross",strUserCode,strShiftNo,gEnableShiftYN);
                 
                 if (listLiveGross.size()>0)
                 {
@@ -274,7 +279,7 @@ public class clsPOSDiscountWiseReportController
                 TreeMap<String, clsPOSGroupSubGroupWiseSales> mapGroupWiseSales = new TreeMap<String, clsPOSGroupSubGroupWiseSales>();
                 double totalDiscount = 0.00, totalNetRevenue = 0.00, totalSubTotal = 0.00;
 
-                List listGroupWiseSales = objReportService.funProcessDiscountWiseReport(strPOSCode, fromDate, toDate, "GroupWise","live",strUserCode,strShiftNo,objSetupParameter.get("gEnableShiftYN").toString());
+                List listGroupWiseSales = objReportService.funProcessDiscountWiseReport(strPOSCode, fromDate, toDate, "GroupWise","live",strUserCode,strShiftNo,gEnableShiftYN);
                 if(listGroupWiseSales.size()>0)
                 {
                 	for(int i=0;i<listGroupWiseSales.size();i++)
@@ -309,7 +314,7 @@ public class clsPOSDiscountWiseReportController
                 	}
                 }
               
-                listGroupWiseSales = objReportService.funProcessDiscountWiseReport(strPOSCode, fromDate, toDate, "GroupWise","modLive",strUserCode,strShiftNo,objSetupParameter.get("gEnableShiftYN").toString());
+                listGroupWiseSales = objReportService.funProcessDiscountWiseReport(strPOSCode, fromDate, toDate, "GroupWise","modLive",strUserCode,strShiftNo,gEnableShiftYN);
                 
                 if(listGroupWiseSales.size()>0)
                 {
@@ -346,7 +351,7 @@ public class clsPOSDiscountWiseReportController
                 }
                
 
-                listGroupWiseSales = objReportService.funProcessDiscountWiseReport(strPOSCode, fromDate, toDate, "GroupWise","qFile",strUserCode,strShiftNo,objSetupParameter.get("gEnableShiftYN").toString());
+                listGroupWiseSales = objReportService.funProcessDiscountWiseReport(strPOSCode, fromDate, toDate, "GroupWise","qFile",strUserCode,strShiftNo,gEnableShiftYN);
                 if(listGroupWiseSales.size()>0)
                 {
                 	for(int i=0;i<listGroupWiseSales.size();i++)
@@ -381,7 +386,7 @@ public class clsPOSDiscountWiseReportController
                 	}
                 }
                 
-                listGroupWiseSales = objReportService.funProcessDiscountWiseReport(strPOSCode, fromDate, toDate, "GroupWise","modQFile",strUserCode,strShiftNo,objSetupParameter.get("gEnableShiftYN").toString());
+                listGroupWiseSales = objReportService.funProcessDiscountWiseReport(strPOSCode, fromDate, toDate, "GroupWise","modQFile",strUserCode,strShiftNo,gEnableShiftYN);
                 if(listGroupWiseSales.size()>0)
                 {
                 	for(int i=0;i<listGroupWiseSales.size();i++)

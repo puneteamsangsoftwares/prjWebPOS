@@ -78,6 +78,8 @@ import com.sanguine.webpos.bean.clsPOSGroupSubGroupWiseSales;
 import com.sanguine.webpos.bean.clsPOSItemDtlForTax;
 import com.sanguine.webpos.bean.clsPOSPromotionItems;
 import com.sanguine.webpos.bean.clsPOSTaxCalculationBean;
+import com.sanguine.webpos.model.clsSetupHdModel;
+import com.sanguine.webpos.sevice.clsPOSMasterService;
 
 @Controller
 public class clsPOSUtilityController
@@ -96,6 +98,8 @@ public class clsPOSUtilityController
 
 	@Autowired
 	private clsSetupService objSetupService;
+	@Autowired
+	private clsPOSMasterService objMasterService;
 
 	double gTotalCashSales = 0.00,
 			gNoOfDiscountedBills = 0.00,
@@ -3809,8 +3813,11 @@ public class clsPOSUtilityController
 		clsPOSBillDtl objBillDtl = null;
 		try
 		{
-			Map objSetupParameter = objSetupService.funGetParameterValuePOSWise(clientCode, POSCode, "gUseVatAndServiceTaxFromPos");
-			String useVatAndServiceTaxFromPos = (String) objSetupParameter.get("gUseVatAndServiceTaxFromPos");
+			
+			clsSetupHdModel objSetupHdModel=null;
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,POSCode);
+			//Map objSetupParameter = objSetupService.funGetParameterValuePOSWise(clientCode, POSCode, "gUseVatAndServiceTaxFromPos");
+			String useVatAndServiceTaxFromPos = objSetupHdModel.getStrVatAndServiceTaxFromPos();
 			if (useVatAndServiceTaxFromPos.equals("Y"))
 			{
 				Map hmData = new HashMap();
@@ -4203,14 +4210,17 @@ public class clsPOSUtilityController
 		boolean result = false;
 		try
 		{
-			Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gSMSType");
-			String smsType=objSetupParameter.get("gSMSType").toString();
+			clsSetupHdModel objSetupHdModel=null;
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,posCode);
 			
-			objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gSMSApi");
-			String SMSApi=objSetupParameter.get("gSMSApi").toString();
+			//Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gSMSType");
+			String smsType=objSetupHdModel.getStrSMSType();
 			
-			objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gClientTelNo");
-			String clientTelNo=objSetupParameter.get("gClientTelNo").toString();
+			//objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gSMSApi");
+			String SMSApi=objSetupHdModel.getStrSMSApi();
+			
+			//objSetupParameter=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gClientTelNo");
+			String clientTelNo=objSetupHdModel.getStrTelephoneNo();
 			
 		    if (mobileNumberList.size() < 1 || testSMS.length() < 1)
 		    {

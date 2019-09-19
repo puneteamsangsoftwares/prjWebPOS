@@ -370,7 +370,7 @@ public class clsPOSJasperFormat4ForBill
 			hm.put("ClientAddressLine2", objSetupHdModel.getStrAddressLine2());
 			hm.put("ClientAddressLine3", objSetupHdModel.getStrAddressLine3());
 			hm.put("ClientCity", objSetupHdModel.getStrCityName());
-			hm.put("TEL NO", String.valueOf(objSetupHdModel.getIntTelephoneNo()));
+			hm.put("TEL NO", String.valueOf(objSetupHdModel.getStrTelephoneNo()));
 			hm.put("EMAIL ID", objSetupHdModel.getStrEmail());
 			strPrintTimeOnBill = objSetupHdModel.getStrPrintTimeOnBill();
 			strPrintOpenItemsOnBill = objSetupHdModel.getStrPrintOpenItemsOnBill();
@@ -766,8 +766,11 @@ public class clsPOSJasperFormat4ForBill
 
 			List<List<clsPOSBillDtl>> listData = new ArrayList<>();
 			listData.add(listOfBillDetail);
-			Map objSetupParameter = objSetupService.funGetParameterValuePOSWise(strClientCode, strPosCode, "gShowBill");
-			if (!objSetupParameter.get("gShowBill").toString().equals("Y"))
+		
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,strPosCode);
+			
+			//Map objSetupParameter = objSetupService.funGetParameterValuePOSWise(strClientCode, strPosCode, "gShowBill");
+			if (!objSetupHdModel.getStrShowBill().equals("Y"))
 			{
 				funGetPrinterDetails(strServerBillPrinterName, strPosCode);
 			}

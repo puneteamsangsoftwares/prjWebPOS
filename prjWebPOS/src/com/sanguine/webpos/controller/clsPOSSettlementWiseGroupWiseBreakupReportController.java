@@ -29,6 +29,7 @@ import com.sanguine.base.service.intfBaseService;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsManagerReportBean;
 import com.sanguine.webpos.bean.clsPOSReportBean;
+import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.sevice.clsPOSReportService;
 import com.sanguine.webpos.util.clsPOSSendMail;
@@ -97,8 +98,12 @@ public class clsPOSSettlementWiseGroupWiseBreakupReportController {
 			}
 			model.put("posList",poslist);
 			
-			 Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-			 model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
+			clsSetupHdModel objSetupHdModel=null;
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+			String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+			model.put("gEnableShiftYN", gEnableShiftYN);
+			// Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+			// model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
 			
 			String posDate = request.getSession().getAttribute("gPOSDate").toString();
 			request.setAttribute("POSDate", posDate);
@@ -133,8 +138,13 @@ public class clsPOSSettlementWiseGroupWiseBreakupReportController {
 				String strUserCode = hm.get("userName").toString();
 				String strPOSCode = posCode;
 				String strShiftNo = "ALL";
-				Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-				if(objSetupParameter.get("gEnableShiftYN").toString().equals("Y"))
+				clsSetupHdModel objSetupHdModel=null;
+				objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+				String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+			
+				
+				//Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+				if(gEnableShiftYN.equals("Y"))
 				{
 					strShiftNo=objBean.getStrShiftCode();
 				}

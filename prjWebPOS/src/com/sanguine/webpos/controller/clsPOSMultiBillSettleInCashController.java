@@ -27,6 +27,7 @@ import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSAssignHomeDeliveryBean;
 import com.sanguine.webpos.bean.clsPOSMultiBillSettleInCashBean;
 import com.sanguine.webpos.model.clsSettlementMasterModel;
+import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.model.clsTableMasterModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.sevice.clsPOSTransactionService;
@@ -323,8 +324,11 @@ public class clsPOSMultiBillSettleInCashController {
 		clsPOSMultiBillSettleInCashBean obj ;
 		StringBuilder sb = new StringBuilder();
 		List listUnsettleTable = new ArrayList<>();
-		Map hmBillType = objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gShowBillsType");
-		String gShowBillsType = hmBillType.get("gShowBillsType").toString();
+		clsSetupHdModel objSetupHdModel=null;
+		objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,posCode);
+		String gShowBillsType=objSetupHdModel.getStrShowBillsDtlType();
+		//Map hmBillType = objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gShowBillsType");
+		//String gShowBillsType = hmBillType.get("gShowBillsType").toString();
 		if (gShowBillsType.equalsIgnoreCase("Table Detail Wise"))
 		{
 			sb.append( "select a.strBillNo,ifnull(b.strTableNo,''),ifnull(b.strTableName,''),ifnull(c.strWaiterNo,'') "

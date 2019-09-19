@@ -37,6 +37,7 @@ import com.sanguine.base.service.intfBaseService;
 import com.sanguine.webpos.bean.clsPOSCounterMasterBean;
 import com.sanguine.webpos.bean.clsPOSReportBean;
 import com.sanguine.webpos.comparator.clsCounterComparator;
+import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 
 @Controller
@@ -112,7 +113,19 @@ public class clsPOSCounterWiseSalesReportController
 		String reportType=objBean.getStrDocType();
 		String fromDate=objBean.getFromDate();
 		String toDate= objBean.getToDate();
-		Map companyName=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gClientName");
+		clsSetupHdModel objSetupHdModel=null;
+		try
+		{
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,posCode);
+		}
+		catch (Exception e1)
+		{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		String companyName=objSetupHdModel.getStrClientName();
+		
+		//Map companyName=objSetupService.funGetParameterValuePOSWise(clientCode, posCode, "gClientName");
 		String reportName="";
 		String imagePath="";
 		try{

@@ -21,7 +21,8 @@ public class clsSetupDao
 
 	@Autowired
 	private SessionFactory	webPOSSessionFactory;
-
+	
+/*
 	@SuppressWarnings("finally")
 	public JSONObject funGetParameterValuePOSWise(String clientCode, String posCode, String parameterName)
 	{
@@ -279,7 +280,7 @@ public class clsSetupDao
 		}			
 	}
 	
-	
+	*/
 	
 	@SuppressWarnings("finally")
 	public JSONObject funGetAllParameterValuesPOSWise(String clientCode, String posCode)

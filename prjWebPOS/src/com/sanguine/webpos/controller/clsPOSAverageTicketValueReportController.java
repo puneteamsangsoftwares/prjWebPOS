@@ -50,6 +50,7 @@ import com.sanguine.webpos.comparator.clsPOSBillComparator;
 import com.sanguine.webpos.comparator.clsPOSGroupSubGroupWiseSalesComparator;
 import com.sanguine.webpos.comparator.clsPOSOperatorComparator;
 import com.sanguine.webpos.comparator.clsWaiterWiseAPCComparator;
+import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.model.clsShiftMasterModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.sevice.clsPOSReportService;
@@ -112,9 +113,14 @@ public class clsPOSAverageTicketValueReportController
 
 		String posDate = request.getSession().getAttribute("gPOSDate").toString();
 		request.setAttribute("POSDate", posDate);
-
-		Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-		model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
+		
+		clsSetupHdModel objSetupHdModel=null;
+		objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+		String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+		model.put("gEnableShiftYN", gEnableShiftYN);
+		
+		//Map objSetupParameter=objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+		//model.put("gEnableShiftYN",objSetupParameter.get("gEnableShiftYN").toString());
 		//Shift 
 				List shiftList = new ArrayList();
 				shiftList.add("All");
@@ -155,6 +161,7 @@ public class clsPOSAverageTicketValueReportController
 			String POSCode = req.getSession().getAttribute("loginPOS").toString();
 			String strClientCode = req.getSession().getAttribute("gClientCode").toString();
 			Map hm = objGlobalFunctions.funGetCommonHashMapForJasperReport(objBean, req, resp);
+			clsSetupHdModel objSetupHdModel=null;
 			String strPOSName = objBean.getStrPOSName();
 			String posCode = "ALL";
 			List listOfPos = objMasterService.funFullPOSCombo(strClientCode);
@@ -176,15 +183,18 @@ public class clsPOSAverageTicketValueReportController
 			String strUserCode = hm.get("userName").toString();
 			String strPOSCode = posCode;
 			String shiftNo = "ALL";
-			Map objSetupParameter = objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
-			if (objSetupParameter.get("gEnableShiftYN").toString().equals("Y"))
+		
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
+			String gEnableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();
+			//Map objSetupParameter = objSetupService.funGetParameterValuePOSWise(strClientCode, POSCode, "gEnableShiftYN");
+			if ( gEnableShiftYN.equals("Y"))
 			{
 				shiftNo = objBean.getStrShiftCode();
 			}
 			hm.remove("shiftNo");
 			hm.put("shiftNo", shiftNo);
 
-			funInsertData(fromDate, toDate, posCode, shiftNo, objSetupParameter.get("gEnableShiftYN").toString());
+			funInsertData(fromDate, toDate, posCode, shiftNo,  gEnableShiftYN);
 			
 			
 			
