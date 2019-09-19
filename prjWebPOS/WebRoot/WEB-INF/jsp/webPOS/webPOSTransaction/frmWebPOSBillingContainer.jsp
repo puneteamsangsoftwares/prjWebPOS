@@ -14,7 +14,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<script type="text/javascript" src="<spring:url value="/resources/js/print.min.js"/>"></script>
-		<link rel="stylesheet"  href="<spring:url value="/resources/css/print.css"/>" />
+		
 		
 <title>
 </title>

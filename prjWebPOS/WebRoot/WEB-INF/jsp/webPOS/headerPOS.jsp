@@ -155,23 +155,23 @@ function stopRKey(evt) {
   	</head>
 	<body>
 			
-		<div class="row01" style="background-color: #fff;display: -webkit-box;margin-bottom: -15px;">
+		<div class="row01" style="background-color: #fff;display: -webkit-box;margin-bottom: -55px;height:18% ;">
 		
-		    <div class="element-input col-lg-6" style="width: 20%;margin-top: 10px;margin-left: 50px;">
-				<input type="text" class="menusearchTextBox" id="txtSearch" onkeypress="funGetKeyPressSeachFormName(event);" style="height: 27px;width: 85%;" placeholder="Search..."></input>
+		    <div class="element-input col-lg-6" style="width: 20%;margin-top: 0px;margin-left: 50px;">
+				<img  src="../${pageContext.request.contextPath}/resources/newdesign/images/companyLogo.png" title="LOGOUT" Style="width: 85%;height:90%;">
 			</div>
 			
-			<div class="col-lg-3 col-md-3 col-sm-2 col-xs-4" id="formname" style="width: 18%;color:rgba(83,159,225,1);margin-top: 15px;font-weight: bold;"> 
-              	<label> ${gPOSName} &nbsp;&nbsp; 
-               	</label>  
+			<div class="col-lg-3 col-md-3 col-sm-2 col-xs-4" id="formname" style="width: 18%;color:rgba(83,159,225,1);margin-top: 15px;margin-left: 50px;font-weight: bold;"> 
+              	 <label> ${gPOSName} <!-- &nbsp;&nbsp;  -->
+               	</label> 
            </div>
            
            <div class="col-lg-3 col-md-3 col-sm-2 col-xs-4" id="formname" style="width: 15%;color:rgba(83,159,225,1);margin-top: 15px;font-weight: bold;">
-             	 <label>${gUserName} &nbsp;&nbsp;</label>
+             	 <label>${gUserName} <!-- &nbsp;&nbsp; --></label>
            </div>
 
 			<div class="col-lg-3 col-md-3 col-sm-2 col-xs-4" id="formname" style="width: 11%;color:rgba(83,159,225,1);margin-top: 15px;font-weight: bold;"> 
-              	<label id="lblPOSDate"> &nbsp;&nbsp; 
+              	<label id="lblPOSDate"> <!-- &nbsp;&nbsp;  -->
               	</label>  
            </div>
            
@@ -180,14 +180,28 @@ function stopRKey(evt) {
            </div>
            
             <div class="col-lg-3 col-md-3 col-sm-2 col-xs-4" id="formname" style="width: 7%; color:rgba(83,159,225,1);margin-top: 15px;font-weight: bold;">
-             	 <label>${gPOSModuleNameForPrint} &nbsp;&nbsp;</label>
+             	 <label>${gPOSModuleNameForPrint} <!-- &nbsp;&nbsp; --></label>
            </div>
            
            
 
 
 
-			 <div style="width:12%;margin-top: 10px;margin-bottom: 10px;margin-left: 4%;">
+			
+			
+		</div>
+		
+		<div class="row01" style="background-color: #fff;display: -webkit-box;margin-bottom: -15px;">
+		
+		<div class="col-lg-3 col-md-3 col-sm-2 col-xs-4" id="formname" style="width: 18%;color:rgba(83,159,225,1);margin-top: 15px;margin-left: 50px;font-weight: bold;"> 
+              	<%-- <label> ${gPOSName} &nbsp;&nbsp; 
+               	</label>   --%>
+           </div>
+		<div class="element-input col-lg-6" style="width: 22%;margin-top: 10px;margin-left: 17%;">
+				<input type="text" class="menusearchTextBox" id="txtSearch" onkeypress="funGetKeyPressSeachFormName(event);" style="height: 27px;width: 85%;margin-top: 12px;" placeholder="Search..."></input>
+			</div>
+			
+		 <div style="width:200px;margin-top: 10px;margin-bottom: 10px;margin-left: 17%;">
 			 
 				<div class="element-input col-lg-6" style="max-width: 100%;float: right;">
 					
@@ -209,7 +223,6 @@ function stopRKey(evt) {
 				</div>
 				
 			</div>	
-			
 			
 		</div>
 
