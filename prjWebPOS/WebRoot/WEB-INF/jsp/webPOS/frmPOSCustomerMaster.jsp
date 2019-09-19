@@ -11,38 +11,43 @@
 <link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/jquery-confirm.min.css"/>"/>
 <script type="text/javascript" src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
 <script type="text/javascript" src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
+<script type="text/javascript" src="<spring:url value="/resources/js/jquery.autocomplete.min.js"/>"></script>
  <script type="text/javascript">
  	
  
+ 
  	var fieldName="";
+ 	var mapCustCodeName=new Map();
  	 $(document).ready(function () {
-		 /*  $('input#txtCustomerCode').mlKeyboard({layout: 'en_US'});
-		  $('input#txtAddress').mlKeyboard({layout: 'en_US'});
-		  $('input#txtMobileNo').mlKeyboard({layout: 'en_US'});
-		  $('input#txtExternalCode').mlKeyboard({layout: 'en_US'});
-		  $('input#txtCustomerName').mlKeyboard({layout: 'en_US'});
-		  $('input#txtEmailId').mlKeyboard({layout: 'en_US'});
-		  $('input#strCustomerType').mlKeyboard({layout: 'en_US'});
-		  $('input#txtDOB').mlKeyboard({layout: 'en_US'});
-		  $('input#txtArea').mlKeyboard({layout: 'en_US'});
-		  $('input#strGender').mlKeyboard({layout: 'en_US'});
-		  $('input#txtBuldingCode').mlKeyboard({layout: 'en_US'});
-		  $('input#txtAnniversary').mlKeyboard({layout: 'en_US'});
-		  $('input#txtStreetName').mlKeyboard({layout: 'en_US'});
-		  $('input#txtLandmark').mlKeyboard({layout: 'en_US'});
-		  $('input#txtPinCode').mlKeyboard({layout: 'en_US'});
-		  $('input#strCity').mlKeyboard({layout: 'en_US'});
-		  $('input#txtOfficeBuildingCode').mlKeyboard({layout: 'en_US'});
-		  $('input#strOfficeCity').mlKeyboard({layout: 'en_US'});
-		  $('input#txtOfficeBuildingName').mlKeyboard({layout: 'en_US'});
-		  $('input#txtOfficeNo').mlKeyboard({layout: 'en_US'});
-		  $('input#txtOfficeStreetName').mlKeyboard({layout: 'en_US'});
-		  $('input#txtOfficeArea').mlKeyboard({layout: 'en_US'});
-		  $('input#txtOfficePinCode').mlKeyboard({layout: 'en_US'});
-		  $('input#strOfficeState').mlKeyboard({layout: 'en_US'}); */
-		
-		  
-		});  
+		$('#txtCustomerName').autocomplete({
+ 			serviceUrl: '${pageContext.request.contextPath}/getAutoSearchData.html?formname=customerName',  
+ 			paramName: "searchBy",
+ 			delimiter: ",",
+ 		    transformResult: function(response) {
+ 		    	mapCustCodeName=new Map();
+ 			return {
+ 			  //must convert json to javascript object before process
+ 			  suggestions: $.map($.parseJSON(response), function(item) {
+ 			       // strValue  strCode
+ 			        mapCustCodeName.set(item.strValue,item.strCode);
+ 			      	return { value: item.strValue, data: item.strCode };
+ 			   })
+ 			            
+ 			 };
+ 			        
+ 	        }
+ 		 });
+		 
+			$('#txtCustomerName').blur(function() {
+					var code=mapCustCodeName.get($('#txtCustomerName').val());
+					if(code!='' && code!=null){
+						funSetDataCustomer(code);	
+					}
+					
+			});
+		}); 
+ 	 
+ 	
  	 
  	 // Calender Date Picker
  	 $(function() 
@@ -121,7 +126,7 @@
 		
 		function mobilenumber() 
 		{
-			var flg=true;
+			var flg=false;
 		    if(document.getElementById('txtMobileNo').value != "")
 		    {
 			   var y = document.getElementById('txtMobileNo').value;
@@ -138,6 +143,10 @@
 				   flg=funCheckMobileNumberValidation(y);
 			   }	   
 		    }
+		    else{
+		    	 confirmDialog("Please Check Mobile No.","");
+		    	 return flg;
+		    }
 	      return flg;
 	   }
 		
@@ -146,20 +155,20 @@
 			var flg=true;	
 			 if(isNaN(mobileNo)||mobileNo.indexOf(" ")!=-1)
 		       {
-				 confirmDialog("Invalid Mobile No.","");
+				  confirmDialog("Invalid Mobile No.","");
 		          document.getElementById('txtMobileNo').focus();
 		          flg=false;
 		       }
 	
 		       if (mobileNo.length>10 || mobileNo.length<10)
 		       {
-		    	   confirmDialog("Mobile No. should be 10 digit","");
+		    	    confirmDialog("Mobile No. should be 10 digit","");
 		            document.getElementById('txtMobileNo').focus();
 		            flg=false; 
 		       }
 		       if (!(mobileNo.charAt(0)=="9" || mobileNo.charAt(0)=="8" || mobileNo.charAt(0)=="7"))
 		       {
-		    	   confirmDialog("Mobile No. should start with 9 ,8 or 7 ","");
+		    	    confirmDialog("Mobile No. should start with 9 ,8 or 7 ","");
 		            document.getElementById('txtMobileNo').focus();
 		            flg=false;
 		       }
@@ -280,7 +289,7 @@
 					        	$("#txtMobileNo").val(response.intlongMobileNo);
 					        	$("#txtEmailId").val(response.strEmailId);
 					        	$("#txtCustomerName").val(response.strCustomerName);
-					        	$("#txtCustomerName").focus();
+					        	//$("#txtCustomerName").focus();
 					        	$("#txtCustomerType").val(response.strCustomerType);
 					        	$("#txtDOB").val(response.dteDOB);
 					        	$("#txtBuldingCode").val(response.strBuldingCode);
@@ -451,6 +460,7 @@
 	    				<div class="element-input col-lg-6" style="margin-bottom: 5px;width: 20%;"> 
 							<s:input class="large" colspan="3" type="text" id="txtCustomerName" path="strCustomerName" />
 						</div>
+						
 						<div class="element-input col-lg-6" style="width: 15%; margin-left:80px;margin-top:5px" > 
 	    					<label class="title">Gender</label>
 	    				</div>

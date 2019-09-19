@@ -28,6 +28,7 @@ import com.sanguine.base.service.intfBaseService;
 import com.sanguine.bean.clsFormSearchElements;
 import com.sanguine.service.clsGlobalFunctionsService;
 import com.sanguine.service.clsSetupMasterService;
+import com.sanguine.webpos.bean.clsPOSAutoSeachResult;
 import com.sanguine.webpos.model.clsSubGroupMasterHdModel;
 
 @Controller
@@ -2057,4 +2058,42 @@ public class clsSearchFormController
 		return listSearchForm;
 	}
 
+	
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value="/getAutoSearchData",method=RequestMethod.GET)
+	public @ResponseBody List funGetAutoSearchData(@RequestParam("searchBy") String searchBy, HttpServletRequest req)
+	{
+		List listSreachData=new ArrayList<>();
+		try{
+			String strFormName="";
+			if(req.getParameter("formname")!=null){
+				 strFormName=req.getParameter("formname").toString();
+			}
+		String strClientCode=req.getSession().getAttribute("gClientCode").toString();	
+		StringBuilder sbSql=new StringBuilder();
+			switch(strFormName){
+			 	
+				case "customerName" :
+					sbSql=new StringBuilder("select a.strCustomerCode,a.strCustomerName from tblcustomermaster a where a.strClientCode='"+strClientCode+"' and a.strCustomerName like '%"+searchBy+"%' ");
+					break;
+					
+			}
+			
+			List list = objBaseService.funGetList(sbSql, "sql");
+			clsPOSAutoSeachResult objPOSAutoSeachResult=new clsPOSAutoSeachResult(); 
+			if(list !=null && list.size()>0){
+				for(int k=0;k<list.size();k++){
+					objPOSAutoSeachResult=new clsPOSAutoSeachResult();
+					Object ob[]=(Object[])list.get(k);
+					
+					objPOSAutoSeachResult.setStrCode(ob[0].toString());
+					objPOSAutoSeachResult.setStrValue(ob[1].toString());
+					listSreachData.add(objPOSAutoSeachResult);
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return listSreachData;
+	}
 }

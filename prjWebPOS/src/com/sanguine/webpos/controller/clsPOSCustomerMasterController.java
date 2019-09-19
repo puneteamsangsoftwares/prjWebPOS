@@ -287,6 +287,8 @@ public class clsPOSCustomerMasterController
 		}
 	}
 
+	
+	
 	// Assign filed function to set data onto form for edit transaction.
 	@RequestMapping(value = "/loadPOSCustomerMasterData", method = RequestMethod.GET)
 	public @ResponseBody clsPOSCustomerMasterBean funSetSearchFields(@RequestParam("POSCustomerCode") String CustomerCode, HttpServletRequest req)throws Exception
