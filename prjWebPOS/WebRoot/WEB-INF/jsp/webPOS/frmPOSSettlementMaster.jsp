@@ -14,13 +14,17 @@
 	src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
 <script type="text/javascript"
 	src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
+	<script type="text/javascript" src="<spring:url value="/resources/js/jquery.autocomplete.min.js"/>"></script>
+
+	
 <script type="text/javascript">
+var mapAreaCodeName=new Map();
 	$(document).ready(function() 
 	{
 	  /* $('input#txtSettelmentCode').mlKeyboard({layout: 'en_US'});*/
-	  $('input#txtSettelmentDesc').mlKeyboard({layout: 'en_US'});
-	  $('input#txtConversionRatio').mlKeyboard({layout: 'en_US'});
-	  $('input#txtAccountCode').mlKeyboard({layout: 'en_US'}); 
+	  //$('input#txtSettelmentDesc').mlKeyboard({layout: 'en_US'});
+	  //$('input#txtConversionRatio').mlKeyboard({layout: 'en_US'});
+	  //$('input#txtAccountCode').mlKeyboard({layout: 'en_US'}); 
 		$(".tab_content").hide();
 		$(".tab_content:first").show();
 
@@ -51,6 +55,36 @@
 				  return flg;
 			  }
 			});
+		  
+		  
+		  
+		  
+		  $('#txtSettelmentDesc').autocomplete({
+	 			serviceUrl: '${pageContext.request.contextPath}/getAutoSearchData.html?formname=settelmentName',  
+	 			paramName: "searchBy",
+	 			delimiter: ",",
+	 		    transformResult: function(response) {
+	 		    	mapAreaCodeName=new Map();
+	 			return {
+	 			  //must convert json to javascript object before process
+	 			  suggestions: $.map($.parseJSON(response), function(item) {
+	 			       // strValue  strCode
+	 			        mapAreaCodeName.set(item.strValue,item.strCode);
+	 			      	return { value: item.strValue, data: item.strCode };
+	 			   })
+	 			            
+	 			 };
+	 			        
+	 	        }
+	 		 });
+			 
+				$('#txtSettelmentDesc').blur(function() {
+						var code=mapAreaCodeName.get($('#txtSettelmentDesc').val());
+						if(code!='' && code!=null){
+							funSetSettlement(code);	
+						}
+						
+				});
 	});
 </script>
 <script type="text/javascript">

@@ -2120,6 +2120,11 @@ public class clsSearchFormController
 				case "subGroupName" :
 					sbSql=new StringBuilder("SELECT a.strSubGroupCode,a.strSubGroupName FROM tblsubgrouphd a where a.strClientCode='"+strClientCode+"' and a.strSubGroupName like '%"+searchBy+"%' ");
 					break;	
+					
+				case "settelmentName" :
+					sbSql=new StringBuilder("SELECT a.strSettlementCode,a.strSettlementName FROM tblsettlementtax a where a.strClientCode='"+strClientCode+"' and a.strSettlementName like '%"+searchBy+"%' ");
+					break;	
+					
 			}
 			
 			List list = objBaseService.funGetList(sbSql, "sql");
@@ -2127,8 +2132,7 @@ public class clsSearchFormController
 			if(list !=null && list.size()>0){
 				for(int k=0;k<list.size();k++){
 					objPOSAutoSeachResult=new clsPOSAutoSeachResult();
-					Object ob[]=(Object[])list.get(k);
-					
+					Object ob[]=(Object[])list.get(k);					
 					objPOSAutoSeachResult.setStrCode(ob[0].toString());
 					objPOSAutoSeachResult.setStrValue(ob[1].toString());
 					listSreachData.add(objPOSAutoSeachResult);

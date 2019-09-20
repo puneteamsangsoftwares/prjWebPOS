@@ -31,32 +31,33 @@ $(document).ready(function () {
 		  }
 		});
 	  
-	  $('#txtSubGroupName').autocomplete({
-			serviceUrl: '${pageContext.request.contextPath}/getAutoSearchData.html?formname=subGroupName',  
-			paramName: "searchBy",
-			delimiter: ",",
-		    transformResult: function(response) {
-		    	mapAreaCodeName=new Map();
-			return {
-			  //must convert json to javascript object before process
-			  suggestions: $.map($.parseJSON(response), function(item) {
-			       // strValue  strCode
-			        mapAreaCodeName.set(item.strValue,item.strCode);
-			      	return { value: item.strValue, data: item.strCode };
-			   })
-			            
-			 };
-			        
-	        }
-		 });
-		 
-			$('#txtSubGroupName').blur(function() {
-					var code=mapAreaCodeName.get($('#txtSubGroupName').val());
-					if(code!='' && code!=null){
-						funSetData(code);	
-					}
-					
-			});
+	  $(document).ready(function () {
+			$('#txtSubGroupName').autocomplete({
+				serviceUrl: '${pageContext.request.contextPath}/getAutoSearchData.html?formname=subGroupName',  
+				paramName: "searchBy",
+				delimiter: ",",
+			    transformResult: function(response) {
+			    	mapAreaCodeName=new Map();
+				return {
+				  //must convert json to javascript object before process
+				  suggestions: $.map($.parseJSON(response), function(item) {
+				       // strValue  strCode
+				        mapAreaCodeName.set(item.strValue,item.strCode);
+				      	return { value: item.strValue, data: item.strCode };
+				   })
+				            
+				 };
+				        
+		        }
+			 });
+			 
+				$('#txtSubGroupName').blur(function() {
+						var code=mapAreaCodeName.get($('#txtSubGroupName').val());
+						if(code!='' && code!=null){
+							funSetData(code);	
+						}
+						
+				});
 	  
 	  
 	});
@@ -65,7 +66,7 @@ $(document).ready(function () {
 	
 	
 	
-	$(document).ready(function () {
+	
 		  //$('input#txtSubGroupName').mlKeyboard({layout: 'en_US'});
 		  //$('input#txtIncetives').mlKeyboard({layout: 'en_US'});
 		}); 
