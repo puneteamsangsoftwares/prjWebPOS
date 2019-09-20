@@ -154,7 +154,7 @@ function stopRKey(evt) {
   	</head>
 	<body>
 			
-		<div class="row01" style="background-color: #fff;display: -webkit-box;margin-bottom: -55px;height:18% ;">
+		<div class="row01" style="background-color: #fff;display: -webkit-box;margin-bottom: -20px;height:18% ;">
 		
 		    <div class="element-input col-lg-6" style="width: 20%;margin-top: 0px;margin-left: 50px;">
 				<img  src="../${pageContext.request.contextPath}/resources/newdesign/images/companyLogo.png" title="LOGOUT" Style="width: 85%;height:90%;">
