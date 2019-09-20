@@ -34,9 +34,20 @@ public class clsPOSCommonBeanDtl {
     private String monthCode;
     private String monthName;
     private String year;
+    private int paxNo;
     
     
-    public clsPOSCommonBeanDtl()
+    public int getPaxNo()
+	{
+		return paxNo;
+	}
+
+	public void setPaxNo(int paxNo)
+	{
+		this.paxNo = paxNo;
+	}
+
+	public clsPOSCommonBeanDtl()
     {
     }
     
@@ -99,6 +110,15 @@ public class clsPOSCommonBeanDtl {
     }
     //for hourly wise sales
 
+    public clsPOSCommonBeanDtl(double saleAmount, String startHrs, String endHrs, double noOfBills,int paxNo)
+    {
+        this.saleAmount = saleAmount;
+        this.startHrs = startHrs;
+        this.endHrs = endHrs;
+        this.noOfBills = noOfBills;
+        this.paxNo=paxNo;
+    }
+    
     public clsPOSCommonBeanDtl(double saleAmount, String startHrs, String endHrs, double noOfBills)
     {
         this.saleAmount = saleAmount;

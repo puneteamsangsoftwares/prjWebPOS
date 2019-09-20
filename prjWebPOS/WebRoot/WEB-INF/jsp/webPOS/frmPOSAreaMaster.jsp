@@ -119,7 +119,7 @@ var mapAreaCodeName=new Map();
 			        	{
 				        	$("#txtAreaCode").val(response.strAreaCode);
 				        	$("#txtAreaName").val(response.strAreaName);
-				        	$("#txtAreaName").focus();
+				        	//$("#txtAreaName").focus();
 				        	$("#cmbPOSName").val(response.strPOSName);	
 			        	}
 					},

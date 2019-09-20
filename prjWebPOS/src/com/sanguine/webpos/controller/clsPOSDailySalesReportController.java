@@ -157,7 +157,7 @@ public class clsPOSDailySalesReportController {
 				String strUserCode = hm.get("userName").toString();
 				String strPOSCode = posCode;
 				String strShiftNo = "ALL",enableShiftYN="N";
-				
+				String strNoOfBills = posCode;
 				clsSetupHdModel objSetupHdModel=null;
 				objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(strClientCode,POSCode);
 				
@@ -166,6 +166,7 @@ public class clsPOSDailySalesReportController {
 				{
 					
 				if(objSetupHdModel.getStrShiftWiseDayEndYN().equals("Y"))
+				if(!objBean.getStrShiftCode().equalsIgnoreCase("All"))
 				{
 					strShiftNo=objBean.getStrShiftCode();
 					enableShiftYN=objSetupHdModel.getStrShiftWiseDayEndYN();

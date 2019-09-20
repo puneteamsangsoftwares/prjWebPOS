@@ -504,8 +504,7 @@ $P{decimalFormaterForDoubleValue}]]></patternExpression>
 					<font fontName="Trebuchet MS" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{gDiscount}]]></textFieldExpression>
-				<patternExpression><![CDATA[
-$P{decimalFormaterForDoubleValue}]]></patternExpression>
+				<patternExpression><![CDATA[$P{decimalFormaterForDoubleValue}]]></patternExpression>
 			</textField>
 			<textField pattern="###0.00">
 				<reportElement uuid="8a8e0df8-83bb-401c-b1a3-6097f45a6260" x="212" y="6" width="50" height="20"/>
@@ -547,8 +546,7 @@ $P{decimalFormaterForDoubleValue}]]></patternExpression>
 					<font fontName="Trebuchet MS" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{gSettleAmt}]]></textFieldExpression>
-				<patternExpression><![CDATA[
-$P{decimalFormaterForDoubleValue}]]></patternExpression>
+				<patternExpression><![CDATA[$P{decimalFormaterForDoubleValue}]]></patternExpression>
 			</textField>
 			<line>
 				<reportElement uuid="b585eebd-330b-48c3-9451-d927e2c347f0" x="0" y="26" width="555" height="1"/>

@@ -89,12 +89,12 @@ order BY a.strcode,a.strname]]>
 	<field name="strPosName" class="java.lang.String"/>
 	<field name="strSettelmentMode" class="java.lang.String"/>
 	<field name="dblSettlementAmt" class="java.lang.Double"/>
-	<field name="noOfBills" class="java.lang.Integer"/>
+	<field name="dblNoOfBills" class="java.lang.Double"/>
 	<variable name="vAmount" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{dblSettlementAmt}]]></variableExpression>
 	</variable>
-	<variable name="vNoOfBills" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[$F{noOfBills}]]></variableExpression>
+	<variable name="vdblNoOfBills" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{dblNoOfBills}]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -248,7 +248,8 @@ order BY a.strcode,a.strname]]>
 			<textField pattern="###0">
 				<reportElement uuid="bae327f2-527d-4847-b3fd-18adad81032c" x="348" y="10" width="54" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{noOfBills}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{dblNoOfBills}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{decimalFormaterForDoubleValue}]]></patternExpression>
 			</textField>
 			<textField pattern="###0.00">
 				<reportElement uuid="bae327f2-527d-4847-b3fd-18adad81032c" x="412" y="10" width="104" height="20"/>
@@ -338,7 +339,7 @@ order BY a.strcode,a.strname]]>
 			<textField pattern="###0">
 				<reportElement uuid="2c2a7b08-1f46-4a6b-9ec5-72fb2682fcb0" x="348" y="4" width="54" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$V{vNoOfBills}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{vdblNoOfBills}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

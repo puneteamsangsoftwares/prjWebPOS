@@ -24,6 +24,7 @@
     height: 200px;
 }
 </style>
+<script type="text/javascript" src="<spring:url value="/resources/js/jquery.autocomplete.min.js"/>"></script>
 <script type="text/javascript">
 
 /*On form Load It Reset form :Ritesh 22 Nov 2014*/
@@ -51,6 +52,36 @@
 				document.getElementById("txtShiftCode").style.visibility = "hidden"; 
 				
 			}
+			
+			
+			
+			
+			$('#txtZoneName').autocomplete({
+	 			serviceUrl: '${pageContext.request.contextPath}/getAutoSearchData.html?formname=zoneName',  
+	 			paramName: "searchBy",
+	 			delimiter: ",",
+	 		    transformResult: function(response) {
+	 		    	mapAreaCodeName=new Map();
+	 			return {
+	 			  //must convert json to javascript object before process
+	 			  suggestions: $.map($.parseJSON(response), function(item) {
+	 			       // strValue  strCode
+	 			        mapAreaCodeName.set(item.strValue,item.strCode);
+	 			      	return { value: item.strValue, data: item.strCode };
+	 			   })
+	 			            
+	 			 };
+	 			        
+	 	        }
+	 		 });
+			 
+				$('#txtZoneName').blur(function() {
+						var code=mapAreaCodeName.get($('#txtZoneName').val());
+						if(code!='' && code!=null){
+							funSetData(code);	
+						}
+						
+				});
 	
 }); 
 

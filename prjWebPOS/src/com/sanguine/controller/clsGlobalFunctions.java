@@ -231,6 +231,10 @@ public class clsGlobalFunctions
 		{
 			op = defaultValue;
 		}
+		else if(input=="null")
+		{
+			op = defaultValue;
+		}
 		else
 		{
 			op = assignedValue;
@@ -521,7 +525,14 @@ public class clsGlobalFunctions
 		String fromDateToDisplay = objBean.getFromDate();
 		String toDateToDisplay = objBean.getToDate();
 		String shiftNo = "ALL";
-		shiftNo = req.getSession().getAttribute("gShiftNo").toString();
+		if(objBean.getStrShiftCode()!=null)
+		{		
+			if(!objBean.getStrShiftCode().equalsIgnoreCase("All"))
+			{
+				shiftNo = objBean.getStrShiftCode();
+			}
+		}
+		//shiftNo = req.getSession().getAttribute("gShiftNo").toString();
 		String fromDate = objBean.getFromDate().split("-")[2] + "-" + objBean.getFromDate().split("-")[1] + "-" + objBean.getFromDate().split("-")[0];
 
 		String toDate = objBean.getToDate().split("-")[2] + "-" + objBean.getToDate().split("-")[1] + "-" + objBean.getToDate().split("-")[0];

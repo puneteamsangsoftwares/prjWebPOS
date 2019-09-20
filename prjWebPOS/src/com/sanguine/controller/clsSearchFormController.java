@@ -2070,6 +2070,7 @@ public class clsSearchFormController
 				 strFormName=req.getParameter("formname").toString();
 			}
 		String strClientCode=req.getSession().getAttribute("gClientCode").toString();	
+		String posCode=req.getSession().getAttribute("loginPOS").toString();
 		StringBuilder sbSql=new StringBuilder();
 			switch(strFormName){
 			 	
@@ -2098,6 +2099,26 @@ public class clsSearchFormController
 					
 				case "deliveryBoyName" :
 					sbSql=new StringBuilder("select a.strDPCode,a.strDPName from tbldeliverypersonmaster a where a.strClientCode='"+strClientCode+"' and a.strDPName like '%"+searchBy+"%' ");
+					break;	
+					//satyajit
+				case "zoneName" :
+					sbSql=new StringBuilder("SELECT a.strZoneCode,a.strZoneName FROM tblzonemaster a where a.strClientCode='"+strClientCode+"' and a.strZoneName like '%"+searchBy+"%' ");
+					break;	
+					
+				case "fullName" :
+					sbSql=new StringBuilder("SELECT a.strWaiterNo,a.strWShortName,a.strWFullName FROM tblwaitermaster a where a.strClientCode='"+strClientCode+"' and a.strWFullName like '%"+searchBy+"%' ");
+					break;	
+					
+				case "taxDescName" :
+					sbSql=new StringBuilder("SELECT a.strTaxCode,a.strTaxDesc,a.strTaxType,a.strTaxOnSP,a.dblAmount,a.dblPercent,a.dteValidFrom,a.dteValidTo,a.strBillNote,a.strTaxShortName FROM tbltaxhd a where a.strClientCode='"+strClientCode+"' and a.strTaxDesc like '%"+searchBy+"%' ");
+					break;	
+					
+				case "tableName" :
+					sbSql=new StringBuilder("SELECT a.strTableNo,a.strTableName FROM tbltablemaster a where a.strClientCode='"+strClientCode+"' and a.strPOSCode='"+posCode+"' and a.strTableName like '%"+searchBy+"%' ");
+					break;	
+					
+				case "subGroupName" :
+					sbSql=new StringBuilder("SELECT a.strSubGroupCode,a.strSubGroupName FROM tblsubgrouphd a where a.strClientCode='"+strClientCode+"' and a.strSubGroupName like '%"+searchBy+"%' ");
 					break;	
 			}
 			

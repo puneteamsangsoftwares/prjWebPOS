@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.POSGlobal.controller.clsGlobalVarClass;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.ibm.icu.math.BigDecimal;
@@ -78,6 +79,12 @@ public class clsPOSSalesReportController {
 	 List<clsPOSSalesFlashReportsBean> listSalesReport;
 	 List listStockFlashModel;
 	 DecimalFormat decimalFormat;
+	 DecimalFormat decimalFormat2;
+	 DecimalFormat decimalFormat1;
+	 DecimalFormat decimalFormat0;
+	 
+	 
+	 
 	 double totalDiscAmt = 0, totalSubTotal = 0, totalTaxAmt = 0, totalSettleAmt = 0,totalTipAmt = 0;
 	 
 	@RequestMapping(value = "/frmPOSSalesReport", method = RequestMethod.GET)
@@ -229,6 +236,7 @@ public class clsPOSSalesReportController {
 				String ConsolidatePOS=objBean.getStrConsolidatePOS();
 				String ReportName=objBean.getStrReportName();
 				String shiftNo="1";
+				String areaCode="";
 				FromDate=FromDateTime.split(":")[0];
 	 			FromTime=FromDateTime.split(":")[1];
 	 			ToDate=ToDateTime.split(":")[0];
@@ -258,7 +266,7 @@ public class clsPOSSalesReportController {
 	 			
 			    Map resMap = new LinkedHashMap();
 				resMap=FunGetData(strPOSName,FromDateTime,ToDateTime,strOperator,strPayMode,strFromBill,strToBill,reportType,
-	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,gEnableShiftYN,shiftNo);
+	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,gEnableShiftYN,shiftNo,clientCode,operationType,areaCode);
 			
 				List ExportList=new ArrayList();	
 			
@@ -270,6 +278,16 @@ public class clsPOSSalesReportController {
 				int  rowCount=(int) resMap.get("RowCount");
 				int colCount=(int) resMap.get("ColCount");					
 				List List=(List)resMap.get("Header");
+				if(resMap.containsKey("headerList"))
+				{
+					List Listt=(List)resMap.get("headerList");
+					String[] headerListt = new String[List.size()];
+					
+					for(int i = 0; i < Listt.size(); i++){
+						headerListt[i]=(String)Listt.get(i);
+					}
+					ExportList.add(headerListt);
+				}
 				
 				List rowlist=new ArrayList();
 				String[] headerList = new String[List.size()];
@@ -306,139 +324,141 @@ public class clsPOSSalesReportController {
 			switch(ReportName.substring(3))
 			{
 				case "SettlementWise" :
-					TotalHeaderList.add("Total");
-					TotalHeaderList.add("Sales Amount");
+					//TotalHeaderList.add("Total");
+					//TotalHeaderList.add("Sales Amount");
 					break;
 					
 				case "BillWise" :
-					TotalHeaderList.add("Total");
-					TotalHeaderList.add("Sub Total");
-					TotalHeaderList.add("Disc ");
-					TotalHeaderList.add("Tax Total");
-					TotalHeaderList.add("Sales Amount");
-					TotalHeaderList.add("Tip Amount");
+					//TotalHeaderList.add("Total");
+					//TotalHeaderList.add("Sub Total");
+					//TotalHeaderList.add("Disc ");
+					//TotalHeaderList.add("Tax Total");
+					//TotalHeaderList.add("Sales Amount");
+					//TotalHeaderList.add("Tip Amount");
 					break;
 				
 				case "ItemWise" :
-					TotalHeaderList.add("Total");
-					TotalHeaderList.add("Quantity");
-					TotalHeaderList.add("Sales Amount");
-					TotalHeaderList.add("Sub Total");
-					TotalHeaderList.add("Discount ");
+					//TotalHeaderList.add("Total");
+					//TotalHeaderList.add("Quantity");
+					//TotalHeaderList.add("Sales Amount");
+					//TotalHeaderList.add("Sub Total");
+					//TotalHeaderList.add("Discount ");
 					
 					break;
 				case "MenuHeadWise":
-					TotalHeaderList.add("Total");
-					TotalHeaderList.add("Quantity");
-					TotalHeaderList.add("Sales Amount");
-					TotalHeaderList.add("Sub Total");
-					TotalHeaderList.add("Discount ");
+					//TotalHeaderList.add("Total");
+					//TotalHeaderList.add("Quantity");
+					//TotalHeaderList.add("Sales Amount");
+					//TotalHeaderList.add("Sub Total");
+					//TotalHeaderList.add("Discount ");
 					break;
 				case "GroupWise":
-					TotalHeaderList.add("Total");
-					TotalHeaderList.add("Quantity");
-					TotalHeaderList.add("Sub Total");
-					TotalHeaderList.add("Net Total");
-					TotalHeaderList.add("Discount ");
+					//TotalHeaderList.add("Total");
+					//TotalHeaderList.add("Quantity");
+					//TotalHeaderList.add("Sub Total");
+					//TotalHeaderList.add("Net Total");
+					//TotalHeaderList.add("Discount ");
 					break;
 				case "SubGroupWise":
-					TotalHeaderList.add("Total");
-					TotalHeaderList.add("Quantity");
-					TotalHeaderList.add("Sub Total");
-					TotalHeaderList.add("Net Total");
-					TotalHeaderList.add("Discount ");
+					//TotalHeaderList.add("Total");
+					//TotalHeaderList.add("Quantity");
+					//TotalHeaderList.add("Sub Total");
+					//TotalHeaderList.add("Net Total");
+					//TotalHeaderList.add("Discount ");
 					break;
 				case "CustWise":
-					TotalHeaderList.add("Total");
-					TotalHeaderList.add("Quantity");
-					TotalHeaderList.add("Sales Amount");
+					TotalHeaderList.add(" ");
+					TotalHeaderList.add(" ");
+					TotalHeaderList.add(" ");
+					//TotalHeaderList.add("Quantity");
+					//TotalHeaderList.add("Sales Amount");
 					break;
 					
 				case "WaiterWise":
-					TotalHeaderList.add("Total");
-					TotalHeaderList.add("Sales Amount");
+					//TotalHeaderList.add("Total");
+					//TotalHeaderList.add("Sales Amount");
 					break;
 				case "DeliveryBoyWise":
-					TotalHeaderList.add("Total");
-					TotalHeaderList.add("Sales Amount");
+					//TotalHeaderList.add("Total");
+					//TotalHeaderList.add("Sales Amount");
 					break;
 				case "CostCenterWise":
-					TotalHeaderList.add("Total");
-					TotalHeaderList.add("Quantity");
-					TotalHeaderList.add("Sub Total");
-					TotalHeaderList.add("Sales Amount");
-					TotalHeaderList.add("Discount ");
+					//TotalHeaderList.add("Total");
+					//TotalHeaderList.add("Quantity");
+					//TotalHeaderList.add("Sub Total");
+					//TotalHeaderList.add("Sales Amount");
+					//TotalHeaderList.add("Discount ");
 					break;
 				case "HomeDeliveryWise":
-					TotalHeaderList.add("Total");
-					TotalHeaderList.add("Discount ");
-					TotalHeaderList.add("Tax ");
-					TotalHeaderList.add("Sales Amount");
+					//TotalHeaderList.add("Total");
+					//TotalHeaderList.add("Discount ");
+					//TotalHeaderList.add("Tax ");
+					//TotalHeaderList.add("Sales Amount");
 					break;
 				case "TableWise":
-					TotalHeaderList.add("Total");
-					TotalHeaderList.add("Sales Amount");
+					//TotalHeaderList.add("Total");
+					//TotalHeaderList.add("Sales Amount");
 					break;
 				case "HourlyWise":
-					TotalHeaderList.add("Total");
-					TotalHeaderList.add("Sales Amount");
+					/*TotalHeaderList.add("Total");
+					TotalHeaderList.add("Sales Amount");*/
 					break;
 				case "AreaWise":
-					TotalHeaderList.add("Total");
-					TotalHeaderList.add("Sales Amount");
+					/*TotalHeaderList.add("Total");
+					TotalHeaderList.add("Sales Amount");*/
 					break;
 				case "DayWiseSales":				 		
-					TotalHeaderList.add("Total");
+					/*TotalHeaderList.add("Total");
 					TotalHeaderList.add("Total Bill");
 					TotalHeaderList.add("Sub Total");
 					TotalHeaderList.add("Total Discount");
 					TotalHeaderList.add("Tax Total ");
-					TotalHeaderList.add("Total Amount");
+					TotalHeaderList.add("Total Amount");*/
 					break;
 				case "TaxWiseSales":
-					TotalHeaderList.add("Total");
+					/*TotalHeaderList.add("Total");
 					TotalHeaderList.add("Total Taxable");
-					TotalHeaderList.add("Total Tax");
+					TotalHeaderList.add("Total Tax");*/
 					break;
 				case "TipReport":
-					TotalHeaderList.add("Total");
+					/*TotalHeaderList.add("Total");
 					TotalHeaderList.add("Discount");
 					TotalHeaderList.add("Sub Total");
 					TotalHeaderList.add("Tax Total ");
 					TotalHeaderList.add("Tip Amount");
-					TotalHeaderList.add("Sales Amount");
+					TotalHeaderList.add("Sales Amount");*/
 					break;
 				case "ItemModifierWise":
-					TotalHeaderList.add("Total");
+					/*TotalHeaderList.add("Total");
 					TotalHeaderList.add("Quantity");
-					TotalHeaderList.add("Sales Amount");
+					TotalHeaderList.add("Sales Amount");*/
 					break;
 				case "MenuHeadWiseWithModifier":
-					TotalHeaderList.add("Total");	
-					TotalHeaderList.add("Quantity");
-					TotalHeaderList.add("Sales Amount");
+					//TotalHeaderList.add("Total");	
+					//TotalHeaderList.add("Quantity");
+					//TotalHeaderList.add("Sales Amount");
 					break;
 				case "ItemHourlyWise":
-					TotalHeaderList.add("Total");
-					TotalHeaderList.add("Total Amount");
-					TotalHeaderList.add("Total Discount");
+					//TotalHeaderList.add("Total");
+					//TotalHeaderList.add("Total Amount");
+					//TotalHeaderList.add("Total Discount");
 					break;
 				case "OperatorWise":
-					TotalHeaderList.add("Total");
-					TotalHeaderList.add("Discount Amount");
-					TotalHeaderList.add("Sales Amount");
+					//TotalHeaderList.add("Total");
+					//TotalHeaderList.add("Discount Amount");
+					//TotalHeaderList.add("Sales Amount");
 					break;
 				case "MonthlySalesFlash":
-					TotalHeaderList.add("Total");
-					TotalHeaderList.add("Total Sale");
+					//TotalHeaderList.add("Total");
+					//TotalHeaderList.add("Total Sale");
 					break;
 			}
 			
-			
-			rowlist.add(TotalHeaderList);
-			
 			List totalList=(List)resMap.get("Total");
-			rowlist.add(totalList);
+			rowlist.add(totalList);			
+			TotalHeaderList.add("");
+			TotalHeaderList.add(" Created On : " + objGlobal.funGetCurrentDateTime("dd-mm-yyyy")+ " By : " + userCode + " ");
+			rowlist.add(TotalHeaderList);
 			
 			ExportList.add(rowlist);
 			return new ModelAndView("excelViewWithReportName", "listWithReportName", ExportList);	
@@ -446,7 +466,7 @@ public class clsPOSSalesReportController {
 		
 	 	 private LinkedHashMap FunGetData(String strPOSName,String FromDateTime,String ToDateTime, String strOperator,
 					String strPayMode,String strFromBill,String strToBill,String reportType,
-					String Type,String Customer,String ConsolidatePOS,String ReportName,String userCode,String LoginPOSCode,String enableShiftYN,String shiftCode)
+					String Type,String Customer,String ConsolidatePOS,String ReportName,String userCode,String LoginPOSCode,String enableShiftYN,String shiftCode,String clientCode,String operationType,String areaCode)
 				{
 	 		 
 	 		 	
@@ -499,7 +519,16 @@ public class clsPOSSalesReportController {
 			
 	 				if(!strPOSName.equalsIgnoreCase("ALL"))
 	 				{
-	 					posCode= hmPOSData.get(strPOSName);
+	 					 for(Map.Entry<String,String> entry : hmPOSData.entrySet())
+	 					 {
+	 						 String POSCode=entry.getKey();
+	 						 String POSName=entry.getValue();
+	 						 if(POSName.equalsIgnoreCase(strPOSName))
+	 						 {
+	 							posCode=POSCode;
+	 						 }
+	 					 }
+	 					//posCode= hmPOSData.get(strPOSName);
 	 				}
 		
 	 				if(!strPayMode.equalsIgnoreCase("All"))
@@ -509,10 +538,12 @@ public class clsPOSSalesReportController {
 			
 	 				
 					Map mapData=new HashMap();
-					mapData=objReportService.funSalesReport(dateFrom, dateTo, posCode,shiftCode,userCode,field,PayMode,strOperator,strFromBill,strToBill,reportType,Type,Customer,ConsolidatePOS,ReportName.substring(3),LoginPOSCode,enableShiftYN);
 					 
-					 
+					mapData=objReportService.funSalesReport(dateFrom, dateTo, posCode,shiftCode,userCode,field,PayMode,strOperator,strFromBill,strToBill,reportType,Type,Customer,ConsolidatePOS,ReportName.substring(3),LoginPOSCode,enableShiftYN,clientCode,operationType,areaCode);
+					DecimalFormat decimalFormat2;
+					decimalFormat2 = new DecimalFormat("0.00");
 					List listColHeader = (ArrayList)mapData.get("ColHeader");
+					List headerList=(ArrayList)mapData.get("headerList");
 					colHeader=listColHeader;
 					int colCount=Integer.parseInt(mapData.get("colCount").toString());
 					int rowCount=Integer.parseInt(mapData.get("RowCount").toString());
@@ -520,7 +551,7 @@ public class clsPOSSalesReportController {
 					double totalDiscAmt=0,totalSubTotal=0,totalTaxAmt=0,totalSettleAmt=0,totalTipAmt=0,
 							totalQty1=0, totalAmount=0, subTotal=0, discountTotal=0 ,
 	 						SalesAmount=0, Tax=0, totalDiscount = 0, totalSubTotalDWise = 0,
-	 						totalTax = 0, totalTaxableAmt = 0,totalDisc=0;
+	 						totalTax = 0, totalTaxableAmt = 0,totalDisc=0,TotalPAX=0,TotalNoOfBills=0,totalAdvAmt=0,totalRoundOff=0;
 			 				
 		 					
 					int totalNoOfBills = 0;
@@ -530,6 +561,7 @@ public class clsPOSSalesReportController {
 					{
 						case "SettlementWise":
 								totalSale=Double.parseDouble(mapData.get("TotalSale").toString());
+								listTotal.add("");
 								listTotal.add("Total");
 								listTotal.add(totalSale);
 							break;
@@ -539,12 +571,31 @@ public class clsPOSSalesReportController {
 				 				totalTaxAmt=Double.parseDouble(mapData.get("totalTaxAmt").toString());
 				 				totalSettleAmt=Double.parseDouble(mapData.get("totalSettleAmt").toString());
 				 				totalTipAmt=Double.parseDouble(mapData.get("totalTipAmt").toString());
-								listTotal.add("Total");
+				 				TotalPAX=Double.parseDouble(mapData.get("totalPaxx").toString());
+				 				totalAdvAmt=Double.parseDouble(mapData.get("totalAdvTotal").toString());
+				 				totalRoundOff=Double.parseDouble(mapData.get("totalRoundOff").toString());
+				 				listTotal.add("");
+				 				listTotal.add("");
+				 				listTotal.add("");
+				 				listTotal.add("");
+				 				listTotal.add("");
+				 				listTotal.add("");
+				 				listTotal.add("");
+				 				listTotal.add("Total");
+				 				listTotal.add("");
 								listTotal.add(totalSubTotal);
+								listTotal.add("");
 								listTotal.add(totalDiscAmt);
 								listTotal.add(totalTaxAmt);
+								listTotal.add(totalAdvAmt);
 								listTotal.add(totalSettleAmt);
+								listTotal.add(totalRoundOff);
+								listTotal.add("");
 								listTotal.add(totalTipAmt);
+								listTotal.add("");
+								listTotal.add("");
+								listTotal.add(TotalPAX);
+								
 							break;
 						case "ItemWise":
 								totalQty1=Double.parseDouble(mapData.get("totalQty").toString());
@@ -553,10 +604,11 @@ public class clsPOSSalesReportController {
 				 				subTotal=Double.parseDouble(mapData.get("subTotal").toString());
 				 				discountTotal=Double.parseDouble(mapData.get("discountTotal").toString());
 				 				listTotal.add("Total");
-								listTotal.add(totalQty);
+				 				listTotal.add("");
+				 				listTotal.add(totalQty);
 								listTotal.add(totalAmount);
+								listTotal.add(discountTotal);		
 								listTotal.add(subTotal);
-								listTotal.add(discountTotal);
 							break;
 						case "MenuHeadWise":
 								totalQty1=Double.parseDouble(mapData.get("totalQty").toString());
@@ -565,11 +617,12 @@ public class clsPOSSalesReportController {
 				 				subTotal=Double.parseDouble(mapData.get("subTotal").toString());
 				 				discountTotal=Double.parseDouble(mapData.get("discountTotal").toString());
 				 				listTotal.add("Total");
+				 				listTotal.add("");
 								listTotal.add(totalQty);
 								listTotal.add(totalAmount);
 								listTotal.add(subTotal);
 								listTotal.add(discountTotal);
-								break;
+							break;
 						case "GroupWise":
 								totalQty1=Double.parseDouble(mapData.get("totalQty").toString());
 				 				 totalQty=(int) totalQty1;
@@ -577,11 +630,12 @@ public class clsPOSSalesReportController {
 				 				subTotal=Double.parseDouble(mapData.get("subTotal").toString());
 				 				discountTotal=Double.parseDouble(mapData.get("discountTotal").toString());
 				 				listTotal.add("Total");
+				 				listTotal.add("");
 								listTotal.add(totalQty);
 								listTotal.add(totalAmount);
 								listTotal.add(subTotal);
 								listTotal.add(discountTotal);
-						break;
+							break;
 						case "SubGroupWise":
 							totalQty1=Double.parseDouble(mapData.get("totalQty").toString());
 			 				totalQty=(int) totalQty1;
@@ -589,6 +643,7 @@ public class clsPOSSalesReportController {
 			 				subTotal=Double.parseDouble(mapData.get("subTotal").toString());
 			 				discountTotal=Double.parseDouble(mapData.get("discountTotal").toString());
 							listTotal.add("Total");
+							listTotal.add("");
 							listTotal.add(totalQty);
 							listTotal.add(totalAmount);
 							listTotal.add(subTotal);
@@ -599,17 +654,22 @@ public class clsPOSSalesReportController {
 			 				totalQty=(int) totalQty1;
 			 				totalAmount=Double.parseDouble(mapData.get("grandTotal").toString());
 			 				listTotal.add("Total");
+			 				listTotal.add("");
+			 				listTotal.add("");
 							listTotal.add(totalQty);
 							listTotal.add(totalAmount);
 							break;
 						case "WaiterWise":
 			 				totalSale=Double.parseDouble(mapData.get("TotalAmount").toString());
+			 				listTotal.add("");
+			 				listTotal.add("");
 			 				listTotal.add("Total");
 			 				listTotal.add(totalSale);
 							break;
 						case "DeliveryBoyWise":
 							totalSale=Double.parseDouble(mapData.get("TotalAmount").toString());
 			 				listTotal.add("Total");
+			 				listTotal.add("");
 			 				listTotal.add(totalSale);
 							break;
 						case "CostCenterWise":
@@ -619,9 +679,10 @@ public class clsPOSSalesReportController {
 			 				subTotal=Double.parseDouble(mapData.get("subTotal").toString());
 			 				discountTotal=Double.parseDouble(mapData.get("discountTotal").toString());
 			 				listTotal.add("Total");
+			 				listTotal.add("");
 			 				listTotal.add(totalQty);
-			 				listTotal.add(subTotal);
 			 				listTotal.add(totalAmount);
+			 				listTotal.add(subTotal);			 				
 			 				listTotal.add(discountTotal);
 							break;
 						case "HomeDeliveryWise":
@@ -629,6 +690,10 @@ public class clsPOSSalesReportController {
 			 				Tax=Double.parseDouble(mapData.get("sumtax").toString());
 			 				discountTotal=Double.parseDouble(mapData.get("sumDisc").toString());
 			 				listTotal.add("Total");
+			 				listTotal.add("");
+			 				listTotal.add("");
+			 				listTotal.add("");
+			 				listTotal.add("");			 				
 			 				listTotal.add(discountTotal);
 			 				listTotal.add(Tax);
 			 				listTotal.add(SalesAmount);
@@ -636,16 +701,22 @@ public class clsPOSSalesReportController {
 						case "TableWise":
 			 				SalesAmount=Double.parseDouble(mapData.get("SalesAmt").toString());
 			 				listTotal.add("Total");
+			 				listTotal.add("");
 			 				listTotal.add(SalesAmount);
  							break;
-						case "HourlyWise":
+						case "HourlyWise": 	
+							TotalNoOfBills=Double.parseDouble(mapData.get("TotalNoOfBills").toString());
+							TotalPAX=Double.parseDouble(mapData.get("TotalPax").toString());
 							SalesAmount=Double.parseDouble(mapData.get("SalesAmt").toString());
 			 				listTotal.add("Total");
+			 				listTotal.add(TotalNoOfBills);
+			 				listTotal.add(TotalPAX);
 			 				listTotal.add(SalesAmount);
 			 				break;
 						case "AreaWise":
 							SalesAmount=Double.parseDouble(mapData.get("SalesAmt").toString());
 			 				listTotal.add("Total");
+			 				listTotal.add("");
 			 				listTotal.add(SalesAmount);
  							break;
 						case "DayWiseSales":
@@ -664,6 +735,10 @@ public class clsPOSSalesReportController {
 						case "TaxWiseSales":
 							totalTax=Double.parseDouble(mapData.get("totalTax").toString());
 		 					totalTaxableAmt=Double.parseDouble(mapData.get("totalTaxableAmt").toString());
+		 					listTotal.add("");
+		 					listTotal.add("");
+		 					listTotal.add("");
+		 					listTotal.add("");
 		 					listTotal.add("Total");
 			 				listTotal.add(totalTaxableAmt);
 			 				listTotal.add(totalTax);
@@ -686,7 +761,8 @@ public class clsPOSSalesReportController {
 			 				totalQty=(int) totalQty1;
 			 				SalesAmount=Double.parseDouble(mapData.get("totalAmount").toString());
 			 				listTotal.add("Total");
-							listTotal.add(totalQty);
+			 				listTotal.add("");
+			 				listTotal.add(totalQty);
 							listTotal.add(SalesAmount);
  							break;
 						case "MenuHeadWiseWithModifier":
@@ -694,21 +770,28 @@ public class clsPOSSalesReportController {
 			 				totalQty=(int) totalQty1;
 			 				SalesAmount=Double.parseDouble(mapData.get("totalAmount").toString());
 			 				listTotal.add("Total");
+			 				listTotal.add("");
 							listTotal.add(totalQty);
 							listTotal.add(SalesAmount);
  
 							break;
 						case "ItemHourlyWise":
-							totalDisc=Double.parseDouble(mapData.get("totalDisc").toString());
-	 						SalesAmount=Double.parseDouble(mapData.get("totalAmount").toString());
+							totalQty1=Double.parseDouble(mapData.get("totalQty").toString());							
+							totalAmount=Double.parseDouble(mapData.get("totalAmount").toString());
+	 						totalDiscount=Double.parseDouble(mapData.get("totalDiscAmount").toString());	 					
 							listTotal.add("Total");
-							listTotal.add(totalDisc);
-							listTotal.add(SalesAmount);
+							listTotal.add("");
+							listTotal.add(totalQty1);
+							listTotal.add(totalAmount);
+							listTotal.add(totalDiscount);
 							break;
 						case "OperatorWise":
 							totalDisc=Double.parseDouble(mapData.get("totalDisc").toString());
 	 						SalesAmount=Double.parseDouble(mapData.get("totalAmount").toString());
 	 						listTotal.add("Total");
+	 						listTotal.add("");
+	 						listTotal.add("");
+	 						listTotal.add("");
 							listTotal.add(totalDisc);
 							listTotal.add(SalesAmount);
 							break;
@@ -723,6 +806,7 @@ public class clsPOSSalesReportController {
 				        {
 				        	   resMap.put(""+i,(List)mapData.get(""+i));
 				        }
+					resMap.put("headerList", headerList);
 					resMap.put("Header", colHeader);
 					resMap.put("ColCount", colCount);
 					resMap.put("RowCount", rowCount);
@@ -748,6 +832,7 @@ public class clsPOSSalesReportController {
 				@RequestParam("operationType") String operationType,@RequestParam("gEnableShiftYN") String gEnableShiftYN,@RequestParam("shiftCode") String shiftCode,
 				HttpServletResponse resp,HttpServletRequest req)
 			{
+	 			decimalFormat2= new DecimalFormat("0.00");
 				listSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
 				listStockFlashModel=new ArrayList();
 	 			String clientCode=req.getSession().getAttribute("gClientCode").toString();
@@ -765,33 +850,31 @@ public class clsPOSSalesReportController {
 	 			String strFromdate=FromDate.split("-")[2]+"-"+FromDate.split("-")[1]+"-"+FromDate.split("-")[0];
 	 			String strToDate=ToDate.split("-")[2]+"-"+ToDate.split("-")[1]+"-"+ToDate.split("-")[0]; 
 	 			try
-	 			{	 				
+	 			{	 		
+		 			
 	 				Map mapData = new HashMap();
 		 			mapData=funGetReportData(strPOSName,FromDateTime,ToDateTime,strOperator,strPayMode,strFromBill,strToBill,reportType,
-		 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode);
+		 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode,clientCode,operationType);
 	 				clsPOSSalesFlashReportsBean objBean= new clsPOSSalesFlashReportsBean();
 	 				
 	 				double totalSale=Double.parseDouble(mapData.get("TotalSale").toString());
-	 				
-	 				objBean.setTotalSubTotal(String.valueOf(decimalFormat.format(totalSale)));
+	 				objBean.setTotalSubTotal(decimalFormat2.format(totalSale));
 	 				listSalesReport.add(objBean);
 	        
 	 				List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
-	 				Gson gson = new Gson();
-	 				Type listType = new TypeToken<List<clsPOSSalesFlashReportsBean>>() {}.getType();
-	 				tmplistSalesReport = gson.fromJson(mapData.get("ListSettlementWiseSales").toString(), listType);
+	 				tmplistSalesReport= (List<clsPOSSalesFlashReportsBean>)mapData.get("ListSettlementWiseSales");
 	 				clsPOSSalesFlashReportsBean obj;
 	 				for(int i=0;i<tmplistSalesReport.size();i++)
 	 				{
 	 					obj= new clsPOSSalesFlashReportsBean();
 	 					List DataList=new ArrayList<>();
-	 					obj.setStrField1(tmplistSalesReport.get(i).getStrField1());
+	 					obj.setStrField1((tmplistSalesReport.get(i).getStrField1()));
 	 					obj.setStrField2(tmplistSalesReport.get(i).getStrField2());
-	 					obj.setStrField3(tmplistSalesReport.get(i).getStrField3());
+	 					obj.setStrField3(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField3())));
 	 					
 	 					double saleAmt = Double.parseDouble(tmplistSalesReport.get(i).getStrField3());
                         double salePer = (saleAmt / totalSale) * 100;
-	 					obj.setStrField4(String.valueOf(decimalFormat.format(salePer)));
+	 					obj.setStrField4(String.valueOf(decimalFormat2.format(salePer)));
 	 					listSalesReport.add(obj);
 	 				}
 	 				System.out.print("@controller "+listSalesReport.size());
@@ -815,6 +898,7 @@ public class clsPOSSalesReportController {
 				@RequestParam("areaCode") String areaCode,@RequestParam("operationType") String operationType,@RequestParam("gEnableShiftYN") String gEnableShiftYN,@RequestParam("shiftCode") String shiftCode,
 				HttpServletResponse resp,HttpServletRequest req)
 			{
+	 			decimalFormat2 = new DecimalFormat("0.00");
 				listSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
 	 			String clientCode=req.getSession().getAttribute("gClientCode").toString();
 	 			String userCode=req.getSession().getAttribute("gUserCode").toString();
@@ -824,28 +908,34 @@ public class clsPOSSalesReportController {
 	 				
 	 				Map mapData = new HashMap();
 		 			mapData=funGetReportData(strPOSName,FromDateTime,ToDateTime,strOperator,strPayMode,strFromBill,strToBill,reportType,
-		 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode);
+		 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode,clientCode,operationType);
 
 	 				clsPOSSalesFlashReportsBean objBean= new clsPOSSalesFlashReportsBean();
-	 				double totalDiscAmt=0,totalSubTotal=0,totalTaxAmt=0,totalSettleAmt=0,totalTipAmt=0;
+	 				double totalDiscAmt=0,totalSubTotal=0,totalTaxAmt=0,totalSettleAmt=0,totalTipAmt=0,totalAdvTotal=0,totalRoundOff=0,totalPaxx=0;
 	 				totalDiscAmt=Double.parseDouble(mapData.get("totalDiscAmt").toString());
 	 				totalSubTotal=Double.parseDouble(mapData.get("totalSubTotal").toString());
 	 				totalTaxAmt=Double.parseDouble(mapData.get("totalTaxAmt").toString());
 	 				totalSettleAmt=Double.parseDouble(mapData.get("totalSettleAmt").toString());
 	 				totalTipAmt=Double.parseDouble(mapData.get("totalTipAmt").toString());
+	 				totalAdvTotal+=Double.parseDouble(mapData.get("totalAdvTotal").toString());
+					totalRoundOff+=Double.parseDouble(mapData.get("totalRoundOff").toString());
+					totalPaxx = Double.parseDouble(mapData.get("totalPaxx").toString());
 	 				
-	 				objBean.setTotalDiscAmt(String.valueOf(decimalFormat.format(totalDiscAmt)));
-	 				objBean.setTotalSubTotal(String.valueOf(decimalFormat.format(totalSubTotal)));
-	 				objBean.setTotalTaxAmt(String.valueOf(decimalFormat.format(totalTaxAmt)));
-	 				objBean.setTotalSettleAmt(String.valueOf(decimalFormat.format(totalSettleAmt)));
-	 				objBean.setTotalTipAmt(String.valueOf(decimalFormat.format(totalTipAmt)));
+	 				
+	 				objBean.setTotalDiscAmt(String.valueOf(decimalFormat2.format(totalDiscAmt)));
+	 				objBean.setTotalSubTotal(String.valueOf(decimalFormat2.format(totalSubTotal)));
+	 				objBean.setTotalTaxAmt(String.valueOf(decimalFormat2.format(totalTaxAmt)));
+	 				objBean.setTotalSettleAmt(String.valueOf(decimalFormat2.format(totalSettleAmt)));
+	 				objBean.setTotalTipAmt(String.valueOf(decimalFormat2.format(totalTipAmt)));
+	 				
+	 				objBean.setTotalAdvAmt(String.valueOf(decimalFormat2.format(totalAdvTotal)));
+	 				objBean.setTotalRoundOffAmt(String.valueOf(decimalFormat2.format(totalRoundOff)));
+	 				objBean.setTotalPAX(String.valueOf(decimalFormat2.format(totalPaxx)));	 				
 	 				listSalesReport.add(objBean);
 	        
 	 				List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
-	 				Gson gson = new Gson();
-	 				Type listType = new TypeToken<List<clsPOSSalesFlashReportsBean>>() {}.getType();
-	 				tmplistSalesReport = gson.fromJson(mapData.get("TempListBillWiseSales").toString(), listType);
-	        
+	 				tmplistSalesReport = (List<clsPOSSalesFlashReportsBean>)mapData.get("TempListBillWiseSales");
+	 				
 	 				for(int i=0;i<tmplistSalesReport.size();i++)
 	 				{
 	 					listSalesReport.add(tmplistSalesReport.get(i));
@@ -853,7 +943,7 @@ public class clsPOSSalesReportController {
 	 				System.out.print("@controller "+listSalesReport.size());
 	        
 	 			} 
-	 			catch (Exception e) 
+ 	 			catch (Exception e) 
 	 			{
 						e.printStackTrace();
 	 			}
@@ -869,6 +959,9 @@ public class clsPOSSalesReportController {
 				,@RequestParam("areaCode") String areaCode,@RequestParam("operationType") String operationType,@RequestParam("gEnableShiftYN") String gEnableShiftYN,@RequestParam("shiftCode") String shiftCode,
 				HttpServletResponse resp,HttpServletRequest req)
 			{
+	 			decimalFormat0 = new DecimalFormat("");
+	 			decimalFormat1 = new DecimalFormat("0.0");
+	 			decimalFormat2 = new DecimalFormat("0.00");
 				listSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
 				String clientCode=req.getSession().getAttribute("gClientCode").toString();
 	 			String userCode=req.getSession().getAttribute("gUserCode").toString();
@@ -876,33 +969,30 @@ public class clsPOSSalesReportController {
 	 			String LoginPOSCode=req.getSession().getAttribute("loginPOS").toString();
 	 			Map mapData = new HashMap();
 	 			mapData=funGetReportData(strPOSName,FromDateTime,ToDateTime,strOperator,strPayMode,strFromBill,strToBill,reportType,
-	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode);
+	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode,clientCode,operationType);
 
 		 			try {
-		 				
+			 		
 	 				//JSONObject mapData = objGlobalFunctions.funPOSTMethodUrlJosnObjectData(clsPOSGlobalFunctionsController.POSWSURL+"/WebPOSReport/funSalesReport",mapDataFillter);
 		
 	 				clsPOSSalesFlashReportsBean objBean= new clsPOSSalesFlashReportsBean();
 	 				//objBean.setTotalSubTotal(mapData.get("TotalSale").toString());
-	 				
-	 				double totalQty1=0, totalAmount=0, subTotal=0, discountTotal=0;
-	 				totalQty1=Double.parseDouble(mapData.get("totalQty").toString());
-	 				int totalQty=(int) totalQty1;
+	 							
+	 				double totalQty=0, totalAmount=0, subTotal=0, discountTotal=0;
+	 				totalQty=Double.parseDouble(mapData.get("totalQty").toString());
+	 				//Math.round(totalQty);
 	 				totalAmount=Double.parseDouble(mapData.get("totalAmount").toString());
-	 				subTotal=Double.parseDouble(mapData.get("subTotal").toString());
-	 				discountTotal=Double.parseDouble(mapData.get("discountTotal").toString());
-	 				
-	 				objBean.setTotalQuantity(String.valueOf(totalQty));
-	 				objBean.setTotalAmount(String.valueOf(decimalFormat.format(totalAmount)));
-	 				objBean.setTotalSubTotal(String.valueOf(decimalFormat.format(subTotal)));
-	 				objBean.setTotalDiscAmt(String.valueOf(decimalFormat.format(discountTotal)));
+	 				subTotal=Double.parseDouble(mapData.get("subTotal").toString());	 				
+	 				discountTotal=Double.parseDouble(mapData.get("discountTotal").toString());	 				
+	 				objBean.setTotalQuantity(String.valueOf(decimalFormat0.format(totalQty)));
+	 				objBean.setTotalAmount(String.valueOf(decimalFormat2.format(totalAmount)));
+	 				objBean.setTotalSubTotal(String.valueOf(decimalFormat2.format(subTotal)));
+	 				objBean.setTotalDiscAmt(String.valueOf(decimalFormat2.format(discountTotal)));				
 	 				
 	 				listSalesReport.add(objBean);
-	        
+	        	 				
 	 				List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
-	 				Gson gson = new Gson();
-	 				Type listType = new TypeToken<List<clsPOSSalesFlashReportsBean>>() {}.getType();
-	 				tmplistSalesReport = gson.fromJson(mapData.get("ListItemWiseSales").toString(), listType);
+	 				tmplistSalesReport = (List<clsPOSSalesFlashReportsBean>)mapData.get("ListItemWiseSales");
 	 				clsPOSSalesFlashReportsBean obj;
 	 				for(int i=0;i<tmplistSalesReport.size();i++)
 	 				{
@@ -934,6 +1024,8 @@ public class clsPOSSalesReportController {
 				,@RequestParam("areaCode") String areaCode,@RequestParam("operationType") String operationType,@RequestParam("gEnableShiftYN") String gEnableShiftYN,@RequestParam("shiftCode") String shiftCode,
 				HttpServletResponse resp,HttpServletRequest req)
 			{
+	 			decimalFormat0 = new DecimalFormat("");
+	 			decimalFormat2 = new DecimalFormat("0.00");
 				listSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
 				String clientCode=req.getSession().getAttribute("gClientCode").toString();
 	 			String userCode=req.getSession().getAttribute("gUserCode").toString();
@@ -941,44 +1033,41 @@ public class clsPOSSalesReportController {
 	 			String LoginPOSCode=req.getSession().getAttribute("loginPOS").toString();
 	 			Map mapData = new HashMap();
 	 			mapData=funGetReportData(strPOSName,FromDateTime,ToDateTime,strOperator,strPayMode,strFromBill,strToBill,reportType,
-	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode);
+	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode,clientCode,operationType);
 
 		 			try {
 		 				
 	 				clsPOSSalesFlashReportsBean objBean= new clsPOSSalesFlashReportsBean();
 	 				
-	 				double totalQty1=0,totalAmount=0, subTotal=0, discountTotal=0;
-	 				totalQty1=Double.parseDouble(mapData.get("totalQty").toString());
-	 				int totalQty=(int) totalQty1;
+	 				double totalQty=0,totalAmount=0, subTotal=0, discountTotal=0;
+	 				totalQty=Math.round(Double.parseDouble(mapData.get("totalQty").toString()));
 	 				totalAmount=Double.parseDouble(mapData.get("totalAmount").toString());
 	 				subTotal=Double.parseDouble(mapData.get("subTotal").toString());
 	 				discountTotal=Double.parseDouble(mapData.get("discountTotal").toString());
 	 				
-	 				objBean.setTotalQuantity(String.valueOf(totalQty));
-	 				objBean.setTotalAmount(String.valueOf(decimalFormat.format(totalAmount)));
-	 				objBean.setTotalSubTotal(String.valueOf(decimalFormat.format(subTotal)));
-	 				objBean.setTotalDiscAmt(String.valueOf(decimalFormat.format(discountTotal)));
+	 				objBean.setTotalQuantity(String.valueOf(decimalFormat0.format(totalQty)));
+	 				objBean.setTotalAmount(String.valueOf(decimalFormat2.format(totalAmount)));
+	 				objBean.setTotalSubTotal(String.valueOf(decimalFormat2.format(subTotal)));
+	 				objBean.setTotalDiscAmt(String.valueOf(decimalFormat2.format(discountTotal)));
 	 				
 	 				listSalesReport.add(objBean);
 	        
 	 				List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
-	 				Gson gson = new Gson();
-	 				Type listType = new TypeToken<List<clsPOSSalesFlashReportsBean>>() {}.getType();
-	 				tmplistSalesReport = gson.fromJson(mapData.get("ListMenuHeadWiseSales").toString(), listType);
+	 				tmplistSalesReport = (List<clsPOSSalesFlashReportsBean>)mapData.get("ListMenuHeadWiseSales");
 	 				clsPOSSalesFlashReportsBean obj;
 	 				for(int i=0;i<tmplistSalesReport.size();i++)
 	 				{
 	 					obj= new clsPOSSalesFlashReportsBean();
 	 					obj.setStrField1(tmplistSalesReport.get(i).getStrField1());
 	 					obj.setStrField2(tmplistSalesReport.get(i).getStrField2());
-	 					obj.setStrField3(tmplistSalesReport.get(i).getStrField3());
-	 					obj.setStrField4(tmplistSalesReport.get(i).getStrField4());
-	 					obj.setStrField5(tmplistSalesReport.get(i).getStrField5());
-	 					obj.setStrField6(tmplistSalesReport.get(i).getStrField6());
+	 					obj.setStrField3(decimalFormat0.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField3())));
+	 					obj.setStrField4(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField4())));
+	 					obj.setStrField5(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField5())));
+	 					obj.setStrField6(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField6())));
 	 					
 	 					double saleAmt=Double.parseDouble(tmplistSalesReport.get(i).getStrField4());
 	 					double salePer = (saleAmt / totalAmount) * 100;
-	 					obj.setStrField7(String.valueOf(decimalFormat.format(salePer)));
+	 					obj.setStrField7(String.valueOf(decimalFormat2.format(salePer)));
 	 					listSalesReport.add(obj);
 	 				}
 	 				System.out.print("@controller "+listSalesReport.size());
@@ -997,7 +1086,9 @@ public class clsPOSSalesReportController {
 				@RequestParam("txtType") String Type,@RequestParam("txtCustomer") String Customer,@RequestParam("chkConsolidatePOS") String ConsolidatePOS,@RequestParam("hidReportName") String ReportName
 				,@RequestParam("areaCode") String areaCode,@RequestParam("operationType") String operationType,@RequestParam("gEnableShiftYN") String gEnableShiftYN,@RequestParam("shiftCode") String shiftCode,
 				HttpServletResponse resp,HttpServletRequest req)
-			{
+			{	
+	 			decimalFormat0 = new DecimalFormat("");
+	 			decimalFormat2 = new DecimalFormat("0.00");
 				listSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
 				String clientCode=req.getSession().getAttribute("gClientCode").toString();
 	 			String userCode=req.getSession().getAttribute("gUserCode").toString();
@@ -1005,42 +1096,39 @@ public class clsPOSSalesReportController {
 	 			String LoginPOSCode=req.getSession().getAttribute("loginPOS").toString();
 	 			Map mapData = new HashMap();
 	 			mapData=funGetReportData(strPOSName,FromDateTime,ToDateTime,strOperator,strPayMode,strFromBill,strToBill,reportType,
-	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode); 			
+	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode,clientCode,operationType); 			
 	 			try 
 	 			{
 		 			clsPOSSalesFlashReportsBean objBean= new clsPOSSalesFlashReportsBean();		
-	 				double totalQty1=0,totalAmount=0, subTotal=0, discountTotal=0;
-	 				totalQty1=Double.parseDouble(mapData.get("totalQty").toString());
-	 				int totalQty=(int) totalQty1;
+	 				double totalQty=0,totalAmount=0, subTotal=0, discountTotal=0;
+	 				totalQty=Math.round(Double.parseDouble(mapData.get("totalQty").toString()));
 	 				totalAmount=Double.parseDouble(mapData.get("totalAmount").toString());
 	 				subTotal=Double.parseDouble(mapData.get("subTotal").toString());
 	 				discountTotal=Double.parseDouble(mapData.get("discountTotal").toString());
 	 				
-	 				objBean.setTotalQuantity(String.valueOf(totalQty));
-	 				objBean.setTotalAmount(String.valueOf(decimalFormat.format(totalAmount)));
-	 				objBean.setTotalSubTotal(String.valueOf(decimalFormat.format(subTotal)));
-	 				objBean.setTotalDiscAmt(String.valueOf(decimalFormat.format(discountTotal)));
+	 				objBean.setTotalQuantity(String.valueOf(decimalFormat0.format(totalQty)));
+	 				objBean.setTotalAmount(String.valueOf(decimalFormat2.format(totalAmount)));
+	 				objBean.setTotalSubTotal(String.valueOf(decimalFormat2.format(subTotal)));
+	 				objBean.setTotalDiscAmt(String.valueOf(decimalFormat2.format(discountTotal)));
 	 				
 	 				listSalesReport.add(objBean);
 	        
 	 				List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
-	 				Gson gson = new Gson();
-	 				Type listType = new TypeToken<List<clsPOSSalesFlashReportsBean>>() {}.getType();
-	 				tmplistSalesReport = gson.fromJson(mapData.get("ListGroupWiseSales").toString(), listType);
+	 				tmplistSalesReport = (List<clsPOSSalesFlashReportsBean>)mapData.get("ListGroupWiseSales");
 	 				clsPOSSalesFlashReportsBean obj;
 	 				for(int i=0;i<tmplistSalesReport.size();i++)
 	 				{
 	 					obj= new clsPOSSalesFlashReportsBean();
 	 					obj.setStrField1(tmplistSalesReport.get(i).getStrField1());
 	 					obj.setStrField2(tmplistSalesReport.get(i).getStrField2());
-	 					obj.setStrField3(tmplistSalesReport.get(i).getStrField3());
+	 					obj.setStrField3(decimalFormat0.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField3())));
 	 					obj.setStrField4(tmplistSalesReport.get(i).getStrField4());
 	 					obj.setStrField5(tmplistSalesReport.get(i).getStrField5());
 	 					obj.setStrField6(tmplistSalesReport.get(i).getStrField6());
 	 					
 	 					double saleAmt=Double.parseDouble(tmplistSalesReport.get(i).getStrField4());
 	 					double salePer = (saleAmt / totalAmount) * 100;
-	 					obj.setStrField7(String.valueOf(decimalFormat.format(salePer)));
+	 					obj.setStrField7(String.valueOf(decimalFormat2.format(salePer)));
 	 					listSalesReport.add(obj);
 	 				}
 	 				System.out.print("@controller "+listSalesReport.size());
@@ -1060,6 +1148,8 @@ public class clsPOSSalesReportController {
 				,@RequestParam("areaCode") String areaCode,@RequestParam("operationType") String operationType,@RequestParam("gEnableShiftYN") String gEnableShiftYN,@RequestParam("shiftCode") String shiftCode,
 				HttpServletResponse resp,HttpServletRequest req)
 			{
+	 			decimalFormat0 = new DecimalFormat("");
+	 			decimalFormat2 = new DecimalFormat("0.00");
 				listSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
 				String clientCode=req.getSession().getAttribute("gClientCode").toString();
 	 			String userCode=req.getSession().getAttribute("gUserCode").toString();
@@ -1068,7 +1158,7 @@ public class clsPOSSalesReportController {
 	 			
 	 			Map mapData = new HashMap();
 	 			mapData=funGetReportData(strPOSName,FromDateTime,ToDateTime,strOperator,strPayMode,strFromBill,strToBill,reportType,
-	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode);
+	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode,clientCode,operationType);
 
 		 			try {
 		 				
@@ -1077,38 +1167,36 @@ public class clsPOSSalesReportController {
 	 				clsPOSSalesFlashReportsBean objBean= new clsPOSSalesFlashReportsBean();
 	 				//objBean.setTotalSubTotal(mapData.get("TotalSale").toString());
 	 				
-	 				double totalQty1=0,totalAmount=0, subTotal=0, discountTotal=0;
-	 				totalQty1=Double.parseDouble(mapData.get("totalQty").toString());
-	 				int totalQty=(int) totalQty1;
+	 				double totalQty=0,totalAmount=0, subTotal=0, discountTotal=0;
+	 				totalQty=Math.round(Double.parseDouble(mapData.get("totalQty").toString()));
+	 				//int totalQty1=(int) totalQty;
 	 				totalAmount=Double.parseDouble(mapData.get("SalesAmt").toString());
 	 				subTotal=Double.parseDouble(mapData.get("subTotal").toString());
 	 				discountTotal=Double.parseDouble(mapData.get("discountTotal").toString());
 	 				
-	 				objBean.setTotalQuantity(String.valueOf(totalQty));
-	 				objBean.setTotalAmount(String.valueOf(decimalFormat.format(totalAmount)));
-	 				objBean.setTotalSubTotal(String.valueOf(decimalFormat.format(subTotal)));
-	 				objBean.setTotalDiscAmt(String.valueOf(decimalFormat.format(discountTotal)));
+	 				objBean.setTotalQuantity(String.valueOf(decimalFormat0.format(totalQty)));
+	 				objBean.setTotalAmount(String.valueOf(decimalFormat2.format(totalAmount)));
+	 				objBean.setTotalSubTotal(String.valueOf(decimalFormat2.format(subTotal)));
+	 				objBean.setTotalDiscAmt(String.valueOf(decimalFormat2.format(discountTotal)));
 	 				
 	 				listSalesReport.add(objBean);
 	        
 	 				List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
-	 				Gson gson = new Gson();
-	 				Type listType = new TypeToken<List<clsPOSSalesFlashReportsBean>>() {}.getType();
-	 				tmplistSalesReport = gson.fromJson(mapData.get("ListSubGroupWiseSales").toString(), listType);
+	 				tmplistSalesReport = (List<clsPOSSalesFlashReportsBean>)mapData.get("ListSubGroupWiseSales");
 	 				clsPOSSalesFlashReportsBean obj;
 	 				for(int i=0;i<tmplistSalesReport.size();i++)
 	 				{
 	 					obj= new clsPOSSalesFlashReportsBean();
 	 					obj.setStrField1(tmplistSalesReport.get(i).getStrField1());
 	 					obj.setStrField2(tmplistSalesReport.get(i).getStrField2());
-	 					obj.setStrField3(tmplistSalesReport.get(i).getStrField3());
-	 					obj.setStrField4(tmplistSalesReport.get(i).getStrField4());
-	 					obj.setStrField5(tmplistSalesReport.get(i).getStrField5());
-	 					obj.setStrField6(tmplistSalesReport.get(i).getStrField6());
+	 					obj.setStrField3(decimalFormat0.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField3())));
+	 					obj.setStrField4(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField4())));
+	 					obj.setStrField5(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField5())));
+	 					obj.setStrField6(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField6())));
 	 					
-	 					double saleAmt=Double.parseDouble(tmplistSalesReport.get(i).getStrField4());
-	 					double salePer = (saleAmt / totalAmount) * 100;
-	 					obj.setStrField7(String.valueOf(decimalFormat.format(salePer)));
+	 					double saleAmt=Double.parseDouble(tmplistSalesReport.get(i).getStrField5());
+	 					double salePer = (saleAmt / subTotal) * 100;
+	 					obj.setStrField7(String.valueOf(decimalFormat2.format(salePer)));
 	 					listSalesReport.add(obj);
 	 				}
 	 				System.out.print("@controller "+listSalesReport.size());
@@ -1128,6 +1216,8 @@ public class clsPOSSalesReportController {
 				,@RequestParam("areaCode") String areaCode,@RequestParam("operationType") String operationType,@RequestParam("gEnableShiftYN") String gEnableShiftYN,@RequestParam("shiftCode") String shiftCode,
 				HttpServletResponse resp,HttpServletRequest req)
 			{
+	 			decimalFormat0 = new DecimalFormat("");
+	 			decimalFormat2 = new DecimalFormat("0.00");
 				listSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
 				String clientCode=req.getSession().getAttribute("gClientCode").toString();
 	 			String userCode=req.getSession().getAttribute("gUserCode").toString();
@@ -1136,34 +1226,34 @@ public class clsPOSSalesReportController {
 	 			
 	 			Map mapData = new HashMap();
 	 			mapData=funGetReportData(strPOSName,FromDateTime,ToDateTime,strOperator,strPayMode,strFromBill,strToBill,reportType,
-	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode);
+	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode,clientCode,operationType);
 
 		 			try {
 		 				
 	 				
 	 				clsPOSSalesFlashReportsBean objBean= new clsPOSSalesFlashReportsBean();
 	 				
-	 				double totalQty1=0,totalAmount=0, subTotal=0, discountTotal=0;
-	 				totalQty1=Double.parseDouble(mapData.get("billCount").toString());
-	 				int totalQty=(int) totalQty1;
+	 				double totalQty=0,totalAmount=0, subTotal=0, discountTotal=0;
+	 				totalQty=Double.parseDouble(mapData.get("billCount").toString());
+	 				//int totalQty=(int) totalQty1;
 	 				totalAmount=Double.parseDouble(mapData.get("grandTotal").toString());
 	 				
-	 				objBean.setTotalQuantity(String.valueOf(totalQty));
-	 				objBean.setTotalAmount(String.valueOf(decimalFormat.format(totalAmount)));
+	 				objBean.setTotalQuantity(decimalFormat0.format(totalQty));
+	 				objBean.setTotalAmount(decimalFormat2.format(totalAmount));
 	 			
 	 				listSalesReport.add(objBean);
 	        
 	 				List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
-	 				Gson gson = new Gson();
-	 				Type listType = new TypeToken<List<clsPOSSalesFlashReportsBean>>() {}.getType();
-	 				tmplistSalesReport = gson.fromJson(mapData.get("ListCustWiseSales").toString(), listType);
+	 				tmplistSalesReport = (List<clsPOSSalesFlashReportsBean>)mapData.get("ListCustWiseSales");
 	 				clsPOSSalesFlashReportsBean obj;
 	 				for(int i=0;i<tmplistSalesReport.size();i++)
 	 				{
 	 					obj= new clsPOSSalesFlashReportsBean();
 	 					obj.setStrField1(tmplistSalesReport.get(i).getStrField1());
 	 					obj.setStrField2(tmplistSalesReport.get(i).getStrField2());
-	 					obj.setStrField3(tmplistSalesReport.get(i).getStrField3());
+	 					obj.setStrField3(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField3())));
+	 					obj.setMobileNo(tmplistSalesReport.get(i).getMobileNo());
+	 					obj.setDob(tmplistSalesReport.get(i).getDob());
 	 	
 	 					listSalesReport.add(obj);
 	 				}
@@ -1173,6 +1263,7 @@ public class clsPOSSalesReportController {
 	 			{
 						e.printStackTrace();
 	 			}
+		 
 	
 		return listSalesReport;
 	}	 
@@ -1184,6 +1275,9 @@ public class clsPOSSalesReportController {
 				,@RequestParam("areaCode") String areaCode,@RequestParam("operationType") String operationType,@RequestParam("gEnableShiftYN") String gEnableShiftYN,@RequestParam("shiftCode") String shiftCode,
 				HttpServletResponse resp,HttpServletRequest req)
 			{
+	 	    	decimalFormat0 = new DecimalFormat("0");
+	 			decimalFormat1 = new DecimalFormat("0.0");
+	 			decimalFormat2 = new DecimalFormat("0.00");
 				listSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
 				String clientCode=req.getSession().getAttribute("gClientCode").toString();
 	 			String userCode=req.getSession().getAttribute("gUserCode").toString();
@@ -1203,20 +1297,18 @@ public class clsPOSSalesReportController {
 	 			{	 				
 	 				Map mapData = new HashMap();
 		 			mapData=funGetReportData(strPOSName,FromDateTime,ToDateTime,strOperator,strPayMode,strFromBill,strToBill,reportType,
-		 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode);
+		 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode,clientCode,operationType);
 
 	 				clsPOSSalesFlashReportsBean objBean= new clsPOSSalesFlashReportsBean();
 	 				
 	 				double totalSale=0;
 	 				totalSale=Double.parseDouble(mapData.get("TotalAmount").toString());
 	 				
-	 				objBean.setTotalSubTotal(String.valueOf(decimalFormat.format(totalSale)));
+	 				objBean.setTotalSubTotal(String.valueOf(decimalFormat2.format(totalSale)));
 	 				listSalesReport.add(objBean);
 	        
 	 				List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
-	 				Gson gson = new Gson();
-	 				Type listType = new TypeToken<List<clsPOSSalesFlashReportsBean>>() {}.getType();
-	 				tmplistSalesReport = gson.fromJson(mapData.get("ListWaiterWiseSales").toString(), listType);
+	 				tmplistSalesReport = (List<clsPOSSalesFlashReportsBean>)mapData.get("ListWaiterWiseSales");
 	 				clsPOSSalesFlashReportsBean obj;
 	 				for(int i=0;i<tmplistSalesReport.size();i++)
 	 				{
@@ -1224,7 +1316,8 @@ public class clsPOSSalesReportController {
 	 					obj.setStrField1(tmplistSalesReport.get(i).getStrField1());
 	 					obj.setStrField2(tmplistSalesReport.get(i).getStrField2());
 	 					obj.setStrField3(tmplistSalesReport.get(i).getStrField3());
-	 					obj.setStrField4(tmplistSalesReport.get(i).getStrField4());
+	 					obj.setStrField4(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField4())));
+	 					obj.setNoOfBills(decimalFormat0.format(Double.parseDouble(tmplistSalesReport.get(i).getNoOfBills())));
 	 					listSalesReport.add(obj);
 	 				}
 	 				System.out.print("@controller "+listSalesReport.size());
@@ -1234,7 +1327,12 @@ public class clsPOSSalesReportController {
 						e.printStackTrace();
 	 			}
 	
+	 			System.out.println("------------------");
+	 			System.out.println(listSalesReport);
+	 			
 		return listSalesReport;
+		
+		
 	}
 	 
 /*load DeliveryBoy wise data*/
@@ -1245,6 +1343,7 @@ public class clsPOSSalesReportController {
 				,@RequestParam("areaCode") String areaCode,@RequestParam("operationType") String operationType,@RequestParam("gEnableShiftYN") String gEnableShiftYN,@RequestParam("shiftCode") String shiftCode,
 				HttpServletResponse resp,HttpServletRequest req)
 			{
+	 			decimalFormat2 = new DecimalFormat("0.00");
 				listSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
 				String clientCode=req.getSession().getAttribute("gClientCode").toString();
 	 			String userCode=req.getSession().getAttribute("gUserCode").toString();
@@ -1264,28 +1363,26 @@ public class clsPOSSalesReportController {
 	 			{	 				
 	 				Map mapData = new HashMap();
 		 			mapData=funGetReportData(strPOSName,FromDateTime,ToDateTime,strOperator,strPayMode,strFromBill,strToBill,reportType,
-		 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode);
+		 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode,clientCode,operationType);
 
 	 			    clsPOSSalesFlashReportsBean objBean= new clsPOSSalesFlashReportsBean();
 	 				
 	 				double totalSale=0;
 	 				totalSale=Double.parseDouble(mapData.get("TotalAmount").toString());
 	 				
-	 				objBean.setTotalSubTotal(String.valueOf(decimalFormat.format(totalSale)));
+	 				objBean.setTotalSubTotal(String.valueOf(decimalFormat2.format(totalSale)));
 	 				listSalesReport.add(objBean);
 	        
 	 				List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
-	 				Gson gson = new Gson();
-	 				Type listType = new TypeToken<List<clsPOSSalesFlashReportsBean>>() {}.getType();
-	 				tmplistSalesReport = gson.fromJson(mapData.get("ListDelBoyWiseSales").toString(), listType);
+	 				tmplistSalesReport = (List<clsPOSSalesFlashReportsBean>)mapData.get("ListDelBoyWiseSales");
 	 				clsPOSSalesFlashReportsBean obj;
 	 				for(int i=0;i<tmplistSalesReport.size();i++)
 	 				{
 	 					obj= new clsPOSSalesFlashReportsBean();
 	 					obj.setStrField1(tmplistSalesReport.get(i).getStrField1());
 	 					obj.setStrField2(tmplistSalesReport.get(i).getStrField2());
-	 					obj.setStrField3(tmplistSalesReport.get(i).getStrField3());
-	 					obj.setStrField4(tmplistSalesReport.get(i).getStrField4());
+	 					obj.setStrField3(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField3())));
+	 					obj.setStrField4(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField4())));
 	 					listSalesReport.add(obj);
 	 				}
 	 				System.out.print("@controller "+listSalesReport.size());
@@ -1307,6 +1404,8 @@ public class clsPOSSalesReportController {
 				,@RequestParam("areaCode") String areaCode,@RequestParam("operationType") String operationType,@RequestParam("gEnableShiftYN") String gEnableShiftYN,@RequestParam("shiftCode") String shiftCode,
 				HttpServletResponse resp,HttpServletRequest req)
 			{
+	 			decimalFormat0 = new DecimalFormat("");
+	 			decimalFormat2 = new DecimalFormat("0.00");
 				listSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
 				String clientCode=req.getSession().getAttribute("gClientCode").toString();
 	 			String userCode=req.getSession().getAttribute("gUserCode").toString();
@@ -1326,40 +1425,38 @@ public class clsPOSSalesReportController {
 	 			{	 				
 	 				Map mapData = new HashMap();
 		 			mapData=funGetReportData(strPOSName,FromDateTime,ToDateTime,strOperator,strPayMode,strFromBill,strToBill,reportType,
-		 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode);
+		 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode,clientCode,operationType);
 	
 	 				clsPOSSalesFlashReportsBean objBean= new clsPOSSalesFlashReportsBean();
 	 				double totalQty1=0,totalAmount=0, subTotal=0, discountTotal=0;
-	 				totalQty1=Double.parseDouble(mapData.get("totalQty").toString());
+	 				totalQty1=Math.round(Double.parseDouble(mapData.get("totalQty").toString()));
 	 				int totalQty=(int) totalQty1;
 	 				totalAmount=Double.parseDouble(mapData.get("totalAmt").toString());
 	 				subTotal=Double.parseDouble(mapData.get("subTotal").toString());
 	 				discountTotal=Double.parseDouble(mapData.get("discountTotal").toString());
 	 				
-	 				objBean.setTotalQuantity(String.valueOf(totalQty));
-	 				objBean.setTotalAmount(String.valueOf(decimalFormat.format(totalAmount)));
-	 				objBean.setTotalSubTotal(String.valueOf(decimalFormat.format(subTotal)));
-	 				objBean.setTotalDiscAmt(String.valueOf(decimalFormat.format(discountTotal)));
+	 				objBean.setTotalQuantity(String.valueOf(decimalFormat0.format(totalQty)));
+	 				objBean.setTotalAmount(String.valueOf(decimalFormat2.format(totalAmount)));
+	 				objBean.setTotalSubTotal(String.valueOf(decimalFormat2.format(subTotal)));
+	 				objBean.setTotalDiscAmt(String.valueOf(decimalFormat2.format(discountTotal)));
 	 				listSalesReport.add(objBean);
 	        
 	 				List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
-	 				Gson gson = new Gson();
-	 				Type listType = new TypeToken<List<clsPOSSalesFlashReportsBean>>() {}.getType();
-	 				tmplistSalesReport = gson.fromJson(mapData.get("ListCostCentWiseSales").toString(), listType);
+	 				tmplistSalesReport = (List<clsPOSSalesFlashReportsBean>)mapData.get("ListCostCentWiseSales");
 	 				clsPOSSalesFlashReportsBean obj;
 	 				for(int i=0;i<tmplistSalesReport.size();i++)
 	 				{
 	 					obj= new clsPOSSalesFlashReportsBean();
 	 					obj.setStrField1(tmplistSalesReport.get(i).getStrField1());
 	 					obj.setStrField2(tmplistSalesReport.get(i).getStrField2());
-	 					obj.setStrField3(tmplistSalesReport.get(i).getStrField3());
-	 					obj.setStrField4(tmplistSalesReport.get(i).getStrField4());
-	 					obj.setStrField5(tmplistSalesReport.get(i).getStrField5());
-		 				obj.setStrField6(tmplistSalesReport.get(i).getStrField6());
+	 					obj.setStrField3(decimalFormat0.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField3())));
+	 					obj.setStrField4(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField4())));
+	 					obj.setStrField5(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField5())));
+		 				obj.setStrField6(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField6())));
 		 				
 		 				double saleAmt=Double.parseDouble(tmplistSalesReport.get(i).getStrField4());
 	 					double salePer = (saleAmt / totalAmount) * 100;
-	 					obj.setStrField7(String.valueOf(decimalFormat.format(salePer)));
+	 					obj.setStrField7(String.valueOf(decimalFormat2.format(salePer)));
 	 					listSalesReport.add(obj);
 	 					
 	 				}
@@ -1381,6 +1478,7 @@ public class clsPOSSalesReportController {
 				,@RequestParam("areaCode") String areaCode,@RequestParam("operationType") String operationType,@RequestParam("gEnableShiftYN") String gEnableShiftYN,@RequestParam("shiftCode") String shiftCode,
 				HttpServletResponse resp,HttpServletRequest req)
 			 {
+	 			decimalFormat2 = new DecimalFormat("0.00");
 				listSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
 				String clientCode=req.getSession().getAttribute("gClientCode").toString();
 	 			String userCode=req.getSession().getAttribute("gUserCode").toString();
@@ -1400,7 +1498,7 @@ public class clsPOSSalesReportController {
 	 			{	 				
 	 				Map mapData = new HashMap();
 		 			mapData=funGetReportData(strPOSName,FromDateTime,ToDateTime,strOperator,strPayMode,strFromBill,strToBill,reportType,
-		 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode);
+		 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode,clientCode,operationType);
 
 	 				clsPOSSalesFlashReportsBean objBean= new clsPOSSalesFlashReportsBean();
 	 				double SalesAmount=0, Tax=0, discountTotal=0;
@@ -1409,15 +1507,13 @@ public class clsPOSSalesReportController {
 	 				Tax=Double.parseDouble(mapData.get("sumtax").toString());
 	 				discountTotal=Double.parseDouble(mapData.get("sumDisc").toString());
 	 				
-	 				objBean.setTotalAmount(String.valueOf(decimalFormat.format(SalesAmount)));
-	 				objBean.setTotalSubTotal(String.valueOf(decimalFormat.format(Tax)));//for Tax
-	 				objBean.setTotalDiscAmt(String.valueOf(decimalFormat.format(discountTotal)));
+	 				objBean.setTotalAmount(String.valueOf(decimalFormat2.format(SalesAmount)));
+	 				objBean.setTotalSubTotal(String.valueOf(decimalFormat2.format(Tax)));//for Tax
+	 				objBean.setTotalDiscAmt(String.valueOf(decimalFormat2.format(discountTotal)));
 	 				listSalesReport.add(objBean);
 	        
 	 				List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
-	 				Gson gson = new Gson();
-	 				Type listType = new TypeToken<List<clsPOSSalesFlashReportsBean>>() {}.getType();
-	 				tmplistSalesReport = gson.fromJson(mapData.get("ListHomeDelWiseSales").toString(), listType);
+	 				tmplistSalesReport = (List<clsPOSSalesFlashReportsBean>)mapData.get("ListHomeDelWiseSales");
 	 				clsPOSSalesFlashReportsBean obj;
 	 				for(int i=0;i<tmplistSalesReport.size();i++)
 	 				{
@@ -1426,10 +1522,10 @@ public class clsPOSSalesReportController {
 	 					obj.setStrField2(tmplistSalesReport.get(i).getStrField2());
 	 					obj.setStrField3(tmplistSalesReport.get(i).getStrField3());
 	 					obj.setStrField4(tmplistSalesReport.get(i).getStrField4());
-	 					obj.setStrField5(tmplistSalesReport.get(i).getStrField5());
-		 				obj.setStrField6(tmplistSalesReport.get(i).getStrField6());
-		 				obj.setStrField7(tmplistSalesReport.get(i).getStrField7());
-	 					obj.setStrField8(tmplistSalesReport.get(i).getStrField8());
+	 					obj.setStrField5(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField5())));
+		 				obj.setStrField6(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField6())));
+		 				obj.setStrField7(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField7())));
+	 					obj.setStrField8(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField8())));
 	 					obj.setStrField9(tmplistSalesReport.get(i).getStrField9());
 	 					obj.setStrField10(tmplistSalesReport.get(i).getStrField10());
 	 					obj.setStrField11(tmplistSalesReport.get(i).getStrField11());
@@ -1454,6 +1550,7 @@ public class clsPOSSalesReportController {
 				,@RequestParam("areaCode") String areaCode,@RequestParam("operationType") String operationType,@RequestParam("gEnableShiftYN") String gEnableShiftYN,@RequestParam("shiftCode") String shiftCode,
 				HttpServletResponse resp,HttpServletRequest req)
 			{
+	 			decimalFormat2 = new DecimalFormat("0.00");
 				listSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
 				String clientCode=req.getSession().getAttribute("gClientCode").toString();
 	 			String userCode=req.getSession().getAttribute("gUserCode").toString();
@@ -1473,27 +1570,25 @@ public class clsPOSSalesReportController {
 	 			{	 				
 	 				Map mapData = new HashMap();
 		 			mapData=funGetReportData(strPOSName,FromDateTime,ToDateTime,strOperator,strPayMode,strFromBill,strToBill,reportType,
-		 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode);
+		 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode,clientCode,operationType);
 
 	 				clsPOSSalesFlashReportsBean objBean= new clsPOSSalesFlashReportsBean();
 	 				double SalesAmount=0;
 	 				
 	 				SalesAmount=Double.parseDouble(mapData.get("SalesAmt").toString());
 	 			
-	 				objBean.setTotalAmount(String.valueOf(decimalFormat.format(SalesAmount)));
+	 				objBean.setTotalAmount(String.valueOf(decimalFormat2.format(SalesAmount)));
 	 				listSalesReport.add(objBean);
 	        
 	 				List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
-	 				Gson gson = new Gson();
-	 				Type listType = new TypeToken<List<clsPOSSalesFlashReportsBean>>() {}.getType();
-	 				tmplistSalesReport = gson.fromJson(mapData.get("ListTableWiseSales").toString(), listType);
+	 				tmplistSalesReport = (List<clsPOSSalesFlashReportsBean>)mapData.get("ListTableWiseSales");
 	 				clsPOSSalesFlashReportsBean obj;
 	 				for(int i=0;i<tmplistSalesReport.size();i++)
 	 				{
 	 					obj= new clsPOSSalesFlashReportsBean();
 	 					obj.setStrField1(tmplistSalesReport.get(i).getStrField1());
 	 					obj.setStrField2(tmplistSalesReport.get(i).getStrField2());
-	 					obj.setStrField3(tmplistSalesReport.get(i).getStrField3());
+	 					obj.setStrField3(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField3())));
 	 					listSalesReport.add(obj);
 	 					
 	 				}
@@ -1515,6 +1610,8 @@ public class clsPOSSalesReportController {
 				,@RequestParam("areaCode") String areaCode,@RequestParam("operationType") String operationType,@RequestParam("gEnableShiftYN") String gEnableShiftYN,@RequestParam("shiftCode") String shiftCode,
 				HttpServletResponse resp,HttpServletRequest req)
 			{
+	 			decimalFormat0 = new DecimalFormat("0");
+ 				decimalFormat2 = new DecimalFormat("0.00");
 				listSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
 				String clientCode=req.getSession().getAttribute("gClientCode").toString();
 	 			String userCode=req.getSession().getAttribute("gUserCode").toString();
@@ -1523,34 +1620,35 @@ public class clsPOSSalesReportController {
 	 			
 	 			Map mapData = new HashMap();
 	 			mapData=funGetReportData(strPOSName,FromDateTime,ToDateTime,strOperator,strPayMode,strFromBill,strToBill,reportType,
-	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode);
+	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode,clientCode,operationType);
 
 		 			try 
 		 			{
-		 		
 	 				clsPOSSalesFlashReportsBean objBean= new clsPOSSalesFlashReportsBean();
-	 				double SalesAmount=0;
+	 				double SalesAmount=0,TotalNoOfBills=0,TotalPax=0;
 	 				
+	 				TotalNoOfBills=Double.parseDouble(mapData.get("TotalNoOfBills").toString());
+	 				TotalPax=Double.parseDouble(mapData.get("TotalPax").toString());
 	 				SalesAmount=Double.parseDouble(mapData.get("SalesAmt").toString());
-	 			
-	 				objBean.setTotalAmount(String.valueOf(decimalFormat.format(SalesAmount)));
+	 				objBean.setNoOfBills(String.valueOf(decimalFormat0.format(TotalNoOfBills)));
+	 				objBean.setTotalPAX(String.valueOf(decimalFormat0.format(TotalPax)));
+	 				objBean.setTotalAmount(String.valueOf(decimalFormat2.format(SalesAmount)));
 	 				listSalesReport.add(objBean);
 	        
 	 				List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
-	 				Gson gson = new Gson();
-	 				Type listType = new TypeToken<List<clsPOSSalesFlashReportsBean>>() {}.getType();
-	 				tmplistSalesReport = gson.fromJson(mapData.get("ListHourWiseSales").toString(), listType);
+	 				tmplistSalesReport = (List<clsPOSSalesFlashReportsBean>)mapData.get("ListHourWiseSales");
 	 				clsPOSSalesFlashReportsBean obj;
 	 				for(int i=0;i<tmplistSalesReport.size();i++)
 	 				{
 	 					obj= new clsPOSSalesFlashReportsBean();
 	 					obj.setStrField1(tmplistSalesReport.get(i).getStrField1().substring(0,5));
-	 					obj.setStrField2(tmplistSalesReport.get(i).getStrField2());
-	 					obj.setStrField3(tmplistSalesReport.get(i).getStrField3());
+	 					obj.setStrField2(decimalFormat0.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField2())));
+	 					obj.setStrField3(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField3())));
+	 					obj.setStrField5(tmplistSalesReport.get(i).getStrField5());	 					
 	 					
 	 					double saleAmt=Double.parseDouble(tmplistSalesReport.get(i).getStrField3());
 	 					double salePer = (saleAmt / SalesAmount) * 100;
-	 					obj.setStrField4(String.valueOf(decimalFormat.format(salePer)));
+	 					obj.setStrField4(String.valueOf(decimalFormat2.format(salePer)));
 	 					listSalesReport.add(obj);
 	 				}
 	 				System.out.print("@controller "+listSalesReport.size());
@@ -1571,6 +1669,7 @@ public class clsPOSSalesReportController {
 				,@RequestParam("areaCode") String areaCode,@RequestParam("operationType") String operationType,@RequestParam("gEnableShiftYN") String gEnableShiftYN,@RequestParam("shiftCode") String shiftCode,
 				HttpServletResponse resp,HttpServletRequest req)
 			{
+ 				decimalFormat2 = new DecimalFormat("0.00");
 				listSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
 				String clientCode=req.getSession().getAttribute("gClientCode").toString();
 	 			String userCode=req.getSession().getAttribute("gUserCode").toString();
@@ -1579,28 +1678,26 @@ public class clsPOSSalesReportController {
 	 			
 	 			Map mapData = new HashMap();
 	 			mapData=funGetReportData(strPOSName,FromDateTime,ToDateTime,strOperator,strPayMode,strFromBill,strToBill,reportType,
-	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode);
+	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode,clientCode,operationType);
 
 		 		try 
 		 		 {
 		 			clsPOSSalesFlashReportsBean objBean= new clsPOSSalesFlashReportsBean();
-	 				double SalesAmount=0;
-	 				SalesAmount=Double.parseDouble(mapData.get("SalesAmt").toString());
+	 				String SalesAmount="";
+	 				SalesAmount=decimalFormat2.format(Double.parseDouble(mapData.get("SalesAmt").toString()));
 	 			
-	 				objBean.setTotalAmount(String.valueOf(decimalFormat.format(SalesAmount)));
+	 				objBean.setTotalAmount(SalesAmount);
 	 				listSalesReport.add(objBean);
 	        
 	 				List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
-	 				Gson gson = new Gson();
-	 				Type listType = new TypeToken<List<clsPOSSalesFlashReportsBean>>() {}.getType();
-	 				tmplistSalesReport = gson.fromJson(mapData.get("ListAreaWiseSales").toString(), listType);
+	 				tmplistSalesReport = (List<clsPOSSalesFlashReportsBean>)mapData.get("ListAreaWiseSales");
 	 				clsPOSSalesFlashReportsBean obj;
 	 				for(int i=0;i<tmplistSalesReport.size();i++)
 	 				{
 	 					obj= new clsPOSSalesFlashReportsBean();
-	 					obj.setStrField1(tmplistSalesReport.get(i).getStrField1().substring(0,5));
+	 					obj.setStrField1(tmplistSalesReport.get(i).getStrField1().substring(0));
 	 					obj.setStrField2(tmplistSalesReport.get(i).getStrField2());
-	 					obj.setStrField3(tmplistSalesReport.get(i).getStrField3());
+	 					obj.setStrField3(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField3())));
 	 				
 	 					listSalesReport.add(obj);
 	 				}
@@ -1622,6 +1719,7 @@ public class clsPOSSalesReportController {
 				,@RequestParam("areaCode") String areaCode,@RequestParam("operationType") String operationType,@RequestParam("gEnableShiftYN") String gEnableShiftYN,@RequestParam("shiftCode") String shiftCode,
 				HttpServletResponse resp,HttpServletRequest req)
 			{
+	 			decimalFormat2 = new DecimalFormat("0.00");
 				listSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
 				String clientCode=req.getSession().getAttribute("gClientCode").toString();
 	 			String userCode=req.getSession().getAttribute("gUserCode").toString();
@@ -1630,7 +1728,7 @@ public class clsPOSSalesReportController {
 	 			
 	 			Map mapData = new HashMap();
 	 			mapData=funGetReportData(strPOSName,FromDateTime,ToDateTime,strOperator,strPayMode,strFromBill,strToBill,reportType,
-	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode);
+	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode,clientCode,operationType);
 
 		 		try {
 			 				
@@ -1646,27 +1744,25 @@ public class clsPOSSalesReportController {
 	 					totalTaxAmt=Double.parseDouble(mapData.get("totalTaxAmt").toString());
 		 						
 		 				objBean.setTotalQuantity(String.valueOf(totalNoOfBills));//totalNoOfBills
-		 				objBean.setTotalAmount(String.valueOf(decimalFormat.format(totalAmount)));
-		 				objBean.setTotalSubTotal(String.valueOf(decimalFormat.format(totalSubTotalDWise)));
-		 				objBean.setTotalDiscAmt(String.valueOf(decimalFormat.format(totalDiscount)));
-		 				objBean.setTotalTaxAmt(String.valueOf(decimalFormat.format(totalTaxAmt)));
+		 				objBean.setTotalAmount(String.valueOf(decimalFormat2.format(totalAmount)));
+		 				objBean.setTotalSubTotal(String.valueOf(decimalFormat2.format(totalSubTotalDWise)));
+		 				objBean.setTotalDiscAmt(String.valueOf(decimalFormat2.format(totalDiscount)));
+		 				objBean.setTotalTaxAmt(String.valueOf(decimalFormat2.format(totalTaxAmt)));
 		 				
 		 				listSalesReport.add(objBean);
 	        
-	 				List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
-	 				Gson gson = new Gson();
-	 				Type listType = new TypeToken<List<clsPOSSalesFlashReportsBean>>() {}.getType();
-	 				tmplistSalesReport = gson.fromJson(mapData.get("ListDayWiseSales").toString(), listType);
-	 				clsPOSSalesFlashReportsBean obj;
+		 				List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
+		 				tmplistSalesReport = (List<clsPOSSalesFlashReportsBean>)mapData.get("ListDayWiseSales");
+		 				clsPOSSalesFlashReportsBean obj;
 	 				for(int i=0;i<tmplistSalesReport.size();i++)
 	 				{
 	 					obj= new clsPOSSalesFlashReportsBean();
 	 					obj.setStrField1(tmplistSalesReport.get(i).getStrField1());
 	 					obj.setStrField2(tmplistSalesReport.get(i).getStrField2());
-	 					obj.setStrField3(tmplistSalesReport.get(i).getStrField3());
-	 					obj.setStrField4(tmplistSalesReport.get(i).getStrField4());
-	 					obj.setStrField5(tmplistSalesReport.get(i).getStrField5());
-	 					obj.setStrField6(tmplistSalesReport.get(i).getStrField6());
+	 					obj.setStrField3(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField3())));
+	 					obj.setStrField4(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField4())));
+	 					obj.setStrField5(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField5())));
+	 					obj.setStrField6(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField6())));
 	 				
 	 					listSalesReport.add(obj);
 	 				}
@@ -1688,6 +1784,7 @@ public class clsPOSSalesReportController {
 				,@RequestParam("areaCode") String areaCode,@RequestParam("operationType") String operationType,@RequestParam("gEnableShiftYN") String gEnableShiftYN,@RequestParam("shiftCode") String shiftCode,
 				HttpServletResponse resp,HttpServletRequest req)
 			{
+	 			decimalFormat2 = new DecimalFormat("0.00");
 				listSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
 				String clientCode=req.getSession().getAttribute("gClientCode").toString();
 	 			String userCode=req.getSession().getAttribute("gUserCode").toString();
@@ -1696,7 +1793,7 @@ public class clsPOSSalesReportController {
 	 			
 	 			Map mapData = new HashMap();
 	 			mapData=funGetReportData(strPOSName,FromDateTime,ToDateTime,strOperator,strPayMode,strFromBill,strToBill,reportType,
-	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode);
+	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode,clientCode,operationType);
 
 		 		try 
 		 		{				
@@ -1704,15 +1801,13 @@ public class clsPOSSalesReportController {
 		 				double totalTax = 0, totalTaxableAmt = 0;	
 		 				totalTax=Double.parseDouble(mapData.get("totalTax").toString());
 		 				totalTaxableAmt=Double.parseDouble(mapData.get("totalTaxableAmt").toString());
-		 				objBean.setTotalSubTotal(String.valueOf(decimalFormat.format(totalTax)));
-		 				objBean.setTotalTaxAmt(String.valueOf(decimalFormat.format(totalTaxableAmt)));
+		 				objBean.setTotalSubTotal(String.valueOf(decimalFormat2.format(totalTax)));
+		 				objBean.setTotalTaxAmt(String.valueOf(decimalFormat2.format(totalTaxableAmt)));
 		 				
 		 				listSalesReport.add(objBean);
 	        
 		 				List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
-		 				Gson gson = new Gson();
-		 				Type listType = new TypeToken<List<clsPOSSalesFlashReportsBean>>() {}.getType();
-		 				tmplistSalesReport = gson.fromJson(mapData.get("ListTaxWiseSales").toString(), listType);
+		 				tmplistSalesReport = (List<clsPOSSalesFlashReportsBean>)mapData.get("ListTaxWiseSales");
 		 				clsPOSSalesFlashReportsBean obj;
 	 			
 		 				for(int i=0;i<tmplistSalesReport.size();i++)
@@ -1723,9 +1818,8 @@ public class clsPOSSalesReportController {
 		 					obj.setStrField3(tmplistSalesReport.get(i).getStrField3());
 		 					obj.setStrField4(tmplistSalesReport.get(i).getStrField4());
 		 					obj.setStrField5(tmplistSalesReport.get(i).getStrField5());
-		 					obj.setStrField6(tmplistSalesReport.get(i).getStrField6());
-		 					obj.setStrField7(tmplistSalesReport.get(i).getStrField7());
-		 				
+		 					obj.setStrField6(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField6())));
+		 					obj.setStrField7(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField7())));		 				
 		 					listSalesReport.add(obj);
 		 				}
 	 				System.out.print("@controller "+listSalesReport.size());
@@ -1746,6 +1840,7 @@ public class clsPOSSalesReportController {
 				,@RequestParam("areaCode") String areaCode,@RequestParam("operationType") String operationType,@RequestParam("gEnableShiftYN") String gEnableShiftYN,@RequestParam("shiftCode") String shiftCode,
 				HttpServletResponse resp,HttpServletRequest req)
 			{
+	 			decimalFormat2 = new DecimalFormat("0.00");	
 				listSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
 				String clientCode=req.getSession().getAttribute("gClientCode").toString();
 	 			String userCode=req.getSession().getAttribute("gUserCode").toString();
@@ -1754,7 +1849,7 @@ public class clsPOSSalesReportController {
 	 			
 	 			Map mapData = new HashMap();
 	 			mapData=funGetReportData(strPOSName,FromDateTime,ToDateTime,strOperator,strPayMode,strFromBill,strToBill,reportType,
-	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode);
+	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode,clientCode,operationType);
 
 		 		try 
 		 		{
@@ -1768,17 +1863,15 @@ public class clsPOSSalesReportController {
  					totalTaxAmt=Double.parseDouble(mapData.get("totalTaxAmt").toString());
  					totalTipAmt=Double.parseDouble(mapData.get("tipAmountTotal").toString());
 		 					
- 					objBean.setTotalDiscAmt(String.valueOf(decimalFormat.format(totalDiscount)));
- 					objBean.setTotalSubTotal(String.valueOf(decimalFormat.format(totalSubTotal)));
- 					objBean.setTotalTaxAmt(String.valueOf(decimalFormat.format(totalTaxAmt)));
- 					objBean.setTotalTipAmt(String.valueOf(decimalFormat.format(totalTipAmt)));
- 					objBean.setTotalAmount(String.valueOf(decimalFormat.format(totalTipAmt)));
+ 					objBean.setTotalDiscAmt(String.valueOf(decimalFormat2.format(totalDiscount)));
+ 					objBean.setTotalSubTotal(String.valueOf(decimalFormat2.format(totalSubTotal)));
+ 					objBean.setTotalTaxAmt(String.valueOf(decimalFormat2.format(totalTaxAmt)));
+ 					objBean.setTotalTipAmt(String.valueOf(decimalFormat2.format(totalTipAmt)));
+ 					objBean.setTotalAmount(String.valueOf(decimalFormat2.format(totalTipAmt)));
 		 		    listSalesReport.add(objBean);
 	        
-	 				List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
-	 				Gson gson = new Gson();
-	 				Type listType = new TypeToken<List<clsPOSSalesFlashReportsBean>>() {}.getType();
-	 				tmplistSalesReport = gson.fromJson(mapData.get("ListTipWiseSales").toString(), listType);
+		 		    List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
+	 				tmplistSalesReport = (List<clsPOSSalesFlashReportsBean>)mapData.get("ListTipWiseSales");
 	 				clsPOSSalesFlashReportsBean obj;
 	 				for(int i=0;i<tmplistSalesReport.size();i++)
 	 				{
@@ -1788,12 +1881,12 @@ public class clsPOSSalesReportController {
 	 					obj.setStrField3(tmplistSalesReport.get(i).getStrField3());
 	 					obj.setStrField4(tmplistSalesReport.get(i).getStrField4());
 	 					obj.setStrField5(tmplistSalesReport.get(i).getStrField5());
-	 					obj.setStrField6(tmplistSalesReport.get(i).getStrField6());
-	 					obj.setStrField7(tmplistSalesReport.get(i).getStrField7());
-	 					obj.setStrField8(tmplistSalesReport.get(i).getStrField8());
-	 					obj.setStrField9(tmplistSalesReport.get(i).getStrField9());
-	 					obj.setStrField10(tmplistSalesReport.get(i).getStrField10());
-	 					obj.setStrField11(tmplistSalesReport.get(i).getStrField11());
+	 					obj.setStrField6(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField6())));
+	 					obj.setStrField7(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField7())));
+	 					obj.setStrField8(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField8())));
+	 					obj.setStrField9(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField9())));
+	 					obj.setStrField10(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField10())));
+	 					obj.setStrField11(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField11())));
 	 					listSalesReport.add(obj);
 	 				}
 	 				System.out.print("@controller "+listSalesReport.size());
@@ -1814,6 +1907,8 @@ public class clsPOSSalesReportController {
 				,@RequestParam("areaCode") String areaCode,@RequestParam("operationType") String operationType,@RequestParam("gEnableShiftYN") String gEnableShiftYN,@RequestParam("shiftCode") String shiftCode,
 				HttpServletResponse resp,HttpServletRequest req)
 			{
+	 			decimalFormat0 = new DecimalFormat("");
+	 			decimalFormat2 = new DecimalFormat("0.00"); 
 				listSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
 				String clientCode=req.getSession().getAttribute("gClientCode").toString();
 	 			String userCode=req.getSession().getAttribute("gUserCode").toString();
@@ -1822,7 +1917,7 @@ public class clsPOSSalesReportController {
 	 			
 	 			Map mapData = new HashMap();
 	 			mapData=funGetReportData(strPOSName,FromDateTime,ToDateTime,strOperator,strPayMode,strFromBill,strToBill,reportType,
-	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode);
+	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode,clientCode,operationType);
 
 		 		try 
 		 		{
@@ -1834,21 +1929,19 @@ public class clsPOSSalesReportController {
 					totalQty=Double.parseDouble(mapData.get("totalQty").toString());
 					SalesAmount=Double.parseDouble(mapData.get("totalAmount").toString());
 					objBean.setTotalQuantity(String.valueOf(totalQty));//totalNoOfBills
-					objBean.setTotalAmount(String.valueOf(decimalFormat.format(SalesAmount)));
+					objBean.setTotalAmount(String.valueOf(decimalFormat2.format(SalesAmount)));
 					listSalesReport.add(objBean);
 	        
-	 				List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
-	 				Gson gson = new Gson();
-	 				Type listType = new TypeToken<List<clsPOSSalesFlashReportsBean>>() {}.getType();
-	 				tmplistSalesReport = gson.fromJson(mapData.get("ListModWiseSales").toString(), listType);
+					List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
+	 				tmplistSalesReport = (List<clsPOSSalesFlashReportsBean>)mapData.get("ListModWiseSales");
 	 				clsPOSSalesFlashReportsBean obj;
 	 				for(int i=0;i<tmplistSalesReport.size();i++)
 	 				{
 	 					obj= new clsPOSSalesFlashReportsBean();
 	 					obj.setStrField1(tmplistSalesReport.get(i).getStrField1());
 	 					obj.setStrField2(tmplistSalesReport.get(i).getStrField2());
-	 					obj.setStrField3(tmplistSalesReport.get(i).getStrField3());
-	 					obj.setStrField4(tmplistSalesReport.get(i).getStrField4());
+	 					obj.setStrField3(decimalFormat0.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField3())));
+	 					obj.setStrField4(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField4())));
 	 				
 	 					listSalesReport.add(obj);
 	 				}
@@ -1870,6 +1963,8 @@ public class clsPOSSalesReportController {
 				,@RequestParam("areaCode") String areaCode,@RequestParam("operationType") String operationType,@RequestParam("gEnableShiftYN") String gEnableShiftYN,@RequestParam("shiftCode") String shiftCode,
 				HttpServletResponse resp,HttpServletRequest req)
 			{
+	 			decimalFormat0 = new DecimalFormat(""); 
+	 			decimalFormat2 = new DecimalFormat("0.00"); 
 				listSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
 				String clientCode=req.getSession().getAttribute("gClientCode").toString();
 	 			String userCode=req.getSession().getAttribute("gUserCode").toString();
@@ -1878,7 +1973,7 @@ public class clsPOSSalesReportController {
 	 			
 	 			Map mapData = new HashMap();
 	 			mapData=funGetReportData(strPOSName,FromDateTime,ToDateTime,strOperator,strPayMode,strFromBill,strToBill,reportType,
-	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode);
+	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode,clientCode,operationType);
 
 		 		try 
 		 		{
@@ -1888,22 +1983,21 @@ public class clsPOSSalesReportController {
  					double totalQty = 0;
 					totalQty=Double.parseDouble(mapData.get("totalQty").toString());
 					SalesAmount=Double.parseDouble(mapData.get("totalAmount").toString());
-					objBean.setTotalQuantity(String.valueOf(totalQty));//totalNoOfBills
-					objBean.setTotalAmount(String.valueOf(decimalFormat.format(SalesAmount)));
+					objBean.setTotalQuantity(String.valueOf(decimalFormat0.format(totalQty)));//totalNoOfBills
+					objBean.setTotalAmount(String.valueOf(decimalFormat2.format(SalesAmount)));//totalSalesAmount
 					listSalesReport.add(objBean);
 	        
-	 				List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
-	 				Gson gson = new Gson();
-	 				Type listType = new TypeToken<List<clsPOSSalesFlashReportsBean>>() {}.getType();
-	 				tmplistSalesReport = gson.fromJson(mapData.get("ListMenuHeadModWiseSales").toString(), listType);
+					List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
+	 				tmplistSalesReport = (List<clsPOSSalesFlashReportsBean>)mapData.get("ListMenuHeadModWiseSales");
 	 				clsPOSSalesFlashReportsBean obj;
 	 				for(int i=0;i<tmplistSalesReport.size();i++)
 	 				{
 	 					obj= new clsPOSSalesFlashReportsBean();
 	 					obj.setStrField1(tmplistSalesReport.get(i).getStrField1());
 	 					obj.setStrField2(tmplistSalesReport.get(i).getStrField2());
-	 					obj.setStrField3(tmplistSalesReport.get(i).getStrField3());
-	 					obj.setStrField4(tmplistSalesReport.get(i).getStrField4());
+	 					double d = Double.parseDouble(tmplistSalesReport.get(i).getStrField3());
+	 					obj.setStrField3(decimalFormat0.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField3())));
+	 					obj.setStrField4(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField4())));
 	 				
 	 					listSalesReport.add(obj);
 	 				}
@@ -1926,6 +2020,8 @@ public class clsPOSSalesReportController {
 				,@RequestParam("areaCode") String areaCode,@RequestParam("operationType") String operationType,@RequestParam("gEnableShiftYN") String gEnableShiftYN,@RequestParam("shiftCode") String shiftCode,
 				HttpServletResponse resp,HttpServletRequest req)
 			{
+	 			decimalFormat1 = new DecimalFormat("0.0"); 
+	 			decimalFormat2 = new DecimalFormat("0.00"); 
 				listSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
 				String clientCode=req.getSession().getAttribute("gClientCode").toString();
 	 			String userCode=req.getSession().getAttribute("gUserCode").toString();
@@ -1934,33 +2030,35 @@ public class clsPOSSalesReportController {
 	 			
 	 			Map mapData = new HashMap();
 	 			mapData=funGetReportData(strPOSName,FromDateTime,ToDateTime,strOperator,strPayMode,strFromBill,strToBill,reportType,
-	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode);
+	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode,clientCode,operationType);
 
 		 		try 
 		 		{
+		 						
+		 			
 			 				
 	 			   clsPOSSalesFlashReportsBean objBean= new clsPOSSalesFlashReportsBean();
-	 				double SalesAmount=0;
- 					double totalDisc = 0;
-	 				totalDisc=Double.parseDouble(mapData.get("totalDisc").toString());
-					SalesAmount=Double.parseDouble(mapData.get("totalAmount").toString());
-					objBean.setTotalDiscAmt(String.valueOf(totalDisc));
-					objBean.setTotalAmount(String.valueOf(decimalFormat.format(SalesAmount)));
+	 				double totalAmount=0;
+ 					double totalQty = 0,totalDiscAmount=0;
+ 					totalQty=Double.parseDouble(mapData.get("totalQty").toString());
+ 					totalDiscAmount=Double.parseDouble(mapData.get("totalDiscAmount").toString());
+ 					totalAmount=Double.parseDouble(mapData.get("totalAmount").toString());
+					objBean.setTotalQuantity(String.valueOf(decimalFormat1.format(totalQty)));
+					objBean.setTotalDiscAmt(String.valueOf(decimalFormat2.format(totalDiscAmount)));
+					objBean.setTotalAmount(String.valueOf(decimalFormat2.format(totalAmount)));
 					listSalesReport.add(objBean);
 	        
-	 				List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
-	 				Gson gson = new Gson();
-	 				Type listType = new TypeToken<List<clsPOSSalesFlashReportsBean>>() {}.getType();
-	 				tmplistSalesReport = gson.fromJson(mapData.get("ListItemHourlyWiseSales").toString(), listType);
+					List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
+	 				tmplistSalesReport = (List<clsPOSSalesFlashReportsBean>)mapData.get("ListItemHourlyWiseSales");
 	 				clsPOSSalesFlashReportsBean obj;
 	 				for(int i=0;i<tmplistSalesReport.size();i++)
 	 				{
 	 					obj= new clsPOSSalesFlashReportsBean();
 	 					obj.setStrField1(tmplistSalesReport.get(i).getStrField1());
 	 					obj.setStrField2(tmplistSalesReport.get(i).getStrField2());
-	 					obj.setStrField3(tmplistSalesReport.get(i).getStrField3());
-	 					obj.setStrField4(tmplistSalesReport.get(i).getStrField4());
-	 					obj.setStrField5(tmplistSalesReport.get(i).getStrField5());
+	 					obj.setStrField3(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField3())));
+	 					obj.setStrField4(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField4())));
+	 					obj.setStrField5(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField5())));
 	 					listSalesReport.add(obj);
 	 				}
 	 				System.out.print("@controller "+listSalesReport.size());
@@ -1982,6 +2080,8 @@ public class clsPOSSalesReportController {
 				,@RequestParam("areaCode") String areaCode,@RequestParam("operationType") String operationType,@RequestParam("gEnableShiftYN") String gEnableShiftYN,@RequestParam("shiftCode") String shiftCode,
 				HttpServletResponse resp,HttpServletRequest req)
 			{
+	 		 	decimalFormat1 = new DecimalFormat("0.0");
+	 			decimalFormat2 = new DecimalFormat("0.00"); 
 				listSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
 				String clientCode=req.getSession().getAttribute("gClientCode").toString();
 	 			String userCode=req.getSession().getAttribute("gUserCode").toString();
@@ -1990,7 +2090,7 @@ public class clsPOSSalesReportController {
 	 			
 	 			Map mapData = new HashMap();
 	 			mapData=funGetReportData(strPOSName,FromDateTime,ToDateTime,strOperator,strPayMode,strFromBill,strToBill,reportType,
-	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode);
+	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode,clientCode,operationType);
 
 		 		try 
 		 		{
@@ -1999,14 +2099,12 @@ public class clsPOSSalesReportController {
  					double totalDisc = 0;
 	 				totalDisc=Double.parseDouble(mapData.get("totalDisc").toString());
 					SalesAmount=Double.parseDouble(mapData.get("totalAmount").toString());
-					objBean.setTotalDiscAmt(String.valueOf(totalDisc));
-					objBean.setTotalAmount(String.valueOf(decimalFormat.format(SalesAmount)));
+					objBean.setTotalDiscAmt(String.valueOf(decimalFormat1.format(totalDisc)));
+					objBean.setTotalAmount(String.valueOf(decimalFormat2.format(SalesAmount)));
 					listSalesReport.add(objBean);
 	        
-	 				List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
-	 				Gson gson = new Gson();
-	 				Type listType = new TypeToken<List<clsPOSSalesFlashReportsBean>>() {}.getType();
-	 				tmplistSalesReport = gson.fromJson(mapData.get("ListOperatorWiseSales").toString(), listType);
+					List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
+	 				tmplistSalesReport = (List<clsPOSSalesFlashReportsBean>)mapData.get("ListOperatorWiseSales");
 	 				clsPOSSalesFlashReportsBean obj;
 	 				for(int i=0;i<tmplistSalesReport.size();i++)
 	 				{
@@ -2015,8 +2113,8 @@ public class clsPOSSalesReportController {
 	 					obj.setStrField2(tmplistSalesReport.get(i).getStrField2());
 	 					obj.setStrField3(tmplistSalesReport.get(i).getStrField3());
 	 					obj.setStrField4(tmplistSalesReport.get(i).getStrField4());
-	 					obj.setStrField5(tmplistSalesReport.get(i).getStrField5());
-	 					obj.setStrField6(tmplistSalesReport.get(i).getStrField6());
+	 					obj.setStrField5(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField5())));
+	 					obj.setStrField6(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField6())));
 	 					listSalesReport.add(obj);
 	 				}
 	 				System.out.print("@controller "+listSalesReport.size());
@@ -2037,6 +2135,7 @@ public class clsPOSSalesReportController {
 				,@RequestParam("areaCode") String areaCode,@RequestParam("operationType") String operationType,@RequestParam("gEnableShiftYN") String gEnableShiftYN,@RequestParam("shiftCode") String shiftCode,
 				HttpServletResponse resp,HttpServletRequest req)
 			{
+ 				decimalFormat2 = new DecimalFormat("0.00"); 
 				listSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
 				String clientCode=req.getSession().getAttribute("gClientCode").toString();
 	 			String userCode=req.getSession().getAttribute("gUserCode").toString();
@@ -2045,7 +2144,7 @@ public class clsPOSSalesReportController {
 	 			
 	 			Map mapData = new HashMap();
 	 			mapData=funGetReportData(strPOSName,FromDateTime,ToDateTime,strOperator,strPayMode,strFromBill,strToBill,reportType,
-	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode);
+	 					Type,Customer,ConsolidatePOS,ReportName,userCode,LoginPOSCode,areaCode,operationType,gEnableShiftYN,shiftCode,clientCode,operationType);
 
 		 		try 
 		 		{
@@ -2053,20 +2152,18 @@ public class clsPOSSalesReportController {
 	 			    clsPOSSalesFlashReportsBean objBean= new clsPOSSalesFlashReportsBean();
 	 				double SalesAmount=0;
 					SalesAmount=Double.parseDouble(mapData.get("totalSale").toString());
-					objBean.setTotalAmount(String.valueOf(decimalFormat.format(SalesAmount)));
+					objBean.setTotalAmount(String.valueOf(decimalFormat2.format(SalesAmount)));
 					listSalesReport.add(objBean);
 	        
-	 				List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
-	 				Gson gson = new Gson();
-	 				Type listType = new TypeToken<List<clsPOSSalesFlashReportsBean>>() {}.getType();
-	 				tmplistSalesReport = gson.fromJson(mapData.get("ListMonthlySales").toString(), listType);
+					List<clsPOSSalesFlashReportsBean> tmplistSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();
+	 				tmplistSalesReport = (List<clsPOSSalesFlashReportsBean>)mapData.get("ListMonthlySales");
 	 				clsPOSSalesFlashReportsBean obj;
 	 				for(int i=0;i<tmplistSalesReport.size();i++)
 	 				{
 	 					obj= new clsPOSSalesFlashReportsBean();
 	 					obj.setStrField1(tmplistSalesReport.get(i).getStrField1());
 	 					obj.setStrField2(tmplistSalesReport.get(i).getStrField2());
-	 					obj.setStrField3(tmplistSalesReport.get(i).getStrField3());
+	 					obj.setStrField3(decimalFormat2.format(Double.parseDouble(tmplistSalesReport.get(i).getStrField3())));
 	 					listSalesReport.add(obj);
 	 				}
 	 				System.out.print("@controller "+listSalesReport.size());
@@ -2082,7 +2179,7 @@ public class clsPOSSalesReportController {
 /*return json data used to send webservice */
 	public Map funGetReportData(String strPOSName,String FromDateTime,String ToDateTime, String strOperator,
 				String strPayMode,String strFromBill,String strToBill,String reportType,
-				String Type,String Customer,String ConsolidatePOS,String ReportName,String userCode,String LoginPOSCode,String areaCode,String operationTye,String gEnableShiftYN,String shiftCode)
+				String Type,String Customer,String ConsolidatePOS,String ReportName,String userCode,String LoginPOSCode,String areaCode,String operationTye,String gEnableShiftYN,String shiftCode,String clientCode,String operationType)
 		{
 			Map mapDataReportData = new HashMap();
 			try{
@@ -2093,7 +2190,7 @@ public class clsPOSSalesReportController {
 	 			FromTime=FromDateTime.split(":")[1];
 	 			ToDate=ToDateTime.split(":")[0];
 	 			ToTime=ToDateTime.split(":")[1];
-	 		
+	 			
 	 			String strFromdate=FromDate.split("-")[2]+"-"+FromDate.split("-")[1]+"-"+FromDate.split("-")[0];
 	 			String strToDate=ToDate.split("-")[2]+"-"+ToDate.split("-")[1]+"-"+ToDate.split("-")[0]; 
 			
@@ -2129,7 +2226,16 @@ public class clsPOSSalesReportController {
 			
 	 				if(!strPOSName.equalsIgnoreCase("ALL"))
 	 				{
-	 					posCode= hmPOSData.get(strPOSName);
+	 					 for(Map.Entry<String,String> entry : hmPOSData.entrySet())
+	 					 {
+	 						 String POSCode=entry.getKey();
+	 						 String POSName=entry.getValue();
+	 						 if(POSName.equalsIgnoreCase(strPOSName))
+	 						 {
+	 							posCode=POSCode;
+	 						 }
+	 					 }
+	 					//posCode= hmPOSData.get(strPOSName);
 	 				}
 		
 	 				if(!strPayMode.equalsIgnoreCase("All"))
@@ -2137,8 +2243,8 @@ public class clsPOSSalesReportController {
 	 					PayMode= hmPayMode.get(strPayMode);
 	 				}
 			
-	 				mapDataReportData=objReportService.funSalesReport(dateFrom,dateTo, posCode,shiftCode, userCode,field,PayMode,strOperator,
-	 				strFromBill,strToBill,reportType,Type,Customer,ConsolidatePOS,ReportName.substring(3),LoginPOSCode,gEnableShiftYN);
+	 				mapDataReportData=objReportService.funSalesReport(strFromdate,strToDate, posCode,shiftCode, userCode,field,PayMode,strOperator,
+	 				strFromBill,strToBill,reportType,Type,Customer,ConsolidatePOS,ReportName.substring(3),LoginPOSCode,gEnableShiftYN,clientCode,operationType,areaCode);
 			}
 			catch(Exception e)
 			{

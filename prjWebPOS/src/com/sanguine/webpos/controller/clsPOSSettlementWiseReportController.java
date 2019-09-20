@@ -199,7 +199,7 @@ public class clsPOSSettlementWiseReportController {
 	                    clsPOSBillItemDtlBean objBillItemDtlBean = mapSettlementModes.get(settlementName);
 
 	                    objBillItemDtlBean.setDblSettlementAmt(objBillItemDtlBean.getDblSettlementAmt() + Double.parseDouble(obj[2].toString()));
-	                    objBillItemDtlBean.setNoOfBills(objBillItemDtlBean.getNoOfBills() +Integer.parseInt(obj[4].toString()));
+	                    objBillItemDtlBean.setDblNoOfBills(objBillItemDtlBean.getDblNoOfBills() +Integer.parseInt(obj[4].toString()));
 
 	                }
 	                else
@@ -209,7 +209,7 @@ public class clsPOSSettlementWiseReportController {
 	                    objBillItemDtlBean.setStrSettelmentMode(settlementName);
 	                    objBillItemDtlBean.setDblSettlementAmt(Double.parseDouble(obj[2].toString()));
 	                    objBillItemDtlBean.setStrPosName(obj[3].toString());
-	                    objBillItemDtlBean.setNoOfBills(Integer.parseInt(obj[4].toString()));
+	                    objBillItemDtlBean.setDblNoOfBills(Integer.parseInt(obj[4].toString()));
 
 	                    mapSettlementModes.put(settlementName, objBillItemDtlBean);
 
@@ -232,7 +232,7 @@ public class clsPOSSettlementWiseReportController {
 	 	                    clsPOSBillItemDtlBean objBillItemDtlBean = mapSettlementModes.get(settlementName);
 
 	 	                    objBillItemDtlBean.setDblSettlementAmt(objBillItemDtlBean.getDblSettlementAmt() + Double.parseDouble(obj[2].toString()));
-	 	                    objBillItemDtlBean.setNoOfBills(objBillItemDtlBean.getNoOfBills() +Integer.parseInt(obj[4].toString()));
+	 	                    objBillItemDtlBean.setDblNoOfBills(objBillItemDtlBean.getDblNoOfBills() +Integer.parseInt(obj[4].toString()));
 
 	 	                }
 	 	                else
@@ -242,7 +242,7 @@ public class clsPOSSettlementWiseReportController {
 	 	                    objBillItemDtlBean.setStrSettelmentMode(settlementName);
 	 	                    objBillItemDtlBean.setDblSettlementAmt(Double.parseDouble(obj[2].toString()));
 	 	                    objBillItemDtlBean.setStrPosName(obj[3].toString());
-	 	                    objBillItemDtlBean.setNoOfBills(Integer.parseInt(obj[4].toString()));
+	 	                    objBillItemDtlBean.setDblNoOfBills(Integer.parseInt(obj[4].toString()));
 
 	 	                    mapSettlementModes.put(settlementName, objBillItemDtlBean);
 

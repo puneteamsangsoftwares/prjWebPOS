@@ -119,6 +119,22 @@
 					</s:select>
 				</div>
 			</div>
+			<div class="row" style="background-color: #fff; display: block;">
+
+				<div class="element-input col-lg-6" style="width: 15%;">
+					<label class="title">Shift</label>
+				</div>
+				<div class="element-input col-lg-6"
+					style="margin-bottom: 10px; width: 25%">
+					<s:select id="cmbShiftCode" path="strShiftCode">
+						<s:option value="All">All</s:option>
+						<s:option value="1">1</s:option>
+						<s:option value="2">2</s:option>
+						<s:option value="3">3</s:option>
+						<s:option value="4">4</s:option>
+					</s:select>
+				</div>
+			</div>
 
 
 		</div>

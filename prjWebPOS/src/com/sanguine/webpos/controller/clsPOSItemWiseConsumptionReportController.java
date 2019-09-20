@@ -36,11 +36,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sanguine.controller.clsGlobalFunctions;
+import com.sanguine.webpos.bean.clsPOSItemConsumptionMonthWiseBean;
 import com.sanguine.webpos.bean.clsPOSItemWiseConsumption;
 import com.sanguine.webpos.bean.clsPOSReportBean;
 import com.sanguine.webpos.comparator.clsPOSItemConsumptionComparator;
 import com.sanguine.webpos.model.clsCostCenterMasterModel;
 import com.sanguine.webpos.model.clsGroupMasterModel;
+import com.sanguine.webpos.model.clsShiftMasterModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.sevice.clsPOSReportService;
 
@@ -71,6 +73,7 @@ public class clsPOSItemWiseConsumptionReportController {
 	public ModelAndView funOpenForm(Map<String, Object> model,HttpServletRequest request)throws Exception
 	{
 		String strClientCode=request.getSession().getAttribute("gClientCode").toString();	
+		String POSCode=request.getSession().getAttribute("loginPOS").toString();	
 		String urlHits="1";
 		try{
 			urlHits=request.getParameter("saddr").toString();
@@ -125,6 +128,20 @@ public class clsPOSItemWiseConsumptionReportController {
 		printModifiers.add("No");
 		model.put("printModifiers",printModifiers);
 		
+		List shiftList = new ArrayList();
+		shiftList.add("All");
+		List listShiftData = objReportService.funGetPOSWiseShiftList(POSCode,request);
+		if(listShiftData!=null)
+		{
+			for(int cnt=0;cnt<listShiftData.size();cnt++)
+			{
+				clsShiftMasterModel objShiftModel= (clsShiftMasterModel) listShiftData.get(cnt);
+				shiftList.add(objShiftModel.getIntShiftCode());
+			
+			}
+		}
+		model.put("shiftList",shiftList);
+		
 		String posDate=request.getSession().getAttribute("gPOSDate").toString();	
 		request.setAttribute("POSDate", posDate);
 	
@@ -151,7 +168,9 @@ public class clsPOSItemWiseConsumptionReportController {
 		String reportName ="";	
 		Map hm = objGlobalFunctions.funGetCommonHashMapForJasperReport(objBean, req, resp);
 		String strPOSName =objBean.getStrPOSName();
+		String strSortBy =objBean.getStrSort();	
 		String posCode= "ALL";
+		hm.put("strSortBy", strSortBy);
 		if (!strPOSName.equalsIgnoreCase("ALL"))
 		{
 			posCode = (String) map.get(strPOSName);
@@ -164,7 +183,7 @@ public class clsPOSItemWiseConsumptionReportController {
 		{
 			groupCode = (String) mapOfGroups.get(strGroupName);
 		}
-		hm.put("GroupName", strGroupName);
+		hm.put("strGroupName", strGroupName);
 		
 		String strCostCenterName = objBean.getStrSGName();
 		String costCenterCode= "ALL";
@@ -173,6 +192,7 @@ public class clsPOSItemWiseConsumptionReportController {
 			costCenterCode = (String) mapOfCostCenters.get(strCostCenterName);
 		}
 		hm.put("costCenterName", strCostCenterName);
+		String strMonthWise=objBean.getStrMonthWise();
 		
 		String reportBy=objBean.getStrViewBy();
 		String printZeroAmountModi = objBean.getStrOperationType();
@@ -184,7 +204,21 @@ public class clsPOSItemWiseConsumptionReportController {
 		String strUserCode = hm.get("userName").toString();
 		String strPOSCode = posCode;
 		String strShiftNo = "All";
+		JRBeanCollectionDataSource beanCollectionDataSource;
+		if(!strShiftNo.equalsIgnoreCase("All"))
+		{
+			strShiftNo=objBean.getStrShiftCode();
+		}
 		List<clsPOSItemWiseConsumption> list = new ArrayList<clsPOSItemWiseConsumption>();
+		if(strMonthWise.equalsIgnoreCase("Yes"))
+		{
+			List<clsPOSItemConsumptionMonthWiseBean> listMonthWise = new ArrayList<clsPOSItemConsumptionMonthWiseBean>();
+			reportName = servletContext.getRealPath("/WEB-INF/reports/webpos/rptItemConsumptionMonthWiseReport1.jrxml");	
+			listMonthWise = objReportService.funItemWiseConsumptionMonthWise(fromDate,toDate,posCode,strShiftNo,strPOSName,groupCode,strGroupName,costCenterCode,printZeroAmountModi);
+			beanCollectionDataSource = new JRBeanCollectionDataSource(listMonthWise);
+		}   
+		else
+		{ 
 		if(reportBy.equalsIgnoreCase("POS Wise Cost Center"))
 		{
 			reportName = servletContext.getRealPath("/WEB-INF/reports/webpos/rptItemWiseConsumptionReport1.jrxml");	
@@ -198,12 +232,15 @@ public class clsPOSItemWiseConsumptionReportController {
 		else
 		{
 			reportName = servletContext.getRealPath("/WEB-INF/reports/webpos/rptItemWiseConsumptionReport2.jrxml");	
-			list = objReportService.funProcessItemWiseConsumptionMenuHeadReport(posCode,fromDate,toDate,groupCode,costCenterCode,strShiftNo,printZeroAmountModi);        
+			list = objReportService.funProcessItemWiseConsumptionMenuHeadReport(posCode, fromDate, toDate, groupCode, costCenterCode, strShiftNo,  printZeroAmountModi, strMonthWise, strSortBy, strGroupName);
+		
+		}
+		beanCollectionDataSource = new JRBeanCollectionDataSource(list);
 		}
 		JasperDesign jd = JRXmlLoader.load(reportName);
 		JasperReport jr = JasperCompileManager.compileReport(jd);
 		List<JasperPrint> jprintlist = new ArrayList<JasperPrint>();
-		JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
+		
 		JasperPrint print = JasperFillManager.fillReport(jr, hm, beanCollectionDataSource);
 		jprintlist.add(print);
 		String filePath = System.getProperty("user.dir")+ "/DayEndMailReports/";

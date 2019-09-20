@@ -16,6 +16,9 @@
 	src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
 <script type="text/javascript"
 	src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
+<script type="text/javascript" src="<spring:url value="/resources/js/jquery.autocomplete.min.js"/>"></script>
+
+	
 <style>
 .ui-autocomplete {
 	max-height: 200px;
@@ -35,10 +38,10 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		
-			$('input#txtTaxDesc').mlKeyboard({layout: 'en_US'});
-		  	$('input#txtTaxShortName').mlKeyboard({layout: 'en_US'});
-		 	$('input#txtAmount').mlKeyboard({layout: 'en_US'});
-		  	$('input#txtPercent').mlKeyboard({layout: 'en_US'});
+			//$('input#txtTaxDesc').mlKeyboard({layout: 'en_US'});
+		  	//$('input#txtTaxShortName').mlKeyboard({layout: 'en_US'});
+		 	//$('input#txtAmount').mlKeyboard({layout: 'en_US'});
+		  	//$('input#txtPercent').mlKeyboard({layout: 'en_US'});
 		
 		  	$("#txtdteValidFrom").datepicker({ dateFormat: 'yy-mm-dd' });
 			$("#txtdteValidFrom" ).datepicker('setDate', 'today');
@@ -97,6 +100,35 @@
 				return flag;
 			  }
 			});
+		
+		
+		$('#txtTaxDesc').autocomplete({
+ 			serviceUrl: '${pageContext.request.contextPath}/getAutoSearchData.html?formname=taxDescName',  
+ 			paramName: "searchBy",
+ 			delimiter: ",",
+ 		    transformResult: function(response) {
+ 		    	mapAreaCodeName=new Map();
+ 			return {
+ 			  //must convert json to javascript object before process
+ 			  suggestions: $.map($.parseJSON(response), function(item) {
+ 			       // strValue  strCode
+ 			        mapAreaCodeName.set(item.strValue,item.strCode);
+ 			      	return { value: item.strValue, data: item.strCode };
+ 			   })
+ 			            
+ 			 };
+ 			        
+ 	        }
+ 		 });
+		 
+			$('#txtTaxDesc').blur(function() {
+					var code=mapAreaCodeName.get($('#txtTaxDesc').val());
+					if(code!='' && code!=null){
+						funSetTaxData(code);	
+					}
+					
+			});
+		
 	});
 	
 	

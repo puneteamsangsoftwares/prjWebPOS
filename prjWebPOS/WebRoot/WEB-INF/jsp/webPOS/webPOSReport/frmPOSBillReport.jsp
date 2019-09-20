@@ -8,6 +8,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Bill Report</title>
+<link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/jquery-confirm.min.css"/>"/>
+<script type="text/javascript" src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
+<script type="text/javascript" src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
 <style>
 .ui-autocomplete {
 	max-height: 200px;
@@ -43,7 +46,14 @@
 		});
 		$("#txtToDate").datepicker('setDate', Dat);
 
-	});
+	});	
+
+	function funDateValidate() {
+			if (!($("#txtFromDate").val() <= $("#txtToDate").val())) {
+				$("#txtToDate").val($("#txtFromDate").val())
+				confirmDialog("To Date is Wrong!");
+			}
+		}
 
 	/**
 	 * Reset The Group Name TextField
@@ -98,7 +108,7 @@
 				<div class="element-input col-lg-6"
 					style="margin-bottom: 10px; width: 20%">
 					<s:input id="txtToDate" required="required" path="toDate"
-						pattern="\d{1,2}-\d{1,2}-\d{4}" style="width: 100%;" />
+						pattern="\d{1,2}-\d{1,2}-\d{4}" style="width: 100%;" onChange="funDateValidate();"/>
 				</div>
 			</div>
 			<div class="row" style="background-color: #fff; display: block;">

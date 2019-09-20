@@ -46,13 +46,7 @@
 			<parameterDescription><![CDATA[]]></parameterDescription>
 		</parameter>
 		<parameter name="decimalFormaterForIntegerValue" class="java.lang.String"/>
-		<queryString>
-			<![CDATA[select count(*) as billCount,sum(ifnull(a.dblsubtotal,0.00)) as billAmt,sum(a.dbldiscamt) as discountAmt,round(sum(a.dbltaxamt)) as taxAmt,sum(ifnull(a.dblsettlementamt,0.00)) as settlementAmt
-from tbltempsalesflash1 a
-where date(a.dteBillDate) between $P{fromDate} and $P{toDate} 
-order by a.strPOSCode asc]]>
-		</queryString>
-		<field name="billCount" class="java.lang.Long"/>
+		
 		<field name="billAmt" class="java.lang.Double"/>
 		<field name="discountAmt" class="java.lang.Double"/>
 		<field name="taxAmt" class="java.lang.Double"/>
@@ -75,6 +69,7 @@ order by a.strPOSCode asc]]>
 	<queryString>
 		<![CDATA[select 1 from dual]]>
 	</queryString>
+	
 	<field name="dblSettlementAmt" class="java.lang.Double"/>
 	<field name="dblTaxAmt" class="java.lang.Double"/>
 	<field name="dblDiscountPer" class="java.lang.Double"/>
@@ -89,6 +84,7 @@ order by a.strPOSCode asc]]>
 	<field name="strPosName" class="java.lang.String"/>
 	<field name="dteBillDate" class="java.lang.String"/>
 	<field name="strBillNo" class="java.lang.String"/>
+	<field name="dblNoOfBills" class="java.lang.Double"/>
 	<variable name="posTotal" class="java.lang.Double" resetType="Group" resetGroup="posName" calculation="Sum">
 		<variableExpression><![CDATA[$F{dblSubTotal}]]></variableExpression>
 	</variable>
@@ -457,8 +453,23 @@ order by a.strPOSCode asc]]>
 				</textElement>
 				<text><![CDATA[Total:]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="c72266fe-36de-4440-9df9-993dd5b77c6b" x="1" y="23" width="90" height="28" forecolor="#3366FF"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total No Of Bills:]]></text>
+			</staticText>
 			<textField pattern="###0.00">
-				<reportElement uuid="8a8e0df8-83bb-401c-b1a3-6097f45a6260" x="170" y="6" width="40" height="27" forecolor="#3366FF"/>
+				<reportElement uuid="8a8e0df8-83bb-401c-b1a3-6097f45a6260" x="170" y="23" width="40" height="27" forecolor="#3366FF"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dblNoOfBills}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{decimalFormaterForDoubleValue}]]></patternExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement uuid="8a8e0df8-83bb-401c-b1a3-6097f45a6260" x="170" y="8" width="40" height="27" forecolor="#3366FF"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Trebuchet MS" size="11" isBold="true"/>
 				</textElement>
@@ -490,7 +501,7 @@ order by a.strPOSCode asc]]>
 				<patternExpression><![CDATA[$P{decimalFormaterForDoubleValue}]]></patternExpression>
 			</textField>
 			<line>
-				<reportElement uuid="b585eebd-330b-48c3-9451-d927e2c347f0" x="0" y="34" width="609" height="1"/>
+				<reportElement uuid="b585eebd-330b-48c3-9451-d927e2c347f0" x="0" y="49" width="609" height="1"/>
 			</line>
 			<componentElement>
 				<reportElement uuid="de9dfcb2-9886-4ad2-88a1-8390f2c326cd" key="table" style="Row" x="0" y="50" width="180" height="20"/>
@@ -512,13 +523,6 @@ order by a.strPOSCode asc]]>
 					</datasetRun>
 					<jr:column uuid="2e86bd1a-be65-4a35-8016-d9948a6d0d17" width="131">
 						<jr:detailCell style="table_TD" height="92" rowSpan="1">
-							<staticText>
-								<reportElement uuid="896de358-1c19-4a3c-814a-579ba68d95ec" x="0" y="0" width="131" height="18"/>
-								<textElement>
-									<font fontName="Trebuchet MS" isBold="true"/>
-								</textElement>
-								<text><![CDATA[Total No. Of Bills.              :]]></text>
-							</staticText>
 							<staticText>
 								<reportElement uuid="896de358-1c19-4a3c-814a-579ba68d95ec" x="0" y="18" width="131" height="18"/>
 								<textElement>
@@ -554,13 +558,6 @@ order by a.strPOSCode asc]]>
 					</jr:column>
 					<jr:column uuid="f68b08d5-2180-4a0e-a371-4f16a2bb71a9" width="90">
 						<jr:detailCell style="table_TD" height="92" rowSpan="1">
-							<textField>
-								<reportElement uuid="6c2323e4-02a9-43c5-b928-155440873ed2" x="0" y="0" width="90" height="18"/>
-								<textElement textAlignment="Right" verticalAlignment="Middle">
-									<font fontName="Trebuchet MS"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$F{billCount}]]></textFieldExpression>
-							</textField>
 							<textField>
 								<reportElement uuid="6c2323e4-02a9-43c5-b928-155440873ed2" x="0" y="18" width="90" height="18"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle">

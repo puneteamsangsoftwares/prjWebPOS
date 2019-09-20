@@ -182,7 +182,7 @@ public class clsPOSCounterWiseSalesReportController
 			JasperDesign jd = JRXmlLoader.load(reportName);
 			JasperReport jr = JasperCompileManager.compileReport(jd);
 
-			List listOfCounterSales = funCounterWiseSalesReport(strFromdate, strToDate,strPOSCode,strShiftNo,userCode,reportType);
+			List listOfCounterSales = funCounterWiseSalesReport(strFromdate, strToDate,strPOSCode,strShiftNo,userCode,selectType);
 
 			JRBeanCollectionDataSource beanCollectionDataSource;
 			if(objBean.getStrType().equals("Menu Wise"))

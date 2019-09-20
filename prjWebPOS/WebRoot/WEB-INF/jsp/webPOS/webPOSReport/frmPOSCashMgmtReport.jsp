@@ -9,6 +9,9 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Cash Management Flash</title>
+<link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/jquery-confirm.min.css"/>"/>
+<script type="text/javascript" src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
+<script type="text/javascript" src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
 <style>
 .ui-autocomplete {
 	max-height: 200px;
@@ -119,6 +122,13 @@
 		}
 	}
 
+	function funDateValidate() {
+		if (!($("#txtdteFromDate").val() <= $("#txtdteToDate").val())) {
+			$("#txtdteToDate").val($("#txtdteFromDate").val())
+			confirmDialog("To Date is Wrong!");
+		}
+	}
+	
 	function funLoadDetailData() {
 		var fromDate = $('#txtdteFromDate').val();
 		var toDate = $('#txtdteToDate').val();
@@ -145,19 +155,19 @@
 						var rowCount = table.rows.length;
 						var row = table.insertRow(rowCount);
 
-						row.insertCell(0).innerHTML = "<input  class=\"Box \" style=\"text-align:left;font-size: 13px; font-weight: bold;background-color: #2FABE9;color:white;\" size=\"60%\" id=\"userCode."
+						row.insertCell(0).innerHTML = "<input  class=\"Box \" style=\"text-align:center;font-size: 13px; font-weight: bold;background-color: #2FABE9;color:white;\" size=\"36%\" id=\"userCode."
 								+ (0) + "\" value='UserCode'/>";
-						row.insertCell(1).innerHTML = "<input  readonly=\"readonly\" style=\"text-align:left;font-size: 13px; font-weight: bold;background-color: #2FABE9;color:white;\" class=\"Box \" size=\"50%\" id=\"transType."
+						row.insertCell(1).innerHTML = "<input  readonly=\"readonly\" style=\"text-align:center;font-size: 13px; font-weight: bold;background-color: #2FABE9;color:white;\" class=\"Box \" size=\"26%\" id=\"transType."
 								+ (0) + "\" value='TransType' />";
-						row.insertCell(2).innerHTML = "<input  readonly=\"readonly\" style=\"text-align:left;font-size: 13px; font-weight: bold;background-color: #2FABE9;color:white;\" class=\"Box \" size=\"50%\" id=\"date."
+						row.insertCell(2).innerHTML = "<input  readonly=\"readonly\" style=\"text-align:center;font-size: 13px; font-weight: bold;background-color: #2FABE9;color:white;\" class=\"Box \" size=\"26%\" id=\"date."
 								+ (0) + "\" value='Date'/>";
-						row.insertCell(3).innerHTML = "<input  readonly=\"readonly\" style=\"text-align:left;font-size: 13px; font-weight: bold;background-color: #2FABE9;color:white;\" class=\"Box \" size=\"10%\" id=\"posName."
+						row.insertCell(3).innerHTML = "<input  readonly=\"readonly\" style=\"text-align:center;font-size: 13px; font-weight: bold;background-color: #2FABE9;color:white;\" class=\"Box \" size=\"24%\" id=\"posName."
 								+ (0) + "\" value='POSName'/>";
-						row.insertCell(4).innerHTML = "<input  readonly=\"readonly\" style=\"text-align:left;font-size: 13px; font-weight: bold;background-color: #2FABE9;color:white;\" class=\"Box \" size=\"10%\" id=\"reason."
+						row.insertCell(4).innerHTML = "<input  readonly=\"readonly\" style=\"text-align:center;font-size: 13px; font-weight: bold;background-color: #2FABE9;color:white;\" class=\"Box \" size=\"24%\" id=\"reason."
 								+ (0) + "\" value='Reason' />";
-						row.insertCell(5).innerHTML = "<input class=\"Box \" style=\"text-align:left;font-size: 13px; font-weight: bold;background-color: #2FABE9;color:white;\" size=\"10%\" id=\"remarks."
+						row.insertCell(5).innerHTML = "<input class=\"Box \" style=\"text-align:center;font-size: 13px; font-weight: bold;background-color: #2FABE9;color:white;\" size=\"26%\" id=\"remarks."
 								+ (0) + "\" value='Remarks' />";
-						row.insertCell(6).innerHTML = "<input  readonly=\"readonly\" class=\"Box \" style=\"text-align:right;font-size: 13px; font-weight: bold;background-color: #2FABE9;color:white;\" size=\"10%\" id=\"amount."
+						row.insertCell(6).innerHTML = "<input  readonly=\"readonly\" class=\"Box \" style=\"text-align:center;font-size: 13px; font-weight: bold;background-color: #2FABE9;color:white;\" size=\"26%\" id=\"amount."
 								+ (0) + "\" value='Amount'/>";
 
 						$.each(response.listData, function(i, item) {
@@ -403,7 +413,7 @@
 				</div>
 				<div class="element-input col-lg-6" style="width: 17%;">
 					<s:input id="txtdteToDate" name="txtdteToDate" path="toDate"
-						style="width: 100%;" />
+						style="width: 100%;" onChange="funDateValidate();" />
 				</div>
 			</div>
 			<div class="row"

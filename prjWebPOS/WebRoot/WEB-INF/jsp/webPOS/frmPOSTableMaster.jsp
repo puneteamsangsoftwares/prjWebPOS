@@ -12,11 +12,12 @@
 <link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/jquery-confirm.min.css"/>"/>
 <script type="text/javascript" src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
 <script type="text/javascript" src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
+<script type="text/javascript" src="<spring:url value="/resources/js/jquery.autocomplete.min.js"/>"></script>
 <script type="text/javascript">
 	$(document).ready(function() 
 	{
-		$('input#txtTableName').mlKeyboard({layout: 'en_US'});
-		$('input#txtPaxNo').mlKeyboard({layout: 'en_US'});
+		//$('input#txtTableName').mlKeyboard({layout: 'en_US'});
+		//$('input#txtPaxNo').mlKeyboard({layout: 'en_US'});
 		  
 		$(".tab_content").hide();
 		$(".tab_content:first").show();
@@ -52,6 +53,37 @@
 		  $("#tblSequence").click(function(event){
 			  funSubmitSequence();
 			});
+		  
+		  mapAreaCodeName=new Map();
+		  $('#txtTableName').autocomplete({
+	 			serviceUrl: '${pageContext.request.contextPath}/getAutoSearchData.html?formname=tableName',  
+	 			paramName: "searchBy",
+	 			delimiter: ",",
+	 		    transformResult: function(response) {
+	 		    	
+	 			return {
+	 			  //must convert json to javascript object before process
+	 			  suggestions: $.map($.parseJSON(response), function(item) {
+	 			       // strValue  strCode
+	 			        mapAreaCodeName.set(item.strValue,item.strCode);
+	 			      	return { value: item.strValue, data: item.strCode };
+	 			   })
+	 			            
+	 			 };
+	 			        
+	 	        }
+	 		 });
+			 
+				$('#txtTableName').blur(function() {
+						var code=mapAreaCodeName.get($('#txtTableName').val());
+						if(code!='' && code!=null){
+							funSetTableNo(code);	
+						}
+						
+				});
+		  
+		  
+		  
 	});
 </script>
 <script type="text/javascript">

@@ -150,14 +150,14 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Trebuchet MS"/>
 				</textElement>
-				<text><![CDATA[CUSTOMER :]]></text>
+				<text><![CDATA[CUSTOMER : ]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="58" y="0" width="381" height="20" uuid="3f20cfc7-4166-46ca-992d-2de5e6783a4c"/>
 				<textElement verticalAlignment="Middle" markup="none">
 					<font fontName="Trebuchet MS" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{CustomerName}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{strCustomerName}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

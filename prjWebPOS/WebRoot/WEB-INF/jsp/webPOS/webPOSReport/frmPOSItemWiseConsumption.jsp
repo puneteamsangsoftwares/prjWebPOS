@@ -8,6 +8,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Bill Report</title>
+<link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/jquery-confirm.min.css"/>"/>
+<script type="text/javascript" src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
+<script type="text/javascript" src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
 <style>
 .ui-autocomplete {
     max-height: 200px;
@@ -41,7 +44,12 @@
     				
     			}); 
 
-
+	 function funDateValidate() {
+			if (!($("#txtFromDate").val() <= $("#txtToDate").val())) {
+				$("#txtToDate").val($("#txtFromDate").val())
+				confirmDialog("To Date is Wrong!");
+			}
+		}
 	/**
 	* Reset The Group Name TextField
 	**/
@@ -82,18 +90,9 @@
     					<label class="title">To Date</label>
 	    			</div>
 	    			<div class="element-input col-lg-6" style="margin-bottom:  10px;width: 30%"> 
-						<s:input id="txtToDate" required="required" path="toDate" pattern="\d{1,2}-\d{1,2}-\d{4}" style="width: 100%;"/>
+						<s:input id="txtToDate" required="required" path="toDate" pattern="\d{1,2}-\d{1,2}-\d{4}" style="width: 100%;" onChange="funDateValidate();"/>
 					</div>
 			 </div>
-			 <div class="row" style="background-color: #fff;display: -webkit-box;">			
-			 		<div class="element-input col-lg-6" style="width: 17%;"> 
-    					<label class="title">Group Name</label>
-	    			</div>
-	    			<div class="element-input col-lg-6" style="margin-bottom:  10px;width: 30%"> 
-						<s:select id="cmbGroupName" name="cmbGroupName" path="strGroupName" items="${groupList}"/>
-					</div>
-			 </div>
-			 
 			 <div class="row" style="background-color: #fff;display: -webkit-box;">
 				<div class="element-input col-lg-6" style="width: 17%;" > 
     				<label class="title">Report Type</label>
@@ -106,7 +105,26 @@
 				    </s:select>
 				</div>
 			</div>
-			 
+			<div class="row" style="background-color: #fff;display: -webkit-box;">
+				<div class="element-input col-lg-6" style="width: 17%;" > 
+    				<label class="title">Sorting By</label>
+    			</div>
+    			<div class="element-input col-lg-6" style="margin-bottom:  10px;width: 30%"> 
+					<s:select id="cmbSort" path="strSort">
+				    		<s:option value="By Item Name">By Item Name</s:option>
+				    		<s:option value="By Quantity">By Quantity</s:option>
+				    		
+				    </s:select>
+				</div>
+			</div>
+			 <div class="row" style="background-color: #fff;display: -webkit-box;">			
+			 		<div class="element-input col-lg-6" style="width: 17%;"> 
+    					<label class="title">Group Name</label>
+	    			</div>
+	    			<div class="element-input col-lg-6" style="margin-bottom:  10px;width: 30%"> 
+						<s:select id="cmbGroupName" name="cmbGroupName" path="strGroupName" items="${groupList}"/>
+					</div>
+			 </div>		 
 			 <div class="row" style="background-color: #fff;display: -webkit-box;">			
 			 		<div class="element-input col-lg-6" style="width: 17%;"> 
     					<label class="title">Print Modifiers</label>
@@ -137,6 +155,28 @@
 				    </s:select>
 				</div>
 			</div>
+			<div class="row" style="background-color: #fff;display: -webkit-box;">
+				<div class="element-input col-lg-6" style="width: 17%;" > 
+    				<label class="title">Month Wise</label>
+    			</div>
+    			<div class="element-input col-lg-6" style="margin-bottom:  10px;width: 30%"> 
+					<s:select id="cmbMonthWise" path="strMonthWise">
+				    		<s:option value="No">No</s:option>
+				    		<s:option value="Yes">Yes</s:option>
+				    		
+				    		
+				    </s:select>
+				</div>
+			</div>			
+			
+			<div class="row" style="background-color: #fff;display: -webkit-box;">			
+			 		<div class="element-input col-lg-6" style="width: 17%;"> 
+    					<label class="title">Shift</label>
+	    			</div>
+	    			<div class="element-input col-lg-6" style="margin-bottom:  10px;width: 30%"> 
+						<s:select id="cmbShiftCode" name="cmbShiftCode" path="strShiftCode" items="${shiftList}"/>
+					</div>
+			 </div>
 			
 			</div>
 			
@@ -145,7 +185,7 @@
 		<div class="col-lg-10 col-sm-10 col-xs-10" style="width: 70%;margin-left: 160px;"> 
 			 <p align="center">
 				<div class="submit col-lg-4 col-sm-4 col-xs-4"><input type="submit" value="SUBMIT" tabindex="3" /></div>
-				<div class="submit col-lg-4 col-sm-4 col-xs-4"><input type="reset" value="CLOSE" onclick="funResetFields()"/></div>
+				<div class="submit col-lg-4 col-sm-4 col-xs-4"><input type="reset" value="RESET" onclick="funResetFields()"/></div>
 			 </p>
 		</div>
 	</s:form>

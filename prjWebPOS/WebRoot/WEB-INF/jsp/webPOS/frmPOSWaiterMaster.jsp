@@ -11,13 +11,15 @@
 <link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/jquery-confirm.min.css"/>"/>
 <script type="text/javascript" src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
 <script type="text/javascript" src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
+<script type="text/javascript" src="<spring:url value="/resources/js/jquery.autocomplete.min.js"/>"></script>
 <script type="text/javascript">
+
 	var fieldName;
 
 	$(document).ready(function() {
-		  $('input#txtWShortName').mlKeyboard({layout: 'en_US'});
-		  $('input#txtWFullName').mlKeyboard({layout: 'en_US'});
-		  $('input#txtDebitCardString').mlKeyboard({layout: 'en_US'});
+		  //$('input#txtWShortName').mlKeyboard({layout: 'en_US'});
+		  //$('input#txtWFullName').mlKeyboard({layout: 'en_US'});
+		  //$('input#txtDebitCardString').mlKeyboard({layout: 'en_US'});
 	});
 	
 	$(document).ready(function()
@@ -60,6 +62,36 @@
 						  return flg;
 					  }
 					});
+				  
+				  
+				  $('#txtWFullName').autocomplete({
+			 			serviceUrl: '${pageContext.request.contextPath}/getAutoSearchData.html?formname=fullName',  
+			 			paramName: "searchBy",
+			 			delimiter: ",",
+			 		    transformResult: function(response) {
+			 		    	mapAreaCodeName=new Map();
+			 			return {
+			 			  //must convert json to javascript object before process
+			 			  suggestions: $.map($.parseJSON(response), function(item) {
+			 			       // strValue  strCode
+			 			        mapAreaCodeName.set(item.strValue,item.strCode);
+			 			      	return { value: item.strValue, data: item.strCode };
+			 			   })
+			 			            
+			 			 };
+			 			        
+			 	        }
+			 		 });
+					 
+						$('#txtWFullName').blur(function() {
+								var code=mapAreaCodeName.get($('#txtWFullName').val());
+								if(code!='' && code!=null){
+									funSetWaiterNo(code);	
+								}
+								
+						});
+
+				  
 			});
 
 	function funSetData(code){

@@ -15,7 +15,8 @@ import java.util.List;
 public class clsPOSBillItemDtlBean
 {
     private String strBillNo;
-    private String dteBillDate;
+    private String strNoOfBills;
+	private String dteBillDate;
     private String strPosName;
     private double dblSubTotal;
     private double dblGrandTotal;
@@ -133,7 +134,7 @@ public class clsPOSBillItemDtlBean
    
     private int intPaxNo;
    
-    private int noOfBills;
+    private double dblNoOfBills;
     
     private int intBillSeriesPaxNo;
     
@@ -729,16 +730,16 @@ public class clsPOSBillItemDtlBean
 
 
 
-	public int getNoOfBills()
+	public double getDblNoOfBills()
 	{
-		return noOfBills;
+		return dblNoOfBills;
 	}
 
 
 
-	public void setNoOfBills(int noOfBills)
+	public void setDblNoOfBills(double dblNoOfBills)
 	{
-		this.noOfBills = noOfBills;
+		this.dblNoOfBills = dblNoOfBills;
 	}
 
 
@@ -922,6 +923,17 @@ public class clsPOSBillItemDtlBean
 	}
 
 
-	
+	public String getStrNoOfBills()
+	{
+		return strNoOfBills;
+	}
+
+
+
+	public void setStrNoOfBills(String strNoOfBills)
+	{
+		this.strNoOfBills = strNoOfBills;
+	}
+
     
 }

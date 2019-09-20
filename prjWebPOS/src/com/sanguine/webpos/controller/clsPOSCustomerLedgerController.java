@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,7 +68,7 @@ public class clsPOSCustomerLedgerController
 	@Autowired
 	private clsPOSReportService objReportService;
 	
-	Map hmPOSData = new HashMap<String, String>();
+	Map hmPOSData = new LinkedHashMap<String, String>();
 	
 	@RequestMapping(value = "/frmCustomerLedger", method = RequestMethod.GET)
 	public ModelAndView funOpenForm(Map<String, Object> model, HttpServletRequest request)throws Exception
@@ -87,7 +88,7 @@ public class clsPOSCustomerLedgerController
 		
 		List poslist = new ArrayList();
 		poslist.add("ALL");
-		
+		hmPOSData.put( poslist.get(0), poslist.get(0));
 		List listOfPos = objMasterService.funFullPOSCombo(strClientCode);
 		if(listOfPos!=null)
 		{
@@ -336,7 +337,7 @@ public class clsPOSCustomerLedgerController
     		    + " and a.strCustomerCode='" + strCustomerCode  + "' "
     		    + " and DATE(b.dteReceiptDate) BETWEEN '" + fromDate + "' AND '" + toDate + "'");
     	    
-    	    if (!strPOSName.equals("All"))
+    	    if (!strPOSName.equalsIgnoreCase("All"))
     	    {
     	    	sbSqlFilters.append(" AND a.strPOSCode = '" + strPOSName + "' ");
     	    }
@@ -372,7 +373,7 @@ public class clsPOSCustomerLedgerController
     		    + "and a.strCustomerCode='" + strCustomerCode  + "'   "
     		    + "and date( a.dteBillDate ) < '" + fromDate + "'    ");
     	    
-    	    if (!strPOSName.equals("All"))
+    	    if (!strPOSName.equalsIgnoreCase("All"))
     	    {
     	    	sqlOpeningBalBuilder.append(" AND a.strPOSCode = '" + strPOSName + "' ");
     	    }
@@ -409,8 +410,9 @@ public class clsPOSCustomerLedgerController
     		    + "AND a.strCustomerCode='" + strCustomerCode  + "'   "
     		    + "AND DATE(b.dteReceiptDate) < '" + fromDate + "'   ");
     	    
-    	    if (!strPOSName.equals("All"))
+    	    if (!strPOSName.equalsIgnoreCase("All"))
     	    {
+    	    	if (!strPOSName.equalsIgnoreCase("All"))
     	    	sqlOpeningBalBuilder.append(" AND a.strPOSCode = '" + strPOSName + "' ");
     	    }
     	    if (shiftEnableYN.equalsIgnoreCase("Y"))

@@ -131,10 +131,10 @@ public class clsPOSWiseSalesReportController {
 		    String fromDate=objBean.getFromDate();
 		 	String toDate=objBean.getToDate();
 		 	String strViewType=objBean.getStrViewType();
-			
+		 	String userCode=req.getSession().getAttribute("gUserCode").toString();
 			Map resMap = new LinkedHashMap();
 			
-			resMap=funGetData(clientCode,fromDate,toDate,strViewType);
+			resMap=funGetData(clientCode,fromDate,toDate,strViewType,userCode);
 			
 			List exportList=new ArrayList();	
 			
@@ -143,19 +143,23 @@ public class clsPOSWiseSalesReportController {
 			exportList.add(FileName);
 						
 			List List=(List)resMap.get("listcol");
-		
+			List Listt=(List)resMap.get("headerList");
 			String[] headerList = new String[List.size()];
 			for(int i = 0; i < List.size(); i++){
 				headerList[i]=(String)List.get(i);
 			}
-		
-			exportList.add(headerList);
-		
+			String[] headerListt = new String[Listt.size()];
+			for(int i = 0; i < Listt.size(); i++){
+				headerListt[i]=(String)Listt.get(i);
+			}
+			exportList.add(headerListt);
+			exportList.add(headerList);		
 			List dataList=(List)resMap.get("List");
 			List totalList=(List)resMap.get("totalList");
-		
+			List footerList=(List)resMap.get("footerList");
 			dataList.add(totalList);
-				
+			dataList.add("");
+			dataList.add(footerList);
 			exportList.add(dataList);
 			
 			return exportList;	
@@ -171,14 +175,14 @@ public class clsPOSWiseSalesReportController {
 		     
 	        
 		    String clientCode=req.getSession().getAttribute("gClientCode").toString();
-	       
+		    String userCode=req.getSession().getAttribute("gUserCode").toString();
 		    String fromDate=req.getParameter("fromDate");
 		 
 			String toDate=req.getParameter("toDate");
 		
 			String strViewType=req.getParameter("strViewTypedata");
 			
-			resMap=funGetData(clientCode,fromDate,toDate,strViewType);
+			resMap=funGetData(clientCode,fromDate,toDate,strViewType,userCode);
 	       
 			return resMap;
 	    }
@@ -187,7 +191,7 @@ public class clsPOSWiseSalesReportController {
 	    
 	 
 	 
-	 private LinkedHashMap funGetData(String clientCode, String fromDate,String toDate, String strViewType)
+	 private LinkedHashMap funGetData(String clientCode, String fromDate,String toDate, String strViewType,String userCode)
 	  {
 		 
 			  LinkedHashMap resMap = new LinkedHashMap();
@@ -196,7 +200,7 @@ public class clsPOSWiseSalesReportController {
 				
 			   String toDate1=toDate.split("-")[2]+"-"+toDate.split("-")[1]+"-"+toDate.split("-")[0];
 
-	          resMap = objReportService.funProcessPosWiseSalesReport(fromDate1,toDate1,strViewType);
+	          resMap = objReportService.funProcessPosWiseSalesReport(fromDate1,toDate1,strViewType,clientCode,userCode);
 	            
 		  return resMap;
 	  }

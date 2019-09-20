@@ -167,7 +167,7 @@ public class clsPOSDailyCollectionReportController {
 			List<clsPOSBillItemDtlBean> listOfBillData = new ArrayList<clsPOSBillItemDtlBean>();
 			List<clsPOSVoidBillDtl> listOfVoidBillData = new ArrayList<clsPOSVoidBillDtl>();
 			
-			listOfBillData = objReportService.funProcessDailyCollection(posCode,fromDate,toDate,strShiftNo);
+			listOfBillData = objReportService.funProcessDailyCollection(strClientCode,posCode,fromDate,toDate,strShiftNo);
 			listOfVoidBillData = objReportService.funProcessDailyCollectionForVoidBillDataReport(posCode,fromDate,toDate,strShiftNo);
             hm.put("listOfVoidBillData", listOfVoidBillData);
 

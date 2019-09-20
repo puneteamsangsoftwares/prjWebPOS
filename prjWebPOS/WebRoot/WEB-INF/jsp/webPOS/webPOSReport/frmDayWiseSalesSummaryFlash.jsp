@@ -229,8 +229,6 @@
 		});
 	}
 	
-	
-	
  	function funAddHeaderRow(rowData){
 		var table = document.getElementById("tblDayWiseSales");
 	    var rowCount = table.rows.length;
@@ -276,10 +274,8 @@
 	   			row.insertCell(i).innerHTML = "<input type=\"text\" readonly=\"readonly\" class=\"cell\" name=\"rowList["+(rowCount)+"].strCol"+(i)+"\" id=\"rowList["+(rowCount)+"].strCol"+(i)+"\" value='"+rowData[i]+"' />";
 	   		else
 	   			row.insertCell(i).innerHTML = "<input type=\"text\" readonly=\"readonly\" class=\"cell\" name=\"rowList["+(rowCount)+"].strCol"+(i)+"\" id=\"rowList["+(rowCount)+"].strCol"+(i)+"\" value='"+rowData[i]+"' />";	
-	   		 }
-		
-	  
-	}
+	   		 }	  
+		}
 	
 	
 </script>

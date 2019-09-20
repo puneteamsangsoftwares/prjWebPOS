@@ -174,7 +174,19 @@ public class clsPOSReportBean {
     private String dblUSDConverionRate;
     private String  strVoidedBill;
     
-    public String getStrShiftCode()
+    private String StrMonthWise;
+    
+    public String getStrMonthWise()
+	{
+		return StrMonthWise;
+	}
+
+	public void setStrMonthWise(String strMonthWise)
+	{
+		StrMonthWise = strMonthWise;
+	}
+
+	public String getStrShiftCode()
 	{
 		return strShiftCode;
 	}

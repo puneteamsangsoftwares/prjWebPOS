@@ -65,6 +65,44 @@ public class clsPOSSalesFlashReportsBean
 	private String totalPAX;
 
 	private int seqNo;
+	
+	private String mobileNo;
+	
+	private String dob;
+	
+	private String noOfBills;
+	
+	
+
+	public String getNoOfBills()
+	{
+		return noOfBills;
+	}
+
+	public void setNoOfBills(String noOfBills)
+	{
+		this.noOfBills = noOfBills;
+	}
+
+	public String getMobileNo()
+	{
+		return mobileNo;
+	}
+
+	public void setMobileNo(String mobileNo)
+	{
+		this.mobileNo = mobileNo;
+	}
+
+	public String getDob()
+	{
+		return dob;
+	}
+
+	public void setDob(String dob)
+	{
+		this.dob = dob;
+	}
 
 	public String getStrField1()
 	{

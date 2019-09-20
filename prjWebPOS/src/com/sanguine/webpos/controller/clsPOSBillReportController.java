@@ -173,7 +173,7 @@ public class clsPOSBillReportController
 			String toDate = hm.get("toDate").toString();
 			String strUserCode = hm.get("userName").toString();
 			String strPOSCode = posCode;
-			String shiftNo = "1";
+			String shiftNo = objBean.getStrShiftCode();
 
 			Map mapMultiSettleBills = new HashMap();
 

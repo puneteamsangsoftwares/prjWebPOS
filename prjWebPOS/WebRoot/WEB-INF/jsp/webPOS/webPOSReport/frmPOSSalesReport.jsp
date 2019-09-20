@@ -8,6 +8,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Sales Report</title>
+<link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/jquery-confirm.min.css"/>"/>
+<script type="text/javascript" src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
+<script type="text/javascript" src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
 <style>
 .ui-autocomplete {
 	max-height: 200px;
@@ -60,6 +63,10 @@ ul.tab li {
 </style>
 
 <script type="text/javascript">
+	var global;
+	global = this;
+	console.log(global);
+
 
     var gEnableShiftYN="${gEnableShiftYN}";
 	$(document).ready(function() {
@@ -107,11 +114,20 @@ ul.tab li {
 		$("#txtToDate").datepicker('setDate', Dat);
 		funSelectedReport('divBillWise');
 		
+		 
+		
 	});
-
+		
 	/**
+
 	 * Open Help
 	 **/
+	 function funDateValidate() {
+			if (!($("#txtFromDate").val() <= $("#txtToDate").val())) {
+				$("#txtToDate").val($("#txtFromDate").val())
+				confirmDialog("To Date is Wrong!");
+			}
+		}
 	function funHelp(transactionName) {
 		window.open("searchform.html?formname=" + transactionName
 				+ "&searchText=", "",
@@ -143,30 +159,33 @@ ul.tab li {
 		var chkConsolidatePOS = document.getElementById("chkConsolidatePOS").checked;
 		var txtOperationType = document.getElementById("txtOperationType").value;
 		var txtAreaCode = document.getElementById("txtAreaCode").value;
-		var hidReportName = divID;
+		var hidReportName = divID;		
 		
 		
 		$("#hidReportName").val(divID);
 		funShowDiv(divID);
 
 		switch (divID) {
+		
 		case 'divSettlementWise':
 			funLoadSettlementWiseSalesReport(divID, POSName, FromDate,
 					ToDate, Operator, PayMode, txtFromBillNo, txtToBillNo,
 					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-					hidReportName,txtAreaCode,txtOperationType);
+					hidReportName,txtAreaCode,txtOperationType);				
 			break;
 		case 'divBillWise':
 			funLoadBillWiseSalesReport(divID, POSName, FromDate, ToDate,
 					Operator, PayMode, txtFromBillNo, txtToBillNo,
 					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
 					hidReportName,txtAreaCode,txtOperationType);
+				
 			break;
 		case 'divItemWise':
 			funLoadItemWiseSalesReport(divID, POSName, FromDate, ToDate,
 					Operator, PayMode, txtFromBillNo, txtToBillNo,
 					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
 					hidReportName,txtAreaCode,txtOperationType);
+				
 			break;
 
 		case 'divMenuHeadWise':
@@ -175,7 +194,7 @@ ul.tab li {
 					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
 					hidReportName,txtAreaCode,txtOperationType);
 			break;
-		//working	
+			
 		case 'divGroupWise':
 			funLoadGroupWiseSalesReport(divID, POSName, FromDate, ToDate,
 					Operator, PayMode, txtFromBillNo, txtToBillNo,
@@ -295,8 +314,10 @@ ul.tab li {
 					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
 					hidReportName,txtAreaCode,txtOperationType);
 			break;
+				
 
 		}
+		
 	}
 
 	/* divDeliveryBoyWise divCostCenterWise divHomeDeliveryWise divTableWise divHourlyWise divAreaWise divDayWiseSales
@@ -366,12 +387,14 @@ ul.tab li {
 												var table = document
 														.getElementById("tblSettlementWiseTotal");
 												var rowCount = table.rows.length;
+												var totalSubTotal;
+												var totalSubTotal=Number(totalSubTotal).toFixed(2);
 												var row = table
 														.insertRow(rowCount);
-												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"80%\" width=\"60%\" style=\"text-align:right;font-size: 15px;font-weight: bold; \" id=\"Totfield1."
+												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"70%\" width=\"60%\" style=\"text-align:right;font-size: 17px;font-weight: bold; \" id=\"Totfield1."
 														+ (rowCount)
 														+ "\" value=\"Total\" />";
-												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"30%\" width=\"50%\" style=\"align:right;\"  id=\"Totfield2."
+												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"30%\" width=\"50%\" style=\"align:right;font-size: 15px;\"  id=\"Totfield2."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalSubTotal
@@ -463,33 +486,48 @@ ul.tab li {
 												var rowCount = table.rows.length;
 												var row = table
 														.insertRow(rowCount);
-												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right; font-size: 15px;font-weight: bold;\" size=\"75%\" id=\"Totfield1."
+												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right; font-size: 17px;font-weight: bold;\" size=\"60%\" id=\"Totfield1."
 														+ (rowCount)
 														+ "\" value=\"Total\"  />";
-												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;\" size=\"8%\" id=\"Totfield2."
+												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right; font-size: 15px;\" size=\"23%\" id=\"Totfield2."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalSubTotal
 														+ "'/>";
-												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:left;\" size=\"10%\" id=\"Totfield3."
+												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right; font-size: 15px;\" size=\"19%\" id=\"Totfield3."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalDiscAmt
 														+ "'/>";
-												row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;\" size=\"11%\" id=\"Totfield4."
+												row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right; font-size: 15px;\" size=\"18%\" id=\"Totfield4."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalTaxAmt
 														+ "'/>";
-												row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;\" size=\"15%\" id=\"Totfield5."
+												row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right; font-size: 15px;\" size=\"8%\" id=\"Totfield5."
+														+ (rowCount)
+														+ "\" value='"
+														+ response[i].totalAdvAmt
+														+ "'/>";
+												row.insertCell(5).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right; font-size: 15px;\" size=\"8%\" id=\"Totfield6."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalSettleAmt
 														+ "'/>";
-												row.insertCell(5).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:left;\" size=\"10%\" id=\"Totfield6."
+												row.insertCell(6).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:left; font-size: 15px;\" size=\"8%\" id=\"Totfield7."
+														+ (rowCount)
+														+ "\" value='"
+														+ response[i].totalRoundOffAmt
+														+ "'/>";													
+												row.insertCell(7).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right; font-size: 15px;\" size=\"12%\" id=\"Totfield8."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalTipAmt
+														+ "'/>";
+												row.insertCell(8).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right; font-size: 15px;\" size=\"38%\" id=\"Totfield9."
+														+ (rowCount)
+														+ "\" value='"
+														+ response[i].totalPAX
 														+ "'/>";
 												
 													
@@ -507,22 +545,22 @@ ul.tab li {
 													+ "\" value='"
 													+ response[i].strField1
 													+ "'/>";
-											row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"10%\" style=\"text-align:center;\" id=\"field2."
+											row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"10%\" style=\"text-align:left;\" id=\"field2."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField2
 													+ "'/>";
-											row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"5%\" style=\"text-align:center;\" id=\"field3."
+											row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"5%\" style=\"text-align:left;\" id=\"field3."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField3
 													+ "'/>";
-											row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"15%\" style=\"text-align:center;\" id=\"field4."
+											row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"10%\" style=\"text-align:left;\" id=\"field4."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField4
 													+ "'/>";
-											row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"11%\" style=\"text-align:left;\" id=\"field5."
+											row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"15%\" style=\"text-align:left;\" id=\"field5."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField5
@@ -532,60 +570,85 @@ ul.tab li {
 													+ "\" value='"
 													+ response[i].strField6
 													+ "'/>";
-											row.insertCell(6).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"12%\" style=\"text-align:left;\" id=\"field7."
+											row.insertCell(6).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"2%\" style=\"text-align:right;\" id=\"field18."
+													+ (rowCount)
+													+ "\" value='"
+													+ response[i].strField18
+													+ "'/>";
+											row.insertCell(7).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"13%\" style=\"text-align:left;\" id=\"field7."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField7
 													+ "'/>";
-											row.insertCell(7).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"8%\" style=\"text-align:right;\" id=\"field8."
+											row.insertCell(8).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"8%\" style=\"text-align:right;\" id=\"field8."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField8
 													+ "'/>";
-											row.insertCell(8).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"8%\" style=\"text-align:right;\" id=\"field9."
+											row.insertCell(9).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"8%\" style=\"text-align:right;\" id=\"field9."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField9
 													+ "'/>";
-											row.insertCell(9).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"8%\" style=\"text-align:right;\" id=\"field10."
+											row.insertCell(10).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"8%\" style=\"text-align:right;\" id=\"field10."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField10
 													+ "'/>";
-											row.insertCell(10).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"8%\" style=\"text-align:right;\" id=\"field11."
+											row.insertCell(11).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"8%\" style=\"text-align:right;\" id=\"field11."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField11
 													+ "'/>";
-											row.insertCell(11).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"8%\" style=\"text-align:right;\" id=\"field12."
+											row.insertCell(12).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"8%\" style=\"text-align:right;\" id=\"field12."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField12
 													+ "'/>";
-											row.insertCell(12).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"7%\" style=\"text-align:right;\" id=\"field13."
+											row.insertCell(13).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"7%\" style=\"text-align:right;\" id=\"field21."
 													+ (rowCount)
 													+ "\"  value='"
-													+ response[i].strField13
+													+ response[i].strField21
 													+ "'/>";
-											row.insertCell(13).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"15%\" style=\"text-align:right;\"  id=\"field14."
+											row.insertCell(14).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"8%\" style=\"text-align:right;\" id=\"field13."
+													+ (rowCount)
+													+ "\" value='"
+													+ response[i].strField13
+													+ "'/>";															
+											row.insertCell(15).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"7%\" style=\"text-align:right;\" id=\"field19."
+													+ (rowCount)
+													+ "\"  value='"
+													+ response[i].strField19
+													+ "'/>";
+											row.insertCell(16).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"15%\" style=\"text-align:left;\"  id=\"field14."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField14
 													+ "'/>";
-											row.insertCell(14).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"7%\" style=\"text-align:right;\" id=\"field15."
+											row.insertCell(17).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"7%\" style=\"text-align:right;\" id=\"field15."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField15
 													+ "'/>";
-											row.insertCell(15).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"9%\"  style=\"text-align:right;\"  id=\"field16."
+											row.insertCell(18).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"15%\"  style=\"text-align:left;\"  id=\"field16."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField16
 													+ "'/>";
-											row.insertCell(16).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"7%\" style=\"text-align:center;id=\"field17."
+											row.insertCell(19).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"15%\" style=\"text-align:left;id=\"field17."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField17
+													+ "'/>";
+											row.insertCell(20).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"7%\" style=\"text-align:center;id=\"field20."
+													+ (rowCount)
+													+ "\" value='"
+													+ response[i].strField20
+													+ "'/>";
+											row.insertCell(21).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"7%\" style=\"text-align:center;id=\"field21."
+													+ (rowCount)
+													+ "\" value='"
+													+ response[i].strField22
 													+ "'/>";
 
 										});
@@ -646,28 +709,28 @@ ul.tab li {
 												var rowCount = table.rows.length;
 												var row = table
 														.insertRow(rowCount);
-												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"80%\"  style=\"text-align:right;font-size: 15px;font-weight: bold;\" id=\"Totfield1."
+												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"80%\"  style=\"text-align:left;font-size: 17px;font-weight: bold;\" id=\"Totfield1."
 														+ (rowCount)
 														+ "\" value=\"Total\" />";
-												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;\" size=\"66%\" id=\"Totfield2."
+												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right; font-size: 15px;\" size=\"49%\" id=\"Totfield2."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalQuantity
 														+ "'/>";
-												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;\" size=\"46%\" id=\"Totfield3."
+												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right; font-size: 15px;\" size=\"36%\" id=\"Totfield3."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalAmount
 														+ "'/>";
-												row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;\" size=\"38%\" id=\"Totfield4."
-														+ (rowCount)
-														+ "\" value='"
-														+ response[i].totalSubTotal
-														+ "'/>";
-												row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;\" size=\"20%\" id=\"Totfield5."
+												row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right; font-size: 15px;\" size=\"28%\" id=\"Totfield4."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalDiscAmt
+														+ "'/>";
+												row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right; font-size: 15px;\" size=\"13%\" id=\"Totfield5."
+														+ (rowCount)
+														+ "\" value='"
+														+ response[i].totalSubTotal
 														+ "'/>";
 											}
 
@@ -694,9 +757,9 @@ ul.tab li {
 											row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;\" size=\"30%\" id=\"field4."
 													+ (rowCount)
 													+ "\" value='"
-													+ response[i].strField4
+													+ response[i].strField6
 													+ "'/>";
-											row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;\" size=\"32%\" id=\"field5."
+											row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;\" size=\"23%\" id=\"field5."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField5
@@ -704,7 +767,7 @@ ul.tab li {
 											row.insertCell(5).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;\" size=\"14%\" id=\"field6."
 													+ (rowCount)
 													+ "\" value='"
-													+ response[i].strField6
+													+ response[i].strField4
 													+ "'/>";
 
 										});
@@ -768,25 +831,25 @@ ul.tab li {
 												var rowCount = table.rows.length;
 												var row = table
 														.insertRow(rowCount);
-												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"35%\"  style=\"text-align:right;font-size: 15px;font-weight: bold;\" id=\"Totfield1."
+												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"35%\"  style=\"text-align:left;font-size: 17px;font-weight: bold;\" id=\"Totfield1."
 														+ (rowCount)
 														+ "\" value=\"Total\" />";
-												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;\" size=\"23%\" id=\"Totfield2."
+												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;font-size: 15px\" size=\"17%\" id=\"Totfield2."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalQuantity
 														+ "'/>";
-												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;\" size=\"23%\" id=\"Totfield3."
+												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;font-size: 15px\" size=\"14%\" id=\"Totfield3."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalAmount
 														+ "'/>";
-												row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;\" size=\"18%\" id=\"Totfield4."
+												row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;font-size: 15px\" size=\"11%\" id=\"Totfield4."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalSubTotal
 														+ "'/>";
-												row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;\" size=\"14%\" id=\"Totfield5."
+												row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;font-size: 15px\" size=\"9%\" id=\"Totfield5."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalDiscAmt
@@ -894,25 +957,25 @@ ul.tab li {
 												var rowCount = table.rows.length;
 												var row = table
 														.insertRow(rowCount);
-												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"40%\" style=\"text-align:right;font-size: 15px;font-weight: bold;\" id=\"Totfield1."
+												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"40%\" style=\"text-align:left;font-size: 17px;font-weight: bold;\" id=\"Totfield1."
 														+ (rowCount)
 														+ "\" value=\"Total\" />";
-												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"24%\" style=\"text-align:right;\" id=\"Totfield2."
+												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"16%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield2."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalQuantity
 														+ "'/>";
-												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"29%\" style=\"text-align:right;\" id=\"Totfield3."
+												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"21%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield3."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalAmount
 														+ "'/>";
-												row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"19%\" style=\"text-align:right;\" id=\"Totfield4."
+												row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"14%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield4."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalSubTotal
 														+ "'/>";
-												row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"8%\" style=\"text-align:right;\" id=\"Totfield5."
+												row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"8%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield5."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalDiscAmt
@@ -1020,25 +1083,25 @@ ul.tab li {
 												var rowCount = table.rows.length;
 												var row = table
 														.insertRow(rowCount);
-												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"65%\" style=\"text-align:right;font-size: 15px;font-weight: bold;\" id=\"Totfield1."
+												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"65%\" style=\"text-align:left;font-size: 17px;font-weight: bold;\" id=\"Totfield1."
 														+ (rowCount)
 														+ "\" value=\"Total\" />";
-												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;\" size=\"47%\" id=\"Totfield2."
+												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;font-size: 15px;\" size=\"32%\" id=\"Totfield2."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalQuantity
 														+ "'/>";
-												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;\" size=\"46%\" id=\"Totfield3."
+												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;font-size: 15px;\" size=\"30%\" id=\"Totfield3."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalAmount
 														+ "'/>";
-												row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;\" size=\"37%\" id=\"Totfield4."
+												row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;font-size: 15px;\" size=\"22%\" id=\"Totfield4."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalSubTotal
 														+ "'/>";
-												row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;\" size=\"20%\" id=\"Totfield5."
+												row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;font-size: 15px;\" size=\"9%\" id=\"Totfield5."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalDiscAmt
@@ -1146,15 +1209,15 @@ ul.tab li {
 												var rowCount = table.rows.length;
 												var row = table
 														.insertRow(rowCount);
-												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"58%\"  style=\"text-align:right;font-size: 15px;font-weight: bold;\" id=\"Totfield1."
+												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"6%\"  style=\"text-align:left;font-size: 17px;font-weight: bold;\" id=\"Totfield1."
 														+ (rowCount)
 														+ "\" value=\"Total\" />";
-												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"38%\" style=\"text-align:right;\" id=\"Totfield2."
+												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"62%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield2."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalQuantity
 														+ "'/>";
-												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"48%\" style=\"text-align:right;\" id=\"Totfield3."
+												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"53%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield3."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalAmount
@@ -1171,12 +1234,25 @@ ul.tab li {
 													+ "\" value='"
 													+ response[i].strField1
 													+ "'/>";
-											row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"44%\" style=\"text-align:right;\" id=\"field2."
+													
+											row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"10%\" style=\"text-align:right;\" id=\"field2."
+													+ (rowCount)
+													+ "\" value='"
+													+ response[i].mobileNo
+													+ "'/>";		
+												
+											row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"7%\" style=\"text-align:right;\" id=\"field2."
+													+ (rowCount)
+													+ "\" value='"
+													+ response[i].dob
+													+ "'/>";
+													
+											row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"10%\" style=\"text-align:right;\" id=\"field2."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField2
 													+ "'/>";
-											row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"28%\" style=\"text-align:right;\" id=\"field3."
+											row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"35%\" style=\"text-align:right;\" id=\"field3."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField3
@@ -1186,6 +1262,7 @@ ul.tab li {
 											row.insertCell(5).innerHTML= "<input readonly=\"readonly\" class=\"Box\" size=\"45%\" id=\"field6."+(rowCount)+"\" value='"+response[i].strField6+"'/>";
 											row.insertCell(6).innerHTML= "<input readonly=\"readonly\" class=\"Box\" size=\"45%\" id=\"field7."+(rowCount)+"\" value='"+response[i].strField7+"'/>"; */
 										});
+						console.log(response);
 
 					},
 					error : function(jqXHR, exception) {
@@ -1246,10 +1323,10 @@ ul.tab li {
 												var rowCount = table.rows.length;
 												var row = table
 														.insertRow(rowCount);
-												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"130%\"  style=\"text-align:right;font-size: 15px;font-weight: bold;\" id=\"Totfield1."
+												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"130%\"  style=\"text-align:left;font-size: 17px;font-weight: bold;\" id=\"Totfield1."
 														+ (rowCount)
 														+ "\" value=\"Total\" />";
-												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"40%\" style=\"text-align:right;\" id=\"Totfield2."
+												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"23%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield2."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalSubTotal
@@ -1257,12 +1334,13 @@ ul.tab li {
 
 											}
 
+											console.log(response);
 											var table = document
 													.getElementById("tblWaiterWise");
 											var rowCount = table.rows.length;
 											var row = table.insertRow(rowCount);
 											i = i + 1;
-											row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"40%\" id=\"field1."
+											row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"50%\" id=\"field1."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField1
@@ -1270,14 +1348,19 @@ ul.tab li {
 											row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"40%\" id=\"field2."
 													+ (rowCount)
 													+ "\" value='"
-													+ response[i].strField2
+													+ response[i].strField3
 													+ "'/>";
 											row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"20%\"  style=\"text-align:left;\" id=\"field3."
 													+ (rowCount)
 													+ "\" value='"
-													+ response[i].strField3
+													+ response[i].strField2
 													+ "'/>";
-											row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"26%\" style=\"text-align:right;\" id=\"field4."
+											row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"32%\" style=\"text-align:right;\" id=\"field4."
+													+ (rowCount)
+													+ "\" value='"
+													+ response[i].noOfBills
+													+ "'/>";
+											row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"32%\" style=\"text-align:right;\" id=\"field4."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField4
@@ -1345,10 +1428,10 @@ ul.tab li {
 												var rowCount = table.rows.length;
 												var row = table
 														.insertRow(rowCount);
-												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"98%\" style=\"text-align:right;font-size: 15px;font-weight: bold;\" id=\"Totfield1."
+												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"98%\" style=\"text-align:left;font-size: 17px;font-weight: bold;\" id=\"Totfield1."
 														+ (rowCount)
 														+ "\" value=\"Total\" />";
-												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"50%\" style=\"text-align:right;\" id=\"Totfield2."
+												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"42%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield2."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalSubTotal
@@ -1443,25 +1526,25 @@ ul.tab li {
 												var rowCount = table.rows.length;
 												var row = table
 														.insertRow(rowCount);
-												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"38%\"  style=\"text-align:right;font-size: 15px;font-weight: bold;\" id=\"Totfield1."
+												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"25%\"  style=\"text-align:left;font-size: 17px;font-weight: bold;\" id=\"Totfield1."
 														+ (rowCount)
 														+ "\" value=\"Total\" />";
-												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"35%\" style=\"text-align:right;\"  id=\"Totfield2."
+												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"23%\" style=\"text-align:right;font-size: 15px;\"  id=\"Totfield2."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalQuantity
 														+ "'/>";
-												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"40%\" style=\"text-align:right;\" id=\"Totfield3."
+												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"28%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield3."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalAmount
 														+ "'/>";
-												row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"33%\" style=\"text-align:right;\" id=\"Totfield4."
+												row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"25%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield4."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalSubTotal
 														+ "'/>";
-												row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"31%\" style=\"text-align:right;\" id=\"Totfield5."
+												row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"23%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield5."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalDiscAmt
@@ -1571,20 +1654,20 @@ ul.tab li {
 												var rowCount = table.rows.length;
 												var row = table
 														.insertRow(rowCount);
-												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"60%\" style=\"text-align:right;font-size: 15px;font-weight: bold;\" id=\"Totfield1."
+												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"60%\" style=\"text-align:right;font-size: 17px;font-weight: bold;\" id=\"Totfield1."
 														+ (rowCount)
 														+ "\" value=\"Total\" />";
-												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"42%\" style=\"text-align:right;\" id=\"Totfield2."
+												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"30%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield2."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalDiscAmt
 														+ "'/>";
-												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"25%\" style=\"text-align:right;\" id=\"Totfield3."
+												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"20%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield3."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalSubTotal
 														+ "'/>";
-												row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"28%\" style=\"text-align:left;\" id=\"Totfield4."
+												row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"10%\" style=\"text-align:left;font-size: 15px;\" id=\"Totfield4."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalAmount
@@ -1596,57 +1679,57 @@ ul.tab li {
 											var rowCount = table.rows.length;
 											var row = table.insertRow(rowCount);
 											i = i + 1;
-											row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"14%\" id=\"field1."
+											row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"17%\" id=\"field1."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField1
 													+ "'/>";
-											row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"11%\" id=\"field2."
+											row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"14%\" id=\"field2."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField2
 													+ "'/>";
-											row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"12%\" style=\"text-align:center;\" id=\"field3."
+											row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"14%\" style=\"text-align:left;\" id=\"field3."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField3
 													+ "'/>";
-											row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"14%\" id=\"field4."
+											row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"34%\" id=\"field4."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField4
 													+ "'/>";
-											row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"9%\" style=\"text-align:right;\" id=\"field5."
+											row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"11%\" style=\"text-align:left;\" id=\"field5."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField5
 													+ "'/>";
-											row.insertCell(5).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"9%\" style=\"text-align:right;\" id=\"field6."
+											row.insertCell(5).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"13%\" style=\"text-align:left;\" id=\"field6."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField6
 													+ "'/>";
-											row.insertCell(6).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"8%\" style=\"text-align:right;\" id=\"field7."
+											row.insertCell(6).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"13%\" style=\"text-align:left;\" id=\"field7."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField7
 													+ "'/>";
-											row.insertCell(7).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"11%\" style=\"text-align:right;\" id=\"field8."
+											row.insertCell(7).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"13%\" style=\"text-align:left;\" id=\"field8."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField8
 													+ "'/>";
-											row.insertCell(8).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"23%\" id=\"field9."
+											row.insertCell(8).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"10%\" style=\"text-align:left;\" id=\"field9."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField9
 													+ "'/>";
-											row.insertCell(9).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"23%\" id=\"field10."
+											row.insertCell(9).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"20%\" style=\"text-align:left;\" id=\"field10."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField10
 													+ "'/>";
-											row.insertCell(10).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"23%\" id=\"field11."
+											row.insertCell(10).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"20%\" style=\"text-align:left;\" id=\"field11."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField11
@@ -1713,10 +1796,10 @@ ul.tab li {
 												var rowCount = table.rows.length;
 												var row = table
 														.insertRow(rowCount);
-												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"105%\" style=\"text-align:right;font-size: 15px;font-weight: bold;\" id=\"Totfield1."
+												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"80%\" style=\"text-align:right;font-size: 17px;font-weight: bold;\" id=\"Totfield1."
 														+ (rowCount)
 														+ "\" value=\"Total\" />";
-												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"70%\" style=\"text-align:right;\" id=\"Totfield2."
+												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"50%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield2."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalAmount
@@ -1805,10 +1888,20 @@ ul.tab li {
 												var rowCount = table.rows.length;
 												var row = table
 														.insertRow(rowCount);
-												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"100%\" style=\"text-align:right;font-size: 15px;font-weight: bold;\" id=\"Totfield1."
+												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"100%\" style=\"text-align:left;font-size: 17px;font-weight: bold;\" id=\"Totfield1."
 														+ (rowCount)
-														+ "\" value=\"Total\" />";
-												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"60%\" style=\"text-align:right;\" id=\"Totfield2."
+														+ "\" value=\"Total\" />";													
+												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"8%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield2."
+														+ (rowCount)
+														+ "\" value='"
+														+ response[i].noOfBills
+														+ "'/>";															
+												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"9%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield2."
+														+ (rowCount)
+														+ "\" value='"
+														+ response[i].totalPAX
+														+ "'/>";
+												row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"9%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield2."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalAmount
@@ -1825,17 +1918,22 @@ ul.tab li {
 													+ "\" value='"
 													+ response[i].strField1
 													+ "'/>";
-											row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"30%\" style=\"text-align:right;\" id=\"field2."
+											row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"20%\" style=\"text-align:right;\" id=\"field2."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField2
 													+ "'/>";
-											row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"61%\" style=\"text-align:right;\" id=\"field3."
+											row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"13%\" style=\"text-align:right;\" id=\"field3."
+													+ (rowCount)
+													+ "\" value='"
+													+ response[i].strField5
+													+ "'/>";
+											row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"32%\" style=\"text-align:right;\" id=\"field4."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField3
 													+ "'/>";
-											row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"38%\" style=\"text-align:right;\" id=\"field4."
+											row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"42%\" style=\"text-align:right;\" id=\"field4."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField4
@@ -1902,10 +2000,10 @@ ul.tab li {
 												var rowCount = table.rows.length;
 												var row = table
 														.insertRow(rowCount);
-												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"110%\" style=\"text-align:right;font-size: 15px;font-weight: bold;\" id=\"Totfield1."
+												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"90%\" style=\"text-align:right;font-size: 17px;font-weight: bold;\" id=\"Totfield1."
 														+ (rowCount)
 														+ "\" value=\"Total\" />";
-												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"62%\" style=\"text-align:right;\" id=\"Totfield2."
+												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"43%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield2."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalAmount
@@ -1922,7 +2020,7 @@ ul.tab li {
 													+ "\" value='"
 													+ response[i].strField1
 													+ "'/>";
-											row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"23%\"  style=\"text-align:right;\" id=\"field2."
+											row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"23%\"  style=\"text-align:left;\" id=\"field2."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField2
@@ -1994,30 +2092,30 @@ ul.tab li {
 												var rowCount = table.rows.length;
 												var row = table
 														.insertRow(rowCount);
-												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"15%\" style=\"text-align:right;font-size: 15px;font-weight: bold;\" id=\"Totfield1."
+												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"15%\" style=\"text-align:left;font-size: 17px;font-weight: bold;\" id=\"Totfield1."
 														+ (rowCount)
 														+ "\" value=\"Total\" />";
-												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"25%\" style=\"text-align:right;\" id=\"Totfield2."
+												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"15%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield2."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalQuantity
 														+ "'/>";
-												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"36%\" style=\"text-align:right;\" id=\"Totfield3."
+												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"23%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield3."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalSubTotal
 														+ "'/>";
-												row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"37%\" style=\"text-align:right;\" id=\"Totfield4."
+												row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"18%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield4."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalDiscAmt
 														+ "'/>";
-												row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"33%\" style=\"text-align:right;\" id=\"Totfield5."
+												row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"20%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield5."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalTaxAmt
 														+ "'/>";
-												row.insertCell(5).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"40%\" style=\"text-align:right;\" id=\"Totfield6."
+												row.insertCell(5).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"27%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield6."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalAmount
@@ -2121,15 +2219,15 @@ ul.tab li {
 												var rowCount = table.rows.length;
 												var row = table
 														.insertRow(rowCount);
-												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"110%\" style=\"text-align:right;font-size: 15px;font-weight: bold;\"  id=\"Totfield1."
+												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"90%\" style=\"text-align:right;font-size: 17px;font-weight: bold;\"  id=\"Totfield1."
 														+ (rowCount)
 														+ "\" value=\"Total\" />";
-												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"35%\" style=\"text-align:right;\" id=\"Totfield2."
+												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"24%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield2."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalTaxAmt
 														+ "'/>";
-												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"31%\" style=\"text-align:right;\" id=\"Totfield3."
+												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"21%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield3."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalSubTotal
@@ -2237,30 +2335,30 @@ ul.tab li {
 												var rowCount = table.rows.length;
 												var row = table
 														.insertRow(rowCount);
-												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"85%\"  style=\"text-align:right;font-size: 15px;font-weight: bold;\" id=\"Totfield1."
+												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"70%\"  style=\"text-align:right;font-size: 17px;font-weight: bold;\" id=\"Totfield1."
 														+ (rowCount)
 														+ "\" value=\"Total\" />";
-												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"22%\" style=\"text-align:right;\" id=\"Totfield2."
+												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"19%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield2."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalDiscAmt
 														+ "'/>";
-												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"21%\" style=\"text-align:right;\" id=\"Totfield3."
+												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"16%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield3."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalSubTotal
 														+ "'/>";
-												row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"24%\" style=\"text-align:right;\" id=\"Totfield4."
+												row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"17%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield4."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalTaxAmt
 														+ "'/>";
-												row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"24%\" style=\"text-align:right;\" id=\"Totfield5."
+												row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"17%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield5."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalTipAmt
 														+ "'/>";
-												row.insertCell(5).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"18%\" style=\"text-align:right;\" id=\"Totfield6."
+												row.insertCell(5).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"15%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield6."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalAmount
@@ -2390,15 +2488,15 @@ ul.tab li {
 												var rowCount = table.rows.length;
 												var row = table
 														.insertRow(rowCount);
-												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;font-size: 15px;font-weight: bold;\" size=\"95%\" id=\"Totfield1."
+												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;font-size: 17px;font-weight: bold;\" size=\"80%\" id=\"Totfield1."
 														+ (rowCount)
 														+ "\" value=\"Total\" />";
-												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"52%\" style=\"text-align:right;\" id=\"Totfield2."
+												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"35%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield2."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalQuantity
 														+ "'/>";
-												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"61%\" style=\"text-align:right;\" id=\"Totfield3."
+												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"41%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield3."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalAmount
@@ -2494,15 +2592,15 @@ ul.tab li {
 												var rowCount = table.rows.length;
 												var row = table
 														.insertRow(rowCount);
-												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"75%\" style=\"text-align:right;font-size: 15px;font-weight: bold;\" id=\"Totfield1."
+												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"60%\" style=\"text-align:right;font-size: 17px;font-weight: bold;\" id=\"Totfield1."
 														+ (rowCount)
 														+ "\" value=\"Total\" />";
-												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"45%\" style=\"text-align:right;\" id=\"Totfield2."
+												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"32%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield2."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalQuantity
 														+ "'/>";
-												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"44%\" style=\"text-align:right;\" id=\"Totfield3."
+												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"30%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield3."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalAmount
@@ -2596,19 +2694,24 @@ ul.tab li {
 												var rowCount = table.rows.length;
 												var row = table
 														.insertRow(rowCount);
-												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"80%\" style=\"text-align:right;font-size: 15px;font-weight: bold;\"  id=\"Totfield1."
+												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"20%\" style=\"text-align:left;font-size: 17px;font-weight: bold;\"  id=\"Totfield1."
 														+ (rowCount)
 														+ "\" value=\"Total\" />";
-												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"41%\" style=\"text-align:right;\" id=\"Totfield2."
+												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"44%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield2."
+														+ (rowCount)
+														+ "\" value='"
+														+ response[i].totalQuantity
+														+ "'/>";
+												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"52%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield3."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalAmount
 														+ "'/>";
-												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"40%\" style=\"text-align:right;\" id=\"Totfield3."
-														+ (rowCount)
-														+ "\" value='"
-														+ response[i].totalDiscAmt
-														+ "'/>";
+												row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"33%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield3."
+													+ (rowCount)
+													+ "\" value='"
+													+ response[i].totalDiscAmt
+													+ "'/>";
 											}
 
 											var table = document
@@ -2631,15 +2734,15 @@ ul.tab li {
 													+ "\" value='"
 													+ response[i].strField3
 													+ "'/>";
-											row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"38%\" style=\"text-align:right;\" id=\"field4."
-													+ (rowCount)
-													+ "\" value='"
-													+ response[i].strField4
-													+ "'/>";
-											row.insertCell(4).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"40%\" style=\"text-align:right;\" id=\"field5."
+											row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"40%\" style=\"text-align:right;\" id=\"field5."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField5
+													+ "'/>";
+											row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"40%\" style=\"text-align:right;\" id=\"field5."
+													+ (rowCount)
+													+ "\" value='"
+													+ response[i].strField4
 													+ "'/>";
 
 										});
@@ -2703,15 +2806,15 @@ ul.tab li {
 												var rowCount = table.rows.length;
 												var row = table
 														.insertRow(rowCount);
-												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"120%\" style=\"text-align:right;font-size: 15px;font-weight: bold;\" id=\"Totfield1."
+												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"120%\" style=\"text-align:left;font-size: 17px;font-weight: bold;\" id=\"Totfield1."
 														+ (rowCount)
 														+ "\" value=\"Total\" />";
-												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"42%\" style=\"text-align:right;\" id=\"Totfield2."
+												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"27%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield2."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalDiscAmt
 														+ "'/>";
-												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"40%\" style=\"text-align:right;\" id=\"Totfield3."
+												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"24%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield3."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalAmount
@@ -2815,10 +2918,10 @@ ul.tab li {
 												var rowCount = table.rows.length;
 												var row = table
 														.insertRow(rowCount);
-												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right;font-size: 15px;font-weight: bold;\" size=\"110%\" id=\"Totfield1."
+												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:left;font-size: 17px;font-weight: bold;\" size=\"110%\" id=\"Totfield1."
 														+ (rowCount)
 														+ "\" value=\"Total\" />";
-												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"53%\" style=\"text-align:right;\" id=\"Totfield2."
+												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"38%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield2."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalAmount
@@ -2881,7 +2984,7 @@ ul.tab li {
 	}
 	
 	
-	function funExportReport()
+	/* function funExportReport()
  	{
 		
 		var POSName = document.getElementById("cmbPOSName").value;
@@ -2910,7 +3013,7 @@ ul.tab li {
 		{
 			shiftCode=document.getElementById("txtShiftCode").value;
 		}
- 	}
+ 	} */
 
 
 </script>
@@ -2920,9 +3023,11 @@ ul.tab li {
 	<br />
 	<div id="formHeading" >
 		<label>Sales Report</label>
-	</div>
+	</div> 
 	<s:form name="POSSalesReportForm" method="POST"
-		action="rptPOSSalesReport.html" class="formoid-default-skyblue" style="background-color:#FFFFFF;font-size:14px;font-family:'Open Sans','Helvetica Neue','Helvetica',Arial,Verdana,sans-serif;color:#666666;">
+		action="rptPOSSalesReport.html" class="formoid-default-skyblue" 
+		style="background-color:#FFFFFF;font-size:14px;font-family:'Open Sans',
+		'Helvetica Neue','Helvetica',Arial,Verdana,sans-serif;color:#666666;width:1366px; ">
 
 		<div id="tab_container" style="height: 50%">
 			<!-- <ul class="tabs">
@@ -2958,16 +3063,16 @@ ul.tab li {
 		    					<label class="title">From Date</label>
 		    				</div>
 		    				<div class="element-input col-lg-6" style="width: 15%;"> 
-								<s:input  id="txtFromDate" required="required" path="fromDate" pattern="\d{1,2}-\d{1,2}-\d{4}" style="width: 100%;"/>
+								<s:input  id="txtFromDate" required="required" path="fromDate" pattern="\d{1,2}-\d{1,2}-\d{4}" style="width: 100%;" />
 							</div>
 							<div class="element-input col-lg-6" style="width: 8%;margin-top:8px"> 
 		    					<label class="title">To Date</label>
 		    				</div>
 		    				<div class="element-input col-lg-6" style="width: 15%;"> 
-								<s:input id="txtToDate" required="required" path="toDate" pattern="\d{1,2}-\d{1,2}-\d{4}"  style="width: 100%;"/>	
+								<s:input id="txtToDate" required="required" path="toDate" pattern="\d{1,2}-\d{1,2}-\d{4}"  style="width: 100%;" onChange="funDateValidate();"/>	
 							</div>
 							<div class="element-input col-lg-6" style="width: 15%; margin-left:30px;"> 
-								<input type="submit" value="EXPORT" id="submit" onclick="funExportReport()" />
+								<input type="submit" value="EXPORT" id="submit"  />
 							</div>
 					</div>	
 					<!-- </td>
@@ -3017,7 +3122,7 @@ ul.tab li {
 								</table>
 								
 					     <div
-							style=" border: 1px solid #ccc; display: block; height: 20px; margin: auto; width: 99.80%;">
+							style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
 							<table class="scroll" id="tblSettlementWiseTotal"
 								style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
 								class="transTablex col11-center">
@@ -3035,83 +3140,99 @@ ul.tab li {
 <!-- 									<div class="row" style="background-color: #fff; display: -webkit-box; margin-bottom: 10px;">
  -->									
                 	<div id="divBillWise"
-                           class="col-sm-9" style="width: 100%; height: 580px;  display: block;  background-color: #fff; "> 
-                          <table class="scroll" style="  height: 20px; border: #0F0; width: 100%;  font-size: 14px; font-weight: bold;">
+                           class="col-sm-9" style="width: 57.5%; height: 580px; display: block;  background-color: #fff; overflow-x: scroll; overflow-y: hidden;margin-left: 0.8%;"> 
+                          <table class="scroll" style="height: 20px; border: #0F0; width: 160%;  font-size: 14px; font-weight: bold; margin-left: -1.1%;">
 						    <thead style="background: #2FABE9; color: white;">
 						         <tr>
-								<td width="5%">Bill No</td>
-								<td align="left" width="3%">Date</td>
-								<td align="right" width="4%">Bill time</td>
-								<td align="right" width="5%">Table Name</td>
-								<td align="right" width="5%">Cust Name</td>
-								<td align="right" width="3%">POS</td>
-								<td align="right" width="6%">Pay Mode</td>
-								<td align="right" width="5%">Delivery Charge</td>
-								<td align="right" width="4%">Sub Total</td>
-								<td align="right" width="4%">Disc %</td>
-								<td align="right" width="4%">Disc Amt</td>
-								<td align="right" width="3%">TAX Amt</td>
-								<td align="right" width="5%">Sales Amt</td>
-								<td align="right" width="4%">Remark</td>
-								<td align="right" width="4.5%">Tip</td>
-							    <td align="right" width="1%">Disc Remark</td>
-								<td align="right" width="1.5%">Reason</td>
-								<td align="right" width="1%"></td>
+								<td width="3.1%">Bill No</td>
+								<td align="left" width="3.5%">Date</td>
+								<td align="left" width="3%">Bill time</td>
+								<td align="left" width="4.7%">Table Name</td>
+								<td align="left" width="5%">Cust Name</td>
+								<td align="left" width="4%">POS</td>
+								<td align="left" width="2.2%">Shift</td>
+								<td align="left" width="4%">Pay Mode</td>
+								<td align="left" width="3.5%">Delivery Charge</td>
+								<td align="left" width="4%">Sub Total</td>
+								<td align="left" width="3.5%">Disc %</td>
+								<td align="left" width="3.5%">Disc Amt</td>
+								<td align="left" width="3.5%">TAX Amt</td>
+								<td align="left" width="3.5%">Adv. Amt</td>
+								<td align="left" width="3.5%">Sales Amt</td>
+								<td align="left" width="3.5%">Round Off</td>
+								<td align="left" width="5.6%">Remarks</td>
+								<td align="left" width="2%">Tip</td>
+							    <td align="left" width="5%">Disc Remark</td>
+								<td align="left" width="5%">Reason</td>
+								<td align="left" width="3.4%">PAX</td>
+								<td align="left" width="4%">Order Type</td>
+								
 							</tr>
 						</thead>	
 					</table>
 			  
-					 <div class="row" style="display: block; height: 85%; margin: auto; border: 1px solid #ccc; overflow-x: hidden; overflow-y: scroll; width: 100%;">
+					 <div class="row" style="display: block; height: 85%; margin-left: -1.1%; border: 1px solid #ccc; overflow-x: hidden; overflow-y: scroll; width: 160%;">
 						    <table  class="scroll" id="tblBillWise"
 							  style="width: 100%; border: #0F0;">
 									<tbody>
-							<col style="width: 7.5%">
-							<col style="width: 8%">
+							<col style="width: 1%">
+							<col style="width: 3.2%">
+							<col style="width: 3.5%">
 							<col style="width: 4.5%">
-							<col style="width: 15%">
-							<col style="width: 6.5%">
-							<col style="width: 9%">
-							<col style="width: 5%">
-							<col style="width: 6%">
-							<col style="width: 6%">
-							<col style="width: 6%">
-							<col style="width: 6%">
-							<col style="width: 11%">
-							<col style="width: 11%">
-							<col style="width: 11%">
-							<col style="width: 11%">
-							<col style="width: 11%">
-							<col style="width: 11%">
+							<col style="width: 5.7%">
+							<col style="width: 4.2%">
+							<col style="width: 2.2%">
+							<col style="width: 1.2%">
+							<col style="width: 4%">
+							<col style="width: 3.5%">
+							<col style="width: 4%">
+							<col style="width: 3.9%">
+							<col style="width: 3.5%">
+							<col style="width: 4%">
+							<col style="width: 3.7%">
+							<col style="width: 3.8%">
+							<col style="width: 4.2%">
+							<col style="width: 4%">
+							<col style="width: 3%">
+							<col style="width: 3%">
+							<col style="width: 3%">
+							<col style="width: 4.5%">
 							</tbody>
 						</table>
 					</div>
 					<div class=""
-						           style="width:1170px; height: 60px;  overflow-x: hidden;overflow-y: hidden; display: block; ">
+						           style="width:160%; height: 60px;  overflow-x: hidden;overflow-y: hidden; display: block; margin-left: -1.1%;">
 						        <table
-							       style="height: 20px; border: #0F0; width: 100%; font-size: 13px; font-weight: bold;">
+							       style="height: 20px; border: #0F0; width: 100%; font-size: 15px; font-weight: bold;">
 							       <tr style="background: #2FABE9; color: white;">
-								<td width="30%"></td>
-								<td align="right" width="22%">Sub Total</td>
-								<td width="2%"></td>
-								<td align="right" width="7%">Disc</td>
-								<td align="right" width="6%">Tax Total</td>
-								<td align="right" width="8%">Sales Amount</td>
-								<td align="right" width="12%">Tip Amount</td>
-								<td align="left" width="5%"></td>
+								<td width="11.3%"></td>
+								<td align="right" width="11.5%">Sub Total</td>
+								<td width="1%"></td>
+								<td align="right" width="3.2%">Disc</td>
+								<td align="right" width="2.5%">Tax Total</td>
+								<td align="right" width="2.5%">Adv. Total</td>
+								<td align="right" width="2.5%">Sales Amt</td> 
+								<td align="right" width="2.2%">Round Off</td>
+								<td align="right" width="5%">Tip Amount</td>
+								<td align="right" width="7%">PAX</td>
+								<td align="right" width="4%"></td>
+								
 
 							</tr>
 						</table>
-					  <div  style=" border: 1px solid #ccc; display: block; height: 20px; margin: auto; width: 99.80%;">
+					  <div  style=" border: 1px solid #ccc; display: block; height: 26px; margin: auto; width: 100%;">
 							   <table class="scroll" id="tblBillWiseTotal"
 								  style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
 								  class="transTablex col11-center">
 								<tbody>
-								<col style="width: 75%">
-								<col style="width: 18%">
+								<col style="width: 33%">
+								<col style="width: 10%">
 								<col style="width: 5%">
 								<col style="width: 8%">
-								<col style="width: 25%">
-								<col style="width: 15%">
+								<col style="width: 5%">
+								<col style="width: 5.5%">
+								<col style="width: 6%">
+								<col style="width: 5%">
 
 							</table>
 						</div>
@@ -3125,12 +3246,12 @@ ul.tab li {
                        <table class="scroll" style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
 						<thead style="background: #2FABE9; color: white;">
 						        <tr>
-									<td align="left" width="10%">Item Name</td>
+									<td align="left" width="10.7%">Item Name</td>
 									<td align="right" width="2.5%">POS</td>
-									<td align="right" width="8%">Quantity</td>
+									<td align="right" width="9%">Quantity</td>
 									<td align="right" width="5%">Sub Total</td>
-									<td align="right" width="5.5%">Sales Amount</td>
-									<td align="center" width="3%">Discount</td>
+									<td align="right" width="4.5%">Discount</td>
+									<td align="center" width="4%">Net Total</td>
 								</tr>
 						</thead>
 								
@@ -3154,16 +3275,16 @@ ul.tab li {
 							style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
 							      <tr style="background: #2FABE9; color: white;">
 										<td width="47%"></td>
-										<td align="right" width="12%">Quantity</td>
-										<td align="right" width="15%">SubTotal</td>
-										<td align="right" width="13%">Sales Amount</td>
-										<td align="right" width="10%">Discount</td>
-										<td align="right" width="2%"></td>
+										<td align="right" width="15%">Quantity</td>
+										<td align="right" width="14%">SubTotal</td>
+										<td align="right" width="13%">Discount</td>
+										<td align="right" width="8%">Net Total</td>
+										<td align="right" width="0%"></td>
 										
 									</tr>
 								</table>
 									 <div
-							style=" border: 1px solid #ccc; display: block; height: 20px; margin: auto; width: 99.80%;">
+							style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
 							<table class="scroll" id="tblItemWiseTotal"
 								style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
 								class="transTablex col11-center">
@@ -3189,7 +3310,7 @@ ul.tab li {
 									<td align="left" width="4%">POS</td>
 									<td align="right" width="3%">Quantity</td>
 									<td align="right" width="6%">Sub Total</td>
-									<td align="right" width="6.5%">Sales Amount</td>
+									<td align="right" width="6.5%">Net Total</td>
 									<td align="right" width="6%">Discount</td>
 									<td align="right" width="6%">Sales (%)</td>
 									<td align="left" width="1.8%"></td>
@@ -3215,17 +3336,17 @@ ul.tab li {
 						      <table
 							       style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
 							       <tr style="background: #2FABE9; color: white;">
-										<td width="17.4%"></td>
-										<td align="right" width="14.9%">Quantity</td>
-										<td align="right" width="16.5%">Sub Total</td>
-										<td align="right" width="15.8%">Sales Amount</td>
+										<td width="15.4%"></td>
+										<td align="right" width="15.9%">Quantity</td>
+										<td align="right" width="13.5%">Sub Total</td>
+										<td align="right" width="14.8%">Net Total</td>
 										<td align="right" width="14.2%">Discount</td>
 										<td width="17.9%"></td>
 
 									</tr>
 								</table>
 								 <div
-							style=" border: 1px solid #ccc; display: block; height: 20px; margin: auto; width: 99.80%;">
+							style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
 							<table class="scroll" id="tblMenuHeadWiseTotal"
 								style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
 								class="transTablex col11-center">
@@ -3253,7 +3374,7 @@ ul.tab li {
 									<td width="5.82%">Group Name</td>
 									<td width="6.5%">POS</td>
 									<td align="left" width="5.5%">Quantity</td>
-									<td align="right" width="5%">sub Total</td>
+									<td align="right" width="5%">Sub Total</td>
 									<td align="right" width="6.5%">Net Total</td>
 									<td align="right" width="6%">Discount</td>
 									<td align="right" width="4.5%">Sales (%)</td>
@@ -3282,20 +3403,20 @@ ul.tab li {
 						    <table
 							style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
 							     <tr style="background: #2FABE9; color: white;">
-										<td width="19.5%"></td>
-										<td align="right" width="11.5%">Quantity</td>
-                                        <td width="3%" align="right"></td>
-										<td align="right" width="15%">Sub Total</td>
+										<td width="18.5%"></td>
+										<td align="right" width="11.5%"></td>
+                                        <td width="1%" align="right"></td>
+										<td align="right" width="16%">Sub Total</td>
                                         <td width="3%" align="right"></td>
 										<td align="right" width="11%">Net Total</td>
                                         <td width="3.5%" align="right"></td>
 										<td align="right" width="10%">Discount</td>
-										<td width="12.5%"></td>
+										<td width="11.5%"></td>
 
 									</tr>
 								</table>
 										 <div
-							style=" border: 1px solid #ccc; display: block; height: 20px; margin: auto; width: 99.80%;">
+							style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
 							<table class="scroll" id="tblGroupWiseTotal"
 								style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
 								class="transTablex col11-center">
@@ -3320,7 +3441,7 @@ ul.tab li {
 									<td width="6%">POS</td>
 									<td align="right" width="4%">Quantity</td>
 									<td align="right" width="6%">Sub Total</td>
-									<td align="right" width="5.8%">Sales Amount</td>
+									<td align="right" width="5.8%">Net Total</td>
 									<td align="right" width="5.2%">Discount</td>
 									<td align="right" width="4.8%">Sales (%)</td>
 									<td align="left" width="1%"></td>
@@ -3347,17 +3468,17 @@ ul.tab li {
 						       <table
 							     style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
 							       <tr style="background: #2FABE9; color: white;">
-										<td width="34%"></td>
-										<td align="right" width="14%">Quantity</td>
-										<td align="right" width="15%">Sub Total</td>
-										<td align="right" width="14%">Sales Amount</td>
-										<td align="right" width="12%">Discount</td>
+										<td width="26%"></td>
+										<td align="right" width="10.5%">Quantity</td>
+										<td align="right" width="10.5%">Sub Total</td>
+										<td align="right" width="10.5%">Net Total</td>
+										<td align="right" width="9.5%">Discount</td>
 										<td width="10%"></td>
 
 									</tr>
 								</table>
 								  <div
-							         style=" border: 1px solid #ccc; display: block; height: 20px; margin: auto; width: 99.80%;">
+							         style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
 							     <table class="scroll" id="tblSubGroupWiseTotal"
 								        style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
 								        class="transTablex col11-center">
@@ -3380,8 +3501,10 @@ ul.tab li {
                             <table class="scroll" style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
 						       <thead style="background: #2FABE9; color: white;">
 								  <tr>
-									<td width="13%">Customer Name</td>
-									<td align="left" width="10%">No Of Bills</td>
+									<td width="12%">Customer Name</td>
+									<td align="left" width="8%">Mobile No</td>
+									<td align="left" width="7%">Date Of Birth</td>
+									<td align="left" width="8%">No Of Bills</td>
 									<!-- <td width="6%">Quantity</td> -->
 									<td align="left" width="10%">Sales Amount</td>
 								 </tr>
@@ -3393,9 +3516,10 @@ ul.tab li {
 						      <table  class="scroll" id="tblCustWise"
 							   style="width: 100%; border: #0F0;">
 									<tbody>
-									<col style="width: 25%">
-									<col style="width: 40%">
-									<col style="width: 40%">
+									<col style="width: 27%">
+									<col style="width: 18.5%">
+									<col style="width: 13%">
+									<col style="width: 11%">
 									
 									</tbody>
 								</table>
@@ -3406,13 +3530,13 @@ ul.tab li {
 							        style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
 							       <tr style="background: #2FABE9; color: white;">
 										<td width="28%"></td>
-										<td align="right" width="15%">Quantity</td>
-										<td align="right" width="32%">Sales Amount</td>
+										<td align="right" width="37%">No Of Bills</td>
+										<td align="right" width="22%">Sales Amount</td>
 										<td width="25%"></td>
 									</tr>
 								</table>
 						 <div
-							         style=" border: 1px solid #ccc; display: block; height: 20px; margin: auto; width: 99.80%;">
+							         style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
 							  <table class="scroll" id="tblCustWiseTotal"
 								     style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
 								     class="transTablex col11-center">
@@ -3420,6 +3544,7 @@ ul.tab li {
 										<col style="width: 27%">
 										<col style="width: 30%">
 										<col style="width: 50%">
+										
 								</tbody>
 									</table>
 								</div>
@@ -3431,11 +3556,12 @@ ul.tab li {
                      <table class="scroll" style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
 						<thead style="background: #2FABE9; color: white;">
 						         <tr>
-									<td width="8.5%">POS</td>
-									<td width="8%">Waiter Full Name</td>
+									<td width="10.4%">POS</td>
+									<td width="8.3%">Waiter Full Name</td>
 									<td align="left" width="10.5%">Waiter Short Name</td>
+									<td align="left" width="6%">No Of Bills</td>
 									<td align="left" width="6%">Sales Amount</td>
-									<td align="left" width="1%"></td>
+									<td align="left" width="4%"></td>
 									</tr>
 							</thead>
 								 
@@ -3445,10 +3571,11 @@ ul.tab li {
 						    <table  class="scroll" id="tblWaiterWise"
 							  style="width: 100%; border: #0F0;">
 									<tbody>
-									<col style="width: 21%">
-									<col style="width: 20%">
-									<col style="width: 22%">
-									<col style="width: 20%">
+									<col style="width: 3%">
+									<col style="width: 1%">
+									<col style="width: 12%">
+									<col style="width: 5%">
+									<col style="width: 25%">
 									</tbody>
 								</table>
 							</div>
@@ -3457,13 +3584,13 @@ ul.tab li {
 						        <table
 							       style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
 							       <tr style="background: #2FABE9; color: white;">
-										<td width="45%"></td>
-										<td align="right" width="15%">Sales Amount</td>
+										<td width="38%"></td>
+										<td align="right" width="6%">Sales Amount</td>
 										<td width="8%"></td>
 									</tr>
 								</table>
 							<div
-							      style=" border: 1px solid #ccc; display: block; height: 20px; margin: auto; width: 99.80%;">
+							      style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
 							   <table class="scroll" id="tblWaiterWiseTotal"
 								  style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
 								  class="transTablex col11-center">
@@ -3481,8 +3608,8 @@ ul.tab li {
                                <table class="scroll" style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
 						       <thead style="background: #2FABE9; color: white;">
 						       <tr>
-									<td width="16%">Delivery Boy Name</td>
-									<td align="left" width="11%">POS</td>
+									<td width="14%">Delivery Boy Name</td>
+									<td align="left" width="16%">POS</td>
 									<td align="right" width="9%">Sales Amount</td>
 									<td align="right" width="16%">Delivery Charges</td>
 									<td align="left" width="1%"></td>
@@ -3514,7 +3641,7 @@ ul.tab li {
 									</tr>
 								</table>
 								 <div
-							style=" border: 1px solid #ccc; display: block; height: 20px; margin: auto; width: 99.80%;">
+							style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
 							<table class="scroll" id="tblDeliveryBoyWiseTotal"
 								style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
 								class="transTablex col11-center">
@@ -3564,23 +3691,23 @@ ul.tab li {
 							     <tr style="background: #2FABE9; color: white;">
 										<td width="21%"></td>
 										<td align="right" width="15%">Quantity</td>
-										<td align="right" width="19%">Sub Total</td>
+										<td align="right" width="17.5%">Sub Total</td>
 										<td align="right" width="17%">Sales Amount</td>
 										<td align="right" width="16%">Discount</td>
 										<td width="18%"></td>
 									</tr>
 								</table>
 								 <div
-							style=" border: 1px solid #ccc; display: block; height: 20px; margin: auto; width: 99.80%;">
+							style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
 							<table class="scroll" id="tblCostCenterWiseTotal"
 								style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
 								class="transTablex col11-center">
 								    <tbody>
 										<col style="width: 15%">
+										<col style="width: 12%">
+										<col style="width: 14%">
 										<col style="width: 13%">
-										<col style="width: 15%">
-										<col style="width: 13%">
-										<col style="width: 20%">
+										<col style="width: 22%">
 									</tbody>	
 									</table>
 								</div>
@@ -3591,18 +3718,18 @@ ul.tab li {
                              <table class="scroll" style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
 						     <thead style="background: #2FABE9; color: white;">
 						        <tr>
-									<td width="5%">Bill No</td>
-									<td width="5%">POS</td>
-									<td align="left" width="5%">Date</td>
-									<td align="left" width="5%">Settle Mode</td>
-									<td align="right" width="4.5%">Delivery Charges</td>
-									<td align="right" width="4%">Disc Amt</td>
-									<td align="right" width="5%">Tax Amt</td>
-									<td align="center" width="9%">Amount</td>
-									<td width="6%">Customer Name</td>
-									<td align="right" width="5%">Building</td>
+									<td width="4.8%">Bill No</td>
+									<td width="4%">POS</td>
+									<td align="left" width="3.8%">Date</td>
+									<td align="left" width="4.6%">Settle Mode</td>
+									<td align="right" width="5%">Delivery Charges</td>
+									<td align="right" width="4.5%">Disc Amt</td>
+									<td align="right" width="3.6%">Tax Amt</td>
+									<td align="center" width="6%">Amount</td>
+									<td width="4%">Customer Name</td>
+									<td align="right" width="1%">Building</td>
 									<td align="right" width="7%">Delv Boy</td>
-									<td align="left" width="1%"></td>
+									<td align="left" width="2.5%"></td>
 								</tr>
 							 </thead>	
 							</table>
@@ -3610,17 +3737,17 @@ ul.tab li {
 						     <table  class="scroll" id="tblHomeDeliveryWise"
 							     style="width: 100%; border: #0F0;">
 									<tbody>
-									<col style="width: 6%">
-									<col style="width: 5%">
-									<col style="width: 5%">
-									<col style="width: 6%">
-									<col style="width: 4%">
-									<col style="width: 4%">
-									<col style="width: 4%">
-									<col style="width: 5%">
+									<col style="width: 9.8%">
+									<col style="width: 8%">
+									<col style="width: 8%">
+									<col style="width: 10%">
+									<col style="width: 10%">
+									<col style="width: 8%">
 									<col style="width: 9%">
-									<col style="width: 9%">
-									<col style="width: 9%">
+									<col style="width: 5%">
+									<col style="width: 16%">
+									<col style="width: 14%">
+									<col style="width: 4%">
 									</tbody>
 								</table>
 							</div>
@@ -3629,22 +3756,22 @@ ul.tab li {
 						      <table
 							       style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
 							     <tr style="background: #2FABE9; color: white;">
-										<td width="8%"></td>
-										<td align="right" width="14%">Discount</td>
-										<td align="right" width="5%">Tax Total</td>
-										<td align="right" width="6%">Sales Amount</td>
-										<td width="15%"></td>
+										<td width="23%"></td>
+										<td align="right" width="3%">Discount</td>
+										<td align="right" width="4%">Tax Total</td>
+										<td align="right" width="5%">Sales Amount</td>
+										<td width="18%"></td>
 									</tr>
 								</table>
 			             
-							 <div style=" border: 1px solid #ccc; display: block; height: 20px; margin: auto; width: 99.80%;">
+							 <div style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
 							<table class="scroll" id="tblHomeDeliveryWiseTotal"
 								style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
 								class="transTablex col11-center">
 								<tbody>
-										<col style="width: 35%">
-										<col style="width: 25%">
-										<col style="width: 30%">
+										<col style="width: 40%">
+										<col style="width: 19%">
+										<col style="width: 22%">
 										<col style="width: 53%">
 									</table>	
 									
@@ -3687,7 +3814,7 @@ ul.tab li {
 									</tr>
 								</table>
 							<div
-							        style=" border: 1px solid #ccc; display: block; height: 20px; margin: auto; width: 99.80%;">
+							        style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
 							  <table class="scroll" id="tblTableWiseTotal"
 								    style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
 								    class="transTablex col11-center">
@@ -3704,8 +3831,9 @@ ul.tab li {
                         <table class="scroll" style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
 						  <thead style="background: #2FABE9; color: white;">
 						         <tr>
-									<td width="10%">Date Range</td>
+									<td width="10%">Time Range</td>
 									<td align="left" width="6%">No Of Bills</td>
+									<td align="left" width="6%">No Of PAX</td>
 									<td align="right" width="6%">Sales Amount</td>
 									<td align="right" width="9%">Sales (%)</td>
 									<td align="left" width="1%"></td>
@@ -3718,6 +3846,8 @@ ul.tab li {
 									<tbody>
 									<col style="width: 19%">
 									<col style="width: 20%">
+									<col style="width: 20%">
+									<col style="width: 20%">
 									<col style="width: 40%">
 									<col style="width: 20%">
 								
@@ -3728,19 +3858,23 @@ ul.tab li {
 						        <table
 							         style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
 							     <tr style="background: #2FABE9; color: white;">
-										<td width="25%"></td>
-										<td align="right" width="15%">Sales Amount</td>
-										<td width="16%"></td>
+										<td width="20%"></td>
+										<td align="left" width="12%">Total No Of Bills</td>
+										<td align="left" width="18%">Total No Of PAX</td>
+										<td align="left" width="15%">Sales Amount</td>
+										<td width="10%"></td>
 									</tr>
 								</table>
 								<div
-							style=" border: 1px solid #ccc; display: block; height: 20px; margin: auto; width: 99.80%;">
+							style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
 							<table class="scroll" id="tblHourlyWiseTotal"
 								style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
-								class="transTablex col11-center">
+								class="transTablex col11-left">
 								    <tbody>
-										<col style="width: 48%">
-										<col style="width: 60%">
+										<col style="width: 7.7%">
+										<col style="width: 4.5%">
+										<col style="width: 8%">
+										<col style="width: 10%">
                                     </tbody>
 									</table>
 								</div>
@@ -3751,8 +3885,8 @@ ul.tab li {
                         <table class="scroll" style="height: 20px; border: #0F0; width: 1170px; font-size: 14px;font-weight: bold;">
 						  <thead style="background: #2FABE9; color: white;">
 						         <tr>
-									<td width="8%">POS</td>
-									<td width="8%">Area Name</td>
+									<td width="6%">POS</td>
+									<td width="10%">Area Name</td>
 									<td align="left" width="6%">Sales Amount</td>
 									<td align="left" width="1%"></td>
 									
@@ -3762,7 +3896,7 @@ ul.tab li {
 						    <table  class="scroll" id="tblAreaWise"
 							  style="width: 100%; border: #0F0;">
 									<tbody>
-									<col style="width: 25%">
+									<col style="width: 26.5%">
 									<col style="width: 29%">
 									<col style="width: 45%">
 									</tbody>
@@ -3780,7 +3914,7 @@ ul.tab li {
 									</tr>
 								</table>
 								<div
-							style=" border: 1px solid #ccc; display: block; height: 20px; margin: auto; width: 99.80%;">
+							style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
 							<table class="scroll" id="tblAreaWiseTotal"
 								style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
 								class="transTablex col11-center">
@@ -3825,9 +3959,9 @@ ul.tab li {
 							         style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
 							     <tr style="background: #2FABE9; color: white;">
 										<td width="3%"></td>
-										<td align="right" width="15%">Total Bill</td>
-										<td align="right" width="15%">Sub Total</td>
-										<td align="right" width="16%">Total Discount</td>
+										<td align="right" width="13%">Total Bill</td>
+										<td align="right" width="13%">Sub Total</td>
+										<td align="right" width="14%">Total Discount</td>
 										<td align="right" width="12%">Tax Total</td>
 										<td align="right" width="12%">Total Amount</td>
 										<td width="2%"></td>
@@ -3835,7 +3969,7 @@ ul.tab li {
 									</tr>
 								</table>
 								<div
-							style=" border: 1px solid #ccc; display: block; height: 20px; margin: auto; width: 99.80%;">
+							style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
 							<table class="scroll" id="tblDayWiseSalesTotal"
 								style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
 								class="transTablex col11-center">
@@ -3893,7 +4027,7 @@ ul.tab li {
 									</tr>
 								</table>
 									<div
-							style=" border: 1px solid #ccc; display: block; height: 20px; margin: auto; width: 99.80%;">
+							style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
 							<table class="scroll" id="tblTaxWiseSalesTotal"
 								style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
 								class="transTablex col11-center">
@@ -3910,17 +4044,17 @@ ul.tab li {
                         <table class="scroll" style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
 						  <thead style="background: #2FABE9; color: white;">
 						         <tr>
-									<td width="5%">Bill No</td>
-									<td width="7%">Date</td>
-									<td width="7%">Bill Time</td>
-									<td width="7%">POS Code</td>
-									<td width="6%">Set Mode</td>
-									<td align="right" width="4%">Disc %</td>
+									<td width="6.8%">Bill No</td>
+									<td width="6.7%">Date</td>
+									<td width="4.3%">Bill Time</td>
+									<td width="6%">POS Code</td>
+									<td width="5%">Set Mode</td>
+									<td align="right" width="5%">Disc %</td>
 									<td align="right" width="6%">Disc Amt</td>
 									<td align="right" width="7%">Sub Total</td>
-									<td align="right" width="7%">Tax Amt</td>
+									<td align="right" width="6%">Tax Amt</td>
 									<td align="right" width="6%">Tip Amt</td>
-									<td align="right" width="6%">Sales Amount</td>
+									<td align="right" width="7%">Sales Amount</td>
 									<td align="right" width="1%"></td>
 									
 								</tr>
@@ -3943,15 +4077,14 @@ ul.tab li {
 									<col style="width: 6%">
 									</tbody>
 								</table>
-							</div>
+							</div>							
 							<div class=""
 						             style="width:1170px; height: 60px;  overflow-x: hidden;overflow-y: hidden; display: block; ">
 						        <table
 							         style="height: 20px; border: #0F0; width: 100%; font-size: 14px;font-weight: bold;">
-							     <tr background: #2FABE9; color: white;>
-										<td width="45%"></td>
-										<td align="right" width="8%">Discount</td>
-										<td align="right" width="9%">Sub Total</td>
+							     <tr style="background: #2FABE9; color: white;">									
+										<td align="right" width="53%">Discount</td>
+										<td align="right" width="7%">Sub Total</td>
 										<td align="right" width="9%">Tax Total</td>
 										<td align="right" width="8%">Tip Amount</td>
 										<td align="right" width="8%">Sales Amount</td>
@@ -3961,7 +4094,7 @@ ul.tab li {
 									</tr>
 								</table>
 						    <div
-							       style=" border: 1px solid #ccc; display: block; height: 20px; margin: auto; width: 99.80%;">
+							       style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
 							    <table class="scroll" id="tblTipReportTotal"
 								    style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
 								     class="transTablex col11-center">
@@ -4014,7 +4147,7 @@ ul.tab li {
 									</tr>
 								</table>
 						  <div
-							      style=" border: 1px solid #ccc; display: block; height: 20px; margin: auto; width: 99.80%;">
+							      style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
 							   <table class="scroll" id="tblItemModifierWiseTotal"
 								  style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
 								  class="transTablex col11-center">
@@ -4063,7 +4196,7 @@ ul.tab li {
 									</tr>
 								</table>
 							<div
-							     style=" border: 1px solid #ccc; display: block; height: 20px; margin: auto; width: 99.80%;">
+							     style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
 							        <table class="scroll" id="tblMenuHeadWiseWithModifierTotal"
 								   style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
 								   class="transTablex col11-center">
@@ -4107,15 +4240,17 @@ ul.tab li {
 						        <table
 							       style="height: 20px; border: #0F0; width: 100%;font-size: 14px; font-weight: bold;">
 							       <tr style="background: #2FABE9; color: white;">
-										<td width="40%"></td>
+										<td width="48%"></td>
 										<td align="right" width="12%">Total Quantity</td>
-										<td width="7%"></td>
+										<td width="8%"></td>
 										<td align="right" width="10%">Total Amount</td>
+										<td width="8%"></td>
+										<td align="right" width="10%">Total Discount</td>
 										<td width="19%"></td>
 									</tr>
 								</table>
 							<div
-							      style=" border: 1px solid #ccc; display: block; height: 20px; margin: auto; width: 99.80%;">
+							      style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
 							   <table class="scroll" id="tblItemHourlyWiseTotal"
 								  style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
 								  class="transTablex col11-center">
@@ -4168,7 +4303,7 @@ ul.tab li {
 									</tr>
 								</table>
 							 <div
-							      style=" border: 1px solid #ccc; display: block; height: 20px; margin: auto; width: 99.80%;">
+							      style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
 							   <table class="scroll" id="tblOperatorWiseTotal"
 								  style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
 								  class="transTablex col11-center">
@@ -4213,7 +4348,7 @@ ul.tab li {
 									</tr>
 								</table>
 							<div
-							      style=" border: 1px solid #ccc; display: block; height: 20px; margin: auto; width: 99.80%;">
+							      style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
 							   <table class="scroll" id="tblMonthlySalesFlashTotal"
 								  style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
 								  class="transTablex col11-center">
@@ -4237,17 +4372,17 @@ ul.tab li {
 					
 					<td colspan="4">
 						<div id="tableImg"
-							style="width: 1170px; height: 120px; margin-left: 17px;border: 1px solid #ccc;overflow-x: scroll; overflow-y: hidden; ">
+							style="width: 1170px; height: 120px; margin-left: 15px;border: 1px solid #ccc;overflow-x: scroll; overflow-y: hidden; ">
 							<table class="">
 								<!-- style="height:120px; border: #0F0;width: 100%;font-size:11px;overflow-x: scroll; font-weight: bold;"> -->
-								<tr bgcolor="#fff">
+								
 
-									<td style="padding-right: 12px; "><img
+									<td style="padding-right: 12px;"id="divSettlementWiseee"><img
 										src="../${pageContext.request.contextPath}/resources/images/imgSettlementWise.png"
 										onclick="funSelectedReport('divSettlementWise')"></td> 
-									    <td style="text-align: center;padding-right: 12px;"><img
+									<td style="text-align: center;padding-right: 12px;"><img
 										src="../${pageContext.request.contextPath}/resources/images/imgBillWise.png"
-										onclick="funSelectedReport('divBillWise')"></td>
+										onclick="funSelectedReport('divBillWise','xyz')"></td>
 									<td style="text-align: center;padding-right: 12px;"><img
 										src="../${pageContext.request.contextPath}/resources/images/imgItemWise.png"
 										onclick="funSelectedReport('divItemWise')"></td>
@@ -4308,7 +4443,7 @@ ul.tab li {
 									<td style="text-align: center;padding-right: 12px;"><img
 										src="../${pageContext.request.contextPath}/resources/images/imgMonthlySalesFlash.png"
 										onclick="funSelectedReport('divMonthlySalesFlash')"></td> 
-								</tr>
+								
 							</table>
 						</div>
 					</td>

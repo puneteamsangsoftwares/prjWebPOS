@@ -180,7 +180,7 @@ public class clsPOSBlindSettlementWiseReportController {
 	                objBillItemDtlBean.setStrSettelmentMode(obj[1].toString());
 	                objBillItemDtlBean.setDblSettlementAmt(Double.parseDouble(obj[2].toString()));
 	                objBillItemDtlBean.setStrPosName(obj[3].toString());
-	                objBillItemDtlBean.setNoOfBills(Integer.parseInt(obj[4].toString()));
+	                objBillItemDtlBean.setDblNoOfBills(Integer.parseInt(obj[4].toString()));
 
 	                grossRevenue += Double.parseDouble(obj[2].toString());
 	                listOfSettlementData.add(objBillItemDtlBean);
@@ -198,7 +198,7 @@ public class clsPOSBlindSettlementWiseReportController {
 	                objBillItemDtlBean.setStrSettelmentMode(obj[1].toString());
 	                objBillItemDtlBean.setDblSettlementAmt(Double.parseDouble(obj[2].toString()));
 	                objBillItemDtlBean.setStrPosName(obj[3].toString());
-	                objBillItemDtlBean.setNoOfBills(Integer.parseInt(obj[4].toString()));
+	                objBillItemDtlBean.setDblNoOfBills(Integer.parseInt(obj[4].toString()));
 
 	                grossRevenue += Double.parseDouble(obj[2].toString());
 	                listOfSettlementData.add(objBillItemDtlBean);
