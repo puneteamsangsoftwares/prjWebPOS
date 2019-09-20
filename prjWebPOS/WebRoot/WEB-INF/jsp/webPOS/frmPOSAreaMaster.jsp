@@ -50,6 +50,9 @@ var mapAreaCodeName=new Map();
 			});
 		  
 		  
+		 
+		  
+		  
 		  $('#txtAreaName').autocomplete({
 	 			serviceUrl: '${pageContext.request.contextPath}/getAutoSearchData.html?formname=areaName',  
 	 			paramName: "searchBy",
