@@ -2125,6 +2125,70 @@ public class clsSearchFormController
 					sbSql=new StringBuilder("SELECT a.strSettlementCode,a.strSettlementName FROM tblsettlementtax a where a.strClientCode='"+strClientCode+"' and a.strSettlementName like '%"+searchBy+"%' ");
 					break;	
 					
+					
+				/*case "costCenterName" :
+					sbSql=new StringBuilder("select a.strCostCenterCode,a.strCostCenterName from tblcostcentermaster a where a.strClientCode='"+strClientCode+"' and a.strCostCenterName like '%"+searchBy+"%' ");
+					break;*/
+					
+				/*case "counterName" :
+					sbSql=new StringBuilder("select a.strCounterCode,a.strCounterName from tblcounterhd a where a.strClientCode='"+strClientCode+"' and a.strCounterName like '%"+searchBy+"%' ");
+					break;
+				*/
+				/*case "customerAreaName" :
+					sbSql=new StringBuilder("select a.strBuildingCode,a.strBuildingName from tblbuildingmaster a where a.strClientCode='"+strClientCode+"' and a.strBuildingName like '%"+searchBy+"%' ");
+					break;*/
+				/*case "customerTypeName" :
+					sbSql=new StringBuilder("select a.strCustTypeCode,a.strCustType from tblcustomertypemaster a where a.strClientCode='"+strClientCode+"' and a.strCustType like '%"+searchBy+"%' ");
+					break;
+					*/
+				/*case "deliveryBoyName" :
+					sbSql=new StringBuilder("select a.strDPCode,a.strDPName from tbldeliverypersonmaster a where a.strClientCode='"+strClientCode+"' and a.strDPName like '%"+searchBy+"%' ");
+					break;	*/
+					
+				case "discountName" :
+					sbSql=new StringBuilder("select a.strDiscCode,a.strDiscName from tbldischd a where a.strClientCode='"+strClientCode+"' and a.strDiscName like '%"+searchBy+"%' ");
+					break;	
+					
+				case "factoryName" :
+					sbSql=new StringBuilder("select a.strFactoryCode,a.strFactoryName from tblfactorymaster a where a.strClientCode='"+strClientCode+"' and a.strFactoryName like '%"+searchBy+"%' ");
+					break;	
+					
+				case "groupName" :
+					sbSql=new StringBuilder("select a.strGroupCode,a.strGroupName from tblgrouphd a where a.strClientCode='"+strClientCode+"' and a.strGroupName like '%"+searchBy+"%' ");
+					break;	
+					
+				case "modifierName" :
+					sbSql=new StringBuilder("select a.strModifierCode,a.strModifierName from tblmodifiermaster a where a.strClientCode='"+strClientCode+"' and a.strModifierName like '%"+searchBy+"%' ");
+					break;	
+					
+				case "menuName" :
+					sbSql=new StringBuilder("select a.strMenuCode,a.strMenuName from tblmenuhd a where a.strClientCode='"+strClientCode+"' and a.strMenuName like '%"+searchBy+"%' ");
+					break;	
+					
+				case "menuItemName" :
+					sbSql=new StringBuilder("select a.strItemCode,a.strItemName from tblitemmaster a where a.strClientCode='"+strClientCode+"' and a.strItemName like '%"+searchBy+"%' ");
+					break;
+					
+				case "modGrpName" :
+					sbSql=new StringBuilder("select a.strModifierGroupCode,a.strModifierGroupName from tblmodifiergrouphd a where a.strClientCode='"+strClientCode+"' and a.strModifierGroupName like '%"+searchBy+"%' ");
+					break;
+					
+				case  "orderName" :
+					sbSql=new StringBuilder("select a.strOrderCode,a.strOrderDesc from tblordermaster a where a.strClientCode='"+strClientCode+"' and a.strOrderDesc like '%"+searchBy+"%' ");
+					break;
+					
+				case "posName" :
+					sbSql=new StringBuilder("select a.strPosCode,a.strPosName from tblposmaster a where a.strClientCode='"+strClientCode+"' and a.strPosName like '%"+searchBy+"%' ");
+					break;
+					
+				case "itemName" :
+					sbSql=new StringBuilder("select a.strItemCode,a.strItemName from tblitemmaster a where a.strClientCode='"+strClientCode+"' and a.strItemName like '%"+searchBy+"%' ");
+					break;
+				
+				case "reasonName" :
+					sbSql=new StringBuilder("select a.strReasonCode,a.strReasonName from tblreasonmaster a where a.strClientCode='"+strClientCode+"' and a.strReasonName like '%"+searchBy+"%' ");
+					break;
+					
 			}
 			
 			List list = objBaseService.funGetList(sbSql, "sql");

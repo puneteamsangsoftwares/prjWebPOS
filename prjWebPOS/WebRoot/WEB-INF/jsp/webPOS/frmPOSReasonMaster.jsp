@@ -35,7 +35,7 @@ var paramTick="unticked";
 /*On form Load It Reset form :Ritesh 22 Nov 2014*/
  $(document).ready(function () {
     
-		$('input#txtReasonName').mlKeyboard({layout: 'en_US'});
+		//$('input#txtReasonName').mlKeyboard({layout: 'en_US'});
 		  
 		  $("form").submit(function(event){
 			  if($("#txtReasonName").val().trim()=="")
@@ -48,6 +48,33 @@ var paramTick="unticked";
 				  return flg;
 			  }
 			});
+		  $('#txtReasonName').autocomplete({
+	 			serviceUrl: '${pageContext.request.contextPath}/getAutoSearchData.html?formname=reasonName',  
+	 			paramName: "searchBy",
+	 			delimiter: ",",
+	 		    transformResult: function(response) {
+	 		    	mapReasonCodeName=new Map();
+	 			return {
+	 			  //must convert json to javascript object before process
+	 			  suggestions: $.map($.parseJSON(response), function(item) {
+	 			       // strValue  strCode
+	 			        mapReasonCodeName.set(item.strValue,item.strCode);
+	 			      	return { value: item.strValue, data: item.strCode };
+	 			   })
+	 			            
+	 			 };
+	 			        
+	 	        }
+	 		 });
+			 
+				$('#txtReasonName').blur(function() {
+						var code=mapReasonCodeName.get($('#txtReasonName').val());
+						if(code!='' && code!=null){
+							funSetData(code);	
+						}
+						
+				});
+
 }); 
 
 

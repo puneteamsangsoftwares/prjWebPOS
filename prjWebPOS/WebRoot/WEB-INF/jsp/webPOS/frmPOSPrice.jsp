@@ -12,8 +12,10 @@
 <link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/jquery-confirm.min.css"/>"/>
 <script type="text/javascript" src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
 <script type="text/javascript" src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
+<script type="text/javascript" src="<spring:url value="/resources/js/jquery.autocomplete.min.js"/>"></script>
 <script type="text/javascript">
 	var fieldName;
+	var mapItemCodeName=new Map();
 	$(document).ready(function() {
 		
 		
@@ -52,6 +54,35 @@
 			}
 		 
 		});
+	
+	$('#txtItemName').autocomplete({
+			serviceUrl: '${pageContext.request.contextPath}/getAutoSearchData.html?formname=itemName',  
+			paramName: "searchBy",
+			delimiter: ",",
+		    transformResult: function(response) {
+		    	mapItemCodeName=new Map();
+			return {
+			  //must convert json to javascript object before process
+			  suggestions: $.map($.parseJSON(response), function(item) {
+			       // strValue  strCode
+			        mapItemCodeName.set(item.strValue,item.strCode);
+			      	return { value: item.strValue, data: item.strCode };
+			   })
+			            
+			 };
+			        
+	        }
+		 });
+	 
+		$('#txtItemName').blur(function() {
+				var code=mapItemCodeName.get($('#txtItemName').val());
+				if(code!='' && code!=null){
+					funSetDataToCreateItemPrice(code);	
+				}
+				
+		});
+	
+	
 });
 
 
@@ -469,7 +500,7 @@
 				<div class="element-input col-lg-6"
 					style="margin-bottom: 10px; width: 20%;">
 					<s:input class="large" type="text" id="txtItemName"
-						path="strItemName" readonly="true" />
+						path="strItemName"  />
 				</div>
 
 				<div class="element-input col-lg-6" style="width: 12%;">
@@ -1024,9 +1055,9 @@
 	</s:form>
 </body>
 
-<script type="text/javascript">
+<%-- <script type="text/javascript">
 	funApplyNumberValidation();
-</script>
+</script> --%>
 
 
 </html>

@@ -1092,7 +1092,7 @@ public class clsPOSMasterService
 		Map<String, String> hmParameters = new HashMap<String, String>();
 		hmParameters.put("groupModifierCode", groupModifierCode);
 		hmParameters.put("clientCode", clientCode);
-		objModifierGroupMasterModel = (clsModifierGroupMasterHdModel) obBaseService.funGetAllMasterDataByDocCodeWise("getGroupModifierMaster", hmParameters);
+		objModifierGroupMasterModel = (clsModifierGroupMasterHdModel) obBaseService.funGetAllMasterDataByDocCodeWise("getModifierGroupMaster", hmParameters);
 		System.out.println();
 		return objModifierGroupMasterModel;
 	}

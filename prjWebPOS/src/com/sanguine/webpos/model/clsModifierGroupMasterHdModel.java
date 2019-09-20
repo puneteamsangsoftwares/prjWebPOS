@@ -24,8 +24,9 @@ import com.sanguine.base.model.clsBaseModel;
 @NamedQueries({
 	@NamedQuery (name="POSModifierGroupMaster" ,query="select a.strModifierGroupCode ,a.strModifierGroupName , a.strModifierGroupShortName,"
 		+ " a.strOperational  from clsModifierGroupMasterHdModel a where strClientCode=:clientCode"),
-	@NamedQuery (name="getModifierGroupMaster",query=" from clsModifierGroupMasterHdModel where strModifierGroupCode=:modGroupCode and strClientCode=:clientCode") 	})
+	@NamedQuery (name="getModifierGroupMaster",query=" from clsModifierGroupMasterHdModel where strModifierGroupCode=:groupModifierCode and strClientCode=:clientCode") 	})
 public class clsModifierGroupMasterHdModel extends clsBaseModel implements Serializable{
+	
 	private static final long serialVersionUID = 1L;
 	public clsModifierGroupMasterHdModel(){}
 

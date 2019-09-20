@@ -10,6 +10,7 @@
 <link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/jquery-confirm.min.css"/>"/>
 <script type="text/javascript" src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
 <script type="text/javascript" src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
+<script type="text/javascript" src="<spring:url value="/resources/js/jquery.autocomplete.min.js"/>"></script>
 <style>
 .ui-autocomplete {
     max-height: 200px;
@@ -28,7 +29,7 @@
 </style>
 
 <script type="text/javascript">
-
+var mapFactCodeName=new Map();
  	$(document).ready(function () {
 	  $('input#txtFactoryName').mlKeyboard({layout: 'en_US'});
 	  
@@ -47,7 +48,34 @@
 			  flg=funCallFormAction();
 			  return flg;
 		  }
-		});
+		 });
+	  
+	  $('#txtFactoryName').autocomplete({
+			serviceUrl: '${pageContext.request.contextPath}/getAutoSearchData.html?formname=factoryName',  
+			paramName: "searchBy",
+			delimiter: ",",
+		    transformResult: function(response) {
+		    	mapFactCodeName=new Map();
+			return {
+			  //must convert json to javascript object before process
+			  suggestions: $.map($.parseJSON(response), function(item) {
+			       // strValue  strCode
+			        mapFactCodeName.set(item.strValue,item.strCode);
+			      	return { value: item.strValue, data: item.strCode };
+			   })
+			            
+			 };
+			        
+	        }
+		 });
+		 
+			$('#txtFactoryName').blur(function() {
+					var code=mapFactCodeName.get($('#txtFactoryName').val());
+					if(code!='' && code!=null){
+						funSetData(code);	
+					}
+					
+			});
 	}); 
 
 

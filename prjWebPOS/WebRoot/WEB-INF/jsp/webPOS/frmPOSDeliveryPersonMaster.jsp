@@ -53,6 +53,7 @@
 		  if(rowCount<0)
 		  		document.getElementById("btnRemove").disabled = true;  
 		  
+		  
 		  $('#txtDPName').autocomplete({
 	 			serviceUrl: '${pageContext.request.contextPath}/getAutoSearchData.html?formname=deliveryBoyName',  
 	 			paramName: "searchBy",
@@ -75,10 +76,11 @@
 				$('#txtDPName').blur(function() {
 						var code=mapDPCodeName.get($('#txtDPName').val());
 						if(code!='' && code!=null){
-							funSetData(code);
+							funSetDeliveryBoyDtl(code);	
 						}
 						
 				});
+		  
 		  
 	});
 	

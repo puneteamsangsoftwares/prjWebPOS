@@ -12,7 +12,7 @@
 <script type="text/javascript" src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
 <script type="text/javascript" src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
 <script type="text/javascript" src="<spring:url value="/resources/js/jquery.autocomplete.min.js"/>"></script>
- <script type="text/javascript">
+<script type="text/javascript">
  	
  
  

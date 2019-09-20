@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="s"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
@@ -25,11 +26,12 @@
 }
 </style>
  
-
+<script type="text/javascript" src="<spring:url value="/resources/js/jquery.autocomplete.min.js"/>"></script>
 <script type="text/javascript">
 
+//var mapGrpCodeName=new Map();
 $(document).ready(function () {
-	  $('input#txtGroupName').mlKeyboard({layout: 'en_US'});
+	//  $('input#txtGroupName').mlKeyboard({layout: 'en_US'});
 	  
 	  $("form").submit(function(event){
 		  if($("#txtGroupName").val().trim()=="")
@@ -44,6 +46,33 @@ $(document).ready(function () {
 			  return flg;
 		  }
 		});
+	  
+	  $('#txtGroupName').autocomplete({
+			serviceUrl: '${pageContext.request.contextPath}/getAutoSearchData.html?formname=groupName',  
+			paramName: "searchBy",
+			delimiter: ",",
+		    transformResult: function(response) {
+		    	mapGrpCodeName=new Map();
+			return {
+			  //must convert json to javascript object before process
+			  suggestions: $.map($.parseJSON(response), function(item) {
+			       // strValue  strCode
+			        mapGrpCodeName.set(item.strValue,item.strCode);
+			      	return { value: item.strValue, data: item.strCode };
+			   })
+			            
+			 };
+			        
+	        }
+		 });
+		 
+			$('#txtGroupName').blur(function() {
+					var code=mapGrpCodeName.get($('#txtGroupName').val());
+					if(code!='' && code!=null){
+						funSetData(code);	
+					}
+					
+			});
 	  
 	}); 
 	

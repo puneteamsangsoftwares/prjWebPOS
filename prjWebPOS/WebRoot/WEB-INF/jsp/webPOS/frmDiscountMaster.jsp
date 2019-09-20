@@ -11,6 +11,7 @@
 <link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/jquery-confirm.min.css"/>" />
 <script type="text/javascript" src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
 <script type="text/javascript" src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
+<script type="text/javascript" src="<spring:url value="/resources/js/jquery.autocomplete.min.js"/>"></script>
 <style>
 .ui-autocomplete {
 	max-height: 200px;
@@ -30,14 +31,14 @@
 <script type="text/javascript">
 var selectedRowIndex=0; 
 var fieldName="";
-
+var mapDisCodeName=new Map();
 	$(document).ready(function() 
 	{
 		var POSDate="${gPOSDate}"
 		var startDate="${gPOSDate}";
 	  	var Date = startDate.split(" ");
 		var arr = Date[0].split("-");
-		Dat=arr[2]+"-"+arr[1]+"-"+arr[0];	
+			Dat=arr[2]+"-"+arr[1]+"-"+arr[0];	
 		$("#txtFromDate").datepicker({ dateFormat: 'dd-mm-yy'  });
 		$("#txtFromDate" ).datepicker('setDate', Dat);
 		
@@ -76,6 +77,34 @@ var fieldName="";
 		 // document.getElementById("cmbDiscountOn").disabled=false;
 		  
 	}); */
+	
+	$('#txtDiscountName').autocomplete({
+			serviceUrl: '${pageContext.request.contextPath}/getAutoSearchData.html?formname=discountName',  
+			paramName: "searchBy",
+			delimiter: ",",
+		    transformResult: function(response) {
+		    	mapDisCodeName=new Map();
+			return {
+			  //must convert json to javascript object before process
+			  suggestions: $.map($.parseJSON(response), function(item) {
+			       // strValue  strCode
+			        mapDisCodeName.set(item.strValue,item.strCode);
+			      	return { value: item.strValue, data: item.strCode };
+			   })
+			            
+			 };
+			        
+	        }
+		 });
+	 
+		$('#txtDiscountName').blur(function() {
+				var code=mapDisCodeName.get($('#txtDiscountName').val());
+				if(code!='' && code!=null){
+					funSetData(code);	
+				}
+				
+		});
+		
 	$("#cmbDiscountOn").change(function () {
 		  funFillDiscountOnTypeWise();
 		});

@@ -12,6 +12,7 @@
 <link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/jquery-confirm.min.css"/>"/>
 <script type="text/javascript" src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
 <script type="text/javascript" src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
+<script type="text/javascript" src="<spring:url value="/resources/js/jquery.autocomplete.min.js"/>"></script>
 <style>
 .ui-autocomplete {
 	max-height: 200px;
@@ -31,9 +32,9 @@
 <script type="text/javascript">
 /*On form Load It Reset form :Ritesh 22 Nov 2014*/
 
-
+var mapModGrpCodeName=new Map();
  $(document).ready(function () {
-	  $('input#txtModifierGroupName').mlKeyboard({layout: 'en_US'});
+	 // $('input#txtModifierGroupName').mlKeyboard({layout: 'en_US'});
 	  
 	  $("form").submit(function(event){
 		  if($("#txtModifierGroupName").val().trim()=="")
@@ -46,6 +47,33 @@
 			  return flg;
 		  }
 		});
+	  
+	  $('#txtModifierGroupName').autocomplete({
+			serviceUrl: '${pageContext.request.contextPath}/getAutoSearchData.html?formname=modGrpName',  
+			paramName: "searchBy",
+			delimiter: ",",
+		    transformResult: function(response) {
+		    	mapModGrpCodeName=new Map();
+			return {
+			  //must convert json to javascript object before process
+			  suggestions: $.map($.parseJSON(response), function(item) {
+			       // strValue  strCode
+			        mapModGrpCodeName.set(item.strValue,item.strCode);
+			      	return { value: item.strValue, data: item.strCode };
+			   })
+			            
+			 };
+			        
+	        }
+		 });
+		 
+			$('#txtModifierGroupName').blur(function() {
+					var code=mapModGrpCodeName.get($('#txtModifierGroupName').val());
+					if(code!='' && code!=null){
+						 funSetData(code);	
+					}
+					
+			});
 	}); 
 
 
@@ -72,6 +100,11 @@
 		/**
 		* Get and Set data from help file and load data Based on Selection Passing Value(Group Code)
 		**/
+		
+		function funGetItemCode(value) {
+			window.opener.funSetData(value);
+			window.close();
+		}
 		function funSetData(code)
 		{
 			$("#txtGroupCode").val(code);
@@ -189,7 +222,7 @@
 
 
 </head>
-<body onload="funOnLoad();">
+<body >
 	<div id="formHeading">
 		<label>Modifier Group Master</label>
 	</div>

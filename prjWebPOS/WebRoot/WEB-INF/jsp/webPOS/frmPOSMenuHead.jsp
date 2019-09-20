@@ -12,6 +12,7 @@
 <link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/jquery-confirm.min.css"/>"/>
 <script type="text/javascript" src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
 <script type="text/javascript" src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
+<script type="text/javascript" src="<spring:url value="/resources/js/jquery.autocomplete.min.js"/>"></script>
 <style>
 .ui-autocomplete {
     max-height: 200px;
@@ -34,6 +35,7 @@
 
 var fieldName,searchForm,selectedRowIndex=0;
 var activeTab="";
+var mapMenuCodeName=new Map();
 //Initialize tab Index or which tab is Active
 $(document).ready(function() 
 {		
@@ -92,9 +94,34 @@ $(document).ready(function()
 			  flg=funCallFormAction();
 			  return flg;
 			}	  
+		 });
+	 
+	 $('#txtMenuHeadName').autocomplete({
+			serviceUrl: '${pageContext.request.contextPath}/getAutoSearchData.html?formname=menuName',  
+			paramName: "searchBy",
+			delimiter: ",",
+		    transformResult: function(response) {
+		    	mapMenuCodeName=new Map();
+			return {
+			  //must convert json to javascript object before process
+			  suggestions: $.map($.parseJSON(response), function(item) {
+			       // strValue  strCode
+			        mapMenuCodeName.set(item.strValue,item.strCode);
+			      	return { value: item.strValue, data: item.strCode };
+			   })
+			            
+			 };
+			        
+	        }
+		 });
 		 
-		 
-		});
+			$('#txtMenuHeadName').blur(function() {
+					var code=mapMenuCodeName.get($('#txtMenuHeadName').val());
+					if(code!='' && code!=null){
+						funSetMenuHeadCode(code);	
+					}
+					
+			});
 });
 
 /*On form Load It Reset form :Ritesh 22 Nov 2014*/

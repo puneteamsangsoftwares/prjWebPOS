@@ -131,7 +131,7 @@ public class clsPOSModifierGroupMasterController
 	}
 
 	@RequestMapping(value = "/loadPOSModifierGroupMasterData", method = RequestMethod.GET)
-	public @ResponseBody clsPOSModifierGroupMasterBean funSetSearchFields(@RequestParam("POSModGroup") String groupModifierCode, HttpServletRequest req) throws Exception
+	public @ResponseBody clsPOSModifierGroupMasterBean funSetSearchFields(@RequestParam("POSModifierGPCode") String groupModifierCode, HttpServletRequest req) throws Exception
 	{
 		String clientCode = req.getSession().getAttribute("gClientCode").toString();
 		clsPOSModifierGroupMasterBean objPOSAreaMaster = new clsPOSModifierGroupMasterBean();

@@ -16,6 +16,7 @@
 	src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
 <script type="text/javascript"
 	src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
+<script type="text/javascript" src="<spring:url value="/resources/js/jquery.autocomplete.min.js"/>"></script>
 <style>
 .ui-autocomplete {
 	max-height: 200px;
@@ -35,9 +36,10 @@
 <script type="text/javascript">
 
 /*On form Load It Reset form :Ritesh 22 Nov 2014*/
+var mapOrderCodeName=new Map();
  $(document).ready(function () {
 		  $('input#txtOrderCode').mlKeyboard({layout: 'en_US'});
-		  $('input#txtOrderDesc').mlKeyboard({layout: 'en_US'});
+		 // $('input#txtOrderDesc').mlKeyboard({layout: 'en_US'});
 		  
 		  $("form").submit(function(event){
 			  if($("#txtOrderDesc").val().trim()=="")
@@ -56,6 +58,33 @@
 				  return flg;
 			  }
 			});
+		  
+		  $('#txtOrderDesc').autocomplete({
+	 			serviceUrl: '${pageContext.request.contextPath}/getAutoSearchData.html?formname=orderName',  
+	 			paramName: "searchBy",
+	 			delimiter: ",",
+	 		    transformResult: function(response) {
+	 		    	mapOrderCodeName=new Map();
+	 			return {
+	 			  //must convert json to javascript object before process
+	 			  suggestions: $.map($.parseJSON(response), function(item) {
+	 			       // strValue  strCode
+	 			        mapOrderCodeName.set(item.strValue,item.strCode);
+	 			      	return { value: item.strValue, data: item.strCode };
+	 			   })
+	 			            
+	 			 };
+	 			        
+	 	        }
+	 		 });
+			 
+				$('#txtOrderDesc').blur(function() {
+						var code=mapOrderCodeName.get($('#txtOrderDesc').val());
+						if(code!='' && code!=null){
+							funSetData(code);	
+						}
+						
+				});
 		}); 
 
 
@@ -143,8 +172,7 @@
 			var message='';
 			<%if (session.getAttribute("success") != null) {
 				if (session.getAttribute("successMessage") != null) {%>
-					message='<%=session.getAttribute("successMessage").toString()%>
-	';
+					message='<%=session.getAttribute("successMessage").toString()%>';
 <%session.removeAttribute("successMessage");
 				}
 				boolean test = ((Boolean) session.getAttribute("success"))

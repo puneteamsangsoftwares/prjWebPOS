@@ -25,15 +25,16 @@
 <script type="text/javascript"
 	src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
 
-
+<script type="text/javascript" src="<spring:url value="/resources/js/jquery.autocomplete.min.js"/>"></script>
 <script type="text/javascript">
 	var fieldName;
+	var mapModCodeName=new Map();
 	 $(document).ready(function () {
 		  $('input#txtRate').mlKeyboard({layout: 'en_US'});
 		  $('input#txtModifierCode').mlKeyboard({layout: 'en_US'});
 		  
 		  
-		  $('input#txtModifierName').mlKeyboard({layout: 'en_US'});
+		  //$('input#txtModifierName').mlKeyboard({layout: 'en_US'});
 		  $('textarea#txtModifierDescription').mlKeyboard({layout: 'en_US'});
 		  
 		  $('input#rdbDeselectAll').prop('checked', false);
@@ -50,6 +51,33 @@
 				  return flg;
 			  }
 			});
+		  
+			$('#txtModifierName').autocomplete({
+	 			serviceUrl: '${pageContext.request.contextPath}/getAutoSearchData.html?formname=modifierName',  
+	 			paramName: "searchBy",
+	 			delimiter: ",",
+	 		    transformResult: function(response) {
+	 		    	mapModCodeName=new Map();
+	 			return {
+	 			  //must convert json to javascript object before process
+	 			  suggestions: $.map($.parseJSON(response), function(item) {
+	 			       // strValue  strCode
+	 			        mapModCodeName.set(item.strValue,item.strCode);
+	 			      	return { value: item.strValue, data: item.strCode };
+	 			   })
+	 			            
+	 			 };
+	 			        
+	 	        }
+	 		 });
+			 
+				$('#txtModifierName').blur(function() {
+						var code=mapModCodeName.get($('#txtModifierName').val());
+						if(code!='' && code!=null){
+							funSetData(code);	
+						}
+						
+				});
 		 		
 		}); 
 
