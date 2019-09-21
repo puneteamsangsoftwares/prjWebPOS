@@ -102,8 +102,19 @@ public class clsPOSBillDtl implements  Serializable
     String strWeightedAvgActualTme;
     int intPAXBillSeriesNo;
     double dblAmt;
+    private String strKOTToBillNote;
     
-    private boolean isModifier;
+    public String getStrKOTToBillNote()
+	{
+		return strKOTToBillNote;
+	}
+
+	public void setStrKOTToBillNote(String strKOTToBillNote)
+	{
+		this.strKOTToBillNote = strKOTToBillNote;
+	}
+
+	private boolean isModifier;
 
     public String getStrGroupCode() {
         return strGroupCode;

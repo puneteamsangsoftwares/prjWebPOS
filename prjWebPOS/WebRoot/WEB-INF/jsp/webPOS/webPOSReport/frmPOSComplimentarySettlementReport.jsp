@@ -83,7 +83,7 @@ $(function()
 					</div>
 			</div>
 			
-			<div class="row" style="background-color: #fff;display: -webkit-box;">
+			 <div class="row" style="background-color: #fff;display: -webkit-box;">
 				<div class="element-input col-lg-6" style="width: 21%;"> 
 			 		<label>Report View Type</label>
 				</div>
@@ -94,7 +94,7 @@ $(function()
 				    	<s:option value="Group Wise">Group Wise</s:option>
 				    </s:select>
 				</div>
-			</div>
+			</div> 
 			<div class="row" style="background-color: #fff;display: -webkit-box;">
 				<div class="element-input col-lg-6" style="width: 21%;"> 
 					<label>Report Type</label>

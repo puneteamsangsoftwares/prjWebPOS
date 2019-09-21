@@ -33,12 +33,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.POSReport.controller.clsCreditBillReportComparator;
 import com.sanguine.base.service.clsSetupService;
 import com.sanguine.base.service.intfBaseService;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSBillDtl;
 import com.sanguine.webpos.bean.clsPOSGroupWaiseSalesBean;
 import com.sanguine.webpos.bean.clsPOSReportBean;
+import com.sanguine.webpos.comparator.clsPOSCreditBillReportComparator;
 import com.sanguine.webpos.comparator.clsPOSCreditBillReportComparatror;
 import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.model.clsShiftMasterModel;
@@ -732,7 +734,8 @@ public class clsPOSCreditBillOutstandingReportController
 				    }
 				};
 			
-		 
+				Collections.sort(listOfCreditBillReport, new clsPOSCreditBillReportComparator(customerComparator));
+				
 		}
 		
 		}

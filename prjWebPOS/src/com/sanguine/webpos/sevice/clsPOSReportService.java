@@ -161,6 +161,19 @@ public class clsPOSReportService
 			sqlQModifierBuilder.setLength(0);
 
 			// live data
+			sbSqlLive.append("SELECT a.strBillNo, DATE_FORMAT(DATE(a.dteBillDate),'%d-%m-%Y') AS dteBillDate, b.strItemName" + ",sum(b.dblQuantity),b.dblRate,sum(b.dblQuantity*b.dblRate) AS dblAmount, f.strPosName" + ", g.strWShortName AS strWShortName, e.strReasonName, a.strRemarks" + ", i.strGroupName AS strGroupName, b.strKOTNo" + ",a.strPOSCode, h.strTableName AS strTableName, b.strItemCode " + "FROM tblbillhd a " + "Inner JOIN tblbillcomplementrydtl b ON a.strBillNo = b.strBillNo " + "left outer JOIN tblreasonmaster e ON a.strReasonCode = e.strReasonCode " + "LEFT OUTER " + "JOIN tblposmaster f ON a.strPOSCode=f.strPosCode " + "LEFT OUTER  " + "JOIN tblwaitermaster g ON a.strWaiterNo=g.strWaiterNo " + "LEFT OUTER " + "JOIN tbltablemaster h ON a.strTableNo=h.strTableNo " + "LEFT OUTER " + "JOIN tblitemcurrentstk i ON b.strItemCode=i.strItemCode " + "where  date(a.dteBillDate) Between '" + dteFromDate + "' and '" + dteToDate + "' ");
+
+			// live modifiers
+			sqlLiveModifierBuilder.append("select a.strBillNo,DATE_FORMAT(date(a.dteBillDate),'%d-%m-%Y') as dteBillDate,b.strModifierName, sum(b.dblQuantity), b.dblRate,sum(b.dblQuantity*b.dblRate) as dblAmount" + " ,f.strPosName,g.strWShortName as strWShortName, e.strReasonName as strReasonName, a.strRemarks,i.strGroupName as strGroupName, " + " j.strKOTNo,a.strPOSCode,h.strTableName as strTableName,b.strItemCode  " + " from tblbillhd a" + " INNER JOIN  tblbillmodifierdtl b on a.strBillNo = b.strBillNo" + " left outer join  tblbillsettlementdtl c on a.strBillNo = c.strBillNo" + " left outer join  tblsettelmenthd d on c.strSettlementCode = d.strSettelmentCode " + " left outer join tblreasonmaster e on  a.strReasonCode = e.strReasonCode " + " left outer join tblposmaster f on a.strPOSCode=f.strPosCode " + " left outer join tblwaitermaster g on a.strWaiterNo=g.strWaiterNo" + " left outer join tbltablemaster h on  a.strTableNo=h.strTableNo" + " left outer join tblitemcurrentstk i on left(b.strItemCode,7)=i.strItemCode" + " left outer join  tblbilldtl j on b.strBillNo = j.strBillNo  " + " where d.strSettelmentType = 'Complementary' ");
+
+			// Q data
+			sbSqlQBill.append("SELECT a.strBillNo, DATE_FORMAT(DATE(a.dteBillDate),'%d-%m-%Y') AS dteBillDate, b.strItemName " + ",sum(b.dblQuantity),b.dblRate,sum(b.dblQuantity*b.dblRate) AS dblAmount, f.strPosName " + ", g.strWShortName AS strWShortName, e.strReasonName, a.strRemarks " + ", i.strGroupName AS strGroupName, b.strKOTNo " + ",a.strPOSCode, h.strTableName AS strTableName, b.strItemCode " + "FROM tblqbillhd a " + "INNER JOIN tblqbillcomplementrydtl b ON a.strBillNo = b.strBillNo " + "left outer JOIN tblreasonmaster e ON a.strReasonCode = e.strReasonCode " + "LEFT OUTER " + "JOIN tblposmaster f ON a.strPOSCode=f.strPosCode " + "LEFT OUTER  " + "JOIN tblwaitermaster g ON a.strWaiterNo=g.strWaiterNo " + "LEFT OUTER " + "JOIN tbltablemaster h ON a.strTableNo=h.strTableNo " + "LEFT OUTER " + "JOIN tblitemcurrentstk i ON b.strItemCode=i.strItemCode " + "where  date(a.dteBillDate) Between '" + dteFromDate + "' and '" + dteToDate + "' ");
+
+			// Q modifiers
+			sqlQModifierBuilder.append("select a.strBillNo,DATE_FORMAT(date(a.dteBillDate),'%d-%m-%Y') as dteBillDate,b.strModifierName,sum(b.dblQuantity), b.dblRate,sum(b.dblQuantity*b.dblRate,0) as dblAmount,f.strPosName,g.strWShortName as strWShortName,e.strReasonName as strReasonName, a.strRemarks,i.strGroupName as strGroupName," + "j.strKOTNo,a.strPOSCode,h.strTableName as strTableName,b.strItemCode  " + " from tblqbillhd a" + " INNER JOIN  tblqbillmodifierdtl b on a.strBillNo = b.strBillNo" + " left outer join  tblqbillsettlementdtl c on a.strBillNo = c.strBillNo" + " left outer join  tblsettelmenthd d on c.strSettlementCode = d.strSettelmentCode " + " left outer join tblreasonmaster e on  a.strReasonCode = e.strReasonCode " + " left outer join tblposmaster f on a.strPOSCode=f.strPosCode " + " left outer join tblwaitermaster g on a.strWaiterNo=g.strWaiterNo" + " left outer join tbltablemaster h on  a.strTableNo=h.strTableNo" + " left outer join tblitemcurrentstk i on left(b.strItemCode,7)=i.strItemCode" + " left outer join  tblqbilldtl j on b.strBillNo = j.strBillNo  " + " where d.strSettelmentType = 'Complementary' ");
+
+
+			/*// live data
 			sbSqlLive.append("SELECT IFNULL(a.strBillNo,''), DATE_FORMAT(DATE(a.dteBillDate),'%d-%m-%Y') AS dteBillDate, IFNULL(b.strItemName,'') " + ",sum(b.dblQuantity),b.dblRate,sum(b.dblQuantity*b.dblRate) AS dblAmount, IFNULL(f.strPosName,'') " + ", IFNULL(g.strWShortName,'NA') AS strWShortName, IFNULL(e.strReasonName,''), IFNULL(a.strRemarks,'') " + ", IFNULL(i.strGroupName,'') AS strGroupName, IFNULL(b.strKOTNo,'') " + ",a.strPOSCode, IFNULL(h.strTableName,'') AS strTableName, IFNULL(b.strItemCode,'        ') " + "FROM tblbillhd a " + "Inner JOIN tblbillcomplementrydtl b ON a.strBillNo = b.strBillNo " + "left outer JOIN tblreasonmaster e ON a.strReasonCode = e.strReasonCode " + "LEFT OUTER " + "JOIN tblposmaster f ON a.strPOSCode=f.strPosCode " + "LEFT OUTER  " + "JOIN tblwaitermaster g ON a.strWaiterNo=g.strWaiterNo " + "LEFT OUTER " + "JOIN tbltablemaster h ON a.strTableNo=h.strTableNo " + "LEFT OUTER " + "JOIN tblitemcurrentstk i ON b.strItemCode=i.strItemCode " + "where  date(a.dteBillDate) Between '" + dteFromDate + "' and '" + dteToDate + "' ");
 
 			// live modifiers
@@ -171,7 +184,7 @@ public class clsPOSReportService
 
 			// Q modifiers
 			sqlQModifierBuilder.append("select ifnull(a.strBillNo,''),DATE_FORMAT(date(a.dteBillDate),'%d-%m-%Y') as dteBillDate,b.strModifierName,sum(b.dblQuantity), b.dblRate,sum(b.dblQuantity*b.dblRate,0) as dblAmount,ifnull(f.strPosName,''),ifnull(g.strWShortName,'NA') as strWShortName,ifnull(e.strReasonName,'') as strReasonName, a.strRemarks,ifnull(i.strGroupName,'') as strGroupName,\n" + "ifnull(j.strKOTNo,''),a.strPOSCode,ifnull(h.strTableName,'') as strTableName,ifnull(b.strItemCode,'        ')  " + " from tblqbillhd a" + " INNER JOIN  tblqbillmodifierdtl b on a.strBillNo = b.strBillNo" + " left outer join  tblqbillsettlementdtl c on a.strBillNo = c.strBillNo" + " left outer join  tblsettelmenthd d on c.strSettlementCode = d.strSettelmentCode " + " left outer join tblreasonmaster e on  a.strReasonCode = e.strReasonCode " + " left outer join tblposmaster f on a.strPOSCode=f.strPosCode " + " left outer join tblwaitermaster g on a.strWaiterNo=g.strWaiterNo" + " left outer join tbltablemaster h on  a.strTableNo=h.strTableNo" + " left outer join tblitemcurrentstk i on left(b.strItemCode,7)=i.strItemCode" + " left outer join  tblqbilldtl j on b.strBillNo = j.strBillNo  " + " where d.strSettelmentType = 'Complementary' ");
-
+*/
 			if (!strPosCode.equalsIgnoreCase("All"))
 			{
 				sbSqlLive.append(" AND a.strPOSCode = '" + strPosCode + "' ");
@@ -453,7 +466,7 @@ public class clsPOSReportService
 					objItemDtl.setStrWShortName(obj[4].toString());
 					objItemDtl.setStrReasonName(obj[5].toString());
 					objItemDtl.setStrRemarks(obj[6].toString());
-
+					objItemDtl.setStrKOTToBillNote(obj[7].toString());
 					listOfCompliItemDtl.add(objItemDtl);
 				}
 			}
@@ -474,13 +487,57 @@ public class clsPOSReportService
 					objItemDtl.setStrWShortName(obj[4].toString());
 					objItemDtl.setStrReasonName(obj[5].toString());
 					objItemDtl.setStrRemarks(obj[6].toString());
-
+					objItemDtl.setStrKOTToBillNote(obj[7].toString());
 					listOfCompliItemDtl.add(objItemDtl);
 				}
 			}
 
 			
-			 Comparator<clsPOSBillDtl> posNameComparator = new Comparator<clsPOSBillDtl>() 
+			Comparator<clsPOSBillDtl> reasonNameComparator = new Comparator<clsPOSBillDtl>()
+					{
+
+					    @Override
+					    public int compare(clsPOSBillDtl o1, clsPOSBillDtl o2)
+					    {
+						return o1.getStrReasonName().compareToIgnoreCase(o2.getStrReasonName());
+					    }
+					};
+
+					Comparator<clsPOSBillDtl> posNameComparator = new Comparator<clsPOSBillDtl>()
+					{
+
+					    @Override
+					    public int compare(clsPOSBillDtl o1, clsPOSBillDtl o2)
+					    {
+						return o1.getStrPosName().compareToIgnoreCase(o2.getStrPosName());
+					    }
+					};
+
+					Comparator<clsPOSBillDtl> billDateComparator = new Comparator<clsPOSBillDtl>()
+					{
+
+					    @Override
+					    public int compare(clsPOSBillDtl o1, clsPOSBillDtl o2)
+					    {
+						return o1.getDteBillDate().compareToIgnoreCase(o2.getDteBillDate());
+					    }
+					};
+					Comparator<clsPOSBillDtl> billNoComparator = new Comparator<clsPOSBillDtl>()
+					{
+
+					    @Override
+					    public int compare(clsPOSBillDtl o1, clsPOSBillDtl o2)
+					    {
+						return o1.getStrBillNo().compareToIgnoreCase(o2.getStrBillNo());
+					    }
+					};
+
+					Collections.sort(listOfCompliItemDtl, new clsPOSBillComplimentaryComparator(reasonNameComparator, posNameComparator, billDateComparator, billNoComparator
+					));
+			
+			
+			
+			 /*Comparator<clsPOSBillDtl> posNameComparator = new Comparator<clsPOSBillDtl>() 
 					 {
 			  
 			  @Override public int compare(clsPOSBillDtl o1, clsPOSBillDtl o2)
@@ -505,7 +562,8 @@ public class clsPOSReportService
 			  };
 			  
 			  Collections.sort(listOfCompliItemDtl, new clsPOSBillComplimentaryComparator(posNameComparator,billDateComparator, billNoComparator));
-			}
+			*/
+		}
 		catch (Exception e)
 		{
 			e.printStackTrace();

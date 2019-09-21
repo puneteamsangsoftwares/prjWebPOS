@@ -8,9 +8,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Sales Report</title>
-<link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/jquery-confirm.min.css"/>"/>
-<script type="text/javascript" src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
-<script type="text/javascript" src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
+<link rel="stylesheet" type="text/css"
+	href="<spring:url value="/resources/css/jquery-confirm.min.css"/>" />
+<script type="text/javascript"
+	src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
+<script type="text/javascript"
+	src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
 <style>
 .ui-autocomplete {
 	max-height: 200px;
@@ -26,6 +29,7 @@
 * html .ui-autocomplete {
 	height: 200px;
 }
+
 #tab_container {
 	width: 100%;
 	margin: 1;
@@ -59,7 +63,6 @@ ul.tab li {
 	font-weight: bold;
 	color: #fff;
 }
-
 </style>
 
 <script type="text/javascript">
@@ -67,34 +70,31 @@ ul.tab li {
 	global = this;
 	console.log(global);
 
+	var gEnableShiftYN = "${gEnableShiftYN}";
+	$(document)
+			.ready(
+					function() {
+						document.all["divBillWise"].style.display = 'block';
+						$(".tab_content").hide();
+						$(".tab_content:first").show();
 
-    var gEnableShiftYN="${gEnableShiftYN}";
-	$(document).ready(function() {
-		document.all["divBillWise"].style.display = 'block';
-		$(".tab_content").hide();
-		$(".tab_content:first").show();
+						$("ul.tabs li").click(function() {
+							$("ul.tabs li").removeClass("active");
+							$(this).addClass("active");
+							$(".tab_content").hide();
+							var activeTab = $(this).attr("data-state");
+							$("#" + activeTab).fadeIn();
+						});
 
-		$("ul.tabs li").click(function() {
-			$("ul.tabs li").removeClass("active");
-			$(this).addClass("active");
-			$(".tab_content").hide();
-			var activeTab = $(this).attr("data-state");
-			$("#" + activeTab).fadeIn();
-		});
-		
-		
-		if(gEnableShiftYN=='Y')
-		{
-			document.getElementById("lblShift").style.visibility = "visible"; 
-			document.getElementById("txtShiftCode").style.visibility = "visible"; 
-		}
-		else
-		{
-			document.getElementById("lblShift").style.visibility = "hidden";
-			document.getElementById("txtShiftCode").style.visibility = "hidden"; 
-		}
+						if (gEnableShiftYN == 'Y') {
+							document.getElementById("lblShift").style.visibility = "visible";
+							document.getElementById("txtShiftCode").style.visibility = "visible";
+						} else {
+							document.getElementById("lblShift").style.visibility = "hidden";
+							document.getElementById("txtShiftCode").style.visibility = "hidden";
+						}
 
-	});
+					});
 
 	$(function() {
 
@@ -113,21 +113,19 @@ ul.tab li {
 		});
 		$("#txtToDate").datepicker('setDate', Dat);
 		funSelectedReport('divBillWise');
-		
-		 
-		
+
 	});
-		
+
 	/**
 
 	 * Open Help
 	 **/
-	 function funDateValidate() {
-			if (!($("#txtFromDate").val() <= $("#txtToDate").val())) {
-				$("#txtToDate").val($("#txtFromDate").val())
-				confirmDialog("To Date is Wrong!");
-			}
+	function funDateValidate() {
+		if (!($("#txtFromDate").val() <= $("#txtToDate").val())) {
+			$("#txtToDate").val($("#txtFromDate").val())
+			confirmDialog("To Date is Wrong!");
 		}
+	}
 	function funHelp(transactionName) {
 		window.open("searchform.html?formname=" + transactionName
 				+ "&searchText=", "",
@@ -138,7 +136,7 @@ ul.tab li {
 		$("#txtCustomer").val(code);
 	}
 	function funSelectedReport(divID) {
-		report=divID;
+		report = divID;
 		var POSName = document.getElementById("cmbPOSName").value;
 		var FromDate = document.getElementById("txtFromDate").value + ":"
 				+ document.getElementById("txtHHFrom").value + "/"
@@ -159,165 +157,164 @@ ul.tab li {
 		var chkConsolidatePOS = document.getElementById("chkConsolidatePOS").checked;
 		var txtOperationType = document.getElementById("txtOperationType").value;
 		var txtAreaCode = document.getElementById("txtAreaCode").value;
-		var hidReportName = divID;		
-		
-		
+		var hidReportName = divID;
+
 		$("#hidReportName").val(divID);
 		funShowDiv(divID);
 
 		switch (divID) {
-		
+
 		case 'divSettlementWise':
-			funLoadSettlementWiseSalesReport(divID, POSName, FromDate,
-					ToDate, Operator, PayMode, txtFromBillNo, txtToBillNo,
+			funLoadSettlementWiseSalesReport(divID, POSName, FromDate, ToDate,
+					Operator, PayMode, txtFromBillNo, txtToBillNo,
 					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-					hidReportName,txtAreaCode,txtOperationType);				
+					hidReportName, txtAreaCode, txtOperationType);
 			break;
 		case 'divBillWise':
 			funLoadBillWiseSalesReport(divID, POSName, FromDate, ToDate,
 					Operator, PayMode, txtFromBillNo, txtToBillNo,
 					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-					hidReportName,txtAreaCode,txtOperationType);
-				
+					hidReportName, txtAreaCode, txtOperationType);
+
 			break;
 		case 'divItemWise':
 			funLoadItemWiseSalesReport(divID, POSName, FromDate, ToDate,
 					Operator, PayMode, txtFromBillNo, txtToBillNo,
 					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-					hidReportName,txtAreaCode,txtOperationType);
-				
+					hidReportName, txtAreaCode, txtOperationType);
+
 			break;
 
 		case 'divMenuHeadWise':
-			funLoadMenuHeadWiseSalesReport(divID, POSName, FromDate,
-					ToDate, Operator, PayMode, txtFromBillNo, txtToBillNo,
+			funLoadMenuHeadWiseSalesReport(divID, POSName, FromDate, ToDate,
+					Operator, PayMode, txtFromBillNo, txtToBillNo,
 					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-					hidReportName,txtAreaCode,txtOperationType);
+					hidReportName, txtAreaCode, txtOperationType);
 			break;
-			
+
 		case 'divGroupWise':
 			funLoadGroupWiseSalesReport(divID, POSName, FromDate, ToDate,
 					Operator, PayMode, txtFromBillNo, txtToBillNo,
 					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-					hidReportName,txtAreaCode,txtOperationType);
+					hidReportName, txtAreaCode, txtOperationType);
 			break;
 
 		case 'divSubGroupWise':
-			funLoadSubGroupWiseSalesReport(divID, POSName, FromDate,
-					ToDate, Operator, PayMode, txtFromBillNo, txtToBillNo,
+			funLoadSubGroupWiseSalesReport(divID, POSName, FromDate, ToDate,
+					Operator, PayMode, txtFromBillNo, txtToBillNo,
 					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-					hidReportName,txtAreaCode,txtOperationType);
+					hidReportName, txtAreaCode, txtOperationType);
 			break;
 		case 'divCustWise':
 			funLoadCustWiseSalesReport(divID, POSName, FromDate, ToDate,
 					Operator, PayMode, txtFromBillNo, txtToBillNo,
 					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-					hidReportName,txtAreaCode,txtOperationType);
+					hidReportName, txtAreaCode, txtOperationType);
 			break;
 		case 'divWaiterWise':
 			funLoadWaiterWiseSalesReport(divID, POSName, FromDate, ToDate,
 					Operator, PayMode, txtFromBillNo, txtToBillNo,
 					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-					hidReportName,txtAreaCode,txtOperationType);
+					hidReportName, txtAreaCode, txtOperationType);
 			break;
 
 		case 'divDeliveryBoyWise':
-			funLoadDeliveryBoyWiseSalesReport(divID, POSName, FromDate,
-					ToDate, Operator, PayMode, txtFromBillNo, txtToBillNo,
+			funLoadDeliveryBoyWiseSalesReport(divID, POSName, FromDate, ToDate,
+					Operator, PayMode, txtFromBillNo, txtToBillNo,
 					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-					hidReportName,txtAreaCode,txtOperationType);
+					hidReportName, txtAreaCode, txtOperationType);
 			break;
 
 		case 'divCostCenterWise':
-			funLoadCostCenterWiseSalesReport(divID, POSName, FromDate,
-					ToDate, Operator, PayMode, txtFromBillNo, txtToBillNo,
+			funLoadCostCenterWiseSalesReport(divID, POSName, FromDate, ToDate,
+					Operator, PayMode, txtFromBillNo, txtToBillNo,
 					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-					hidReportName,txtAreaCode,txtOperationType);
+					hidReportName, txtAreaCode, txtOperationType);
 			break;
 
 		case 'divHomeDeliveryWise':
 			funLoadHomeDeliveryWiseSalesReport(divID, POSName, FromDate,
 					ToDate, Operator, PayMode, txtFromBillNo, txtToBillNo,
 					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-					hidReportName,txtAreaCode,txtOperationType);
+					hidReportName, txtAreaCode, txtOperationType);
 			break;
 		case 'divTableWise':
 			funLoadTableWiseSalesReport(divID, POSName, FromDate, ToDate,
 					Operator, PayMode, txtFromBillNo, txtToBillNo,
 					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-					hidReportName,txtAreaCode,txtOperationType);
+					hidReportName, txtAreaCode, txtOperationType);
 			break;
 		case 'divHourlyWise':
 			funLoadHourlyWiseSalesReport(divID, POSName, FromDate, ToDate,
 					Operator, PayMode, txtFromBillNo, txtToBillNo,
 					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-					hidReportName,txtAreaCode,txtOperationType);
+					hidReportName, txtAreaCode, txtOperationType);
 			break;
 
 		case 'divAreaWise':
 			funLoadAreaWiseSalesReport(divID, POSName, FromDate, ToDate,
 					Operator, PayMode, txtFromBillNo, txtToBillNo,
 					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-					hidReportName,txtAreaCode,txtOperationType);
+					hidReportName, txtAreaCode, txtOperationType);
 			break;
 
 		case 'divDayWiseSales':
 			funLoadDayWiseSalesReport(divID, POSName, FromDate, ToDate,
 					Operator, PayMode, txtFromBillNo, txtToBillNo,
 					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-					hidReportName,txtAreaCode,txtOperationType);
+					hidReportName, txtAreaCode, txtOperationType);
 			break;
 
 		case 'divTaxWiseSales':
 			funLoadTaxWiseSalesReport(divID, POSName, FromDate, ToDate,
 					Operator, PayMode, txtFromBillNo, txtToBillNo,
 					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-					hidReportName,txtAreaCode,txtOperationType);
+					hidReportName, txtAreaCode, txtOperationType);
 			break;
 
 		case 'divTipReport':
-			funLoadTipSalesReport(divID, POSName, FromDate, ToDate,
-					Operator, PayMode, txtFromBillNo, txtToBillNo,
-					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-					hidReportName,txtAreaCode,txtOperationType);
+			funLoadTipSalesReport(divID, POSName, FromDate, ToDate, Operator,
+					PayMode, txtFromBillNo, txtToBillNo, txtReportType,
+					txtType, txtCustomer, chkConsolidatePOS, hidReportName,
+					txtAreaCode, txtOperationType);
 			break;
 		case 'divItemModifierWise':
 			funLoadItemModifierWiseSalesReport(divID, POSName, FromDate,
 					ToDate, Operator, PayMode, txtFromBillNo, txtToBillNo,
 					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-					hidReportName,txtAreaCode,txtOperationType);
+					hidReportName, txtAreaCode, txtOperationType);
 			break;
 
 		case 'divMenuHeadWiseWithModifier':
 			funLoadMenuHeadWiseWithModifierSalesReport(divID, POSName,
 					FromDate, ToDate, Operator, PayMode, txtFromBillNo,
 					txtToBillNo, txtReportType, txtType, txtCustomer,
-					chkConsolidatePOS, hidReportName,txtAreaCode,txtOperationType);
+					chkConsolidatePOS, hidReportName, txtAreaCode,
+					txtOperationType);
 			break;
 
 		case 'divItemHourlyWise':
-			funLoadItemHourlyWiseSalesReport(divID, POSName, FromDate,
-					ToDate, Operator, PayMode, txtFromBillNo, txtToBillNo,
+			funLoadItemHourlyWiseSalesReport(divID, POSName, FromDate, ToDate,
+					Operator, PayMode, txtFromBillNo, txtToBillNo,
 					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-					hidReportName,txtAreaCode,txtOperationType);
+					hidReportName, txtAreaCode, txtOperationType);
 			break;
 
 		case 'divOperatorWise':
 			funLoadOperatorSalesReport(divID, POSName, FromDate, ToDate,
 					Operator, PayMode, txtFromBillNo, txtToBillNo,
 					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-					hidReportName,txtAreaCode,txtOperationType);
+					hidReportName, txtAreaCode, txtOperationType);
 			break;
 		case 'divMonthlySalesFlash':
 			funLoadMonthlySalesReport(divID, POSName, FromDate, ToDate,
 					Operator, PayMode, txtFromBillNo, txtToBillNo,
 					txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-					hidReportName,txtAreaCode,txtOperationType);
+					hidReportName, txtAreaCode, txtOperationType);
 			break;
-				
 
 		}
-		
+
 	}
 
 	/* divDeliveryBoyWise divCostCenterWise divHomeDeliveryWise divTableWise divHourlyWise divAreaWise divDayWiseSales
@@ -356,12 +353,12 @@ ul.tab li {
 	/*fill Settlement wise data */
 	function funLoadSettlementWiseSalesReport(divID, POSName, FromDate, ToDate,
 			Operator, PayMode, txtFromBillNo, txtToBillNo, txtReportType,
-			txtType, txtCustomer, chkConsolidatePOS, hidReportName,txtAreaCode,txtOperationType) {
+			txtType, txtCustomer, chkConsolidatePOS, hidReportName,
+			txtAreaCode, txtOperationType) {
 		//	document.forms["POSSalesReportForm"].submit();
-		var shiftCode='1';
-		if(gEnableShiftYN=='Y')
-		{
-			shiftCode=document.getElementById("txtShiftCode").value;
+		var shiftCode = '1';
+		if (gEnableShiftYN == 'Y') {
+			shiftCode = document.getElementById("txtShiftCode").value;
 		}
 		var searchurl = getContextPath()
 				+ "/loadSettlementWiseSalesReport.html?POSName=" + POSName
@@ -370,8 +367,10 @@ ul.tab li {
 				+ txtFromBillNo + "&txtToBillNo=" + txtToBillNo
 				+ "&txtReportType=" + txtReportType + "&txtType=" + txtType
 				+ "&txtCustomer=" + txtCustomer + "&chkConsolidatePOS="
-				+ chkConsolidatePOS + "&hidReportName=" + hidReportName+"&areaCode="
-				+ txtAreaCode + "&operationType=" + txtOperationType+ "&gEnableShiftYN=" + gEnableShiftYN+ "&shiftCode=" + shiftCode;
+				+ chkConsolidatePOS + "&hidReportName=" + hidReportName
+				+ "&areaCode=" + txtAreaCode + "&operationType="
+				+ txtOperationType + "&gEnableShiftYN=" + gEnableShiftYN
+				+ "&shiftCode=" + shiftCode;
 		$
 				.ajax({
 					type : "POST",
@@ -381,14 +380,19 @@ ul.tab li {
 					success : function(response) {
 						funRemoveProductRows("tblSettlementWise");
 						funRemoveProductRows("tblSettlementWiseTotal");
-						$.each(response,function(i, item) {
+						$
+								.each(
+										response,
+										function(i, item) {
 											$("#wait").css("display", "none");
 											if (i == 0) {
 												var table = document
 														.getElementById("tblSettlementWiseTotal");
 												var rowCount = table.rows.length;
 												var totalSubTotal;
-												var totalSubTotal=Number(totalSubTotal).toFixed(2);
+												var totalSubTotal = Number(
+														totalSubTotal).toFixed(
+														2);
 												var row = table
 														.insertRow(rowCount);
 												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"70%\" width=\"60%\" style=\"text-align:right;font-size: 17px;font-weight: bold; \" id=\"Totfield1."
@@ -454,11 +458,11 @@ ul.tab li {
 	/*fill bill wise data */
 	function funLoadBillWiseSalesReport(divID, POSName, FromDate, ToDate,
 			Operator, PayMode, txtFromBillNo, txtToBillNo, txtReportType,
-			txtType, txtCustomer, chkConsolidatePOS, hidReportName,txtAreaCode,txtOperationType) {
-		var shiftCode='1';
-		if(gEnableShiftYN=='Y')
-		{
-			shiftCode=document.getElementById("txtShiftCode").value;
+			txtType, txtCustomer, chkConsolidatePOS, hidReportName,
+			txtAreaCode, txtOperationType) {
+		var shiftCode = '1';
+		if (gEnableShiftYN == 'Y') {
+			shiftCode = document.getElementById("txtShiftCode").value;
 		}
 		var searchurl = getContextPath()
 				+ "/loadBillWiseSalesReport.html?POSName=" + POSName
@@ -467,8 +471,11 @@ ul.tab li {
 				+ txtFromBillNo + "&txtToBillNo=" + txtToBillNo
 				+ "&txtReportType=" + txtReportType + "&txtType=" + txtType
 				+ "&txtCustomer=" + txtCustomer + "&chkConsolidatePOS="
-				+ chkConsolidatePOS + "&hidReportName=" + hidReportName+"&areaCode="
-				+ txtAreaCode + "&operationType=" + txtOperationType+ "&gEnableShiftYN=" + gEnableShiftYN+ "&shiftCode=" + shiftCode;;
+				+ chkConsolidatePOS + "&hidReportName=" + hidReportName
+				+ "&areaCode=" + txtAreaCode + "&operationType="
+				+ txtOperationType + "&gEnableShiftYN=" + gEnableShiftYN
+				+ "&shiftCode=" + shiftCode;
+		;
 		$
 				.ajax({
 					type : "POST",
@@ -478,7 +485,10 @@ ul.tab li {
 					success : function(response) {
 						funRemoveProductRows("tblBillWise");
 						funRemoveProductRows("tblBillWiseTotal");
-						$.each(response,function(i, item) {
+						$
+								.each(
+										response,
+										function(i, item) {
 											$("#wait").css("display", "none");
 											if (i == 0) {
 												var table = document
@@ -518,7 +528,7 @@ ul.tab li {
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].totalRoundOffAmt
-														+ "'/>";													
+														+ "'/>";
 												row.insertCell(7).innerHTML = "<input readonly=\"readonly\" class=\"Box\" style=\"text-align:right; font-size: 15px;\" size=\"12%\" id=\"Totfield8."
 														+ (rowCount)
 														+ "\" value='"
@@ -529,9 +539,6 @@ ul.tab li {
 														+ "\" value='"
 														+ response[i].totalPAX
 														+ "'/>";
-												
-													
-												
 
 											}
 
@@ -614,7 +621,7 @@ ul.tab li {
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField13
-													+ "'/>";															
+													+ "'/>";
 											row.insertCell(15).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"7%\" style=\"text-align:right;\" id=\"field19."
 													+ (rowCount)
 													+ "\"  value='"
@@ -677,11 +684,11 @@ ul.tab li {
 	/*fill Item wise data */
 	function funLoadItemWiseSalesReport(divID, POSName, FromDate, ToDate,
 			Operator, PayMode, txtFromBillNo, txtToBillNo, txtReportType,
-			txtType, txtCustomer, chkConsolidatePOS, hidReportName,txtAreaCode,txtOperationType) {
-		var shiftCode='1';
-		if(gEnableShiftYN=='Y')
-		{
-			shiftCode=document.getElementById("txtShiftCode").value;
+			txtType, txtCustomer, chkConsolidatePOS, hidReportName,
+			txtAreaCode, txtOperationType) {
+		var shiftCode = '1';
+		if (gEnableShiftYN == 'Y') {
+			shiftCode = document.getElementById("txtShiftCode").value;
 		}
 		var searchurl = getContextPath()
 				+ "/loadItemWiseSalesReport.html?POSName=" + POSName
@@ -690,8 +697,11 @@ ul.tab li {
 				+ txtFromBillNo + "&txtToBillNo=" + txtToBillNo
 				+ "&txtReportType=" + txtReportType + "&txtType=" + txtType
 				+ "&txtCustomer=" + txtCustomer + "&chkConsolidatePOS="
-				+ chkConsolidatePOS + "&hidReportName=" + hidReportName+"&areaCode="
-				+ txtAreaCode + "&operationType=" + txtOperationType+ "&gEnableShiftYN=" + gEnableShiftYN+ "&shiftCode=" + shiftCode;;
+				+ chkConsolidatePOS + "&hidReportName=" + hidReportName
+				+ "&areaCode=" + txtAreaCode + "&operationType="
+				+ txtOperationType + "&gEnableShiftYN=" + gEnableShiftYN
+				+ "&shiftCode=" + shiftCode;
+		;
 		$
 				.ajax({
 					type : "POST",
@@ -701,7 +711,10 @@ ul.tab li {
 					success : function(response) {
 						funRemoveProductRows("tblItemWise");
 						funRemoveProductRows("tblItemWiseTotal");
-						$.each(response,function(i, item) {
+						$
+								.each(
+										response,
+										function(i, item) {
 											$("#wait").css("display", "none");
 											if (i == 0) {
 												var table = document
@@ -796,11 +809,11 @@ ul.tab li {
 	/*fill Menu Head wise data */
 	function funLoadMenuHeadWiseSalesReport(divID, POSName, FromDate, ToDate,
 			Operator, PayMode, txtFromBillNo, txtToBillNo, txtReportType,
-			txtType, txtCustomer, chkConsolidatePOS, hidReportName,txtAreaCode,txtOperationType) {
-		var shiftCode='1';
-		if(gEnableShiftYN=='Y')
-		{
-			shiftCode=document.getElementById("txtShiftCode").value;
+			txtType, txtCustomer, chkConsolidatePOS, hidReportName,
+			txtAreaCode, txtOperationType) {
+		var shiftCode = '1';
+		if (gEnableShiftYN == 'Y') {
+			shiftCode = document.getElementById("txtShiftCode").value;
 		}
 		var searchurl = getContextPath()
 				+ "/loadMenuHeadWiseSalesReport.html?POSName=" + POSName
@@ -809,8 +822,10 @@ ul.tab li {
 				+ txtFromBillNo + "&txtToBillNo=" + txtToBillNo
 				+ "&txtReportType=" + txtReportType + "&txtType=" + txtType
 				+ "&txtCustomer=" + txtCustomer + "&chkConsolidatePOS="
-				+ chkConsolidatePOS + "&hidReportName=" + hidReportName +"&areaCode="
-				+ txtAreaCode + "&operationType=" + txtOperationType+ "&gEnableShiftYN=" + gEnableShiftYN+ "&shiftCode=" + shiftCode;
+				+ chkConsolidatePOS + "&hidReportName=" + hidReportName
+				+ "&areaCode=" + txtAreaCode + "&operationType="
+				+ txtOperationType + "&gEnableShiftYN=" + gEnableShiftYN
+				+ "&shiftCode=" + shiftCode;
 		$
 				.ajax({
 					type : "POST",
@@ -922,11 +937,11 @@ ul.tab li {
 	/*fill Group wise data */
 	function funLoadGroupWiseSalesReport(divID, POSName, FromDate, ToDate,
 			Operator, PayMode, txtFromBillNo, txtToBillNo, txtReportType,
-			txtType, txtCustomer, chkConsolidatePOS, hidReportName,txtAreaCode,txtOperationType) {
-		var shiftCode='1';
-		if(gEnableShiftYN=='Y')
-		{
-			shiftCode=document.getElementById("txtShiftCode").value;
+			txtType, txtCustomer, chkConsolidatePOS, hidReportName,
+			txtAreaCode, txtOperationType) {
+		var shiftCode = '1';
+		if (gEnableShiftYN == 'Y') {
+			shiftCode = document.getElementById("txtShiftCode").value;
 		}
 		var searchurl = getContextPath()
 				+ "/loadGroupWiseSalesReport.html?POSName=" + POSName
@@ -935,8 +950,10 @@ ul.tab li {
 				+ txtFromBillNo + "&txtToBillNo=" + txtToBillNo
 				+ "&txtReportType=" + txtReportType + "&txtType=" + txtType
 				+ "&txtCustomer=" + txtCustomer + "&chkConsolidatePOS="
-				+ chkConsolidatePOS + "&hidReportName=" + hidReportName+ "&areaCode="
-				+ txtAreaCode + "&operationType=" + txtOperationType+ "&gEnableShiftYN=" + gEnableShiftYN+ "&shiftCode=" + shiftCode;
+				+ chkConsolidatePOS + "&hidReportName=" + hidReportName
+				+ "&areaCode=" + txtAreaCode + "&operationType="
+				+ txtOperationType + "&gEnableShiftYN=" + gEnableShiftYN
+				+ "&shiftCode=" + shiftCode;
 		$
 				.ajax({
 					type : "POST",
@@ -1048,11 +1065,11 @@ ul.tab li {
 	/*fill Sub Group wise data */
 	function funLoadSubGroupWiseSalesReport(divID, POSName, FromDate, ToDate,
 			Operator, PayMode, txtFromBillNo, txtToBillNo, txtReportType,
-			txtType, txtCustomer, chkConsolidatePOS, hidReportName,txtAreaCode,txtOperationType) {
-		var shiftCode='1';
-		if(gEnableShiftYN=='Y')
-		{
-			shiftCode=document.getElementById("txtShiftCode").value;
+			txtType, txtCustomer, chkConsolidatePOS, hidReportName,
+			txtAreaCode, txtOperationType) {
+		var shiftCode = '1';
+		if (gEnableShiftYN == 'Y') {
+			shiftCode = document.getElementById("txtShiftCode").value;
 		}
 		var searchurl = getContextPath()
 				+ "/loadSubGroupWiseSalesReport.html?POSName=" + POSName
@@ -1061,8 +1078,10 @@ ul.tab li {
 				+ txtFromBillNo + "&txtToBillNo=" + txtToBillNo
 				+ "&txtReportType=" + txtReportType + "&txtType=" + txtType
 				+ "&txtCustomer=" + txtCustomer + "&chkConsolidatePOS="
-				+ chkConsolidatePOS + "&hidReportName=" + hidReportName+ "&areaCode="
-				+ txtAreaCode + "&operationType=" + txtOperationType+ "&gEnableShiftYN=" + gEnableShiftYN+ "&shiftCode=" + shiftCode;
+				+ chkConsolidatePOS + "&hidReportName=" + hidReportName
+				+ "&areaCode=" + txtAreaCode + "&operationType="
+				+ txtOperationType + "&gEnableShiftYN=" + gEnableShiftYN
+				+ "&shiftCode=" + shiftCode;
 		$
 				.ajax({
 					type : "POST",
@@ -1174,11 +1193,11 @@ ul.tab li {
 	/*fill Cust wise data */
 	function funLoadCustWiseSalesReport(divID, POSName, FromDate, ToDate,
 			Operator, PayMode, txtFromBillNo, txtToBillNo, txtReportType,
-			txtType, txtCustomer, chkConsolidatePOS, hidReportName,txtAreaCode,txtOperationType) {
-		var shiftCode='1';
-		if(gEnableShiftYN=='Y')
-		{
-			shiftCode=document.getElementById("txtShiftCode").value;
+			txtType, txtCustomer, chkConsolidatePOS, hidReportName,
+			txtAreaCode, txtOperationType) {
+		var shiftCode = '1';
+		if (gEnableShiftYN == 'Y') {
+			shiftCode = document.getElementById("txtShiftCode").value;
 		}
 		var searchurl = getContextPath()
 				+ "/loadCustWiseSalesReport.html?POSName=" + POSName
@@ -1187,8 +1206,10 @@ ul.tab li {
 				+ txtFromBillNo + "&txtToBillNo=" + txtToBillNo
 				+ "&txtReportType=" + txtReportType + "&txtType=" + txtType
 				+ "&txtCustomer=" + txtCustomer + "&chkConsolidatePOS="
-				+ chkConsolidatePOS + "&hidReportName=" + hidReportName+ "&areaCode="
-				+ txtAreaCode + "&operationType=" + txtOperationType+ "&gEnableShiftYN=" + gEnableShiftYN+ "&shiftCode=" + shiftCode;
+				+ chkConsolidatePOS + "&hidReportName=" + hidReportName
+				+ "&areaCode=" + txtAreaCode + "&operationType="
+				+ txtOperationType + "&gEnableShiftYN=" + gEnableShiftYN
+				+ "&shiftCode=" + shiftCode;
 		$
 				.ajax({
 					type : "POST",
@@ -1234,19 +1255,18 @@ ul.tab li {
 													+ "\" value='"
 													+ response[i].strField1
 													+ "'/>";
-													
+
 											row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"10%\" style=\"text-align:right;\" id=\"field2."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].mobileNo
-													+ "'/>";		
-												
+													+ "'/>";
+
 											row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"7%\" style=\"text-align:right;\" id=\"field2."
 													+ (rowCount)
 													+ "\" value='"
-													+ response[i].dob
-													+ "'/>";
-													
+													+ response[i].dob + "'/>";
+
 											row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"10%\" style=\"text-align:right;\" id=\"field2."
 													+ (rowCount)
 													+ "\" value='"
@@ -1288,11 +1308,11 @@ ul.tab li {
 	/*fill Waiter wise data */
 	function funLoadWaiterWiseSalesReport(divID, POSName, FromDate, ToDate,
 			Operator, PayMode, txtFromBillNo, txtToBillNo, txtReportType,
-			txtType, txtCustomer, chkConsolidatePOS, hidReportName,txtAreaCode,txtOperationType) {
-		var shiftCode='1';
-		if(gEnableShiftYN=='Y')
-		{
-			shiftCode=document.getElementById("txtShiftCode").value;
+			txtType, txtCustomer, chkConsolidatePOS, hidReportName,
+			txtAreaCode, txtOperationType) {
+		var shiftCode = '1';
+		if (gEnableShiftYN == 'Y') {
+			shiftCode = document.getElementById("txtShiftCode").value;
 		}
 		var searchurl = getContextPath()
 				+ "/loadWaiterWiseSalesReport.html?POSName=" + POSName
@@ -1301,8 +1321,10 @@ ul.tab li {
 				+ txtFromBillNo + "&txtToBillNo=" + txtToBillNo
 				+ "&txtReportType=" + txtReportType + "&txtType=" + txtType
 				+ "&txtCustomer=" + txtCustomer + "&chkConsolidatePOS="
-				+ chkConsolidatePOS + "&hidReportName=" + hidReportName+ "&areaCode="
-				+ txtAreaCode + "&operationType=" + txtOperationType+ "&gEnableShiftYN=" + gEnableShiftYN+ "&shiftCode=" + shiftCode;
+				+ chkConsolidatePOS + "&hidReportName=" + hidReportName
+				+ "&areaCode=" + txtAreaCode + "&operationType="
+				+ txtOperationType + "&gEnableShiftYN=" + gEnableShiftYN
+				+ "&shiftCode=" + shiftCode;
 		$
 				.ajax({
 					type : "POST",
@@ -1393,11 +1415,10 @@ ul.tab li {
 	function funLoadDeliveryBoyWiseSalesReport(divID, POSName, FromDate,
 			ToDate, Operator, PayMode, txtFromBillNo, txtToBillNo,
 			txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-			hidReportName,txtAreaCode,txtOperationType) {
-		var shiftCode='1';
-		if(gEnableShiftYN=='Y')
-		{
-			shiftCode=document.getElementById("txtShiftCode").value;
+			hidReportName, txtAreaCode, txtOperationType) {
+		var shiftCode = '1';
+		if (gEnableShiftYN == 'Y') {
+			shiftCode = document.getElementById("txtShiftCode").value;
 		}
 		var searchurl = getContextPath()
 				+ "/loadDeliveryBoyWiseSalesReport.html?POSName=" + POSName
@@ -1406,8 +1427,10 @@ ul.tab li {
 				+ txtFromBillNo + "&txtToBillNo=" + txtToBillNo
 				+ "&txtReportType=" + txtReportType + "&txtType=" + txtType
 				+ "&txtCustomer=" + txtCustomer + "&chkConsolidatePOS="
-				+ chkConsolidatePOS + "&hidReportName=" + hidReportName+ "&areaCode="
-				+ txtAreaCode + "&operationType=" + txtOperationType+ "&gEnableShiftYN=" + gEnableShiftYN+ "&shiftCode=" + shiftCode;
+				+ chkConsolidatePOS + "&hidReportName=" + hidReportName
+				+ "&areaCode=" + txtAreaCode + "&operationType="
+				+ txtOperationType + "&gEnableShiftYN=" + gEnableShiftYN
+				+ "&shiftCode=" + shiftCode;
 		$
 				.ajax({
 					type : "POST",
@@ -1491,11 +1514,11 @@ ul.tab li {
 	/*fill Cost Center  wise data */
 	function funLoadCostCenterWiseSalesReport(divID, POSName, FromDate, ToDate,
 			Operator, PayMode, txtFromBillNo, txtToBillNo, txtReportType,
-			txtType, txtCustomer, chkConsolidatePOS, hidReportName,txtAreaCode,txtOperationType) {
-		var shiftCode='1';
-		if(gEnableShiftYN=='Y')
-		{
-			shiftCode=document.getElementById("txtShiftCode").value;
+			txtType, txtCustomer, chkConsolidatePOS, hidReportName,
+			txtAreaCode, txtOperationType) {
+		var shiftCode = '1';
+		if (gEnableShiftYN == 'Y') {
+			shiftCode = document.getElementById("txtShiftCode").value;
 		}
 		var searchurl = getContextPath()
 				+ "/loadCostCenterWiseSalesReport.html?POSName=" + POSName
@@ -1504,8 +1527,10 @@ ul.tab li {
 				+ txtFromBillNo + "&txtToBillNo=" + txtToBillNo
 				+ "&txtReportType=" + txtReportType + "&txtType=" + txtType
 				+ "&txtCustomer=" + txtCustomer + "&chkConsolidatePOS="
-				+ chkConsolidatePOS + "&hidReportName=" + hidReportName+ "&areaCode="
-				+ txtAreaCode + "&operationType=" + txtOperationType+ "&gEnableShiftYN=" + gEnableShiftYN+ "&shiftCode=" + shiftCode;
+				+ chkConsolidatePOS + "&hidReportName=" + hidReportName
+				+ "&areaCode=" + txtAreaCode + "&operationType="
+				+ txtOperationType + "&gEnableShiftYN=" + gEnableShiftYN
+				+ "&shiftCode=" + shiftCode;
 		$
 				.ajax({
 					type : "POST",
@@ -1618,12 +1643,10 @@ ul.tab li {
 	function funLoadHomeDeliveryWiseSalesReport(divID, POSName, FromDate,
 			ToDate, Operator, PayMode, txtFromBillNo, txtToBillNo,
 			txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-			hidReportName,txtAreaCode,txtOperationType) 
-	{
-		var shiftCode='1';
-		if(gEnableShiftYN=='Y')
-		{
-			shiftCode=document.getElementById("txtShiftCode").value;
+			hidReportName, txtAreaCode, txtOperationType) {
+		var shiftCode = '1';
+		if (gEnableShiftYN == 'Y') {
+			shiftCode = document.getElementById("txtShiftCode").value;
 		}
 		var searchurl = getContextPath()
 				+ "/loadHomeDelWiseSalesReport.html?POSName=" + POSName
@@ -1632,8 +1655,10 @@ ul.tab li {
 				+ txtFromBillNo + "&txtToBillNo=" + txtToBillNo
 				+ "&txtReportType=" + txtReportType + "&txtType=" + txtType
 				+ "&txtCustomer=" + txtCustomer + "&chkConsolidatePOS="
-				+ chkConsolidatePOS + "&hidReportName=" + hidReportName+ "&areaCode="
-				+ txtAreaCode + "&operationType=" + txtOperationType+ "&gEnableShiftYN=" + gEnableShiftYN+ "&shiftCode=" + shiftCode;
+				+ chkConsolidatePOS + "&hidReportName=" + hidReportName
+				+ "&areaCode=" + txtAreaCode + "&operationType="
+				+ txtOperationType + "&gEnableShiftYN=" + gEnableShiftYN
+				+ "&shiftCode=" + shiftCode;
 		$
 				.ajax({
 					type : "POST",
@@ -1761,11 +1786,11 @@ ul.tab li {
 	/*fill Table  wise data */
 	function funLoadTableWiseSalesReport(divID, POSName, FromDate, ToDate,
 			Operator, PayMode, txtFromBillNo, txtToBillNo, txtReportType,
-			txtType, txtCustomer, chkConsolidatePOS, hidReportName,txtAreaCode,txtOperationType) {
-		var shiftCode='1';
-		if(gEnableShiftYN=='Y')
-		{
-			shiftCode=document.getElementById("txtShiftCode").value;
+			txtType, txtCustomer, chkConsolidatePOS, hidReportName,
+			txtAreaCode, txtOperationType) {
+		var shiftCode = '1';
+		if (gEnableShiftYN == 'Y') {
+			shiftCode = document.getElementById("txtShiftCode").value;
 		}
 		var searchurl = getContextPath()
 				+ "/loadTableWiseSalesReport.html?POSName=" + POSName
@@ -1774,8 +1799,10 @@ ul.tab li {
 				+ txtFromBillNo + "&txtToBillNo=" + txtToBillNo
 				+ "&txtReportType=" + txtReportType + "&txtType=" + txtType
 				+ "&txtCustomer=" + txtCustomer + "&chkConsolidatePOS="
-				+ chkConsolidatePOS + "&hidReportName=" + hidReportName+ "&areaCode="
-				+ txtAreaCode + "&operationType=" + txtOperationType+ "&gEnableShiftYN=" + gEnableShiftYN+ "&shiftCode=" + shiftCode;
+				+ chkConsolidatePOS + "&hidReportName=" + hidReportName
+				+ "&areaCode=" + txtAreaCode + "&operationType="
+				+ txtOperationType + "&gEnableShiftYN=" + gEnableShiftYN
+				+ "&shiftCode=" + shiftCode;
 		$
 				.ajax({
 					type : "POST",
@@ -1853,11 +1880,11 @@ ul.tab li {
 	/*fill Hourly wise data */
 	function funLoadHourlyWiseSalesReport(divID, POSName, FromDate, ToDate,
 			Operator, PayMode, txtFromBillNo, txtToBillNo, txtReportType,
-			txtType, txtCustomer, chkConsolidatePOS, hidReportName,txtAreaCode,txtOperationType) {
-		var shiftCode='1';
-		if(gEnableShiftYN=='Y')
-		{
-			shiftCode=document.getElementById("txtShiftCode").value;
+			txtType, txtCustomer, chkConsolidatePOS, hidReportName,
+			txtAreaCode, txtOperationType) {
+		var shiftCode = '1';
+		if (gEnableShiftYN == 'Y') {
+			shiftCode = document.getElementById("txtShiftCode").value;
 		}
 		var searchurl = getContextPath()
 				+ "/loadHourlyWiseSalesReport.html?POSName=" + POSName
@@ -1866,8 +1893,10 @@ ul.tab li {
 				+ txtFromBillNo + "&txtToBillNo=" + txtToBillNo
 				+ "&txtReportType=" + txtReportType + "&txtType=" + txtType
 				+ "&txtCustomer=" + txtCustomer + "&chkConsolidatePOS="
-				+ chkConsolidatePOS + "&hidReportName=" + hidReportName+ "&areaCode="
-				+ txtAreaCode + "&operationType=" + txtOperationType+ "&gEnableShiftYN=" + gEnableShiftYN+ "&shiftCode=" + shiftCode;
+				+ chkConsolidatePOS + "&hidReportName=" + hidReportName
+				+ "&areaCode=" + txtAreaCode + "&operationType="
+				+ txtOperationType + "&gEnableShiftYN=" + gEnableShiftYN
+				+ "&shiftCode=" + shiftCode;
 		$
 				.ajax({
 					type : "POST",
@@ -1890,12 +1919,12 @@ ul.tab li {
 														.insertRow(rowCount);
 												row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"100%\" style=\"text-align:left;font-size: 17px;font-weight: bold;\" id=\"Totfield1."
 														+ (rowCount)
-														+ "\" value=\"Total\" />";													
+														+ "\" value=\"Total\" />";
 												row.insertCell(1).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"8%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield2."
 														+ (rowCount)
 														+ "\" value='"
 														+ response[i].noOfBills
-														+ "'/>";															
+														+ "'/>";
 												row.insertCell(2).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"9%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield2."
 														+ (rowCount)
 														+ "\" value='"
@@ -1913,7 +1942,7 @@ ul.tab li {
 											var rowCount = table.rows.length;
 											var row = table.insertRow(rowCount);
 											i = i + 1;
-											row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"50%\" id=\"field1."
+											row.insertCell(0).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"45%\" id=\"field1."
 													+ (rowCount)
 													+ "\" value='"
 													+ response[i].strField1
@@ -1965,11 +1994,11 @@ ul.tab li {
 	/*fill Area wise data */
 	function funLoadAreaWiseSalesReport(divID, POSName, FromDate, ToDate,
 			Operator, PayMode, txtFromBillNo, txtToBillNo, txtReportType,
-			txtType, txtCustomer, chkConsolidatePOS, hidReportName,txtAreaCode,txtOperationType) {
-		var shiftCode='1';
-		if(gEnableShiftYN=='Y')
-		{
-			shiftCode=document.getElementById("txtShiftCode").value;
+			txtType, txtCustomer, chkConsolidatePOS, hidReportName,
+			txtAreaCode, txtOperationType) {
+		var shiftCode = '1';
+		if (gEnableShiftYN == 'Y') {
+			shiftCode = document.getElementById("txtShiftCode").value;
 		}
 		var searchurl = getContextPath()
 				+ "/loadAreaWiseSalesReport.html?POSName=" + POSName
@@ -1978,8 +2007,10 @@ ul.tab li {
 				+ txtFromBillNo + "&txtToBillNo=" + txtToBillNo
 				+ "&txtReportType=" + txtReportType + "&txtType=" + txtType
 				+ "&txtCustomer=" + txtCustomer + "&chkConsolidatePOS="
-				+ chkConsolidatePOS + "&hidReportName=" + hidReportName+ "&areaCode="
-				+ txtAreaCode + "&operationType=" + txtOperationType+ "&gEnableShiftYN=" + gEnableShiftYN+ "&shiftCode=" + shiftCode;
+				+ chkConsolidatePOS + "&hidReportName=" + hidReportName
+				+ "&areaCode=" + txtAreaCode + "&operationType="
+				+ txtOperationType + "&gEnableShiftYN=" + gEnableShiftYN
+				+ "&shiftCode=" + shiftCode;
 		$
 				.ajax({
 					type : "POST",
@@ -2057,11 +2088,11 @@ ul.tab li {
 	/*fill Day wise data */
 	function funLoadDayWiseSalesReport(divID, POSName, FromDate, ToDate,
 			Operator, PayMode, txtFromBillNo, txtToBillNo, txtReportType,
-			txtType, txtCustomer, chkConsolidatePOS, hidReportName,txtAreaCode,txtOperationType) {
-		var shiftCode='1';
-		if(gEnableShiftYN=='Y')
-		{
-			shiftCode=document.getElementById("txtShiftCode").value;
+			txtType, txtCustomer, chkConsolidatePOS, hidReportName,
+			txtAreaCode, txtOperationType) {
+		var shiftCode = '1';
+		if (gEnableShiftYN == 'Y') {
+			shiftCode = document.getElementById("txtShiftCode").value;
 		}
 		var searchurl = getContextPath()
 				+ "/loadDayWiseSalesReport.html?POSName=" + POSName
@@ -2070,8 +2101,10 @@ ul.tab li {
 				+ txtFromBillNo + "&txtToBillNo=" + txtToBillNo
 				+ "&txtReportType=" + txtReportType + "&txtType=" + txtType
 				+ "&txtCustomer=" + txtCustomer + "&chkConsolidatePOS="
-				+ chkConsolidatePOS + "&hidReportName=" + hidReportName+ "&areaCode="
-				+ txtAreaCode + "&operationType=" + txtOperationType+ "&gEnableShiftYN=" + gEnableShiftYN+ "&shiftCode=" + shiftCode;
+				+ chkConsolidatePOS + "&hidReportName=" + hidReportName
+				+ "&areaCode=" + txtAreaCode + "&operationType="
+				+ txtOperationType + "&gEnableShiftYN=" + gEnableShiftYN
+				+ "&shiftCode=" + shiftCode;
 		$
 				.ajax({
 					type : "POST",
@@ -2184,11 +2217,11 @@ ul.tab li {
 	/*fill Tax wise data */
 	function funLoadTaxWiseSalesReport(divID, POSName, FromDate, ToDate,
 			Operator, PayMode, txtFromBillNo, txtToBillNo, txtReportType,
-			txtType, txtCustomer, chkConsolidatePOS, hidReportName,txtAreaCode,txtOperationType) {
-		var shiftCode='1';
-		if(gEnableShiftYN=='Y')
-		{
-			shiftCode=document.getElementById("txtShiftCode").value;
+			txtType, txtCustomer, chkConsolidatePOS, hidReportName,
+			txtAreaCode, txtOperationType) {
+		var shiftCode = '1';
+		if (gEnableShiftYN == 'Y') {
+			shiftCode = document.getElementById("txtShiftCode").value;
 		}
 		var searchurl = getContextPath()
 				+ "/loadTaxWiseSalesReport.html?POSName=" + POSName
@@ -2197,8 +2230,10 @@ ul.tab li {
 				+ txtFromBillNo + "&txtToBillNo=" + txtToBillNo
 				+ "&txtReportType=" + txtReportType + "&txtType=" + txtType
 				+ "&txtCustomer=" + txtCustomer + "&chkConsolidatePOS="
-				+ chkConsolidatePOS + "&hidReportName=" + hidReportName+ "&areaCode="
-				+ txtAreaCode + "&operationType=" + txtOperationType+ "&gEnableShiftYN=" + gEnableShiftYN+ "&shiftCode=" + shiftCode;
+				+ chkConsolidatePOS + "&hidReportName=" + hidReportName
+				+ "&areaCode=" + txtAreaCode + "&operationType="
+				+ txtOperationType + "&gEnableShiftYN=" + gEnableShiftYN
+				+ "&shiftCode=" + shiftCode;
 		$
 				.ajax({
 					type : "POST",
@@ -2300,11 +2335,11 @@ ul.tab li {
 	/*fill Tip Sale wise data  */
 	function funLoadTipSalesReport(divID, POSName, FromDate, ToDate, Operator,
 			PayMode, txtFromBillNo, txtToBillNo, txtReportType, txtType,
-			txtCustomer, chkConsolidatePOS, hidReportName,txtAreaCode,txtOperationType) {
-		var shiftCode='1';
-		if(gEnableShiftYN=='Y')
-		{
-			shiftCode=document.getElementById("txtShiftCode").value;
+			txtCustomer, chkConsolidatePOS, hidReportName, txtAreaCode,
+			txtOperationType) {
+		var shiftCode = '1';
+		if (gEnableShiftYN == 'Y') {
+			shiftCode = document.getElementById("txtShiftCode").value;
 		}
 		var searchurl = getContextPath()
 				+ "/loadTipWiseSalesReport.html?POSName=" + POSName
@@ -2313,8 +2348,10 @@ ul.tab li {
 				+ txtFromBillNo + "&txtToBillNo=" + txtToBillNo
 				+ "&txtReportType=" + txtReportType + "&txtType=" + txtType
 				+ "&txtCustomer=" + txtCustomer + "&chkConsolidatePOS="
-				+ chkConsolidatePOS + "&hidReportName=" + hidReportName+ "&areaCode="
-				+ txtAreaCode + "&operationType=" + txtOperationType+ "&gEnableShiftYN=" + gEnableShiftYN+ "&shiftCode=" + shiftCode;
+				+ chkConsolidatePOS + "&hidReportName=" + hidReportName
+				+ "&areaCode=" + txtAreaCode + "&operationType="
+				+ txtOperationType + "&gEnableShiftYN=" + gEnableShiftYN
+				+ "&shiftCode=" + shiftCode;
 		$
 				.ajax({
 					type : "POST",
@@ -2453,11 +2490,10 @@ ul.tab li {
 	function funLoadItemModifierWiseSalesReport(divID, POSName, FromDate,
 			ToDate, Operator, PayMode, txtFromBillNo, txtToBillNo,
 			txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-			hidReportName,txtAreaCode,txtOperationType) {
-		var shiftCode='1';
-		if(gEnableShiftYN=='Y')
-		{
-			shiftCode=document.getElementById("txtShiftCode").value;
+			hidReportName, txtAreaCode, txtOperationType) {
+		var shiftCode = '1';
+		if (gEnableShiftYN == 'Y') {
+			shiftCode = document.getElementById("txtShiftCode").value;
 		}
 		var searchurl = getContextPath()
 				+ "/loadItemModifierWiseSalesReport.html?POSName=" + POSName
@@ -2466,8 +2502,10 @@ ul.tab li {
 				+ txtFromBillNo + "&txtToBillNo=" + txtToBillNo
 				+ "&txtReportType=" + txtReportType + "&txtType=" + txtType
 				+ "&txtCustomer=" + txtCustomer + "&chkConsolidatePOS="
-				+ chkConsolidatePOS + "&hidReportName=" + hidReportName+ "&areaCode="
-				+ txtAreaCode + "&operationType=" + txtOperationType+ "&gEnableShiftYN=" + gEnableShiftYN+ "&shiftCode=" + shiftCode;
+				+ chkConsolidatePOS + "&hidReportName=" + hidReportName
+				+ "&areaCode=" + txtAreaCode + "&operationType="
+				+ txtOperationType + "&gEnableShiftYN=" + gEnableShiftYN
+				+ "&shiftCode=" + shiftCode;
 		$
 				.ajax({
 					type : "POST",
@@ -2557,11 +2595,10 @@ ul.tab li {
 	function funLoadMenuHeadWiseWithModifierSalesReport(divID, POSName,
 			FromDate, ToDate, Operator, PayMode, txtFromBillNo, txtToBillNo,
 			txtReportType, txtType, txtCustomer, chkConsolidatePOS,
-			hidReportName,txtAreaCode,txtOperationType) {
-		var shiftCode='1';
-		if(gEnableShiftYN=='Y')
-		{
-			shiftCode=document.getElementById("txtShiftCode").value;
+			hidReportName, txtAreaCode, txtOperationType) {
+		var shiftCode = '1';
+		if (gEnableShiftYN == 'Y') {
+			shiftCode = document.getElementById("txtShiftCode").value;
 		}
 		var searchurl = getContextPath()
 				+ "/loadMenuHeadWiseWithModSalesReport.html?POSName=" + POSName
@@ -2570,8 +2607,10 @@ ul.tab li {
 				+ txtFromBillNo + "&txtToBillNo=" + txtToBillNo
 				+ "&txtReportType=" + txtReportType + "&txtType=" + txtType
 				+ "&txtCustomer=" + txtCustomer + "&chkConsolidatePOS="
-				+ chkConsolidatePOS + "&hidReportName=" + hidReportName+ "&areaCode="
-				+ txtAreaCode + "&operationType=" + txtOperationType+ "&gEnableShiftYN=" + gEnableShiftYN+ "&shiftCode=" + shiftCode;
+				+ chkConsolidatePOS + "&hidReportName=" + hidReportName
+				+ "&areaCode=" + txtAreaCode + "&operationType="
+				+ txtOperationType + "&gEnableShiftYN=" + gEnableShiftYN
+				+ "&shiftCode=" + shiftCode;
 		$
 				.ajax({
 					type : "POST",
@@ -2659,11 +2698,11 @@ ul.tab li {
 	/*fill Item Hourly wise data */
 	function funLoadItemHourlyWiseSalesReport(divID, POSName, FromDate, ToDate,
 			Operator, PayMode, txtFromBillNo, txtToBillNo, txtReportType,
-			txtType, txtCustomer, chkConsolidatePOS, hidReportName,txtAreaCode,txtOperationType) {
-		var shiftCode='1';
-		if(gEnableShiftYN=='Y')
-		{
-			shiftCode=document.getElementById("txtShiftCode").value;
+			txtType, txtCustomer, chkConsolidatePOS, hidReportName,
+			txtAreaCode, txtOperationType) {
+		var shiftCode = '1';
+		if (gEnableShiftYN == 'Y') {
+			shiftCode = document.getElementById("txtShiftCode").value;
 		}
 		var searchurl = getContextPath()
 				+ "/loadItemHourlyWiseSalesReport.html?POSName=" + POSName
@@ -2672,8 +2711,10 @@ ul.tab li {
 				+ txtFromBillNo + "&txtToBillNo=" + txtToBillNo
 				+ "&txtReportType=" + txtReportType + "&txtType=" + txtType
 				+ "&txtCustomer=" + txtCustomer + "&chkConsolidatePOS="
-				+ chkConsolidatePOS + "&hidReportName=" + hidReportName+ "&areaCode="
-				+ txtAreaCode + "&operationType=" + txtOperationType+ "&gEnableShiftYN=" + gEnableShiftYN+ "&shiftCode=" + shiftCode;
+				+ chkConsolidatePOS + "&hidReportName=" + hidReportName
+				+ "&areaCode=" + txtAreaCode + "&operationType="
+				+ txtOperationType + "&gEnableShiftYN=" + gEnableShiftYN
+				+ "&shiftCode=" + shiftCode;
 		$
 				.ajax({
 					type : "POST",
@@ -2708,10 +2749,10 @@ ul.tab li {
 														+ response[i].totalAmount
 														+ "'/>";
 												row.insertCell(3).innerHTML = "<input readonly=\"readonly\" class=\"Box\" size=\"33%\" style=\"text-align:right;font-size: 15px;\" id=\"Totfield3."
-													+ (rowCount)
-													+ "\" value='"
-													+ response[i].totalDiscAmt
-													+ "'/>";
+														+ (rowCount)
+														+ "\" value='"
+														+ response[i].totalDiscAmt
+														+ "'/>";
 											}
 
 											var table = document
@@ -2771,11 +2812,11 @@ ul.tab li {
 	/*fill Operator wise data */
 	function funLoadOperatorSalesReport(divID, POSName, FromDate, ToDate,
 			Operator, PayMode, txtFromBillNo, txtToBillNo, txtReportType,
-			txtType, txtCustomer, chkConsolidatePOS, hidReportName,txtAreaCode,txtOperationType) {
-		var shiftCode='1';
-		if(gEnableShiftYN=='Y')
-		{
-			shiftCode=document.getElementById("txtShiftCode").value;
+			txtType, txtCustomer, chkConsolidatePOS, hidReportName,
+			txtAreaCode, txtOperationType) {
+		var shiftCode = '1';
+		if (gEnableShiftYN == 'Y') {
+			shiftCode = document.getElementById("txtShiftCode").value;
 		}
 		var searchurl = getContextPath()
 				+ "/loadOperstorWiseSalesReport.html?POSName=" + POSName
@@ -2784,8 +2825,10 @@ ul.tab li {
 				+ txtFromBillNo + "&txtToBillNo=" + txtToBillNo
 				+ "&txtReportType=" + txtReportType + "&txtType=" + txtType
 				+ "&txtCustomer=" + txtCustomer + "&chkConsolidatePOS="
-				+ chkConsolidatePOS + "&hidReportName=" + hidReportName+ "&areaCode="
-				+ txtAreaCode + "&operationType=" + txtOperationType+ "&gEnableShiftYN=" + gEnableShiftYN+ "&shiftCode=" + shiftCode;
+				+ chkConsolidatePOS + "&hidReportName=" + hidReportName
+				+ "&areaCode=" + txtAreaCode + "&operationType="
+				+ txtOperationType + "&gEnableShiftYN=" + gEnableShiftYN
+				+ "&shiftCode=" + shiftCode;
 		$
 				.ajax({
 					type : "POST",
@@ -2883,11 +2926,11 @@ ul.tab li {
 	/*fill Monthly sales wise data */
 	function funLoadMonthlySalesReport(divID, POSName, FromDate, ToDate,
 			Operator, PayMode, txtFromBillNo, txtToBillNo, txtReportType,
-			txtType, txtCustomer, chkConsolidatePOS, hidReportName,txtAreaCode,txtOperationType) {
-		var shiftCode='1';
-		if(gEnableShiftYN=='Y')
-		{
-			shiftCode=document.getElementById("txtShiftCode").value;
+			txtType, txtCustomer, chkConsolidatePOS, hidReportName,
+			txtAreaCode, txtOperationType) {
+		var shiftCode = '1';
+		if (gEnableShiftYN == 'Y') {
+			shiftCode = document.getElementById("txtShiftCode").value;
 		}
 		var searchurl = getContextPath()
 				+ "/loadMonthlyWiseSalesReport.html?POSName=" + POSName
@@ -2896,8 +2939,10 @@ ul.tab li {
 				+ txtFromBillNo + "&txtToBillNo=" + txtToBillNo
 				+ "&txtReportType=" + txtReportType + "&txtType=" + txtType
 				+ "&txtCustomer=" + txtCustomer + "&chkConsolidatePOS="
-				+ chkConsolidatePOS + "&hidReportName=" + hidReportName + "&areaCode="
-				+ txtAreaCode + "&operationType=" + txtOperationType+ "&gEnableShiftYN=" + gEnableShiftYN+ "&shiftCode=" + shiftCode;
+				+ chkConsolidatePOS + "&hidReportName=" + hidReportName
+				+ "&areaCode=" + txtAreaCode + "&operationType="
+				+ txtOperationType + "&gEnableShiftYN=" + gEnableShiftYN
+				+ "&shiftCode=" + shiftCode;
 		$
 				.ajax({
 					type : "POST",
@@ -2972,7 +3017,6 @@ ul.tab li {
 					}
 				});
 	}
-	
 
 	function funRemoveProductRows(tableName) {
 		var table = document.getElementById(tableName);
@@ -2982,10 +3026,9 @@ ul.tab li {
 			rowCount--;
 		}
 	}
-	
-	
+
 	/* function funExportReport()
- 	{
+	{
 		
 		var POSName = document.getElementById("cmbPOSName").value;
 		var FromDate = document.getElementById("txtFromDate").value + ":"
@@ -3013,19 +3056,17 @@ ul.tab li {
 		{
 			shiftCode=document.getElementById("txtShiftCode").value;
 		}
- 	} */
-
-
+	} */
 </script>
 
 </head>
 <body>
 	<br />
-	<div id="formHeading" >
+	<div id="formHeading">
 		<label>Sales Report</label>
-	</div> 
+	</div>
 	<s:form name="POSSalesReportForm" method="POST"
-		action="rptPOSSalesReport.html" class="formoid-default-skyblue" 
+		action="rptPOSSalesReport.html" class="formoid-default-skyblue"
 		style="background-color:#FFFFFF;font-size:14px;font-family:'Open Sans',
 		'Helvetica Neue','Helvetica',Arial,Verdana,sans-serif;color:#666666;width:1366px; ">
 
@@ -3039,1422 +3080,1476 @@ ul.tab li {
 
 			</ul> -->
 			<ul class="tabs" style="margin-left: 10%">
-						<li class="active" data-state="tab1" style="width: 10%; padding-left: 4%; height: 25px; border-radius: 4px;background-color: #52A4D4">Data</li>
-						<li data-state="tab2" style="width: 10%; padding-left: 2%; height: 25px; border-radius: 4px;background-color: #52A4D4">AdvanceFilter</li>
-				</ul>
-<!-- border: 7px solid #1b1918;border: 7px solid #1b1918; -->
+				<li class="active" data-state="tab1"
+					style="width: 10%; padding-left: 4%; height: 25px; border-radius: 4px; background-color: #52A4D4">Data</li>
+				<li data-state="tab2"
+					style="width: 10%; padding-left: 2%; height: 25px; border-radius: 4px; background-color: #52A4D4">AdvanceFilter</li>
+			</ul>
+			<!-- border: 7px solid #1b1918;border: 7px solid #1b1918; -->
 
-			<div id="tab1" class="tab_content" style="height: 30%; " >
+			<div id="tab1" class="tab_content" style="height: 30%;">
 
-				<br /><br /> 
+				<br />
+				<br />
 				<!-- <table>
 				<tr>
 				<td> -->
-				<div class="row" style="background-color: #fff; display: block; margin-bottom: 10px; margin-left: 5%">
-				
-							<div class="element-input col-lg-6" style="width: 8%; margin-left:4; margin-top:8px"> 
-		    					<label class="title">POS Name</label>
-		    				</div>
-		    				<div class="element-input col-lg-6" style="width: 10%;"> 
-								<s:select id="cmbPOSName" name="cmbPOSName" path="strPOSName" items="${posList}" >
-				 				</s:select>
-							</div>
-							<div class="element-input col-lg-6" style="width: 8%;margin-top:8px;margin-left: 2%"> 
-		    					<label class="title">From Date</label>
-		    				</div>
-		    				<div class="element-input col-lg-6" style="width: 15%;"> 
-								<s:input  id="txtFromDate" required="required" path="fromDate" pattern="\d{1,2}-\d{1,2}-\d{4}" style="width: 100%;" />
-							</div>
-							<div class="element-input col-lg-6" style="width: 8%;margin-top:8px"> 
-		    					<label class="title">To Date</label>
-		    				</div>
-		    				<div class="element-input col-lg-6" style="width: 15%;"> 
-								<s:input id="txtToDate" required="required" path="toDate" pattern="\d{1,2}-\d{1,2}-\d{4}"  style="width: 100%;" onChange="funDateValidate();"/>	
-							</div>
-							<div class="element-input col-lg-6" style="width: 15%; margin-left:30px;"> 
-								<input type="submit" value="EXPORT" id="submit"  />
-							</div>
-					</div>	
-					<!-- </td>
+				<div class="row"
+					style="background-color: #fff; display: block; margin-bottom: 10px; margin-left: 5%">
+
+					<div class="element-input col-lg-6"
+						style="width: 8%; margin-left: 4; margin-top: 8px">
+						<label class="title">POS Name</label>
+					</div>
+					<div class="element-input col-lg-6" style="width: 10%;">
+						<s:select id="cmbPOSName" name="cmbPOSName" path="strPOSName"
+							items="${posList}">
+						</s:select>
+					</div>
+					<div class="element-input col-lg-6"
+						style="width: 8%; margin-top: 8px; margin-left: 2%">
+						<label class="title">From Date</label>
+					</div>
+					<div class="element-input col-lg-6" style="width: 15%;">
+						<s:input id="txtFromDate" required="required" path="fromDate"
+							pattern="\d{1,2}-\d{1,2}-\d{4}" style="width: 100%;" />
+					</div>
+					<div class="element-input col-lg-6"
+						style="width: 8%; margin-top: 8px">
+						<label class="title">To Date</label>
+					</div>
+					<div class="element-input col-lg-6" style="width: 15%;">
+						<s:input id="txtToDate" required="required" path="toDate"
+							pattern="\d{1,2}-\d{1,2}-\d{4}" style="width: 100%;"
+							onChange="funDateValidate();" />
+					</div>
+					<div class="element-input col-lg-6"
+						style="width: 15%; margin-left: 30px;">
+						<input type="submit" value="EXPORT" id="submit" />
+					</div>
+				</div>
+				<!-- </td>
 					</tr>
-				</table> 	 -->	
-					
-		 <div style="width: 150%; margin-left: 5%;  background-color: #fff;">
-			<table class="scroll">
-				<tr>
-					<td colspan="4">
-						<!-- Settlement wise table -->
-											
-                     <div id="divSettlementWise"  
-                           class="col-sm-9" style="width: 1200px; height: 580px; display: block; background-color: #fff; "> 
-                     
-                     <table class="scroll" style="height: 20px; border: #0F0; margin:auto; width:100%; font-size: 14px; font-weight: bold; ">
-						<thead style="background: #2FABE9; color: white;">
-							<tr>
-									<td width="26%">POS</td>
-									<td width="27.5%">Settlement Mode</td>
-									<td width="26%">Sales Amount</td>
-									<td width="26%">Sales (%)</td>
-									<!-- align="right" --> 
-								</tr>
-								</thead>
-					</table>
-							
-					<div class="row" style="display: block; height: 85%; margin: auto; border: 1px solid #ccc;overflow-x: hidden;overflow-y: scroll; width: 100%;">
-						    <table  class="scroll" id="tblSettlementWise" 
-							style="width: 100%; border: #0F0;">
-							<tbody>
-									<col style="width: 26.4%">
-									<col style="width: 25%">
-									<col style="width: 25%">
-									<col style="width: 25%">
-							</tbody>
-							</table>
-					</div>
-							<div class=""
-						           style="width:1170px; height: 60px;  overflow-x: hidden;overflow-y: hidden; display: block; ">
-						    <table
-							style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
-							<tr style="background: #2FABE9; color: white;">
-										<td width="7.8%"></td>
-										<td width="6.7%">Sales Amount</td>
-									</tr>
-								</table>
-								
-					     <div
-							style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
-							<table class="scroll" id="tblSettlementWiseTotal"
-								style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
-								class="transTablex col11-center">
-								<tbody>
-										<col style="width: 20%">
-										<col align="right" style="width: 16%">
-									</table>
-								</div>
-							</div>
-						</div> <!-- Bill wise table -->
-					
-					<!-- <div id="divBillWise" class=""
-							style="width: 56%; height: 500px; border: 1px solid black;background-color: #fff;"> -->
-							<!-- <div id="divBillWise"  class="row" style="background-color: #fff;width: 56%; height: 500px; display: -webkit-box;"> -->
-<!-- 									<div class="row" style="background-color: #fff; display: -webkit-box; margin-bottom: 10px;">
- -->									
-                	<div id="divBillWise"
-                           class="col-sm-9" style="width: 57.5%; height: 580px; display: block;  background-color: #fff; overflow-x: scroll; overflow-y: hidden;margin-left: 0.8%;"> 
-                          <table class="scroll" style="height: 20px; border: #0F0; width: 160%;  font-size: 14px; font-weight: bold; margin-left: -1.1%;">
-						    <thead style="background: #2FABE9; color: white;">
-						         <tr>
-								<td width="3.1%">Bill No</td>
-								<td align="left" width="3.5%">Date</td>
-								<td align="left" width="3%">Bill time</td>
-								<td align="left" width="4.7%">Table Name</td>
-								<td align="left" width="5%">Cust Name</td>
-								<td align="left" width="4%">POS</td>
-								<td align="left" width="2.2%">Shift</td>
-								<td align="left" width="4%">Pay Mode</td>
-								<td align="left" width="3.5%">Delivery Charge</td>
-								<td align="left" width="4%">Sub Total</td>
-								<td align="left" width="3.5%">Disc %</td>
-								<td align="left" width="3.5%">Disc Amt</td>
-								<td align="left" width="3.5%">TAX Amt</td>
-								<td align="left" width="3.5%">Adv. Amt</td>
-								<td align="left" width="3.5%">Sales Amt</td>
-								<td align="left" width="3.5%">Round Off</td>
-								<td align="left" width="5.6%">Remarks</td>
-								<td align="left" width="2%">Tip</td>
-							    <td align="left" width="5%">Disc Remark</td>
-								<td align="left" width="5%">Reason</td>
-								<td align="left" width="3.4%">PAX</td>
-								<td align="left" width="4%">Order Type</td>
-								
-							</tr>
-						</thead>	
-					</table>
-			  
-					 <div class="row" style="display: block; height: 85%; margin-left: -1.1%; border: 1px solid #ccc; overflow-x: hidden; overflow-y: scroll; width: 160%;">
-						    <table  class="scroll" id="tblBillWise"
-							  style="width: 100%; border: #0F0;">
-									<tbody>
-							<col style="width: 1%">
-							<col style="width: 3.2%">
-							<col style="width: 3.5%">
-							<col style="width: 4.5%">
-							<col style="width: 5.7%">
-							<col style="width: 4.2%">
-							<col style="width: 2.2%">
-							<col style="width: 1.2%">
-							<col style="width: 4%">
-							<col style="width: 3.5%">
-							<col style="width: 4%">
-							<col style="width: 3.9%">
-							<col style="width: 3.5%">
-							<col style="width: 4%">
-							<col style="width: 3.7%">
-							<col style="width: 3.8%">
-							<col style="width: 4.2%">
-							<col style="width: 4%">
-							<col style="width: 3%">
-							<col style="width: 3%">
-							<col style="width: 3%">
-							<col style="width: 4.5%">
-							</tbody>
-						</table>
-					</div>
-					<div class=""
-						           style="width:160%; height: 60px;  overflow-x: hidden;overflow-y: hidden; display: block; margin-left: -1.1%;">
-						        <table
-							       style="height: 20px; border: #0F0; width: 100%; font-size: 15px; font-weight: bold;">
-							       <tr style="background: #2FABE9; color: white;">
-								<td width="11.3%"></td>
-								<td align="right" width="11.5%">Sub Total</td>
-								<td width="1%"></td>
-								<td align="right" width="3.2%">Disc</td>
-								<td align="right" width="2.5%">Tax Total</td>
-								<td align="right" width="2.5%">Adv. Total</td>
-								<td align="right" width="2.5%">Sales Amt</td> 
-								<td align="right" width="2.2%">Round Off</td>
-								<td align="right" width="5%">Tip Amount</td>
-								<td align="right" width="7%">PAX</td>
-								<td align="right" width="4%"></td>
-								
+				</table> 	 -->
 
-							</tr>
-						</table>
-					  <div  style=" border: 1px solid #ccc; display: block; height: 26px; margin: auto; width: 100%;">
-							   <table class="scroll" id="tblBillWiseTotal"
-								  style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
-								  class="transTablex col11-center">
-								<tbody>
-								<col style="width: 33%">
-								<col style="width: 10%">
-								<col style="width: 5%">
-								<col style="width: 8%">
-								<col style="width: 5%">
-								<col style="width: 5.5%">
-								<col style="width: 6%">
-								<col style="width: 5%">
-
-							</table>
-						</div>
-					</div>
-				</div> <!-- Item wise table id="divItemWise"-->
-										
-                    	
-                     <div id="divItemWise"
-                           class="col-sm-9" style="width: 1200px; height: 580px; display: block; background-color: #fff;  "> 
-                     
-                       <table class="scroll" style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
-						<thead style="background: #2FABE9; color: white;">
-						        <tr>
-									<td align="left" width="10.7%">Item Name</td>
-									<td align="right" width="2.5%">POS</td>
-									<td align="right" width="9%">Quantity</td>
-									<td align="right" width="5%">Sub Total</td>
-									<td align="right" width="4.5%">Discount</td>
-									<td align="center" width="4%">Net Total</td>
-								</tr>
-						</thead>
-								
-							</table>
-							<div class="row" style="display: block; height: 85%;  border: 1px solid #ccc; margin: auto; overflow-x: hidden;overflow-y: scroll; width: 100%;">
-						    <table  class="scroll" id="tblItemWise"
-							           style="width: 100%; border: #0F0;">
-								<tbody>
-									 <col style="width: 9%">
-									<col style="width: 10%">
-									<col style="width: 10%">
-									<col style="width: 10%">
-									<col style="width: 10%">
-									<col style="width: 8%">
-								</tbody>
-								</table>
-							</div>
-							<div class=""
-						           style="width:1170px; height: 60px; overflow-x: hidden;overflow-y: hidden; display: block; ">
-						    <table
-							style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
-							      <tr style="background: #2FABE9; color: white;">
-										<td width="47%"></td>
-										<td align="right" width="15%">Quantity</td>
-										<td align="right" width="14%">SubTotal</td>
-										<td align="right" width="13%">Discount</td>
-										<td align="right" width="8%">Net Total</td>
-										<td align="right" width="0%"></td>
-										
-									</tr>
-								</table>
-									 <div
-							style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
-							<table class="scroll" id="tblItemWiseTotal"
-								style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
-								class="transTablex col11-center">
-								<tbody>
-										
-										<col style="width: 45%">
-										<col style="width: 35%">
-										<col style="width: 25%">
-										<col style="width: 27%">
-										<col style="width: 17%">
-									</table>
-								</div>
-							</div>
-						</div> <!-- MenuHead Wise table -->
-							
-                     <div id="divMenuHeadWise"
-                           class="col-sm-9" style="width: 1200px; height: 580px; display: block; background-color: #fff; "> 
-                     
-                     <table class="scroll" style="height: 20px; border: #0F0; width:  1170px; font-size: 14px; font-weight: bold;">
-						<thead style="background: #2FABE9; color: white;">
-						        <tr>
-									<td width="6%">Menu Name</td>
-									<td align="left" width="4%">POS</td>
-									<td align="right" width="3%">Quantity</td>
-									<td align="right" width="6%">Sub Total</td>
-									<td align="right" width="6.5%">Net Total</td>
-									<td align="right" width="6%">Discount</td>
-									<td align="right" width="6%">Sales (%)</td>
-									<td align="left" width="1.8%"></td>
-								</tr>
-							</thead>	
-							</table>
-							<div class="row" style="display: block; height: 85%; margin: auto;  border: 1px solid #ccc; overflow-x: hidden;overflow-y: scroll; width: 100%;">
-						       <table  class="scroll" id="tblMenuHeadWise"
-							           style="width: 100%; border: #0F0;">
-									<tbody>
-									<col style="width: 15%">
-									<col style="width: 10%">
-									<col style="width: 19%">
-									<col style="width: -10%">
-									<col style="width: 15%">
-									<col style="width: 19%">
-									<col style="width: 8.8%">
-									</tbody>
-								</table>
-							</div>
-							<div class=""
-						           style="width:1170px; height: 60px;  overflow-x: hidden;overflow-y: hidden; display: block; ">
-						      <table
-							       style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
-							       <tr style="background: #2FABE9; color: white;">
-										<td width="15.4%"></td>
-										<td align="right" width="15.9%">Quantity</td>
-										<td align="right" width="13.5%">Sub Total</td>
-										<td align="right" width="14.8%">Net Total</td>
-										<td align="right" width="14.2%">Discount</td>
-										<td width="17.9%"></td>
-
-									</tr>
-								</table>
-								 <div
-							style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
-							<table class="scroll" id="tblMenuHeadWiseTotal"
-								style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
-								class="transTablex col11-center">
-								    <tbody>
-										<col style="width: 24%">
-										<col style="width: 19%">
-										<col style="width: 20%">
-										<col style="width: 18%">
-										<col style="width: 28%">
-
-
-									</table>
-								</div>
-							</div>
-						</div> <!-- Group wise table -->
-									
-                     
-						
-						 <div id="divGroupWise"
-                           class="col-sm-9" style="width: 1200px; height: 580px; display: block; background-color: #fff;  "> 
-                     
-                     <table class="scroll" style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
-						<thead style="background: #2FABE9; color: white;">
+				<div style="width: 150%; margin-left: 5%; background-color: #fff;">
+					<table class="scroll">
 						<tr>
-									<td width="5.82%">Group Name</td>
-									<td width="6.5%">POS</td>
-									<td align="left" width="5.5%">Quantity</td>
-									<td align="right" width="5%">Sub Total</td>
-									<td align="right" width="6.5%">Net Total</td>
-									<td align="right" width="6%">Discount</td>
-									<td align="right" width="4.5%">Sales (%)</td>
-									<td align="left" width="1%"></td>
-									</tr>
-						</thead>
-								
-							</table>
-										
-					     <div class="row" style="display: block; height: 85%; border: 1px solid #ccc; margin: auto; overflow-x: hidden;overflow-y: scroll; width: 100%;">
-						    <table  class="scroll" id="tblGroupWise"
-							style="width: 100%; border: #0F0;">
-									<tbody>
-									  <col style="width: 12%">
-									<col style="width: 7.9%">
-									<col style="width: 9%">
-									<col style="width: 9%">
-									<col style="width: 10%">
-									<col style="width: 10%">
-									<col style="width: 7%">
-									</tbody>
-								</table>
-							</div>
-							<div class=""
-						           style="width:1170px; height: 60px;  overflow-x: hidden;overflow-y: hidden; display: block; ">
-						    <table
-							style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
-							     <tr style="background: #2FABE9; color: white;">
-										<td width="18.5%"></td>
-										<td align="right" width="11.5%"></td>
-                                        <td width="1%" align="right"></td>
-										<td align="right" width="16%">Sub Total</td>
-                                        <td width="3%" align="right"></td>
-										<td align="right" width="11%">Net Total</td>
-                                        <td width="3.5%" align="right"></td>
-										<td align="right" width="10%">Discount</td>
-										<td width="11.5%"></td>
+							<td colspan="4">
+								<!-- Settlement wise table -->
 
-									</tr>
-								</table>
-										 <div
-							style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
-							<table class="scroll" id="tblGroupWiseTotal"
-								style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
-								class="transTablex col11-center">
-								    <tbody>
-										<tbody>
-										<col style="width: 15%">
-										<col style="width: 12%">
-										<col style="width: 13%">
-										<col style="width: 13%">
-										<col style="width: 12%">
-									</table>
-								</div>
-							</div>
-						</div> <!-- SubGroup wise table -->
-						 <div id="divSubGroupWise"
-                           class="col-sm-9" style="width: 1200px; height: 580px; display: block; background-color: #fff; "> 
-                     
-                         <table class="scroll" style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
-					 	   <thead style="background: #2FABE9; color: white;">
-						        <tr>
-									<td width="10.2%">SubGroup Name</td>
-									<td width="6%">POS</td>
-									<td align="right" width="4%">Quantity</td>
-									<td align="right" width="6%">Sub Total</td>
-									<td align="right" width="5.8%">Net Total</td>
-									<td align="right" width="5.2%">Discount</td>
-									<td align="right" width="4.8%">Sales (%)</td>
-									<td align="left" width="1%"></td>
-								</tr>	
-							</thead>
-								
-					 </table>
-					      <div class="row" style="display: block; height: 85%;  border: 1px solid #ccc; margin: auto; overflow-x: hidden;overflow-y: scroll; width: 100%;">
-						      <table  class="scroll" id="tblSubGroupWise"
-							    style="width: 100%; border: #0F0;">
-									<tbody>
-									<col style="width: 21%">
-									<col style="width: 11%">
-									<col style="width: 11%">
-									<col style="width: 11%">
-									<col style="width: 10.5%">
-									<col style="width: 11.8%">
-									<col style="width: 5%">
-									</tbody>
-								</table>
-							</div>
-							<div class=""
-						           style="width:1170px; height: 60px;  overflow-x: hidden;overflow-y: hidden; display: block; ">
-						       <table
-							     style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
-							       <tr style="background: #2FABE9; color: white;">
-										<td width="26%"></td>
-										<td align="right" width="10.5%">Quantity</td>
-										<td align="right" width="10.5%">Sub Total</td>
-										<td align="right" width="10.5%">Net Total</td>
-										<td align="right" width="9.5%">Discount</td>
-										<td width="10%"></td>
+								<div id="divSettlementWise" class="col-sm-9"
+									style="width: 1200px; height: 580px; display: block; background-color: #fff;">
 
-									</tr>
-								</table>
-								  <div
-							         style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
-							     <table class="scroll" id="tblSubGroupWiseTotal"
-								        style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
-								        class="transTablex col11-center">
-								    <tbody>
-										<tbody>
-										<col style="width: 27%">
-										<col style="width: 16%">
-										<col style="width: 18%">
-										<col style="width: 20%">
-										<col style="width: 20%">
+									<table class="scroll"
+										style="height: 20px; border: #0F0; margin: auto; width: 100%; font-size: 14px; font-weight: bold;">
+										<thead style="background: #2FABE9; color: white;">
+											<tr>
+												<td width="26%">POS</td>
+												<td width="27.5%">Settlement Mode</td>
+												<td width="26%">Sales Amount</td>
+												<td width="26%">Sales (%)</td>
+												<!-- align="right" -->
+											</tr>
+										</thead>
+									</table>
 
-									</table>
-								</div>
-							</div>
-						</div> <!-- Customer Wise Bill-->
-							
-                        <div id="divCustWise"
-                           class="col-sm-9" style="width: 1200px; height: 580px; display: block; background-color: #fff;  "> 
-                     
-                            <table class="scroll" style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
-						       <thead style="background: #2FABE9; color: white;">
-								  <tr>
-									<td width="12%">Customer Name</td>
-									<td align="left" width="8%">Mobile No</td>
-									<td align="left" width="7%">Date Of Birth</td>
-									<td align="left" width="8%">No Of Bills</td>
-									<!-- <td width="6%">Quantity</td> -->
-									<td align="left" width="10%">Sales Amount</td>
-								 </tr>
-                              </thead>
-								
-							  </table>
-											
-					     <div class="row" style="display: block; height: 85%; margin: auto;  border: 1px solid #ccc; overflow-x: hidden;overflow-y: scroll; width: 100%;">
-						      <table  class="scroll" id="tblCustWise"
-							   style="width: 100%; border: #0F0;">
-									<tbody>
-									<col style="width: 27%">
-									<col style="width: 18.5%">
-									<col style="width: 13%">
-									<col style="width: 11%">
-									
-									</tbody>
-								</table>
-							</div>
-						 <div class=""
-						            style="width:1170px; height: 60px; overflow-x: hidden;overflow-y: hidden; display: block; ">
-						      <table
-							        style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
-							       <tr style="background: #2FABE9; color: white;">
-										<td width="28%"></td>
-										<td align="right" width="37%">No Of Bills</td>
-										<td align="right" width="22%">Sales Amount</td>
-										<td width="25%"></td>
-									</tr>
-								</table>
-						 <div
-							         style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
-							  <table class="scroll" id="tblCustWiseTotal"
-								     style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
-								     class="transTablex col11-center">
-							   <tbody>
-										<col style="width: 27%">
-										<col style="width: 30%">
-										<col style="width: 50%">
-										
-								</tbody>
-									</table>
-								</div>
-							</div>
-						</div> <!-- Waiter Wise -->
-					 <div id="divWaiterWise"
-                           class="col-sm-9" style="width: 1200px; height: 580px; display: block; background-color: #fff;  "> 
-                     
-                     <table class="scroll" style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
-						<thead style="background: #2FABE9; color: white;">
-						         <tr>
-									<td width="10.4%">POS</td>
-									<td width="8.3%">Waiter Full Name</td>
-									<td align="left" width="10.5%">Waiter Short Name</td>
-									<td align="left" width="6%">No Of Bills</td>
-									<td align="left" width="6%">Sales Amount</td>
-									<td align="left" width="4%"></td>
-									</tr>
-							</thead>
-								 
-							</table>
-					   				
-					   <div class="row" style="display: block; height: 85%; margin: auto;  border: 1px solid #ccc; overflow-x: hidden;overflow-y: scroll; width: 100%;">
-						    <table  class="scroll" id="tblWaiterWise"
-							  style="width: 100%; border: #0F0;">
-									<tbody>
-									<col style="width: 3%">
-									<col style="width: 1%">
-									<col style="width: 12%">
-									<col style="width: 5%">
-									<col style="width: 25%">
-									</tbody>
-								</table>
-							</div>
-							<div class=""
-						           style="width:1170px; height: 60px; overflow-x: hidden;overflow-y: hidden; display: block; ">
-						        <table
-							       style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
-							       <tr style="background: #2FABE9; color: white;">
-										<td width="38%"></td>
-										<td align="right" width="6%">Sales Amount</td>
-										<td width="8%"></td>
-									</tr>
-								</table>
-							<div
-							      style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
-							   <table class="scroll" id="tblWaiterWiseTotal"
-								  style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
-								  class="transTablex col11-center">
-								<tbody>
-										<col style="width: 35%">
-										<col style="width: 15%">
-								 </tbody>
-									</table>
-								</div>
-							</div>
-						</div> <!-- Delivery Boy Wise -->
-						 <div id="divDeliveryBoyWise"
-                                class="col-sm-9" style="width: 1200px; height: 580px; display: block; background-color: #fff; "> 
-                     
-                               <table class="scroll" style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
-						       <thead style="background: #2FABE9; color: white;">
-						       <tr>
-									<td width="14%">Delivery Boy Name</td>
-									<td align="left" width="16%">POS</td>
-									<td align="right" width="9%">Sales Amount</td>
-									<td align="right" width="16%">Delivery Charges</td>
-									<td align="left" width="1%"></td>
-									</tr>
-							    </thead>		
+									<div class="row"
+										style="display: block; height: 85%; margin: auto; border: 1px solid #ccc; overflow-x: hidden; overflow-y: scroll; width: 100%;">
+										<table class="scroll" id="tblSettlementWise"
+											style="width: 100%; border: #0F0;">
+											<tbody>
+											<col style="width: 26.4%">
+											<col style="width: 25%">
+											<col style="width: 25%">
+											<col style="width: 25%">
+											</tbody>
+										</table>
+									</div>
+									<div class=""
+										style="width: 1170px; height: 60px; overflow-x: hidden; overflow-y: hidden; display: block;">
+										<table
+											style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
+											<tr style="background: #2FABE9; color: white;">
+												<td width="7.8%"></td>
+												<td width="6.7%">Sales Amount</td>
+											</tr>
+										</table>
 
-								
-							</table>
-					    <div class="row" style="display: block; height: 85%; margin: auto;  border: 1px solid #ccc; overflow-x: hidden;overflow-y: scroll; width: 100%;">
-						     <table  class="scroll" id="tblDeliveryBoyWise"
-							  style="width: 100%; border: #0F0;">
-									<tbody>
-									<col style="width: 6%">
-									<col style="width: 6%">
-									<col style="width: 6%">
-									<col style="width: 6%">
-									</tbody>
-								    </table>
-							</div>
-						<div class=""
-						           style="width:1170px; height: 60px; overflow-x: hidden;overflow-y: hidden; display: block; ">
-						         <table
-							       style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
-							       <tr style="background: #2FABE9; color: white;">
-										<td width="30%"></td>
-										<td align="right" width="15%">Sales Amount</td>
-										<td width="19%"></td>
+										<div
+											style="border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
+											<table class="scroll" id="tblSettlementWiseTotal"
+												style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
+												class="transTablex col11-center">
+												<tbody>
+												<col style="width: 20%">
+												<col align="right" style="width: 16%">
+											</table>
+										</div>
+									</div>
+								</div> <!-- Bill wise table --> <!-- <div id="divBillWise" class=""
+							style="width: 56%; height: 500px; border: 1px solid black;background-color: #fff;"> -->
+								<!-- <div id="divBillWise"  class="row" style="background-color: #fff;width: 56%; height: 500px; display: -webkit-box;"> -->
+								<!-- 									<div class="row" style="background-color: #fff; display: -webkit-box; margin-bottom: 10px;">
+ -->
+								<div id="divBillWise" class="col-sm-9"
+									style="width: 57.5%; height: 580px; display: block; background-color: #fff; overflow-x: scroll; overflow-y: hidden; margin-left: 0.8%;">
+									<table class="scroll"
+										style="height: 20px; border: #0F0; width: 160%; font-size: 14px; font-weight: bold; margin-left: -1.1%;">
+										<thead style="background: #2FABE9; color: white;">
+											<tr>
+												<td width="3.1%">Bill No</td>
+												<td align="left" width="3.5%">Date</td>
+												<td align="left" width="3%">Bill time</td>
+												<td align="left" width="4.7%">Table Name</td>
+												<td align="left" width="5%">Cust Name</td>
+												<td align="left" width="4%">POS</td>
+												<td align="left" width="2.2%">Shift</td>
+												<td align="left" width="4%">Pay Mode</td>
+												<td align="left" width="3.5%">Delivery Charge</td>
+												<td align="left" width="4%">Sub Total</td>
+												<td align="left" width="3.5%">Disc %</td>
+												<td align="left" width="3.5%">Disc Amt</td>
+												<td align="left" width="3.5%">TAX Amt</td>
+												<td align="left" width="3.5%">Adv. Amt</td>
+												<td align="left" width="3.5%">Sales Amt</td>
+												<td align="left" width="3.5%">Round Off</td>
+												<td align="left" width="5.6%">Remarks</td>
+												<td align="left" width="2%">Tip</td>
+												<td align="left" width="5%">Disc Remark</td>
+												<td align="left" width="5%">Reason</td>
+												<td align="left" width="3.4%">PAX</td>
+												<td align="left" width="4%">Order Type</td>
 
-									</tr>
-								</table>
-								 <div
-							style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
-							<table class="scroll" id="tblDeliveryBoyWiseTotal"
-								style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
-								class="transTablex col11-center">
-								   <tbody>
-										<col style="width: 23%">
-										<col style="width: 30%">
-								   </tbody>		
+											</tr>
+										</thead>
 									</table>
-								</div>
-							</div>
-						</div> <!-- Cost Centre -->
-						 <div id="divCostCenterWise"
-                           class="col-sm-9" style="width: 1200px; height: 580px; display: block; background-color: #fff;  "> 
-                     
-                     <table class="scroll" style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
-						<thead style="background: #2FABE9; color: white;">
-						         <tr>
-									<td width="8%">Cost Centre Name</td>
-									<td width="7.2%">POS</td>
-									<td align="left" width="5%">Quantity</td>
-									<td align="right" width="5%">SubTotal</td>
-									<td align="right" width="8%">Sales Amount</td>
-									<td align="right" width="7%">Discount</td>
-									<td align="right" width="5.9%">Sales (%)</td>
-									<td align="left" width="1%"></td>
-								</tr>
-								</thead>	
-							</table>
-						  <div class="row" style="display: block; height: 85%; margin: auto; overflow-x:  hidden; border: 1px solid #ccc;overflow-y: scroll; width: 100%;">
-						    <table  class="scroll" id="tblCostCenterWise"
-							  style="width: 100%; border: #0F0;">
-									<tbody>
-									<col style="width: 16%">
-									<col style="width: 13%">
-									<col style="width: 16%">
-									<col style="width: 15%">
-									<col style="width: 10%">
-									<col style="width: 13%">
-									<col style="width: 25%">
-									</tbody>
-								</table>
-							</div>
-							  <div class=""
-						           style="width:1170px; height: 60px; overflow-x: hidden;overflow-y: hidden; display: block; ">
-						      <table
-							       style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
-							     <tr style="background: #2FABE9; color: white;">
-										<td width="21%"></td>
-										<td align="right" width="15%">Quantity</td>
-										<td align="right" width="17.5%">Sub Total</td>
-										<td align="right" width="17%">Sales Amount</td>
-										<td align="right" width="16%">Discount</td>
-										<td width="18%"></td>
-									</tr>
-								</table>
-								 <div
-							style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
-							<table class="scroll" id="tblCostCenterWiseTotal"
-								style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
-								class="transTablex col11-center">
-								    <tbody>
-										<col style="width: 15%">
-										<col style="width: 12%">
-										<col style="width: 14%">
-										<col style="width: 13%">
-										<col style="width: 22%">
-									</tbody>	
-									</table>
-								</div>
-							</div>
-						</div> <!-- Home Delivery Wise -->
-						 <div id="divHomeDeliveryWise"
-                             class="col-sm-9" style="width: 1200px; height: 580px; display: block; background-color:#fff; "> 
-                             <table class="scroll" style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
-						     <thead style="background: #2FABE9; color: white;">
-						        <tr>
-									<td width="4.8%">Bill No</td>
-									<td width="4%">POS</td>
-									<td align="left" width="3.8%">Date</td>
-									<td align="left" width="4.6%">Settle Mode</td>
-									<td align="right" width="5%">Delivery Charges</td>
-									<td align="right" width="4.5%">Disc Amt</td>
-									<td align="right" width="3.6%">Tax Amt</td>
-									<td align="center" width="6%">Amount</td>
-									<td width="4%">Customer Name</td>
-									<td align="right" width="1%">Building</td>
-									<td align="right" width="7%">Delv Boy</td>
-									<td align="left" width="2.5%"></td>
-								</tr>
-							 </thead>	
-							</table>
-					     <div class="row" style="display: block; height: 85%; margin: auto; overflow-x:hidden;overflow-y: scroll; border: 1px solid #ccc; width: 100%;">
-						     <table  class="scroll" id="tblHomeDeliveryWise"
-							     style="width: 100%; border: #0F0;">
-									<tbody>
-									<col style="width: 9.8%">
-									<col style="width: 8%">
-									<col style="width: 8%">
-									<col style="width: 10%">
-									<col style="width: 10%">
-									<col style="width: 8%">
-									<col style="width: 9%">
-									<col style="width: 5%">
-									<col style="width: 16%">
-									<col style="width: 14%">
-									<col style="width: 4%">
-									</tbody>
-								</table>
-							</div>
-							<div class=""
-						           style="width:1170px; height: 60px;  overflow-x: hidden;overflow-y: hidden; display: block; ">
-						      <table
-							       style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
-							     <tr style="background: #2FABE9; color: white;">
-										<td width="23%"></td>
-										<td align="right" width="3%">Discount</td>
-										<td align="right" width="4%">Tax Total</td>
-										<td align="right" width="5%">Sales Amount</td>
-										<td width="18%"></td>
-									</tr>
-								</table>
-			             
-							 <div style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
-							<table class="scroll" id="tblHomeDeliveryWiseTotal"
-								style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
-								class="transTablex col11-center">
-								<tbody>
-										<col style="width: 40%">
-										<col style="width: 19%">
-										<col style="width: 22%">
-										<col style="width: 53%">
-									</table>	
-									
-								</div>
-							</div>
-							
-						</div>
-						 <!-- Table Wise -->
-						<div id="divTableWise"
-                           class="col-sm-9" style="width: 1200px; height: 580px; display: block; background-color: #fff;  "> 
-                          <table class="scroll" style="height: 20px; border: #0F0; width: 1170px;  font-size: 14px; font-weight: bold;">
-						   <thead style="background: #2FABE9; color: white;">
-						         <tr>
-									<td width="5.7%">POS</td>
-									<td width="5.8%">Table Name</td>
-									<td align="left" width="6%">Sales Amount</td>
-									
-							    </tr>
-						 </thead>
-								
-							</table>
-						 <div class="row" style="display: block; height: 85%; margin: auto; overflow-x:  hidden;overflow-y: scroll;  border: 1px solid #ccc;width: 100%;">
-						    <table  class="scroll" id="tblTableWise"
-							style="width: 100%; border: #0F0;">
-									<tbody>
-									<col style="width: 15%">
-									<col style="width: 20%">
-									<col style="width: 50%">
-									</tbody>
-								</table>
-							</div>
-							<div class=""
-						           style="width:1170px; height: 60px;  overflow-x: hidden;overflow-y: hidden; display: block; ">
-						    <table
-							       style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
-							        <tr style="background: #2FABE9; color: white;">
-										<td width="25%"></td>
-										<td align="right" width="15%">Sales Amount</td>
-										<td width="14%"></td>
-									</tr>
-								</table>
-							<div
-							        style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
-							  <table class="scroll" id="tblTableWiseTotal"
-								    style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
-								    class="transTablex col11-center">
-								    <tbody>
-										<col style="width: 45%">
-										<col style="width: 60%">
-									</table>
-								</div>
-							</div>
-						</div> <!-- Hourly Wise -->
-						<div id="divHourlyWise"
-                           class="col-sm-9" style="width: 1200px; height: 580px; display: block;  background-color: #fff;  "> 
-                     
-                        <table class="scroll" style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
-						  <thead style="background: #2FABE9; color: white;">
-						         <tr>
-									<td width="10%">Time Range</td>
-									<td align="left" width="6%">No Of Bills</td>
-									<td align="left" width="6%">No Of PAX</td>
-									<td align="right" width="6%">Sales Amount</td>
-									<td align="right" width="9%">Sales (%)</td>
-									<td align="left" width="1%"></td>
-								 </tr>
-						   </thead>		
-						   	</table>
-			           <div class="row" style="display: block; height: 85%; margin: auto; overflow-x: hidden;overflow-y: scroll;   border: 1px solid #ccc; width: 100%;">
-						    <table  class="scroll" id="tblHourlyWise"
-							  style="width: 100%; border: #0F0;">
-									<tbody>
-									<col style="width: 19%">
-									<col style="width: 20%">
-									<col style="width: 20%">
-									<col style="width: 20%">
-									<col style="width: 40%">
-									<col style="width: 20%">
-								
-								</table>
-							</div>
-							<div class=""
-						             style="width:1170px; height: 60px;  overflow-x: hidden;overflow-y: hidden; display: block; ">
-						        <table
-							         style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
-							     <tr style="background: #2FABE9; color: white;">
-										<td width="20%"></td>
-										<td align="left" width="12%">Total No Of Bills</td>
-										<td align="left" width="18%">Total No Of PAX</td>
-										<td align="left" width="15%">Sales Amount</td>
-										<td width="10%"></td>
-									</tr>
-								</table>
-								<div
-							style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
-							<table class="scroll" id="tblHourlyWiseTotal"
-								style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
-								class="transTablex col11-left">
-								    <tbody>
-										<col style="width: 7.7%">
-										<col style="width: 4.5%">
-										<col style="width: 8%">
-										<col style="width: 10%">
-                                    </tbody>
-									</table>
-								</div>
-							</div>
-						</div> <!-- Area Wise -->
-						<div id="divAreaWise"
-                           class="col-sm-9" style="width: 1200px; height: 580px; display: block;  background-color: #fff; "> 
-                        <table class="scroll" style="height: 20px; border: #0F0; width: 1170px; font-size: 14px;font-weight: bold;">
-						  <thead style="background: #2FABE9; color: white;">
-						         <tr>
-									<td width="6%">POS</td>
-									<td width="10%">Area Name</td>
-									<td align="left" width="6%">Sales Amount</td>
-									<td align="left" width="1%"></td>
-									
-								</tr>
-							</table>
-							<div class="row" style="display: block; height: 85%; margin: auto; overflow-x: hidden;overflow-y: scroll;  border: 1px solid #ccc; width: 100%;">
-						    <table  class="scroll" id="tblAreaWise"
-							  style="width: 100%; border: #0F0;">
-									<tbody>
-									<col style="width: 26.5%">
-									<col style="width: 29%">
-									<col style="width: 45%">
-									</tbody>
-								</table>
-							</div>
-							<div class=""
-						             style="width:1170px; height: 60px; overflow-x: hidden;overflow-y: hidden; display: block; ">
-						        <table
-							         style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
-							     <tr style="background: #2FABE9; color: white;">
-										<td width="42%"></td>
-										<td align="right" width="15%">Sales Amount</td>
-										<td width="15%"></td>
 
-									</tr>
-								</table>
-								<div
-							style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
-							<table class="scroll" id="tblAreaWiseTotal"
-								style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
-								class="transTablex col11-center">
-								    <tbody>
-										<col style="width: 50%">
-										<col style="width: 47%">
-									</table>
-								</div>
-							</div>
-						</div> <!-- Day Wise -->
-						<div id="divDayWiseSales"
-                           class="col-sm-9" style="width: 1200px; height: 580px; display: block;  background-color: #fff;  "> 
-                        <table class="scroll" style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
-						  <thead style="background: #2FABE9; color: white;">
-						         <tr>
-									<td width="8%">Bill Date</td>
-									<td align="left" width="6%">No Of Bill</td>
-									<td align="right" width="5%">Sub Total</td>
-									<td align="right" width="8%">Discount</td>
-									<td align="right" width="8%">Tax Amount</td>
-									<td align="right" width="8%">Grand Amount</td>
-									<td align="right" width="1%"></td>
-									
-								</tr>
-							</table>
-							 <div class="row" style="display: block; height: 85%; margin: auto; overflow-x: hidden;overflow-y: scroll;   border: 1px solid #ccc; width: 100%;">
-						    <table  class="scroll" id="tblDayWiseSales"
-							  style="width: 100%; border: #0F0;">
-									<tbody>
-									<col style="width: 10%">
-									<col style="width: 17%">
-									<col style="width: 17%">
-									<col style="width: 17%">
-									<col style="width: 22%">
-									<col style="width: 22%">
-									</tbody>
-								</table>
-							</div>
-								<div class=""
-						             style="width:1170px; height: 60px;  overflow-x: hidden;overflow-y: hidden; display: block; ">
-						        <table
-							         style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
-							     <tr style="background: #2FABE9; color: white;">
-										<td width="3%"></td>
-										<td align="right" width="13%">Total Bill</td>
-										<td align="right" width="13%">Sub Total</td>
-										<td align="right" width="14%">Total Discount</td>
-										<td align="right" width="12%">Tax Total</td>
-										<td align="right" width="12%">Total Amount</td>
-										<td width="2%"></td>
-
-									</tr>
-								</table>
-								<div
-							style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
-							<table class="scroll" id="tblDayWiseSalesTotal"
-								style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
-								class="transTablex col11-center">
-								    <tbody>
-										<col style="width: 11%">
-										<col style="width: 15%">
-										<col style="width: 20%">
-										<col style="width: 17%">
-										<col style="width: 12%">
-										<col style="width: 20%">
-									</table>
-								</div>
-							</div>
-						</div> <!-- Tax Wise -->
-						<div id="divTaxWiseSales"
-                           class="col-sm-9" style="width: 1200px; height: 580px; display: block;  background-color: #fff; "> 
-                        <table class="scroll" style="height: 20px; border: #0F0; width: 1170px;font-size: 14px; font-weight: bold;">
-						  <thead style="background: #2FABE9; color: white;">
-						         <tr>
-									<td width="5.6%">Bill No</td>
-									<td align="left" width="6%">Bill Date</td>
-									<td width="5%">Tax Code</td>
-									<td align="right" width="5%">Tax Name</td>
-									<td align="right" width="7.6%">Tax Percentage</td>
-									<td align="right" width="8.6%">Taxable Amount</td>
-									<td align="right" width="8.5%">Tax Amount</td>
-									<td align="right" width="1%"></td>
-									
-								</tr>
-								</thead>
-							</table>
-							 <div class="row" style="display: block; height: 85%; margin: auto; overflow-x:  hidden;overflow-y: scroll;  border: 1px solid #ccc; width: 100%;">
-						    <table  class="scroll" id="tblTaxWiseSales"
-							  style="width: 100%; border: #0F0;">
-									<tbody>
-									<col style="width: 10.5%">
-									<col style="width: 14.4%">
-									<col style="width: 15.9%">
-									<col style="width: 13%">
-									<col style="width: 15%">
-									<col style="width: 15%">
-									<col style="width: 15%">
-									</tbody>
-								</table>
-							</div>
-								<div class=""
-						             style="width:1170px; height: 60px;  overflow-x: hidden;overflow-y: hidden; display: block; ">
-						        <table
-							         style="height: 20px; border: #0F0; width: 100%; font-size: 14px;font-weight: bold;">
-							     <tr style="background: #2FABE9; color: white;">
-										<td width="30%"></td>
-										<td align="right" width="12%">Total Taxable</td>
-										<td align="right" width="9%">Total Tax</td>
-										<td width="1%"></td>
-									</tr>
-								</table>
-									<div
-							style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
-							<table class="scroll" id="tblTaxWiseSalesTotal"
-								style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
-								class="transTablex col11-center">
-								    <tbody>
-										<col style="width: 100%">
-										<col style="width: 30%">
-										<col style="width: 25%">
-									</table>
-								</div>
-							</div>
-						</div> <!-- Tip wise -->
-						<div id="divTipReport"
-                           class="col-sm-9" style="width: 1200px; height: 580px; display: block;  0px; background-color: #fff; "> 
-                        <table class="scroll" style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
-						  <thead style="background: #2FABE9; color: white;">
-						         <tr>
-									<td width="6.8%">Bill No</td>
-									<td width="6.7%">Date</td>
-									<td width="4.3%">Bill Time</td>
-									<td width="6%">POS Code</td>
-									<td width="5%">Set Mode</td>
-									<td align="right" width="5%">Disc %</td>
-									<td align="right" width="6%">Disc Amt</td>
-									<td align="right" width="7%">Sub Total</td>
-									<td align="right" width="6%">Tax Amt</td>
-									<td align="right" width="6%">Tip Amt</td>
-									<td align="right" width="7%">Sales Amount</td>
-									<td align="right" width="1%"></td>
-									
-								</tr>
-							</thead>	
-							</table>
-				       <div class="row" style="display: block; height: 85%; margin: auto; overflow-x:hidden;overflow-y: scroll;   border: 1px solid #ccc;  width: 100%;">
-						    <table  class="scroll" id="tblTipReport"
-							  style="width: 100%; border: #0F0;">
-									<tbody>
-									<col style="width: 6%">
-									<col style="width: 6%">
-									<col style="width: 6%">
-									<col style="width: 6%">
-									<col style="width: 6%">
-									<col style="width: 6%">
-									<col style="width: 6%">
-									<col style="width: 6%">
-									<col style="width: 6%">
-									<col style="width: 6%">
-									<col style="width: 6%">
-									</tbody>
-								</table>
-							</div>							
-							<div class=""
-						             style="width:1170px; height: 60px;  overflow-x: hidden;overflow-y: hidden; display: block; ">
-						        <table
-							         style="height: 20px; border: #0F0; width: 100%; font-size: 14px;font-weight: bold;">
-							     <tr style="background: #2FABE9; color: white;">									
-										<td align="right" width="53%">Discount</td>
-										<td align="right" width="7%">Sub Total</td>
-										<td align="right" width="9%">Tax Total</td>
-										<td align="right" width="8%">Tip Amount</td>
-										<td align="right" width="8%">Sales Amount</td>
-										<td align="right" width="1%"></td>
+									<div class="row"
+										style="display: block; height: 85%; margin-left: -1.1%; border: 1px solid #ccc; overflow-x: hidden; overflow-y: scroll; width: 160%;">
+										<table class="scroll" id="tblBillWise"
+											style="width: 100%; border: #0F0;">
+											<tbody>
+											<col style="width: 1%">
+											<col style="width: 3.2%">
+											<col style="width: 3.5%">
+											<col style="width: 4.5%">
+											<col style="width: 5.7%">
+											<col style="width: 4.2%">
+											<col style="width: 2.2%">
+											<col style="width: 1.2%">
+											<col style="width: 4%">
+											<col style="width: 3.5%">
+											<col style="width: 4%">
+											<col style="width: 3.9%">
+											<col style="width: 3.5%">
+											<col style="width: 4%">
+											<col style="width: 3.7%">
+											<col style="width: 3.8%">
+											<col style="width: 4.2%">
+											<col style="width: 4%">
+											<col style="width: 3%">
+											<col style="width: 3%">
+											<col style="width: 3%">
+											<col style="width: 4.5%">
+											</tbody>
+										</table>
+									</div>
+									<div class=""
+										style="width: 160%; height: 60px; overflow-x: hidden; overflow-y: hidden; display: block; margin-left: -1.1%;">
+										<table
+											style="height: 20px; border: #0F0; width: 100%; font-size: 15px; font-weight: bold;">
+											<tr style="background: #2FABE9; color: white;">
+												<td width="11.3%"></td>
+												<td align="right" width="11.5%">Sub Total</td>
+												<td width="1%"></td>
+												<td align="right" width="3.2%">Disc</td>
+												<td align="right" width="2.5%">Tax Total</td>
+												<td align="right" width="2.5%">Adv. Total</td>
+												<td align="right" width="2.5%">Sales Amt</td>
+												<td align="right" width="2.2%">Round Off</td>
+												<td align="right" width="5%">Tip Amount</td>
+												<td align="right" width="7%">PAX</td>
+												<td align="right" width="4%"></td>
 
 
-									</tr>
-								</table>
-						    <div
-							       style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
-							    <table class="scroll" id="tblTipReportTotal"
-								    style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
-								     class="transTablex col11-center">
-								     <tbody>
-										<col style="width: 93%">
-										<col style="width: 19%">
-										<col style="width: 19%">
-										<col style="width: 18%">
-										<col style="width: 18%">
-										<col style="width: 25%">
-									</table>
-								</div>
-							</div>
-						</div> <!-- Item Modifier Wise -->
-						<div id="divItemModifierWise"
-                           class="col-sm-9" style="width: 1200px; height: 580px; display: block; margin-left: 2px;  margin-top: 0px; background-color: #fff;  "> 
-                          <table class="scroll" style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
-						    <thead style="background: #2FABE9; color: white;">
-						         <tr>
-									<td width="12%">Modifier Name</td>
-									<td width="8%">POS</td>
-									<td align="right" width="5%">Quantity</td>
-									<td align="right" width="11%">Sales Amount</td>
-									<td align="right" width="1%"></td>
-								</tr>
-							</thead>	
-							</table>
-						 <div class="row" style="display: block; height: 85%; margin: auto; overflow-x: hidden;overflow-y: scroll;  border: 1px solid #ccc;  width: 100%;">
-						    <table  class="scroll" id="tblItemModifierWise"
-							  style="width: 100%; border: #0F0;">
-									<tbody>
-									<col style="width: 29%">
-									<col style="width: 19%">
-									<col style="width: 17%">
-									<col style="width: 10%">
-									</tbody>
-								</table>
-							</div>
-						 <div class=""
-						           style="width:1170px; height: 60px; overflow-x: hidden;overflow-y: hidden; display: block; ">
-						        <table
-							       style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
-							       <tr style="background: #2FABE9; color: white;">
-										<td width="30%"></td>
-										<td align="right" width="13%">Quantity</td>
-										<td align="right" width="18%">Sales Amount</td>
-										<td width="1%"></td>
+											</tr>
+										</table>
+										<div
+											style="border: 1px solid #ccc; display: block; height: 26px; margin: auto; width: 100%;">
+											<table class="scroll" id="tblBillWiseTotal"
+												style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
+												class="transTablex col11-center">
+												<tbody>
+												<col style="width: 33%">
+												<col style="width: 10%">
+												<col style="width: 5%">
+												<col style="width: 8%">
+												<col style="width: 5%">
+												<col style="width: 5.5%">
+												<col style="width: 6%">
+												<col style="width: 5%">
+
+											</table>
+										</div>
+									</div>
+								</div> <!-- Item wise table id="divItemWise"-->
 
 
-									</tr>
-								</table>
-						  <div
-							      style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
-							   <table class="scroll" id="tblItemModifierWiseTotal"
-								  style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
-								  class="transTablex col11-center">
-								<tbody>
-										<col style="width: 55%">
-										<col style="width: 30%">
-										<col style="width: 35%">
-									</table>
-								</div>
-							</div>
-						</div> <!-- MenuHeadWiseWithModifier -->
-					    <div id="divMenuHeadWiseWithModifier"
-                            class="col-sm-9" style="width: 1200px; height: 580px; display: block; 0px; background-color: #fff;  "> 
-                           <table class="scroll" style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
-						      <thead style="background: #2FABE9; color: white;">
-						         <tr>
-									<td width="13%">Menu Name</td>
-									<td align="left" width="12%">POS</td>
-									<td align="left" width="12%">Quantity</td>
-									<td align="left" width="10.5%">Sales Amount</td>
-									<td align="right" width="1%"></td>
-								</tr>
-							</table>
-                       <div class="row" style="display: block; height: 85%; margin: auto; overflow-x:hidden;overflow-y: scroll;   border: 1px solid #ccc;  width: 100%;">
-						    <table  class="scroll" id="tblMenuHeadWiseWithModifier"
-							  style="width: 100%; border: #0F0;">
-									<tbody>
-									<col style="width: 15%">
-									<col style="width: 15%">
-									<col style="width: 15%">
-									<col style="width: 40%">
-									</tbody>
-								</table>
-							</div>
-							 <div class=""
-						           style="width:1170px; height: 60px; overflow-x: hidden;overflow-y: hidden; display: block; ">
-						        <table
-							       style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
-							       <tr style="background: #2FABE9; color: white;">
-										<td width="8%"></td>
-										<td align="right" width="21%">Quantity</td>
-										<td width="1%"></td>
-										<td align="right" width="14%">Sales Amount</td>
-										<td width="8%"></td>
+								<div id="divItemWise" class="col-sm-9"
+									style="width: 1200px; height: 580px; display: block; background-color: #fff;">
 
-									</tr>
-								</table>
-							<div
-							     style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
-							        <table class="scroll" id="tblMenuHeadWiseWithModifierTotal"
-								   style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
-								   class="transTablex col11-center">
-								     <tbody>
-										<col style="width: 30%">
-										<col style="width: 25%">
-										<col style="width: 30%">
-									</table>
-								</div>
-							</div>
-						</div> <!-- Item Wise Hourly -->
-						<div id="divItemHourlyWise"
-                           class="col-sm-9" style="width: 1200px; height: 580px; display: block; background-color: #fff; "> 
-                          <table class="scroll" style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
-						    <thead style="background: #2FABE9; color: white;">
-						         <tr>
-									<td width="14.5%">Time Range</td>
-									<td align="left" width="16%">Item Name</td>
-									<td align="right" width="4.5%">Quantity</td>
-									<td width="7%"></td>
-									<td align="right" width="5%">Item Amount</td>
-									<td width="8%"></td>
-									<td align="left" width="5%">Discount</td>
-									<td align="right" width="1%"></td>
-								</tr>
-							</table>
-						<div class="row" style="display: block; height: 85%; margin: auto; overflow-x: hidden;overflow-y: scroll;   border: 1px solid #ccc; width: 100%;">
-						    <table  class="scroll" id="tblItemHourlyWise"
-							  style="width: 100%; border: #0F0;">
-									<tbody>
-									<col style="width: 5%">
-									<col style="width: 20%">
-									<col style="width: 25%">
-									<col style="width: 15%">
-									<col style="width: 30%">
-									</tbody>
-								</table>
-							</div>
-							<div class=""
-						           style="width:1170px; height: 60px; overflow-x: hidden;overflow-y: hidden; display: block; ">
-						        <table
-							       style="height: 20px; border: #0F0; width: 100%;font-size: 14px; font-weight: bold;">
-							       <tr style="background: #2FABE9; color: white;">
-										<td width="48%"></td>
-										<td align="right" width="12%">Total Quantity</td>
-										<td width="8%"></td>
-										<td align="right" width="10%">Total Amount</td>
-										<td width="8%"></td>
-										<td align="right" width="10%">Total Discount</td>
-										<td width="19%"></td>
-									</tr>
-								</table>
-							<div
-							      style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
-							   <table class="scroll" id="tblItemHourlyWiseTotal"
-								  style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
-								  class="transTablex col11-center">
-								   <tbody>
-										<col style="width: 30%">
-										<col style="width: 15%">
-										<col style="width: 30%">		
-									</table>
-								</div>
-							</div>
-						</div> <!-- Operator Wise -->
-						<div id="divOperatorWise"
-                           class="col-sm-9" style="width: 1200px; height: 580px; display: block; background-color: #fff;  "> 
-                          <table class="scroll" style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
-						    <thead style="background: #2FABE9; color: white;">
-						         <tr>
-									<td width="19%">Operator Code</td>
-									<td width="19%">Operator Name</td>
-									<td width="18%">POS</td>
-									<td width="15%">Payment Mode</td>
-									<td align="right" width="8%">Disc Amount</td>
-									<td width="5%"></td>
-									<td align="left" width="9%">Sales Amount</td>
-									<td align="right" width="1%"></td>
-								</tr>
-							</table>
-						<div class="row" style="display: block; height: 85%; margin: auto; overflow-x:  hidden;overflow-y: scroll;border: 1px solid #ccc; width: 100%;">
-						    <table  class="scroll" id="tblOperatorWise"
-							  style="width: 100%; border: #0F0;">
-									<tbody>
-									<col style="width: 10%">
-									<col style="width: 10%">
-									<col style="width: 15%">
-									<col style="width: 15%">
-									<col style="width: 15%">
-									<col style="width: 20%">
-									</tbody>
-								</table>
-							</div>
-							 <div class=""
-						           style="width:1170px; height: 60px;overflow-x: hidden;overflow-y: hidden; display: block; ">
-						        <table
-							       style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
-							       <tr style="background: #2FABE9; color: white;">
-										<td width="54%"></td>
-										<td align="right" width="25%">Discount Amount</td>
-										<td align="right" width="12%">Sales Amount</td>
-										<td width="1%"></td>
+									<table class="scroll"
+										style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
+										<thead style="background: #2FABE9; color: white;">
+											<tr>
+												<td align="left" width="10.7%">Item Name</td>
+												<td align="right" width="2.5%">POS</td>
+												<td align="right" width="9%">Quantity</td>
+												<td align="right" width="5%">Sub Total</td>
+												<td align="right" width="4.5%">Discount</td>
+												<td align="center" width="4%">Net Total</td>
+											</tr>
+										</thead>
 
-									</tr>
-								</table>
-							 <div
-							      style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
-							   <table class="scroll" id="tblOperatorWiseTotal"
-								  style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
-								  class="transTablex col11-center">
-								<tbody>
-										<col style="width: 70%">
-										<col style="width: 15%">
-										<col style="width: 20%">
 									</table>
-								</div>
-							</div>
-						</div> <!-- Monthly Wise -->
-					<div id="divMonthlySalesFlash"
-                           class="col-sm-9" style="width: 1200px; height: 580px; display: block; background-color: #fff; "> 
-                          <table class="scroll" style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
-						    <thead style="background: #2FABE9; color: white;">
-						         <tr>
-									<td  width="9%">Month</td>
-									<td align="left" width="9%">Year</td>
-									<td align="left" width="6%">Total Sales</td>
-									<td align="right" width="1%"></td>
-								</tr>
-							</table>
-						 <div class="row" style="display: block; height: 85%; margin: auto; overflow-x: hidden;overflow-y: scroll;  border: 1px solid #ccc;  width: 100%;">
-						    <table  class="scroll" id="tblMonthlySalesFlash"
-							  style="width: 100%; border: #0F0;">
-									<tbody>
-									<col style="width: 15%">
-									<col style="width: 15%">
-									<col style="width: 15%">
-									</tbody>
-								</table>
-							</div>
-							  <div class=""
-						           style="width:1170px; height: 60px;  overflow-x: hidden;overflow-y: hidden; display: block; ">
-						        <table
-							       style="height: 20px; border: #0F0; width: 100%; font-size: 14px;font-weight: bold;">
-							       <tr style="background: #2FABE9; color: white;">
-										<td width="25%"></td>
-										<td align="right" width="13%">Total Sale</td>
-										<td width="10%"></td>
+									<div class="row"
+										style="display: block; height: 85%; border: 1px solid #ccc; margin: auto; overflow-x: hidden; overflow-y: scroll; width: 100%;">
+										<table class="scroll" id="tblItemWise"
+											style="width: 100%; border: #0F0;">
+											<tbody>
+											<col style="width: 9%">
+											<col style="width: 10%">
+											<col style="width: 10%">
+											<col style="width: 10%">
+											<col style="width: 10%">
+											<col style="width: 8%">
+											</tbody>
+										</table>
+									</div>
+									<div class=""
+										style="width: 1170px; height: 60px; overflow-x: hidden; overflow-y: hidden; display: block;">
+										<table
+											style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
+											<tr style="background: #2FABE9; color: white;">
+												<td width="47%"></td>
+												<td align="right" width="15%">Quantity</td>
+												<td align="right" width="14%">SubTotal</td>
+												<td align="right" width="13%">Discount</td>
+												<td align="right" width="8%">Net Total</td>
+												<td align="right" width="0%"></td>
 
-									</tr>
-								</table>
-							<div
-							      style=" border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
-							   <table class="scroll" id="tblMonthlySalesFlashTotal"
-								  style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
-								  class="transTablex col11-center">
-								<tbody>
-										<col style="width: 50%">
-										<col style="width: 40%">
+											</tr>
+										</table>
+										<div
+											style="border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
+											<table class="scroll" id="tblItemWiseTotal"
+												style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
+												class="transTablex col11-center">
+												<tbody>
+												<col style="width: 45%">
+												<col style="width: 35%">
+												<col style="width: 25%">
+												<col style="width: 27%">
+												<col style="width: 17%">
+											</table>
+										</div>
+									</div>
+								</div> <!-- MenuHead Wise table -->
+
+								<div id="divMenuHeadWise" class="col-sm-9"
+									style="width: 1200px; height: 580px; display: block; background-color: #fff;">
+
+									<table class="scroll"
+										style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
+										<thead style="background: #2FABE9; color: white;">
+											<tr>
+												<td width="6%">Menu Name</td>
+												<td align="left" width="4%">POS</td>
+												<td align="right" width="3%">Quantity</td>
+												<td align="right" width="6%">Sub Total</td>
+												<td align="right" width="6.5%">Net Total</td>
+												<td align="right" width="6%">Discount</td>
+												<td align="right" width="6%">Sales (%)</td>
+												<td align="left" width="1.8%"></td>
+											</tr>
+										</thead>
 									</table>
-								</div>
-							</div>
-						</div> <!-- All Tables End Here -->
-					</td>
-				</tr>
-				<!-- <tr>
+									<div class="row"
+										style="display: block; height: 85%; margin: auto; border: 1px solid #ccc; overflow-x: hidden; overflow-y: scroll; width: 100%;">
+										<table class="scroll" id="tblMenuHeadWise"
+											style="width: 100%; border: #0F0;">
+											<tbody>
+											<col style="width: 15%">
+											<col style="width: 10%">
+											<col style="width: 19%">
+											<col style="width: -10%">
+											<col style="width: 15%">
+											<col style="width: 19%">
+											<col style="width: 8.8%">
+											</tbody>
+										</table>
+									</div>
+									<div class=""
+										style="width: 1170px; height: 60px; overflow-x: hidden; overflow-y: hidden; display: block;">
+										<table
+											style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
+											<tr style="background: #2FABE9; color: white;">
+												<td width="15.4%"></td>
+												<td align="right" width="15.9%">Quantity</td>
+												<td align="right" width="13.5%">Sub Total</td>
+												<td align="right" width="14.8%">Net Total</td>
+												<td align="right" width="14.2%">Discount</td>
+												<td width="17.9%"></td>
+
+											</tr>
+										</table>
+										<div
+											style="border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
+											<table class="scroll" id="tblMenuHeadWiseTotal"
+												style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
+												class="transTablex col11-center">
+												<tbody>
+												<col style="width: 24%">
+												<col style="width: 19%">
+												<col style="width: 20%">
+												<col style="width: 18%">
+												<col style="width: 28%">
+
+
+											</table>
+										</div>
+									</div>
+								</div> <!-- Group wise table -->
+
+
+
+								<div id="divGroupWise" class="col-sm-9"
+									style="width: 1200px; height: 580px; display: block; background-color: #fff;">
+
+									<table class="scroll"
+										style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
+										<thead style="background: #2FABE9; color: white;">
+											<tr>
+												<td width="5.82%">Group Name</td>
+												<td width="6.5%">POS</td>
+												<td align="left" width="5.5%">Quantity</td>
+												<td align="right" width="5%">Sub Total</td>
+												<td align="right" width="6.5%">Net Total</td>
+												<td align="right" width="6%">Discount</td>
+												<td align="right" width="4.5%">Sales (%)</td>
+												<td align="left" width="1%"></td>
+											</tr>
+										</thead>
+
+									</table>
+
+									<div class="row"
+										style="display: block; height: 85%; border: 1px solid #ccc; margin: auto; overflow-x: hidden; overflow-y: scroll; width: 100%;">
+										<table class="scroll" id="tblGroupWise"
+											style="width: 100%; border: #0F0;">
+											<tbody>
+											<col style="width: 12%">
+											<col style="width: 7.9%">
+											<col style="width: 9%">
+											<col style="width: 9%">
+											<col style="width: 10%">
+											<col style="width: 10%">
+											<col style="width: 7%">
+											</tbody>
+										</table>
+									</div>
+									<div class=""
+										style="width: 1170px; height: 60px; overflow-x: hidden; overflow-y: hidden; display: block;">
+										<table
+											style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
+											<tr style="background: #2FABE9; color: white;">
+												<td width="18.5%"></td>
+												<td align="right" width="11.5%"></td>
+												<td width="1%" align="right"></td>
+												<td align="right" width="16%">Sub Total</td>
+												<td width="3%" align="right"></td>
+												<td align="right" width="11%">Net Total</td>
+												<td width="3.5%" align="right"></td>
+												<td align="right" width="10%">Discount</td>
+												<td width="11.5%"></td>
+
+											</tr>
+										</table>
+										<div
+											style="border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
+											<table class="scroll" id="tblGroupWiseTotal"
+												style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
+												class="transTablex col11-center">
+												<tbody>
+												<tbody>
+												<col style="width: 15%">
+												<col style="width: 12%">
+												<col style="width: 13%">
+												<col style="width: 13%">
+												<col style="width: 12%">
+											</table>
+										</div>
+									</div>
+								</div> <!-- SubGroup wise table -->
+								<div id="divSubGroupWise" class="col-sm-9"
+									style="width: 1200px; height: 580px; display: block; background-color: #fff;">
+
+									<table class="scroll"
+										style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
+										<thead style="background: #2FABE9; color: white;">
+											<tr>
+												<td width="10.2%">SubGroup Name</td>
+												<td width="6%">POS</td>
+												<td align="right" width="4%">Quantity</td>
+												<td align="right" width="6%">Sub Total</td>
+												<td align="right" width="5.8%">Net Total</td>
+												<td align="right" width="5.2%">Discount</td>
+												<td align="right" width="4.8%">Sales (%)</td>
+												<td align="left" width="1%"></td>
+											</tr>
+										</thead>
+
+									</table>
+									<div class="row"
+										style="display: block; height: 85%; border: 1px solid #ccc; margin: auto; overflow-x: hidden; overflow-y: scroll; width: 100%;">
+										<table class="scroll" id="tblSubGroupWise"
+											style="width: 100%; border: #0F0;">
+											<tbody>
+											<col style="width: 21%">
+											<col style="width: 11%">
+											<col style="width: 11%">
+											<col style="width: 11%">
+											<col style="width: 10.5%">
+											<col style="width: 11.8%">
+											<col style="width: 5%">
+											</tbody>
+										</table>
+									</div>
+									<div class=""
+										style="width: 1170px; height: 60px; overflow-x: hidden; overflow-y: hidden; display: block;">
+										<table
+											style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
+											<tr style="background: #2FABE9; color: white;">
+												<td width="26%"></td>
+												<td align="right" width="10.5%">Quantity</td>
+												<td align="right" width="10.5%">Sub Total</td>
+												<td align="right" width="10.5%">Net Total</td>
+												<td align="right" width="9.5%">Discount</td>
+												<td width="10%"></td>
+
+											</tr>
+										</table>
+										<div
+											style="border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
+											<table class="scroll" id="tblSubGroupWiseTotal"
+												style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
+												class="transTablex col11-center">
+												<tbody>
+												<tbody>
+												<col style="width: 27%">
+												<col style="width: 16%">
+												<col style="width: 18%">
+												<col style="width: 20%">
+												<col style="width: 20%">
+
+											</table>
+										</div>
+									</div>
+								</div> <!-- Customer Wise Bill-->
+
+								<div id="divCustWise" class="col-sm-9"
+									style="width: 1200px; height: 580px; display: block; background-color: #fff;">
+
+									<table class="scroll"
+										style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
+										<thead style="background: #2FABE9; color: white;">
+											<tr>
+												<td width="12%">Customer Name</td>
+												<td align="left" width="8%">Mobile No</td>
+												<td align="left" width="7%">Date Of Birth</td>
+												<td align="left" width="8%">No Of Bills</td>
+												<!-- <td width="6%">Quantity</td> -->
+												<td align="left" width="10%">Sales Amount</td>
+											</tr>
+										</thead>
+
+									</table>
+
+									<div class="row"
+										style="display: block; height: 85%; margin: auto; border: 1px solid #ccc; overflow-x: hidden; overflow-y: scroll; width: 100%;">
+										<table class="scroll" id="tblCustWise"
+											style="width: 100%; border: #0F0;">
+											<tbody>
+											<col style="width: 27%">
+											<col style="width: 18.5%">
+											<col style="width: 13%">
+											<col style="width: 11%">
+
+											</tbody>
+										</table>
+									</div>
+									<div class=""
+										style="width: 1170px; height: 60px; overflow-x: hidden; overflow-y: hidden; display: block;">
+										<table
+											style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
+											<tr style="background: #2FABE9; color: white;">
+												<td width="28%"></td>
+												<td align="right" width="37%">No Of Bills</td>
+												<td align="right" width="22%">Sales Amount</td>
+												<td width="25%"></td>
+											</tr>
+										</table>
+										<div
+											style="border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
+											<table class="scroll" id="tblCustWiseTotal"
+												style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
+												class="transTablex col11-center">
+												<tbody>
+												<col style="width: 27%">
+												<col style="width: 30%">
+												<col style="width: 50%">
+
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div> <!-- Waiter Wise -->
+								<div id="divWaiterWise" class="col-sm-9"
+									style="width: 1200px; height: 580px; display: block; background-color: #fff;">
+
+									<table class="scroll"
+										style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
+										<thead style="background: #2FABE9; color: white;">
+											<tr>
+												<td width="10.4%">POS</td>
+												<td width="8.3%">Waiter Full Name</td>
+												<td align="left" width="10.5%">Waiter Short Name</td>
+												<td align="left" width="6%">No Of Bills</td>
+												<td align="left" width="6%">Sales Amount</td>
+												<td align="left" width="4%"></td>
+											</tr>
+										</thead>
+
+									</table>
+
+									<div class="row"
+										style="display: block; height: 85%; margin: auto; border: 1px solid #ccc; overflow-x: hidden; overflow-y: scroll; width: 100%;">
+										<table class="scroll" id="tblWaiterWise"
+											style="width: 100%; border: #0F0;">
+											<tbody>
+											<col style="width: 3%">
+											<col style="width: 1%">
+											<col style="width: 12%">
+											<col style="width: 5%">
+											<col style="width: 25%">
+											</tbody>
+										</table>
+									</div>
+									<div class=""
+										style="width: 1170px; height: 60px; overflow-x: hidden; overflow-y: hidden; display: block;">
+										<table
+											style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
+											<tr style="background: #2FABE9; color: white;">
+												<td width="38%"></td>
+												<td align="right" width="6%">Sales Amount</td>
+												<td width="8%"></td>
+											</tr>
+										</table>
+										<div
+											style="border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
+											<table class="scroll" id="tblWaiterWiseTotal"
+												style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
+												class="transTablex col11-center">
+												<tbody>
+												<col style="width: 35%">
+												<col style="width: 15%">
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div> <!-- Delivery Boy Wise -->
+								<div id="divDeliveryBoyWise" class="col-sm-9"
+									style="width: 1200px; height: 580px; display: block; background-color: #fff;">
+
+									<table class="scroll"
+										style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
+										<thead style="background: #2FABE9; color: white;">
+											<tr>
+												<td width="14%">Delivery Boy Name</td>
+												<td align="left" width="16%">POS</td>
+												<td align="right" width="9%">Sales Amount</td>
+												<td align="right" width="16%">Delivery Charges</td>
+												<td align="left" width="1%"></td>
+											</tr>
+										</thead>
+
+
+									</table>
+									<div class="row"
+										style="display: block; height: 85%; margin: auto; border: 1px solid #ccc; overflow-x: hidden; overflow-y: scroll; width: 100%;">
+										<table class="scroll" id="tblDeliveryBoyWise"
+											style="width: 100%; border: #0F0;">
+											<tbody>
+											<col style="width: 6%">
+											<col style="width: 6%">
+											<col style="width: 6%">
+											<col style="width: 6%">
+											</tbody>
+										</table>
+									</div>
+									<div class=""
+										style="width: 1170px; height: 60px; overflow-x: hidden; overflow-y: hidden; display: block;">
+										<table
+											style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
+											<tr style="background: #2FABE9; color: white;">
+												<td width="30%"></td>
+												<td align="right" width="15%">Sales Amount</td>
+												<td width="19%"></td>
+
+											</tr>
+										</table>
+										<div
+											style="border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
+											<table class="scroll" id="tblDeliveryBoyWiseTotal"
+												style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
+												class="transTablex col11-center">
+												<tbody>
+												<col style="width: 23%">
+												<col style="width: 30%">
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div> <!-- Cost Centre -->
+								<div id="divCostCenterWise" class="col-sm-9"
+									style="width: 1200px; height: 580px; display: block; background-color: #fff;">
+
+									<table class="scroll"
+										style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
+										<thead style="background: #2FABE9; color: white;">
+											<tr>
+												<td width="8%">Cost Centre Name</td>
+												<td width="7.2%">POS</td>
+												<td align="left" width="5%">Quantity</td>
+												<td align="right" width="5%">SubTotal</td>
+												<td align="right" width="8%">Sales Amount</td>
+												<td align="right" width="7%">Discount</td>
+												<td align="right" width="5.9%">Sales (%)</td>
+												<td align="left" width="1%"></td>
+											</tr>
+										</thead>
+									</table>
+									<div class="row"
+										style="display: block; height: 85%; margin: auto; overflow-x: hidden; border: 1px solid #ccc; overflow-y: scroll; width: 100%;">
+										<table class="scroll" id="tblCostCenterWise"
+											style="width: 100%; border: #0F0;">
+											<tbody>
+											<col style="width: 16%">
+											<col style="width: 13%">
+											<col style="width: 16%">
+											<col style="width: 15%">
+											<col style="width: 10%">
+											<col style="width: 13%">
+											<col style="width: 25%">
+											</tbody>
+										</table>
+									</div>
+									<div class=""
+										style="width: 1170px; height: 60px; overflow-x: hidden; overflow-y: hidden; display: block;">
+										<table
+											style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
+											<tr style="background: #2FABE9; color: white;">
+												<td width="21%"></td>
+												<td align="right" width="15%">Quantity</td>
+												<td align="right" width="17.5%">Sub Total</td>
+												<td align="right" width="17%">Sales Amount</td>
+												<td align="right" width="16%">Discount</td>
+												<td width="18%"></td>
+											</tr>
+										</table>
+										<div
+											style="border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
+											<table class="scroll" id="tblCostCenterWiseTotal"
+												style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
+												class="transTablex col11-center">
+												<tbody>
+												<col style="width: 15%">
+												<col style="width: 12%">
+												<col style="width: 14%">
+												<col style="width: 13%">
+												<col style="width: 22%">
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div> <!-- Home Delivery Wise -->
+								<div id="divHomeDeliveryWise" class="col-sm-9"
+									style="width: 1200px; height: 580px; display: block; background-color: #fff;">
+									<table class="scroll"
+										style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
+										<thead style="background: #2FABE9; color: white;">
+											<tr>
+												<td width="4.8%">Bill No</td>
+												<td width="4%">POS</td>
+												<td align="left" width="3.8%">Date</td>
+												<td align="left" width="4.6%">Settle Mode</td>
+												<td align="right" width="5%">Delivery Charges</td>
+												<td align="right" width="4.5%">Disc Amt</td>
+												<td align="right" width="3.6%">Tax Amt</td>
+												<td align="center" width="6%">Amount</td>
+												<td width="4%">Customer Name</td>
+												<td align="right" width="1%">Building</td>
+												<td align="right" width="7%">Delv Boy</td>
+												<td align="left" width="2.5%"></td>
+											</tr>
+										</thead>
+									</table>
+									<div class="row"
+										style="display: block; height: 85%; margin: auto; overflow-x: hidden; overflow-y: scroll; border: 1px solid #ccc; width: 100%;">
+										<table class="scroll" id="tblHomeDeliveryWise"
+											style="width: 100%; border: #0F0;">
+											<tbody>
+											<col style="width: 9.8%">
+											<col style="width: 8%">
+											<col style="width: 8%">
+											<col style="width: 10%">
+											<col style="width: 10%">
+											<col style="width: 8%">
+											<col style="width: 9%">
+											<col style="width: 5%">
+											<col style="width: 16%">
+											<col style="width: 14%">
+											<col style="width: 4%">
+											</tbody>
+										</table>
+									</div>
+									<div class=""
+										style="width: 1170px; height: 60px; overflow-x: hidden; overflow-y: hidden; display: block;">
+										<table
+											style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
+											<tr style="background: #2FABE9; color: white;">
+												<td width="23%"></td>
+												<td align="right" width="3%">Discount</td>
+												<td align="right" width="4%">Tax Total</td>
+												<td align="right" width="5%">Sales Amount</td>
+												<td width="18%"></td>
+											</tr>
+										</table>
+
+										<div
+											style="border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
+											<table class="scroll" id="tblHomeDeliveryWiseTotal"
+												style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
+												class="transTablex col11-center">
+												<tbody>
+												<col style="width: 40%">
+												<col style="width: 19%">
+												<col style="width: 22%">
+												<col style="width: 53%">
+											</table>
+
+										</div>
+									</div>
+
+								</div> <!-- Table Wise -->
+								<div id="divTableWise" class="col-sm-9"
+									style="width: 1200px; height: 580px; display: block; background-color: #fff;">
+									<table class="scroll"
+										style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
+										<thead style="background: #2FABE9; color: white;">
+											<tr>
+												<td width="5.7%">POS</td>
+												<td width="5.8%">Table Name</td>
+												<td align="left" width="6%">Sales Amount</td>
+
+											</tr>
+										</thead>
+
+									</table>
+									<div class="row"
+										style="display: block; height: 85%; margin: auto; overflow-x: hidden; overflow-y: scroll; border: 1px solid #ccc; width: 100%;">
+										<table class="scroll" id="tblTableWise"
+											style="width: 100%; border: #0F0;">
+											<tbody>
+											<col style="width: 15%">
+											<col style="width: 20%">
+											<col style="width: 50%">
+											</tbody>
+										</table>
+									</div>
+									<div class=""
+										style="width: 1170px; height: 60px; overflow-x: hidden; overflow-y: hidden; display: block;">
+										<table
+											style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
+											<tr style="background: #2FABE9; color: white;">
+												<td width="25%"></td>
+												<td align="right" width="15%">Sales Amount</td>
+												<td width="14%"></td>
+											</tr>
+										</table>
+										<div
+											style="border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
+											<table class="scroll" id="tblTableWiseTotal"
+												style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
+												class="transTablex col11-center">
+												<tbody>
+												<col style="width: 45%">
+												<col style="width: 60%">
+											</table>
+										</div>
+									</div>
+								</div> <!-- Hourly Wise -->
+								<div id="divHourlyWise" class="col-sm-9"
+									style="width: 1200px; height: 580px; display: block; background-color: #fff;">
+
+									<table class="scroll"
+										style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
+										<thead style="background: #2FABE9; color: white;">
+											<tr>
+												<td width="9.5%">Time Range</td>
+												<td align="left" width="5.5%">No Of Bills</td>
+												<td align="left" width="6%">No Of PAX</td>
+												<td align="right" width="6%">Sales Amount</td>
+												<td align="right" width="9%">Sales (%)</td>
+												<td align="left" width="1%"></td>
+											</tr>
+										</thead>
+									</table>
+									<div class="row"
+										style="display: block; height: 85%; margin: auto; overflow-x: hidden; overflow-y: scroll; border: 1px solid #ccc; width: 100%;">
+										<table class="scroll" id="tblHourlyWise"
+											style="width: 100%; border: #0F0;">
+											<tbody>
+											<col style="width: 19%">
+											<col style="width: 19%">
+											<col style="width: 20%">
+											<col style="width: 20%">
+											<col style="width: 40%">
+											<col style="width: 20%">
+
+										</table>
+									</div>
+									<div class=""
+										style="width: 1170px; height: 60px; overflow-x: hidden; overflow-y: hidden; display: block;">
+										<table
+											style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
+											<tr style="background: #2FABE9; color: white;">
+												<td width="20%"></td>
+												<td align="left" width="12%">No Of Bills</td>
+												<td align="left" width="20%">No Of PAX</td>
+												<td align="left" width="15%">Sales Amount</td>
+												<td width="10%"></td>
+											</tr>
+										</table>
+										<div
+											style="border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
+											<table class="scroll" id="tblHourlyWiseTotal"
+												style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
+												class="transTablex col11-left">
+												<tbody>
+												<col style="width: 7%">
+												<col style="width: 4.5%">
+												<col style="width: 8%">
+												<col style="width: 10%">
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div> <!-- Area Wise -->
+								<div id="divAreaWise" class="col-sm-9"
+									style="width: 1200px; height: 580px; display: block; background-color: #fff;">
+									<table class="scroll"
+										style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
+										<thead style="background: #2FABE9; color: white;">
+											<tr>
+												<td width="6%">POS</td>
+												<td width="10%">Area Name</td>
+												<td align="left" width="6%">Sales Amount</td>
+												<td align="left" width="1%"></td>
+
+											</tr>
+									</table>
+									<div class="row"
+										style="display: block; height: 85%; margin: auto; overflow-x: hidden; overflow-y: scroll; border: 1px solid #ccc; width: 100%;">
+										<table class="scroll" id="tblAreaWise"
+											style="width: 100%; border: #0F0;">
+											<tbody>
+											<col style="width: 26.5%">
+											<col style="width: 29%">
+											<col style="width: 45%">
+											</tbody>
+										</table>
+									</div>
+									<div class=""
+										style="width: 1170px; height: 60px; overflow-x: hidden; overflow-y: hidden; display: block;">
+										<table
+											style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
+											<tr style="background: #2FABE9; color: white;">
+												<td width="42%"></td>
+												<td align="right" width="15%">Sales Amount</td>
+												<td width="15%"></td>
+
+											</tr>
+										</table>
+										<div
+											style="border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
+											<table class="scroll" id="tblAreaWiseTotal"
+												style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
+												class="transTablex col11-center">
+												<tbody>
+												<col style="width: 50%">
+												<col style="width: 47%">
+											</table>
+										</div>
+									</div>
+								</div> <!-- Day Wise -->
+								<div id="divDayWiseSales" class="col-sm-9"
+									style="width: 1200px; height: 580px; display: block; background-color: #fff;">
+									<table class="scroll"
+										style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
+										<thead style="background: #2FABE9; color: white;">
+											<tr>
+												<td width="8%">Bill Date</td>
+												<td align="left" width="6%">No Of Bill</td>
+												<td align="right" width="5%">Sub Total</td>
+												<td align="right" width="8%">Discount</td>
+												<td align="right" width="8%">Tax Amount</td>
+												<td align="right" width="8%">Grand Amount</td>
+												<td align="right" width="1%"></td>
+
+											</tr>
+									</table>
+									<div class="row"
+										style="display: block; height: 85%; margin: auto; overflow-x: hidden; overflow-y: scroll; border: 1px solid #ccc; width: 100%;">
+										<table class="scroll" id="tblDayWiseSales"
+											style="width: 100%; border: #0F0;">
+											<tbody>
+											<col style="width: 10%">
+											<col style="width: 17%">
+											<col style="width: 17%">
+											<col style="width: 17%">
+											<col style="width: 22%">
+											<col style="width: 22%">
+											</tbody>
+										</table>
+									</div>
+									<div class=""
+										style="width: 1170px; height: 60px; overflow-x: hidden; overflow-y: hidden; display: block;">
+										<table
+											style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
+											<tr style="background: #2FABE9; color: white;">
+												<td width="3%"></td>
+												<td align="right" width="13%">Total Bill</td>
+												<td align="right" width="13%">Sub Total</td>
+												<td align="right" width="14%">Total Discount</td>
+												<td align="right" width="12%">Tax Total</td>
+												<td align="right" width="12%">Total Amount</td>
+												<td width="2%"></td>
+
+											</tr>
+										</table>
+										<div
+											style="border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
+											<table class="scroll" id="tblDayWiseSalesTotal"
+												style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
+												class="transTablex col11-center">
+												<tbody>
+												<col style="width: 11%">
+												<col style="width: 15%">
+												<col style="width: 20%">
+												<col style="width: 17%">
+												<col style="width: 12%">
+												<col style="width: 20%">
+											</table>
+										</div>
+									</div>
+								</div> <!-- Tax Wise -->
+								<div id="divTaxWiseSales" class="col-sm-9"
+									style="width: 1200px; height: 580px; display: block; background-color: #fff;">
+									<table class="scroll"
+										style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
+										<thead style="background: #2FABE9; color: white;">
+											<tr>
+												<td width="5.6%">Bill No</td>
+												<td align="left" width="6%">Bill Date</td>
+												<td width="5%">Tax Code</td>
+												<td align="right" width="5%">Tax Name</td>
+												<td align="right" width="7.6%">Tax Percentage</td>
+												<td align="right" width="8.6%">Taxable Amount</td>
+												<td align="right" width="8.5%">Tax Amount</td>
+												<td align="right" width="1%"></td>
+
+											</tr>
+										</thead>
+									</table>
+									<div class="row"
+										style="display: block; height: 85%; margin: auto; overflow-x: hidden; overflow-y: scroll; border: 1px solid #ccc; width: 100%;">
+										<table class="scroll" id="tblTaxWiseSales"
+											style="width: 100%; border: #0F0;">
+											<tbody>
+											<col style="width: 10.5%">
+											<col style="width: 14.4%">
+											<col style="width: 15.9%">
+											<col style="width: 13%">
+											<col style="width: 15%">
+											<col style="width: 15%">
+											<col style="width: 15%">
+											</tbody>
+										</table>
+									</div>
+									<div class=""
+										style="width: 1170px; height: 60px; overflow-x: hidden; overflow-y: hidden; display: block;">
+										<table
+											style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
+											<tr style="background: #2FABE9; color: white;">
+												<td width="30%"></td>
+												<td align="right" width="12%">Total Taxable</td>
+												<td align="right" width="9%">Total Tax</td>
+												<td width="1%"></td>
+											</tr>
+										</table>
+										<div
+											style="border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
+											<table class="scroll" id="tblTaxWiseSalesTotal"
+												style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
+												class="transTablex col11-center">
+												<tbody>
+												<col style="width: 100%">
+												<col style="width: 30%">
+												<col style="width: 25%">
+											</table>
+										</div>
+									</div>
+								</div> <!-- Tip wise -->
+								<div id="divTipReport" class="col-sm-9"
+									style="width: 1200px; height: 580px; display: block; 0 px; background-color: #fff;">
+									<table class="scroll"
+										style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
+										<thead style="background: #2FABE9; color: white;">
+											<tr>
+												<td width="6.8%">Bill No</td>
+												<td width="6.7%">Date</td>
+												<td width="4.3%">Bill Time</td>
+												<td width="6%">POS Code</td>
+												<td width="5%">Set Mode</td>
+												<td align="right" width="5%">Disc %</td>
+												<td align="right" width="6%">Disc Amt</td>
+												<td align="right" width="7%">Sub Total</td>
+												<td align="right" width="6%">Tax Amt</td>
+												<td align="right" width="6%">Tip Amt</td>
+												<td align="right" width="7%">Sales Amount</td>
+												<td align="right" width="1%"></td>
+
+											</tr>
+										</thead>
+									</table>
+									<div class="row"
+										style="display: block; height: 85%; margin: auto; overflow-x: hidden; overflow-y: scroll; border: 1px solid #ccc; width: 100%;">
+										<table class="scroll" id="tblTipReport"
+											style="width: 100%; border: #0F0;">
+											<tbody>
+											<col style="width: 6%">
+											<col style="width: 6%">
+											<col style="width: 6%">
+											<col style="width: 6%">
+											<col style="width: 6%">
+											<col style="width: 6%">
+											<col style="width: 6%">
+											<col style="width: 6%">
+											<col style="width: 6%">
+											<col style="width: 6%">
+											<col style="width: 6%">
+											</tbody>
+										</table>
+									</div>
+									<div class=""
+										style="width: 1170px; height: 60px; overflow-x: hidden; overflow-y: hidden; display: block;">
+										<table
+											style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
+											<tr style="background: #2FABE9; color: white;">
+												<td align="right" width="53%">Discount</td>
+												<td align="right" width="7%">Sub Total</td>
+												<td align="right" width="9%">Tax Total</td>
+												<td align="right" width="8%">Tip Amount</td>
+												<td align="right" width="8%">Sales Amount</td>
+												<td align="right" width="1%"></td>
+
+
+											</tr>
+										</table>
+										<div
+											style="border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
+											<table class="scroll" id="tblTipReportTotal"
+												style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
+												class="transTablex col11-center">
+												<tbody>
+												<col style="width: 93%">
+												<col style="width: 19%">
+												<col style="width: 19%">
+												<col style="width: 18%">
+												<col style="width: 18%">
+												<col style="width: 25%">
+											</table>
+										</div>
+									</div>
+								</div> <!-- Item Modifier Wise -->
+								<div id="divItemModifierWise" class="col-sm-9"
+									style="width: 1200px; height: 580px; display: block; margin-left: 2px; margin-top: 0px; background-color: #fff;">
+									<table class="scroll"
+										style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
+										<thead style="background: #2FABE9; color: white;">
+											<tr>
+												<td width="12%">Modifier Name</td>
+												<td width="8%">POS</td>
+												<td align="right" width="5%">Quantity</td>
+												<td align="right" width="11%">Sales Amount</td>
+												<td align="right" width="1%"></td>
+											</tr>
+										</thead>
+									</table>
+									<div class="row"
+										style="display: block; height: 85%; margin: auto; overflow-x: hidden; overflow-y: scroll; border: 1px solid #ccc; width: 100%;">
+										<table class="scroll" id="tblItemModifierWise"
+											style="width: 100%; border: #0F0;">
+											<tbody>
+											<col style="width: 29%">
+											<col style="width: 19%">
+											<col style="width: 17%">
+											<col style="width: 10%">
+											</tbody>
+										</table>
+									</div>
+									<div class=""
+										style="width: 1170px; height: 60px; overflow-x: hidden; overflow-y: hidden; display: block;">
+										<table
+											style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
+											<tr style="background: #2FABE9; color: white;">
+												<td width="30%"></td>
+												<td align="right" width="13%">Quantity</td>
+												<td align="right" width="18%">Sales Amount</td>
+												<td width="1%"></td>
+
+
+											</tr>
+										</table>
+										<div
+											style="border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
+											<table class="scroll" id="tblItemModifierWiseTotal"
+												style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
+												class="transTablex col11-center">
+												<tbody>
+												<col style="width: 55%">
+												<col style="width: 30%">
+												<col style="width: 35%">
+											</table>
+										</div>
+									</div>
+								</div> <!-- MenuHeadWiseWithModifier -->
+								<div id="divMenuHeadWiseWithModifier" class="col-sm-9"
+									style="width: 1200px; height: 580px; display: block; 0 px; background-color: #fff;">
+									<table class="scroll"
+										style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
+										<thead style="background: #2FABE9; color: white;">
+											<tr>
+												<td width="13%">Menu Name</td>
+												<td align="left" width="12%">POS</td>
+												<td align="left" width="12%">Quantity</td>
+												<td align="left" width="10.5%">Sales Amount</td>
+												<td align="right" width="1%"></td>
+											</tr>
+									</table>
+									<div class="row"
+										style="display: block; height: 85%; margin: auto; overflow-x: hidden; overflow-y: scroll; border: 1px solid #ccc; width: 100%;">
+										<table class="scroll" id="tblMenuHeadWiseWithModifier"
+											style="width: 100%; border: #0F0;">
+											<tbody>
+											<col style="width: 15%">
+											<col style="width: 15%">
+											<col style="width: 15%">
+											<col style="width: 40%">
+											</tbody>
+										</table>
+									</div>
+									<div class=""
+										style="width: 1170px; height: 60px; overflow-x: hidden; overflow-y: hidden; display: block;">
+										<table
+											style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
+											<tr style="background: #2FABE9; color: white;">
+												<td width="8%"></td>
+												<td align="right" width="21%">Quantity</td>
+												<td width="1%"></td>
+												<td align="right" width="14%">Sales Amount</td>
+												<td width="8%"></td>
+
+											</tr>
+										</table>
+										<div
+											style="border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
+											<table class="scroll" id="tblMenuHeadWiseWithModifierTotal"
+												style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
+												class="transTablex col11-center">
+												<tbody>
+												<col style="width: 30%">
+												<col style="width: 25%">
+												<col style="width: 30%">
+											</table>
+										</div>
+									</div>
+								</div> <!-- Item Wise Hourly -->
+								<div id="divItemHourlyWise" class="col-sm-9"
+									style="width: 1200px; height: 580px; display: block; background-color: #fff;">
+									<table class="scroll"
+										style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
+										<thead style="background: #2FABE9; color: white;">
+											<tr>
+												<td width="14.5%">Time Range</td>
+												<td align="left" width="16%">Item Name</td>
+												<td align="right" width="4.5%">Quantity</td>
+												<td width="7%"></td>
+												<td align="right" width="5%">Item Amount</td>
+												<td width="8%"></td>
+												<td align="left" width="5%">Discount</td>
+												<td align="right" width="1%"></td>
+											</tr>
+									</table>
+									<div class="row"
+										style="display: block; height: 85%; margin: auto; overflow-x: hidden; overflow-y: scroll; border: 1px solid #ccc; width: 100%;">
+										<table class="scroll" id="tblItemHourlyWise"
+											style="width: 100%; border: #0F0;">
+											<tbody>
+											<col style="width: 5%">
+											<col style="width: 20%">
+											<col style="width: 25%">
+											<col style="width: 15%">
+											<col style="width: 30%">
+											</tbody>
+										</table>
+									</div>
+									<div class=""
+										style="width: 1170px; height: 60px; overflow-x: hidden; overflow-y: hidden; display: block;">
+										<table
+											style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
+											<tr style="background: #2FABE9; color: white;">
+												<td width="48%"></td>
+												<td align="right" width="12%">Total Quantity</td>
+												<td width="8%"></td>
+												<td align="right" width="10%">Total Amount</td>
+												<td width="8%"></td>
+												<td align="right" width="10%">Total Discount</td>
+												<td width="19%"></td>
+											</tr>
+										</table>
+										<div
+											style="border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
+											<table class="scroll" id="tblItemHourlyWiseTotal"
+												style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
+												class="transTablex col11-center">
+												<tbody>
+												<col style="width: 30%">
+												<col style="width: 15%">
+												<col style="width: 30%">
+											</table>
+										</div>
+									</div>
+								</div> <!-- Operator Wise -->
+								<div id="divOperatorWise" class="col-sm-9"
+									style="width: 1200px; height: 580px; display: block; background-color: #fff;">
+									<table class="scroll"
+										style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
+										<thead style="background: #2FABE9; color: white;">
+											<tr>
+												<td width="19%">Operator Code</td>
+												<td width="19%">Operator Name</td>
+												<td width="18%">POS</td>
+												<td width="15%">Payment Mode</td>
+												<td align="right" width="8%">Disc Amount</td>
+												<td width="5%"></td>
+												<td align="left" width="9%">Sales Amount</td>
+												<td align="right" width="1%"></td>
+											</tr>
+									</table>
+									<div class="row"
+										style="display: block; height: 85%; margin: auto; overflow-x: hidden; overflow-y: scroll; border: 1px solid #ccc; width: 100%;">
+										<table class="scroll" id="tblOperatorWise"
+											style="width: 100%; border: #0F0;">
+											<tbody>
+											<col style="width: 10%">
+											<col style="width: 10%">
+											<col style="width: 15%">
+											<col style="width: 15%">
+											<col style="width: 15%">
+											<col style="width: 20%">
+											</tbody>
+										</table>
+									</div>
+									<div class=""
+										style="width: 1170px; height: 60px; overflow-x: hidden; overflow-y: hidden; display: block;">
+										<table
+											style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
+											<tr style="background: #2FABE9; color: white;">
+												<td width="54%"></td>
+												<td align="right" width="25%">Discount Amount</td>
+												<td align="right" width="12%">Sales Amount</td>
+												<td width="1%"></td>
+
+											</tr>
+										</table>
+										<div
+											style="border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
+											<table class="scroll" id="tblOperatorWiseTotal"
+												style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
+												class="transTablex col11-center">
+												<tbody>
+												<col style="width: 70%">
+												<col style="width: 15%">
+												<col style="width: 20%">
+											</table>
+										</div>
+									</div>
+								</div> <!-- Monthly Wise -->
+								<div id="divMonthlySalesFlash" class="col-sm-9"
+									style="width: 1200px; height: 580px; display: block; background-color: #fff;">
+									<table class="scroll"
+										style="height: 20px; border: #0F0; width: 1170px; font-size: 14px; font-weight: bold;">
+										<thead style="background: #2FABE9; color: white;">
+											<tr>
+												<td width="9%">Month</td>
+												<td align="left" width="9%">Year</td>
+												<td align="left" width="6%">Total Sales</td>
+												<td align="right" width="1%"></td>
+											</tr>
+									</table>
+									<div class="row"
+										style="display: block; height: 85%; margin: auto; overflow-x: hidden; overflow-y: scroll; border: 1px solid #ccc; width: 100%;">
+										<table class="scroll" id="tblMonthlySalesFlash"
+											style="width: 100%; border: #0F0;">
+											<tbody>
+											<col style="width: 15%">
+											<col style="width: 15%">
+											<col style="width: 15%">
+											</tbody>
+										</table>
+									</div>
+									<div class=""
+										style="width: 1170px; height: 60px; overflow-x: hidden; overflow-y: hidden; display: block;">
+										<table
+											style="height: 20px; border: #0F0; width: 100%; font-size: 14px; font-weight: bold;">
+											<tr style="background: #2FABE9; color: white;">
+												<td width="25%"></td>
+												<td align="right" width="13%">Total Sale</td>
+												<td width="10%"></td>
+
+											</tr>
+										</table>
+										<div
+											style="border: 1px solid #ccc; display: block; height: 28px; margin: auto; width: 99.80%;">
+											<table class="scroll" id="tblMonthlySalesFlashTotal"
+												style="width: 100%; height: 50%; border: #0F0; table-layout: fixed;"
+												class="transTablex col11-center">
+												<tbody>
+												<col style="width: 50%">
+												<col style="width: 40%">
+											</table>
+										</div>
+									</div>
+								</div> <!-- All Tables End Here -->
+							</td>
+						</tr>
+						<!-- <tr>
 					<td colspan="4"></td>
 				</tr>
 				<tr>
 					<td colspan="4">
 						
 				<tr> -->
-				<tr>
-					
-					<td colspan="4">
-						<div id="tableImg"
-							style="width: 1170px; height: 120px; margin-left: 15px;border: 1px solid #ccc;overflow-x: scroll; overflow-y: hidden; ">
-							<table class="">
-								<!-- style="height:120px; border: #0F0;width: 100%;font-size:11px;overflow-x: scroll; font-weight: bold;"> -->
-								
+						<tr>
 
-									<td style="padding-right: 12px;"id="divSettlementWiseee"><img
-										src="../${pageContext.request.contextPath}/resources/images/imgSettlementWise.png"
-										onclick="funSelectedReport('divSettlementWise')"></td> 
-									<td style="text-align: center;padding-right: 12px;"><img
-										src="../${pageContext.request.contextPath}/resources/images/imgBillWise.png"
-										onclick="funSelectedReport('divBillWise','xyz')"></td>
-									<td style="text-align: center;padding-right: 12px;"><img
-										src="../${pageContext.request.contextPath}/resources/images/imgItemWise.png"
-										onclick="funSelectedReport('divItemWise')"></td>
-									<td style="text-align: center;padding-right: 12px;"><img
-										src="../${pageContext.request.contextPath}/resources/images/imgMenuHeadWise.png"
-										onclick="funSelectedReport('divMenuHeadWise')"></td>
-									<td style="text-align: center;padding-right: 12px;"><img
-										src="../${pageContext.request.contextPath}/resources/images/imgGroupWise.png"
-										onclick="funSelectedReport('divGroupWise')"></td>
-									<td style="text-align: center;padding-right: 12px;"><img
-										src="../${pageContext.request.contextPath}/resources/images/imgSubGroupWise.png"
-										onclick="funSelectedReport('divSubGroupWise')"></td>
-									<td style="text-align: center;padding-right: 12px;"><img
-										src="../${pageContext.request.contextPath}/resources/images/imgCustWise.png"
-										onclick="funSelectedReport('divCustWise')"></td>
-									<td style="text-align: center;padding-right: 12px;"><img
-										src="../${pageContext.request.contextPath}/resources/images/imgWaiterWise.png"
-										onclick="funSelectedReport('divWaiterWise')"></td>
-									<td style="text-align: center;padding-right: 12px;"><img
-										src="../${pageContext.request.contextPath}/resources/images/imgDeliveryBoyWise.png"
-										onclick="funSelectedReport('divDeliveryBoyWise')"></td>
-									<td style="text-align: center;padding-right: 12px;"><img
-										src="../${pageContext.request.contextPath}/resources/images/imgCostCenterWise.png"
-										onclick="funSelectedReport('divCostCenterWise')"></td>
-									<td style="text-align: center;padding-right: 12px;"><img
-										src="../${pageContext.request.contextPath}/resources/images/imgHomeDeliveryWise.png"
-										onclick="funSelectedReport('divHomeDeliveryWise')"></td>
-									<td style="text-align: center;padding-right: 12px;"><img
-										src="../${pageContext.request.contextPath}/resources/images/imgTableWise.png"
-										onclick="funSelectedReport('divTableWise')"></td>
-									<td style="text-align: center;padding-right: 12px;"><img
-										src="../${pageContext.request.contextPath}/resources/images/imgHourlyWise.png"
-										onclick="funSelectedReport('divHourlyWise')"></td>
-									<td style="text-align: center;padding-right: 12px;"><img
-										src="../${pageContext.request.contextPath}/resources/images/imgAreaWise.png"
-										onclick="funSelectedReport('divAreaWise')"></td>
-									<td style="text-align: center;padding-right: 12px;"><img
-										src="../${pageContext.request.contextPath}/resources/images/imgDayWiseSales.png"
-										onclick="funSelectedReport('divDayWiseSales')"></td>
-									<td style="text-align: center;padding-right: 12px;"><img
-										src="../${pageContext.request.contextPath}/resources/images/imgTaxWiseSales.png"
-										onclick="funSelectedReport('divTaxWiseSales')"></td>
-									<td style="text-align: center;padding-right: 12px;"><img
-										src="../${pageContext.request.contextPath}/resources/images/imgTipreport.png"
-										onclick="funSelectedReport('divTipReport')"></td>
-									<td style="text-align: center;padding-right: 12px;"><img
-										src="../${pageContext.request.contextPath}/resources/images/imgItemModifierWise.png"
-										onclick="funSelectedReport('divItemModifierWise')"></td>
-									<td style="text-align: center;padding-right: 12px;"><img
-										src="../${pageContext.request.contextPath}/resources/images/imgMenuHeadWiseWithModifier.png"
-										onclick="funSelectedReport('divMenuHeadWiseWithModifier')"></td>
-									<td style="text-align: center;padding-right: 12px;"><img
-										src="../${pageContext.request.contextPath}/resources/images/imgItemHourlyWise.png"
-										onclick="funSelectedReport('divItemHourlyWise')"></td>
-									<td style="text-align: center;padding-right: 12px;"><img
-										src="../${pageContext.request.contextPath}/resources/images/imgOperatorWise.png"
-										onclick="funSelectedReport('divOperatorWise')"></td>
-									<td style="text-align: center;padding-right: 12px;"><img
-										src="../${pageContext.request.contextPath}/resources/images/imgMonthlySalesFlash.png"
-										onclick="funSelectedReport('divMonthlySalesFlash')"></td> 
-								
-							</table>
-						</div>
-					</td>
-				</tr>
-			</table>
+							<td colspan="4">
+								<div id="tableImg"
+									style="width: 1170px; height: 120px; margin-left: 15px; border: 1px solid #ccc; overflow-x: scroll; overflow-y: hidden;">
+									<table class="">
+										<!-- style="height:120px; border: #0F0;width: 100%;font-size:11px;overflow-x: scroll; font-weight: bold;"> -->
+
+
+										<td style="padding-right: 12px;" id="divSettlementWiseee"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgSettlementWise.png"
+											onclick="funSelectedReport('divSettlementWise')"></td>
+										<td style="text-align: center; padding-right: 12px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgBillWise.png"
+											onclick="funSelectedReport('divBillWise','xyz')"></td>
+										<td style="text-align: center; padding-right: 12px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgItemWise.png"
+											onclick="funSelectedReport('divItemWise')"></td>
+										<td style="text-align: center; padding-right: 12px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgMenuHeadWise.png"
+											onclick="funSelectedReport('divMenuHeadWise')"></td>
+										<td style="text-align: center; padding-right: 12px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgGroupWise.png"
+											onclick="funSelectedReport('divGroupWise')"></td>
+										<td style="text-align: center; padding-right: 12px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgSubGroupWise.png"
+											onclick="funSelectedReport('divSubGroupWise')"></td>
+										<td style="text-align: center; padding-right: 12px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgCustWise.png"
+											onclick="funSelectedReport('divCustWise')"></td>
+										<td style="text-align: center; padding-right: 12px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgWaiterWise.png"
+											onclick="funSelectedReport('divWaiterWise')"></td>
+										<td style="text-align: center; padding-right: 12px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgDeliveryBoyWise.png"
+											onclick="funSelectedReport('divDeliveryBoyWise')"></td>
+										<td style="text-align: center; padding-right: 12px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgCostCenterWise.png"
+											onclick="funSelectedReport('divCostCenterWise')"></td>
+										<td style="text-align: center; padding-right: 12px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgHomeDeliveryWise.png"
+											onclick="funSelectedReport('divHomeDeliveryWise')"></td>
+										<td style="text-align: center; padding-right: 12px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgTableWise.png"
+											onclick="funSelectedReport('divTableWise')"></td>
+										<td style="text-align: center; padding-right: 12px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgHourlyWise.png"
+											onclick="funSelectedReport('divHourlyWise')"></td>
+										<td style="text-align: center; padding-right: 12px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgAreaWise.png"
+											onclick="funSelectedReport('divAreaWise')"></td>
+										<td style="text-align: center; padding-right: 12px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgDayWiseSales.png"
+											onclick="funSelectedReport('divDayWiseSales')"></td>
+										<td style="text-align: center; padding-right: 12px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgTaxWiseSales.png"
+											onclick="funSelectedReport('divTaxWiseSales')"></td>
+										<td style="text-align: center; padding-right: 12px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgTipreport.png"
+											onclick="funSelectedReport('divTipReport')"></td>
+										<td style="text-align: center; padding-right: 12px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgItemModifierWise.png"
+											onclick="funSelectedReport('divItemModifierWise')"></td>
+										<td style="text-align: center; padding-right: 12px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgMenuHeadWiseWithModifier.png"
+											onclick="funSelectedReport('divMenuHeadWiseWithModifier')"></td>
+										<td style="text-align: center; padding-right: 12px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgItemHourlyWise.png"
+											onclick="funSelectedReport('divItemHourlyWise')"></td>
+										<td style="text-align: center; padding-right: 12px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgOperatorWise.png"
+											onclick="funSelectedReport('divOperatorWise')"></td>
+										<td style="text-align: center; padding-right: 12px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgMonthlySalesFlash.png"
+											onclick="funSelectedReport('divMonthlySalesFlash')"></td>
+
+									</table>
+								</div>
+							</td>
+						</tr>
+					</table>
 				</div>
 				<br /> <br />
-				
-				
-				
-				
+
+
+
+
 				<div id="wait"
 					style="display: none; width: 60px; height: 60px; border: 0px solid black; position: absolute; top: 45%; left: 45%; padding: 2px;">
 					<img
@@ -4462,185 +4557,217 @@ ul.tab li {
 						width="60px" height="60px" />
 				</div>
 			</div>
-			
-			
-			
-			
+
+
+
+
 			<div id="tab2" class="tab_content" style="height: 400px">
 
 				<br /> <br />
-						<div class="row" style="background-color: #fff; display: block;margin-bottom:30px;">
-							<div class="element-input col-lg-6" style="width: 8%; margin-left:200px "> 
-		    					<label class="title">Operator</label>
-		    				</div>
-		    				<div class="element-input col-lg-6" style="width: 24%;"> 
-								<s:select id="txtOperator" name="txtOperator" path="strOperator" items="${Operator}" >
-				 				</s:select>
-							</div>
-							
-							<div class="element-input col-lg-6" style="width: 8%; margin-left:30px "> 
-		    					<label class="title">Pay Mode</label>
-		    				</div>
-		    				<div class="element-input col-lg-6" style="width: 24%;"> 
-								<s:select id="txtPayMode" name="txtPayMode" path="strPayMode" items="${PayMode}" >
-				 				</s:select>
-							</div>
-							
-						    </div>	
-						
-				
+				<div class="row"
+					style="background-color: #fff; display: block; margin-bottom: 30px;">
+					<div class="element-input col-lg-6"
+						style="width: 8%; margin-left: 200px">
+						<label class="title">Operator</label>
+					</div>
+					<div class="element-input col-lg-6" style="width: 24%;">
+						<s:select id="txtOperator" name="txtOperator" path="strOperator"
+							items="${Operator}">
+						</s:select>
+					</div>
 
+					<div class="element-input col-lg-6"
+						style="width: 8%; margin-left: 30px">
+						<label class="title">Pay Mode</label>
+					</div>
+					<div class="element-input col-lg-6" style="width: 24%;">
+						<s:select id="txtPayMode" name="txtPayMode" path="strPayMode"
+							items="${PayMode}">
+						</s:select>
+					</div>
 
-                 <div class="row" style="background-color: #fff; display: block; margin-bottom: 30px;">
-							<div class="element-input col-lg-6" style="width: 8%; margin-left:200px "> 
-		    					<label class="title">Time From</label>
-		    				</div>
-		    				<div class="element-input col-lg-6" style="width:8%;"> 
-								<s:select id="txtHHFrom" name="txtHHFrom" path="strHHFrom" items="${HH}" >
-				 				</s:select>
-							</div>
-								<div class="element-input col-lg-6" style="width: 8%;"> 
-								<s:select id="txtMMFrom" name="txtMMFrom" path="strMMFrom" items="${MM}" >
-				 				</s:select>
-							</div>
-								<div class="element-input col-lg-6" style="width: 8%;"> 
-								<s:select id="txtAMPMFrom" name="txtAMPMFrom" path="strAMPMFrom" >
-							        <option value="AM" >AM</option>
-									<option value="PM" >PM</option>
-								</s:select>
-							     </div>
-								 
-							<div class="element-input col-lg-6" style="width: 8%; margin-left:30px "> 
-		    					<label class="title">To Time</label>
-		    				</div>
-		    				<div class="element-input col-lg-6" style="width: 8%;"> 
-								<s:select id="txtHHTo" name="txtHHTo" path="strHHTo" items="${HH}" >
-				 				</s:select>	
-							</div>
-								<div class="element-input col-lg-6" style="width: 8%;"> 
-								<s:select id="txtMMTo" name="txtMMTo" path="strMMTo" items="${MM}" >
-				 				</s:select>
-							</div>
-							<div class="element-input col-lg-6" style="width: 8%;"> 
-								<s:select id="txtAMPMTo" name="txtAMPMTo" path="strAMPMTo" >
-                                    <option value="1" >AM</option>
-									<option value="2" >PM</option>
-							  </s:select>
-							</div>
-		 					
-		</div>				
-
-           <div class="row" style="background-color: #fff; display: block;margin-bottom:30px;">
-			<div class="element-input col-lg-6" style="width: 8%; margin-left:200px "> 
-    				<label class="title">From Bill No</label>
-    			</div>	
-    			<div class="element-input col-lg-6" style="width: 24%;"> 
-					<s:input class="large" colspan="3" type="text" id="txtFromBillNo" path="strFromBillNo"  />
 				</div>
-			<div class="element-input col-lg-6" style="width: 8%; margin-left:30px "> 
-					<label class="title">To Bill No</label>
-				</div>	
-			<div class="element-input col-lg-6" style="width: 24%;"> 
-					<s:input class="large" colspan="3" type="text" id="txtToBillNo" path="strToBillNo"  />
-				</div> 
-				
-</div>
-					
-  <div class="row" style="background-color: #fff; display: block; margin-bottom: 30px;">
-							<div class="element-input col-lg-6" style="width: 8%; margin-left:200px "> 
-		    					<label class="title">Report Type</label>
-		    				</div>
-		    				<div class="element-input col-lg-6" style="width: 24%;"> 
-								<s:select id="txtReportType" name="txtReportType" path="strReportType"  >
-                                    <option value="1" >Bill Wise</option>
-									<option value="2" >Customer Wise</option>
-									<option value="2" >Item Wise</option>
-								</s:select>
-							</div>
-							<div class="element-input col-lg-6" style="width: 8%; margin-left:30px "> 
-		    					<label class="title">Type</label>
-		    				</div>
-		    				<div class="element-input col-lg-6" style="width: 24%;"> 
-								<s:select id="txtType" name="txtType" path="strType"  >
-                                    <option value="1" >Data</option>
-									<option value="2" >Chart</option>
-								</s:select>
-							</div>
-							
-					</div>		
-					
-				
-    <div class="row" style="background-color: #fff; display: block; margin-bottom: 30px;">
-							<div class="element-input col-lg-6"  style="width: 8%; margin-left:200px "> 
-    				          <label class="title">Customer</label>
-    				          </div>
-    				         <div class="element-input col-lg-6" style="width: 24%;"> 
-					           <s:input class="large" colspan="3" type="text" id="txtCustomer" path="strCustomer" ondblclick="funHelp('POSCustomerMaster')" />
-				           </div>
-							
-							
-					</div>		
-
-   <div class="row" style="background-color: #fff; display: block;margin-bottom:30px;">
-							<div class="element-input col-lg-6" style="width: 8%; margin-left:200px "> 
-		    					<label class="title">Area</label>
-		    				</div>
-		    					<div class="element-input col-lg-6" style="width: 24%;"> 
-								<s:select id="txtAreaCode" name="txtAreaCode" path="strAreaCode" items="${areaList}" >
-				 				</s:select>
-				 			</div>
-				 			<div class="element-input col-lg-6" style="width: 8%; margin-left:30px "> 
-		    					<label class="title">Shift</label>
-		    				</div>
-		    						<div class="element-input col-lg-6" style="width: 24%;"> 
-								<s:select id="txtShiftCode" name="txtShiftCode" path="strShiftCode" items="${shiftList}">
-				 				</s:select>
-				 			</div>
-</div>
-				 			
-<div class="row" style="background-color: #fff; display: block;margin-bottom:30px;">
-							 <div class="element-input col-lg-6" style="width: 8%; margin-left:200px ">
-		    					       <label class="title">Operation Type</label>
-		    				      </div>
-		    					<div class="element-input col-lg-6" style="width: 24%;"> 
-								<s:select id="txtOperationType" name="txtOperationType" path="strOperationType" >
-                                    <option value="All" >All</option>
-									<option value="DineIn" >DineIn</option>
-									<option value="DirectBiller" >DirectBiller</option>
-									<option value="HomeDelivery" >HomeDelivery</option>
-									<option value="TakeAway" >TakeAway</option>
-								</s:select>
-							
-							</div>
-					   <div class="element-input col-lg-6" style="width: 15%; margin-left:30px ">
-							  
-							    <label><s:input type="checkbox"  id="chkConsolidatePOS" path="strConsolidatePOS"  style="width: 10%" ></s:input>
-							     Consolidate POS</label>
-							
-							
-							
-						</div>	 
-							
-							
-							
-		            </div>
-							
-			</div>			
 
 
 
 
+				<div class="row"
+					style="background-color: #fff; display: block; margin-bottom: 30px;">
+					<div class="element-input col-lg-6"
+						style="width: 8%; margin-left: 200px">
+						<label class="title">Time From</label>
+					</div>
+					<div class="element-input col-lg-6" style="width: 8%;">
+						<s:select id="txtHHFrom" name="txtHHFrom" path="strHHFrom"
+							items="${HH}">
+						</s:select>
+					</div>
+					<div class="element-input col-lg-6" style="width: 8%;">
+						<s:select id="txtMMFrom" name="txtMMFrom" path="strMMFrom"
+							items="${MM}">
+						</s:select>
+					</div>
+					<div class="element-input col-lg-6" style="width: 8%;">
+						<s:select id="txtAMPMFrom" name="txtAMPMFrom" path="strAMPMFrom">
+							<option value="AM">AM</option>
+							<option value="PM">PM</option>
+						</s:select>
+					</div>
+
+					<div class="element-input col-lg-6"
+						style="width: 8%; margin-left: 30px">
+						<label class="title">To Time</label>
+					</div>
+					<div class="element-input col-lg-6" style="width: 8%;">
+						<s:select id="txtHHTo" name="txtHHTo" path="strHHTo" items="${HH}">
+						</s:select>
+					</div>
+					<div class="element-input col-lg-6" style="width: 8%;">
+						<s:select id="txtMMTo" name="txtMMTo" path="strMMTo" items="${MM}">
+						</s:select>
+					</div>
+					<div class="element-input col-lg-6" style="width: 8%;">
+						<s:select id="txtAMPMTo" name="txtAMPMTo" path="strAMPMTo">
+							<option value="1">AM</option>
+							<option value="2">PM</option>
+						</s:select>
+					</div>
+
+				</div>
+
+				<div class="row"
+					style="background-color: #fff; display: block; margin-bottom: 30px;">
+					<div class="element-input col-lg-6"
+						style="width: 8%; margin-left: 200px">
+						<label class="title">From Bill No</label>
+					</div>
+					<div class="element-input col-lg-6" style="width: 24%;">
+						<s:input class="large" colspan="3" type="text" id="txtFromBillNo"
+							path="strFromBillNo" />
+					</div>
+					<div class="element-input col-lg-6"
+						style="width: 8%; margin-left: 30px">
+						<label class="title">To Bill No</label>
+					</div>
+					<div class="element-input col-lg-6" style="width: 24%;">
+						<s:input class="large" colspan="3" type="text" id="txtToBillNo"
+							path="strToBillNo" />
+					</div>
+
+				</div>
+
+				<div class="row"
+					style="background-color: #fff; display: block; margin-bottom: 30px;">
+					<div class="element-input col-lg-6"
+						style="width: 8%; margin-left: 200px">
+						<label class="title">Report Type</label>
+					</div>
+					<div class="element-input col-lg-6" style="width: 24%;">
+						<s:select id="txtReportType" name="txtReportType"
+							path="strReportType">
+							<option value="1">Bill Wise</option>
+							<option value="2">Customer Wise</option>
+							<option value="2">Item Wise</option>
+						</s:select>
+					</div>
+					<div class="element-input col-lg-6"
+						style="width: 8%; margin-left: 30px">
+						<label class="title">Type</label>
+					</div>
+					<div class="element-input col-lg-6" style="width: 24%;">
+						<s:select id="txtType" name="txtType" path="strType">
+							<option value="1">Data</option>
+							<option value="2">Chart</option>
+						</s:select>
+					</div>
+
+				</div>
 
 
-</div>
+				<div class="row"
+					style="background-color: #fff; display: block; margin-bottom: 30px;">
+					<div class="element-input col-lg-6"
+						style="width: 8%; margin-left: 200px">
+						<label class="title">Customer</label>
+					</div>
+					<div class="element-input col-lg-6" style="width: 24%;">
+						<s:input class="large" colspan="3" type="text" id="txtCustomer"
+							path="strCustomer" ondblclick="funHelp('POSCustomerMaster')" />
+					</div>
+
+
+				</div>
+
+				<div class="row"
+					style="background-color: #fff; display: block; margin-bottom: 30px;">
+					<div class="element-input col-lg-6"
+						style="width: 8%; margin-left: 200px">
+						<label class="title">Area</label>
+					</div>
+					<div class="element-input col-lg-6" style="width: 24%;">
+						<s:select id="txtAreaCode" name="txtAreaCode" path="strAreaCode"
+							items="${areaList}">
+						</s:select>
+					</div>
+					<div class="element-input col-lg-6"
+						style="width: 8%; margin-left: 30px">
+						<label class="title">Shift</label>
+					</div>
+					<div class="element-input col-lg-6" style="width: 24%;">
+						<s:select id="txtShiftCode" name="txtShiftCode"
+							path="strShiftCode" items="${shiftList}">
+						</s:select>
+					</div>
+				</div>
+
+				<div class="row"
+					style="background-color: #fff; display: block; margin-bottom: 30px;">
+					<div class="element-input col-lg-6"
+						style="width: 8%; margin-left: 200px">
+						<label class="title">Operation Type</label>
+					</div>
+					<div class="element-input col-lg-6" style="width: 24%;">
+						<s:select id="txtOperationType" name="txtOperationType"
+							path="strOperationType">
+							<option value="All">All</option>
+							<option value="DineIn">DineIn</option>
+							<option value="DirectBiller">DirectBiller</option>
+							<option value="HomeDelivery">HomeDelivery</option>
+							<option value="TakeAway">TakeAway</option>
+						</s:select>
+
+					</div>
+					<div class="element-input col-lg-6"
+						style="width: 15%; margin-left: 30px">
+
+						<label><s:input type="checkbox" id="chkConsolidatePOS"
+								path="strConsolidatePOS" style="width: 10%"></s:input>
+							Consolidate POS</label>
+
+
+
+					</div>
+
+
+
+				</div>
+
+			</div>
 
 
 
 
-		
-			
-		
-		        <s:hidden id="hidReportName" path="strReportName"  />
+
+
+		</div>
+
+
+
+
+
+
+
+		<s:hidden id="hidReportName" path="strReportName" />
 
 	</s:form>
 
@@ -4650,4 +4777,3 @@ ul.tab li {
 
 
 
- 
