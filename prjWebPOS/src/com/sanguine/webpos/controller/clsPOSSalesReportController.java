@@ -1,7 +1,6 @@
 package com.sanguine.webpos.controller;
 
 import java.lang.reflect.Array;
-import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,17 +23,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.POSGlobal.controller.clsGlobalVarClass;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.ibm.icu.math.BigDecimal;
 import com.sanguine.base.service.clsSetupService;
 import com.sanguine.base.service.intfBaseService;
 import com.sanguine.controller.clsGlobalFunctions;
-import com.sanguine.model.clsCurrencyMasterModel;
-import com.sanguine.webpos.bean.clsPOSSalesFlashReportsBean;
 import com.sanguine.webpos.bean.clsPOSReportBean;
-import com.sanguine.webpos.bean.clsPOSShiftMasterBean;
+import com.sanguine.webpos.bean.clsPOSSalesFlashReportsBean;
 import com.sanguine.webpos.model.clsAreaMasterModel;
 import com.sanguine.webpos.model.clsSettlementMasterModel;
 import com.sanguine.webpos.model.clsSetupHdModel;

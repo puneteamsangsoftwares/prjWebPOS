@@ -6,13 +6,11 @@ package com.sanguine.webpos.comparator;
  */
 
 
-import com.POSGlobal.controller.clsBillDtl;
-import com.POSGlobal.controller.clsItemWiseConsumption;
-import com.sanguine.webpos.bean.clsPOSItemConsumptionMonthWiseBean;
-
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+
+import com.sanguine.webpos.bean.clsPOSItemConsumptionMonthWiseBean;
 /**
  *
  * @author Satyajit

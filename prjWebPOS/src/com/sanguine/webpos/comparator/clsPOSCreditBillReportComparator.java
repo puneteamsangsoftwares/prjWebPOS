@@ -1,11 +1,10 @@
 package com.sanguine.webpos.comparator;
 
-import com.POSGlobal.controller.clsBillDtl;
-import com.sanguine.webpos.bean.clsPOSBillDtl;
-
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+
+import com.sanguine.webpos.bean.clsPOSBillDtl;
 
 /**
  *

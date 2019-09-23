@@ -54,7 +54,7 @@ var fieldName;
 var selectedRowIndex=0;
 var gDebitCardPayment="";
 var tblMenuItemDtl_MAX_ROW_SIZE=100;
-var tblMenuItemDtl_MAX_COL_SIZE=5;
+var tblMenuItemDtl_MAX_COL_SIZE=6;
 var itemPriceDtlList=new Array();	
 var hmHappyHourItems = new Map();
 var gCustomerCode="",gCustomerName="";
