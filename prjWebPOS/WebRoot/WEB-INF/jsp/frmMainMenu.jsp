@@ -7,7 +7,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>Web Stocks</title>
+    <title>Web POS</title>
      <script type="text/javascript">
     $(document).ready(function(){
     	var s=getContextPath()+"/resources/images/";

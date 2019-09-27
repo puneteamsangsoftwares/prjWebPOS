@@ -127,7 +127,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 
 
 	@RequestMapping(value = "/funLoadTablesForMakeKOT", method = RequestMethod.GET)
-	public @ResponseBody JSONArray funLoadTableDtl(@RequestParam("clientCode") String clientCode, @RequestParam("posCode") String posCode)
+	public @ResponseBody JSONArray funLoadTableDtl(@RequestParam("clientCode") String clientCode, @RequestParam("posCode") String posCode,@RequestParam("areaCode") String areaCode)
 	{
 		List list = null;
 		StringBuilder sql=new StringBuilder();
@@ -162,7 +162,12 @@ public class clsPOSBillSettlementControllerForMakeKOT
 			}
 			else
 			{
-				sql.append("select strTableNo,strTableName,intSequence,strStatus,intPaxNo from tbltablemaster " + " where (strPOSCode='" + posCode + "' or strPOSCode='All') " + " and strOperational='Y' " + " and strClientCode='"+clientCode+"' order by intSequence");
+				if(areaCode.isEmpty() || areaCode.equalsIgnoreCase("All")){
+					sql.append("select strTableNo,strTableName,intSequence,strStatus,intPaxNo from tbltablemaster " + " where (strPOSCode='" + posCode + "' or strPOSCode='All') " + " and strOperational='Y' " + " and strClientCode='"+clientCode+"' order by intSequence");	
+				}else{
+					sql.append("select strTableNo,strTableName,intSequence,strStatus,intPaxNo from tbltablemaster " + " where (strPOSCode='" + posCode + "' or strPOSCode='All') " + " and strOperational='Y' " + " and strClientCode='"+clientCode+"' and strAreaCode='"+areaCode+"' order by intSequence");
+				}
+				
 			}
 
 			list = objBaseService.funGetList(sql, "sql");

@@ -166,7 +166,7 @@ function stopRKey(evt) {
            </div>
            
            <div class="col-lg-3 col-md-3 col-sm-2 col-xs-4" id="formname" style="width: 15%;color:rgba(83,159,225,1);margin-top: 15px;font-weight: bold;">
-             	 <label>${gUserName} <!-- &nbsp;&nbsp; --></label>
+             	 <label style="text-transform: uppercase;">${gUserName}<!-- &nbsp;&nbsp; --></label>
            </div>
 
 			<div class="col-lg-3 col-md-3 col-sm-2 col-xs-4" id="formname" style="width: 11%;color:rgba(83,159,225,1);margin-top: 15px;font-weight: bold;"> 

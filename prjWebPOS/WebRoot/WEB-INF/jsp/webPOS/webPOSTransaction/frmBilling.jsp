@@ -122,33 +122,6 @@
                                               rgba(0, 0, 0, 1) 75%,
                                               transparent)
 }
-
-	
-	
-#divPLU::-webkit-scrollbar-track
-{
-    -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,0.6);
-    background-color: #CCCCCC;
-}
-
-#divPLU::-webkit-scrollbar
-{
-    width: 05px;
-    background-color: #F5F5F5;
-}
-
-#divPLU::-webkit-scrollbar-thumb
-{
-    background-color: #FFF;
-    background-image: -webkit-linear-gradient(90deg,
-                                              rgba(0, 0, 0, 1) 0%,
-                                              rgba(0, 0, 0, 1) 25%,
-                                              transparent 100%,
-                                              rgba(0, 0, 0, 1) 75%,
-                                              transparent)
-}
-	
-	
 	
 </style>
 
@@ -161,14 +134,41 @@
 $(function () {
     $("[rel='tooltip']").tooltip();
 });
-	 
 	
+var objMenuItemButton;
+var objIndex;
+var NumPadDialogFor,itemCode;	
+var itemChangeQtySelected, itemPrice;
 	/* virtual keyboard opening code for text feilds only */
 	$(document).ready(function () 
 	{
-		//  $('input#txtItemSearch').mlKeyboard({layout: 'en_US'});
-		  
-		//  $('input#Customer').mlKeyboard({layout: 'en_US'});
+		
+		$('#Customer').autocomplete({
+ 			serviceUrl: '${pageContext.request.contextPath}/getAutoSearchData.html?formname=customerName',  
+ 			paramName: "searchBy",
+ 			delimiter: ",",
+ 		    transformResult: function(response) {
+ 		    	mapCustCodeName=new Map();
+ 			return {
+ 			  //must convert json to javascript object before process
+ 			  suggestions: $.map($.parseJSON(response), function(item) {
+ 			       // strValue  strCode
+ 			        mapCustCodeName.set(item.strValue,item.strCode);
+ 			      	return { value: item.strValue, data: item.strCode };
+ 			   })
+ 			            
+ 			 };
+ 			        
+ 	        }
+ 		 });
+		 
+			$('#Customer').blur(function() {
+					var code=mapCustCodeName.get($('#Customer').val());
+					if(code!='' && code!=null){
+						 funSetCustomerDataForHD(code);	
+					}
+					
+			});
 		  
 	});
 	
@@ -186,11 +186,13 @@ $(function () {
 		  // Cancel the default action, if needed
 		  event.preventDefault();
 		  // Number 13 is the "Enter" key on the keyboard
-		  if (event.keyCode === 13) 
+		  if (event.keyCode === 35) 
 		  {
 			  funCustomerBtnClicked();
 		  }
 		}); 
+		
+		
 	
 		/* var styles = document.styleSheets;
 		var href = "";
@@ -226,10 +228,20 @@ $(function () {
 		
 		$("#txtItemSearch").keyup(function()
 		{
+			if(operationType=="DineIn"){
+				if($("#txtTableNo").text()!='' && $("#txtWaiterName").text()!='' && $("#txtPaxNo").text()!='')
+				{
+					funFillGridData1($(this).val());
+				}else{
 					searchTable($(this).val());
+				}
+			}else{
+				funFillGridData1($(this).val());
+			}
+			
 		});
 		 document.getElementById("divItemDtl").style.display='block';
-		 document.getElementById("divPLU").style.display='none';
+		// document.getElementById("divPLU").style.display='none';
 		 
 		 document.getElementById("divBillItemDtl").style.display='block';
 		 document.getElementById("divTotalDtl").style.display='block';
@@ -247,7 +259,8 @@ $(function () {
 	});
 	function searchTable(inputVal)
 	{
-		var table = $('#tblItems');
+		
+		var table = $('#tblMenuItemDtl');
 		table.find('tr').each(function(index, row)
 				{
 					var allCells = $(row).find('td');
@@ -676,6 +689,7 @@ $(function () {
 	
 	function funWaiterClicked(objWaiterButton)
 	{
+		$("#txtItemSearch").val('');
 		var $rows = $('#tblMenuItemDtl').empty();
 		var tblMenuItemDtl=document.getElementById('tblMenuItemDtl');
 	
@@ -1291,12 +1305,12 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 		    			gMultiWaiterSelOnMakeKOT="N";
 		    		}
 		    		
-		    		$("#txtItemSearch").keyup(function()
+		    		/* $("#txtItemSearch").keyup(function()
 		    		{
     					searchTable($(this).val());
-		    		});
+		    		}); */
 		    		 document.getElementById("divItemDtl").style.display='block';
-		    		 document.getElementById("divPLU").style.display='none';
+		    		// document.getElementById("divPLU").style.display='none';
 		    		 
 		    		 document.getElementById("divBillItemDtl").style.display='block';
 		    		 document.getElementById("divTotalDtl").style.display='block';
@@ -1311,8 +1325,6 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 					 funOpenKOTPrint(gAreaCode,gTableNo,$('#txtKOTNo').text());
 					 
 					
-					 
-					 
 	        	}
 	        	else
 	        	{	        		
@@ -1395,13 +1407,15 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 		var insertTR=tblMenuItemDtl.insertRow();
 		
 		var jsonArrForTableDtl=${command.jsonArrForTableDtl};	
+		var areaCode=$("#txtAreaName").val();
+		
 		
 		/**
 		*Free Table
 		*Busy/Occupied Table border: 5px solid #a94442;
 		*Billed Table border: 5px solid #2ba5cc;
 		*/
-		var searchurl=getContextPath()+"/funLoadTablesForMakeKOT.html?clientCode="+gClientCode+"&posCode="+gPOSCode;
+		var searchurl=getContextPath()+"/funLoadTablesForMakeKOT.html?clientCode="+gClientCode+"&posCode="+gPOSCode+"&areaCode="+areaCode;
 
 		var delCharges=0;  
 		$.ajax({
@@ -1529,7 +1543,7 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 	
 	 function funShowMenuHead()
 	{
-		 	funDisplayPLUButton(true);
+		 	////funDisplayPLUButton(true);
 		 
 			var jsonArrForMenuHeads=${command.jsonArrForMenuHeads};	
 		
@@ -1572,7 +1586,7 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 					if(rowCount==0)
 					{
 						col1.style.padding = "1px";
-						col1.innerHTML= "<td><input readonly=\"readonly\" id='PopularItem' value='POPULAR ITEM'  data-toggle=\"tooltip\" data-placement=\"top\" title='POPULAR ITEM' style="+style+" onclick=\"funLoadPopularItems()\" class=\"btn btn-success\" /></td>";
+						col1.innerHTML= "<td><input readonly=\"readonly\" id='PopularItem' value='POPULAR'  data-toggle=\"tooltip\" data-placement=\"top\" title='POPULAR ITEM' style="+style+" onclick=\"funLoadPopularItems()\" class=\"btn btn-success\" /></td>";
 						menuIndex=menuIndex-1;
 					}else{
 						
@@ -1607,7 +1621,7 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 					
 					var col1=row.insertCell(k);
 					col1.style.padding = "1px";
-					col1.innerHTML= "<td ><input type=\"text\" id="+jsonArrForMenuHeads[(menuHeadRows*6)+k].strMenuCode+" value='"+jsonArrForMenuHeads[(menuHeadRows*6)+k].strMenuName+"'  data-toggle=\"tooltip\" data-placement=\"top\" title='"+jsonArrForMenuHeads[(menuHeadRows*6)+k].strMenuName+"'   style="+style+"  onclick=\"funMenuHeadButtonClicked(this)\"  class=\"btn btn-default\" /></td>";
+					col1.innerHTML= "<td ><input readonly=\"readonly\" id="+jsonArrForMenuHeads[(menuHeadRows*6)+k].strMenuCode+" value='"+jsonArrForMenuHeads[(menuHeadRows*6)+k].strMenuName+"'  data-toggle=\"tooltip\" data-placement=\"top\" title='"+jsonArrForMenuHeads[(menuHeadRows*6)+k].strMenuName+"'   style="+style+"  onclick=\"funMenuHeadButtonClicked(this)\"  class=\"btn btn-default\" /></td>";
 					
 				}
 			}
@@ -1846,7 +1860,7 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 			        	}
 			        	
 			        	gAreaCode=response.AreaCode;
-			        	$("#txtAreaName").text(response.AreaName);
+			        	$("#txtAreaName").val(response.AreaCode);
 			        	
 			         	if(gCMSIntegrationYN=="Y")
 			        	{
@@ -1918,6 +1932,7 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 	*/
 	function funTableNoClicked(objTable,objIndex)
 	{
+		$("#txtItemSearch").val('');
 		var tableNo=objTable.id;
 		var tableName=objTable.value;
 		
@@ -1957,12 +1972,12 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 		
 		var $rows = $('#tblMenuHeadDtl').empty();
 		var $rows = $('#tblTopButtonDtl').empty();
-		document.getElementById("divPLU").style.display='none';
+	//	document.getElementById("divPLU").style.display='none';
 		
-		 funDisplayPLUButton(false);
+		 //funDisplayPLUButton(false);
 		 funDisplayDoneButton(false);
 		 funDisplayMakeBillButton(false);
-		 funDisplayPLUButton(false);
+		 //funDisplayPLUButton(false);
 		 funDisplayNCKOTButton(false);
 		 
 		 var ncKOTButton=document.getElementById('NC KOT');
@@ -1981,7 +1996,8 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 	
 	function funTakeAwayBtnClicked()
 	{
-		
+		document.getElementById("divBillItemDtl").style.height = "710px";
+		document.getElementById("divDineInDetail").style.display='none';
 		var tblBillItemDtl = document.getElementById("tblBillItemDtl");
 		var tblOldKOTItemDtl=document.getElementById('tblOldKOTItemDtl');
 		
@@ -2025,10 +2041,10 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 		 homeDeliveryForTax = "N";		 		
 		 gTakeAway="Yes";
 		 
-		 funDisplayPLUButton(false);
+		 //funDisplayPLUButton(false);
 		 funDisplayDoneButton(false);
 		 funDisplayMakeBillButton(false);
-		 funDisplayPLUButton(false);
+		 //funDisplayPLUButton(false);
 			
 		//load menuheads
 		var $rows = $('#tblMenuItemDtl').empty();
@@ -2044,6 +2060,10 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 	{
 		
 		funOnCloseBtnClick();
+		//document.getElementById("divMenuHeadDtl").style.display='none';
+		document.getElementById("divBillItemDtl").style.height = "655px";
+		document.getElementById("divDineInDetail").style.display='block';
+		
 		var tblBillItemDtl = document.getElementById("tblBillItemDtl");
 		var tblOldKOTItemDtl=document.getElementById('tblOldKOTItemDtl');
 		
@@ -2134,7 +2154,8 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 	
 	function funHomeDeliveryBtnClicked()
 	{
-		
+		document.getElementById("divBillItemDtl").style.height = "710px";
+		document.getElementById("divDineInDetail").style.display='none';
 		var tblBillItemDtl = document.getElementById("tblBillItemDtl");
 		var tblOldKOTItemDtl=document.getElementById('tblOldKOTItemDtl');
 		
@@ -2169,10 +2190,10 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 		operationType="HomeDelivery";
 		transactionType="Direct Biller";
 		
-		funDisplayPLUButton(false);
+		//funDisplayPLUButton(false);
 		funDisplayDoneButton(false);
 		funDisplayMakeBillButton(false);
-		funDisplayPLUButton(false);
+		//funDisplayPLUButton(false);
 		
 		
 		//load menuheads
@@ -2912,6 +2933,8 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 	}
 	
 	function funGetQuantity(dblQty){
+		
+		
 		var qty=prompt("Enter Quantity",dblQty );
 		if(qty!=null){
 			if(!/^[0-9]+$/.test(qty)){
@@ -2919,11 +2942,59 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 			}else if(qty<1 ){
 				qty=funGetQuantity(1);
 			}	
-		}
+		} 
 		
 		return qty;
 	}
 	
+	function funOpenNumPadDialog(){
+		
+		document.getElementById("numpadValue").click();
+	}
+
+	function funCloseDialog(numpadValue){
+		if(numpadValue=='' || numpadValue== null){
+			return false;
+		}else
+		{
+			numpadValue=parseFloat(numpadValue);
+			if(numpadValue>0){
+				if(NumPadDialogFor=='menuItem'){
+					if(itemPrice==0){
+						// easy_numpad_close();
+						funOpenNumPadDialogForItemPrice(numpadValue);
+					}else{
+						funMenuItemClicked1(objMenuItemButton,objIndex,numpadValue,itemPrice);
+					}
+					
+				}else if(NumPadDialogFor=='itemPrice'){
+					funMenuItemClicked1(objMenuItemButton,objIndex,itemChangeQtySelected,numpadValue);
+				}else if(NumPadDialogFor=='changeQty'){
+					funChgQtyBtnClicked1(numpadValue);	
+				}else if(NumPadDialogFor=='ChangeItemQty'){
+					funChangeQty1(itemChangeQtySelected,numpadValue);	
+				}else if(NumPadDialogFor=='modiferItem'){
+					funFreeFlowModifierClicked1(objMenuItemButton,objIndex,itemCode,numpadValue);
+				}else if(NumPadDialogFor=='pax'){
+					funChangePAX1(objIndex,numpadValue);
+				}
+				
+				
+					
+			}else{
+				return false;
+			}
+				
+		}
+		
+	}
+
+	function funOpenNumPadDialogForItemPrice(numpadValue){
+		itemChangeQtySelected=numpadValue; //store input value of quantity in variable 
+		NumPadDialogFor='itemPrice';
+		$("#numpadValue").val('Enter Item Price');
+		funOpenNumPadDialog();
+	}
 	function funGetAmount(dblAmount){
 		var amt=prompt("Enter Amount",dblAmount);
 		if(amt!=null){
@@ -2937,24 +3008,55 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 		return amt;
 	}
 	
-	function funMenuItemClicked(objMenuItemButton,objIndex)
+	function funMenuItemClicked(objMenuItemButton1,objIndex1)
+	{
+		objMenuItemButton=objMenuItemButton1;
+		objIndex=objIndex1;
+		
+		funFillMapWithHappyHourItems();
+		
+		var objMenuItemPricingDtl=itemPriceDtlList[objIndex];
+		itemPrice = funGetFinalPrice(objMenuItemPricingDtl);
+		
+		if(openItemQtyNumpad){
+			NumPadDialogFor='menuItem';
+			$("#numpadValue").val('Enter Quantity');
+			funOpenNumPadDialog();
+		}else{
+			if(itemPrice==0){
+				itemChangeQtySelected=1; //default item quantity  
+				NumPadDialogFor='itemPrice';
+				$("#numpadValue").val("Enter Price");
+				funOpenNumPadDialog();
+					
+			}else{
+				funMenuItemClicked1(objMenuItemButton1,objIndex1,1,itemPrice);
+			}
+			
+		}
+		
+		//funMenuItemClicked1(objMenuItemButton,objIndex);
+	}
+	
+	function funMenuItemClicked1(objMenuItemButton,objIndex,numpadValue,itemPrice)
 	{	
 		$("#txtItemSearch").val("");
-	
+		
 		funFillMapWithHappyHourItems();
 	
 		var objMenuItemPricingDtl=itemPriceDtlList[objIndex];
 		
-		var   price = funGetFinalPrice(objMenuItemPricingDtl);
+		var price = funGetFinalPrice(objMenuItemPricingDtl);
 		
 		var isOrdered=funIsAlreadyOrderedItem(objMenuItemPricingDtl);
-		var qty=funGetQuantity(1);
+		var qty=numpadValue;
+		
 		
 		if(price==0.00)
 		{
 			 price = funGetFinalPrice(objMenuItemPricingDtl);
 			
-			 price = prompt("Enter Price", 0);
+			 price = itemPrice; //prompt("Enter Price", 0);
 		} 
 		if(qty==null || price==null)
 		{
@@ -3141,7 +3243,11 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 				{
 					index=rowCount*tblMenuItemDtl_MAX_COL_SIZE+insertCol;
 					var col=insertTR.insertCell(insertCol);
-					col.innerHTML = "<td><input type=\"button\" id='"+obj.strItemCode+"' value='"+obj.strItemName+"'    style=\"width: 110px;height: 60px; white-space:normal;font-size: 11px; \"  onclick=\"funMenuItemClicked(this,"+index+")\" class=\"btn btn-primary \" /></td>";
+					var tmpprice=Math.round(obj.strPriceMonday);
+					col.innerHTML = "<td><input type=\"button\" id='"+obj.strItemCode+"' value='"+obj.strItemName+"'  data-toggle=\"tooltip\" data-placement=\"top\" title='"+tmpprice+"'  style=\"width: 110px;height: 60px; white-space:normal;font-size: 11px; \"  onclick=\"funMenuItemClicked(this,"+index+")\" class=\"btn btn-primary \" /></td>";
+					 //readonly=\"readonly\"
+					
+					//col.innerHTML = "<td><div><input readonly=\"readonly\" id='"+obj.strItemCode+"' value='"+obj.strItemName+"'    style=\"width: 110px;height: 60px; white-space:normal;font-size: 11px; \"  onclick=\"funMenuItemClicked(this,"+index+")\" /><font style=\"color: #000000e0; font-size: 13px;\" class=\"dont-break-out\">"+tmpprice+"</font></div></td>";
 					col.style.padding = "1px";
 					insertCol++;
 				}
@@ -3150,9 +3256,11 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 					rowCount++;
 					insertTR=tblMenuItemDtl.insertRow();									
 					insertCol=0;
-					index=rowCount*tblMenuItemDtl_MAX_COL_SIZE+insertCol;				
+					index=rowCount*tblMenuItemDtl_MAX_COL_SIZE+insertCol;
+					var tmpprice=Math.round(obj.strPriceMonday);
+					
 					var col=insertTR.insertCell(insertCol);
-					col.innerHTML = "<td><input type=\"button\" id='"+obj.strItemCode+"' value='"+obj.strItemName+"'    style=\"width: 110px;height: 60px; white-space: normal;font-size: 11px;\"  onclick=\"funMenuItemClicked(this,"+index+")\" class=\"btn btn-primary\" /></td>";
+					col.innerHTML = "<td><input type=\"button\" id='"+obj.strItemCode+"' value='"+obj.strItemName+"'  data-toggle=\"tooltip\" data-placement=\"top\" title='"+tmpprice+"'    style=\"width: 110px;height: 60px; white-space: normal;font-size: 11px;\"  onclick=\"funMenuItemClicked(this,"+index+")\" class=\"btn btn-primary\" /></td>";
 					col.style.padding = "1px";
 					insertCol++;
 				}	
@@ -3617,36 +3725,47 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 	{
 		if(selectedRowIndex>0)
 		{
-		 	var table = document.getElementById("tblBillItemDtl");
-			var rowCount = table.rows.length;
-			var iteCode=table.rows[selectedRowIndex].cells[1].innerHTML;
-		  
-		 	var codeArr = iteCode.split('value=');
-		    var code=codeArr[1].split('onclick=');
-		    var oldQty=code[0].substring(1, (code[0].length-2));
-		    var rate=(tblBillItemDtl.rows[selectedRowIndex].cells[2].children[0].value)/(tblBillItemDtl.rows[selectedRowIndex].cells[1].children[0].value);
-		    var qty=funGetQuantity(1);   //parseFloat(prompt("Enter Quantity", oldQty));
-		  //$("#dblQuantity."+selectedRowIndex).val(qty);
-// 		    table.rows[selectedRowIndex].cells[1].innerHTML = "<input readonly=\"readonly\" size=\"3.5px\"   class=\"itemQty\"      style=\"text-align: right; color:blue;\"  name=\"listOfMakeKOTBillItemDtl["+(selectedRowIndex)+"].dblQuantity\" id=\"dblQuantity."+(selectedRowIndex)+"\" value='"+qty+"' onclick=\"funChangeQty(this)\"/>";
-		  if(qty!=null && qty!=NaN && parseInt(qty)>0)
-		  {
-		    document.getElementById("quantity."+(selectedRowIndex)).value=qty;
-		  
-			  var itemAmt=qty*rate;
-			  document.getElementById("amount."+(selectedRowIndex)).value=itemAmt;
-			  funFillKOTList();
-			  funCalculateTax();
-		  }
-		  else
-			  return false;
-			   
-		
+			 if(openItemQtyNumpad){
+				 NumPadDialogFor='changeQty';
+				 $("#numpadValue").val('Enter Quantity');
+				 funOpenNumPadDialog();	 
+			 }else{
+				 funChgQtyBtnClicked1(1);
+			 }
+			
+			
 		}else{
 			alert("Please Select Item ");
 		}
 		  
 	}
 	
+	function funChgQtyBtnClicked1(numpadValue){
+		var table = document.getElementById("tblBillItemDtl");
+		var rowCount = table.rows.length;
+		var iteCode=table.rows[selectedRowIndex].cells[1].innerHTML;
+	  
+	 	var codeArr = iteCode.split('value=');
+	    var code=codeArr[1].split('onclick=');
+	    var oldQty=code[0].substring(1, (code[0].length-2));
+	    var rate=(tblBillItemDtl.rows[selectedRowIndex].cells[2].children[0].value)/(tblBillItemDtl.rows[selectedRowIndex].cells[1].children[0].value);
+	    var qty=numpadValue; 
+	   
+	    //parseFloat(prompt("Enter Quantity", oldQty));
+	  //$("#dblQuantity."+selectedRowIndex).val(qty);
+//		    table.rows[selectedRowIndex].cells[1].innerHTML = "<input readonly=\"readonly\" size=\"3.5px\"   class=\"itemQty\"      style=\"text-align: right; color:blue;\"  name=\"listOfMakeKOTBillItemDtl["+(selectedRowIndex)+"].dblQuantity\" id=\"dblQuantity."+(selectedRowIndex)+"\" value='"+qty+"' onclick=\"funChangeQty(this)\"/>";
+	  if(qty!=null && qty!=NaN && parseInt(qty)>0)
+	  {
+	    document.getElementById("quantity."+(selectedRowIndex)).value=qty;
+	  
+		  var itemAmt=qty*rate;
+		  document.getElementById("amount."+(selectedRowIndex)).value=itemAmt;
+		  funFillKOTList();
+		  funCalculateTax();
+	  }
+	  else
+		  return false;
+	}
 
 	function funGetSelectedRowIndex(obj)
 	{
@@ -3685,9 +3804,17 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 	
 	function funChangePAX(obj)
 	{
+		NumPadDialogFor="pax";
+		objIndex=obj;
+		$("#numpadValue").val('Enter PAX');
+		funOpenNumPadDialog();
+	}
+	
+	function funChangePAX1(obj,numpadValue)
+	{
 		//var text=$("#txtPaxNo").text();;
 		
-		 var paxNo=prompt("Enter PAX");
+		 var paxNo=numpadValue;
 		 if(paxNo!=null)
 		 {
 			  
@@ -3696,7 +3823,9 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 				  
 			  }else if(paxNo>100 || paxNo == 0)
 			  {
-				  var nextPaxNo=prompt("Please Enter Valid PAX !!! ");
+				  
+				  funChangePAX(obj);
+				  /* var nextPaxNo=paxNo;
 				  if(nextPaxNo==null)
 					  return false;
 				  else
@@ -3704,7 +3833,7 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 					  obj.text=nextPaxNo;
 					  $("#txtPaxNo").text(nextPaxNo);
 				  }
-				  
+				   */
 			  }
 			  else{
 				  obj.text=paxNo;
@@ -3712,9 +3841,9 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 			  }
 			  
 		 }
-		 else
+		/*  else
 		 {			 
-			  var paxNo=prompt("Enter PAX");
+			  var paxNo=numpadValue;
 			  if(paxNo!=null)
 			  {
 				  if(paxNo == 0)
@@ -3725,14 +3854,28 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 				  $("#txtPaxNo").text(secondPaxNo);
 			  } 
 			  else
-				  return false;
-		 }
+				  $("#txtPaxNo").text(1);
+		 } */
 		 /* obj.text=paxNo;
 		 $("#txtPaxNo").text(paxNo); */
 	}
 	
 	function funChangeQty(obj)
 	{
+		if(openItemQtyNumpad){
+			itemChangeQtySelected=obj;
+			NumPadDialogFor='ChangeItemQty';
+			$("#numpadValue").val('Enter Quantity');
+			funOpenNumPadDialog();
+		}else{
+			funChangeQty1(obj,1);
+		}
+		
+		
+	}
+
+	function funChangeQty1(obj,numpadValue){
+		
 		 var index = obj.parentNode.parentNode.rowIndex;
 		 var table = document.getElementById("tblBillItemDtl");
 		 if((selectedRowIndex >0 ) && (index!=selectedRowIndex))
@@ -3758,7 +3901,7 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 		  var code=codeArr[1].split('onclick=');
 		  var itemCode=code[0].substring(1, (code[0].length-2));
 		  
-		  var qty=funGetQuantity(obj.value);  //prompt("Enter Quantity", obj.value);
+		  var qty=numpadValue;//funGetQuantity(obj.value);  //prompt("Enter Quantity", obj.value);
 		  if(qty!=null)
 		  {
 			  obj.value=qty;
@@ -3771,8 +3914,10 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 		  {
 			  return false;
 		  }
+		
 	}
-
+	
+	
 	function funLoadModifiers(itemCode)
 	{		
 		var searchurl=getContextPath()+"/funLoadModifiers.html?itemCode="+itemCode;
@@ -3861,18 +4006,29 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 		funCalculateTax();
 	}
 	
-	function funFreeFlowModifierClicked(objMenuItemButton,objIndex,itemCode)
+	function funFreeFlowModifierClicked(objMenuItemButton1,objIndex1,itemCode)
+	{
+		if(openItemQtyNumpad){
+			objMenuItemButton=objMenuItemButton1;
+			objIndex=objIndex1;
+			itemCode=itemCode1;
+			NumPadDialogFor='modiferItem';
+			$("#numpadValue").val('Enter Quantity');
+			funOpenNumPadDialog();
+		}
+		else{
+			funFreeFlowModifierClicked1(objMenuItemButton,objIndex,itemCode,1);
+		}
+		
+	}
+	
+	function funFreeFlowModifierClicked1(objMenuItemButton,objIndex,itemCode,numPadValue)
 	{
 		var itmName=prompt("Enter Modifier Name", "");
 		if(itmName.trim().length>0)
 			{
 				itmName="-->"+itmName;
-				var qty=funGetQuantity(1);
-				if(qty!=null){
-					qty=parseFloat(qty);
-				}else{
-					false;
-				}
+				var qty=numPadValue;
 				var amt=funGetAmount(0);
 				if(amt!=null){
 					amt=parseFloat(amt);
@@ -3890,6 +4046,7 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 				funCalculateTax();
 			}
 	}
+	
 	function funFillTopModifierButtonList(itemCode)
 	{		
 		
@@ -4063,10 +4220,65 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 				
 			}
 		}
+
+	function funFillGridData(itemName)
+	{
+		if(itemName==''){
+			itemName=$("#txtItemSearch").val();
+		}
+		if(operationType=="DineIn"){
+			if($("#txtTableNo").text()!='' && $("#txtWaiterName").text()!='' && $("#txtPaxNo").text()!=''){
+				funFillGridData1(itemName);
+			}
+		}else{
+			funFillGridData1(itemName);
+		}
+	}
+function funFillGridData1(itemName)
+{
 	
 	
-	
+	var $rows = $('#tblMenuItemDtl').empty();
+	var tblMenuItemDtl=document.getElementById('tblMenuItemDtl');
+	flagPopular="menuhead";
+	var jsonArrForMenuItemPricing=${command.jsonArrForDirectBillerMenuItemPricing};	
+	var rowCount = tblMenuItemDtl.rows.length;	
+	itemPriceDtlList=new Array();
+	var insertCol=0;
+	var insertTR=tblMenuItemDtl.insertRow();
+	var index=0;
+	$.each(jsonArrForMenuItemPricing, function(i, obj) 
+	{		
+		if(obj.strItemName.toLowerCase().includes(itemName.toLowerCase())){
+			
+			if(insertCol<tblMenuItemDtl_MAX_COL_SIZE)
+			{
+				index=rowCount*tblMenuItemDtl_MAX_COL_SIZE+insertCol;
+				var col=insertTR.insertCell(insertCol);
+				var tmpprice=Math.round(obj.strPriceMonday);
+				col.innerHTML = "<td><input type=\"button\" id='"+obj.strItemCode+"' value='"+obj.strItemName+"'  data-toggle=\"tooltip\" data-placement=\"top\" title='"+tmpprice+"'  style=\"width: 110px;height: 60px; white-space:normal;font-size: 11px; \"  onclick=\"funMenuItemClicked(this,"+index+")\" class=\"btn btn-primary \" /></td>";
+				col.style.padding = "1px";
+				insertCol++;
+			}
+			else
+			{		
+				rowCount++;
+				insertTR=tblMenuItemDtl.insertRow();									
+				insertCol=0;
+				index=rowCount*tblMenuItemDtl_MAX_COL_SIZE+insertCol;
+				var tmpprice=Math.round(obj.strPriceMonday);
 				
+				var col=insertTR.insertCell(insertCol);
+				col.innerHTML = "<td><input type=\"button\" id='"+obj.strItemCode+"' value='"+obj.strItemName+"'  data-toggle=\"tooltip\" data-placement=\"top\" title='"+tmpprice+"'    style=\"width: 110px;height: 60px; white-space: normal;font-size: 11px;\"  onclick=\"funMenuItemClicked(this,"+index+")\" class=\"btn btn-primary\" /></td>";
+				col.style.padding = "1px";
+				insertCol++;
+			}	
+			itemPriceDtlList[index]=obj;
+		}
+			
+		
+	});
+}
 	
 </script>
 
@@ -4083,19 +4295,18 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 				<table >
 					<tr>
 						<td>
+						<div id="divOperationType" style="border: 1px solid rgb(204, 204, 204);height: 60px;width: 380px;display: block; margin-top:0px;">
+							<span>
+								<input type="button"  id="Dine In" value="Dine In"    style="width: 115px;height: 45px; white-space: normal;background-color: #2D9CE8;margin-left:08px;margin-top:1px;"   onclick="funFooterButtonClicked(this)" class="btn btn-success active"/>
+								<input type="button"  id="Home Delivery" value="Home Delivery"    style="width: 115px;height: 45px; white-space: normal;background-color: #2D9CE8;margin-top:1px;"   onclick="funFooterButtonClicked(this)" class="btn btn-success"/>
+								<input type="button"  id="Take Away" value="Take Away"    style="width: 115px;height: 45px; white-space: normal;background-color: #2D9CE8;margin-top:1px;"   onclick="funFooterButtonClicked(this)" class="btn btn-success"/>
+							</span> 
 						
-							<div id="divDineInDetail" style="border: 1px solid rgb(204, 204, 204);height: 130px;width: 380px;display: block; margin-top:0px;" >																	
+						</div>
+						
+							<div id="divDineInDetail" style="border: 1px solid rgb(204, 204, 204);height: 60px;width: 380px;display: block; margin-top:0px;" >																	
 									<table id="tblDineInDetail"   style="border-collapse: separate;">
 										<tbody>
-										<tr>
-										<td colspan ="4" style="padding: 3px;">
-										<span>
-											<input type="button"  id="Dine In" value="Dine In"    style="width: 115px;height: 45px; white-space: normal;background-color: #2D9CE8;margin-left:08px"   onclick="funFooterButtonClicked(this)" class="btn btn-success active"/>
-											<input type="button"  id="Home Delivery" value="Home Delivery"    style="width: 115px;height: 45px; white-space: normal;background-color: #2D9CE8;"   onclick="funFooterButtonClicked(this)" class="btn btn-success"/>
-											<input type="button"  id="Take Away" value="Take Away"    style="width: 115px;height: 45px; white-space: normal;background-color: #2D9CE8;"   onclick="funFooterButtonClicked(this)" class="btn btn-success"/>
-										</span> 
-										</td>
-										</tr>
 											<tr>
 												<th style="width: 150px;"><label>TABLE</label></th>
 												<th style="width: 150px;"><label>WAITER</label></th>
@@ -4103,17 +4314,17 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 												<th style="width: 100px;"><label>KOT NO</label></th>
 											</tr>
 											<tr>
-												<td style="width: 150px;"><label id="txtTableNo"  class="btn  btn-link"></label></td>
-												<td style="width: 150px;"><label id="txtWaiterName" class="btn-link"></label></td>
-												<td style="width: 50px;"><label  id="txtPaxNo" class="btn-link" onclick="funChangePAX(this)">1</label></td>
-												<td style="width: 100px;"><label id="txtKOTNo" class="btn-link"></label></td>
+												<td style="width: 150px;"><label id="txtTableNo" style="width: 100%;text-align: center;" class="btn  btn-link"></label></td>
+												<td style="width: 150px;"><label id="txtWaiterName" style="width: 100%;text-align: center;" class="btn-link"></label></td>
+												<td style="width: 50px;"><label  id="txtPaxNo" style="width: 100%;text-align: center;" class="btn-link" onclick="funChangePAX(this)">1</label></td>
+												<td style="width: 100px;"><label id="txtKOTNo" style="width: 100%;text-align: center;" class="btn-link"></label></td>
 											</tr>
 										</tbody>
 									</table>
 							</div>
 						
 							<!-- <div id="divBillItemDtl" style="background-color: #a4d7ff; border: 1px solid #ccc; display: block; height: 500px;  overflow-x: scroll; overflow-y: scroll; width: 30%;"> -->
-							<div id="divBillItemDtl" style="border: 1px solid rgb(204, 204, 204);height: 580px;overflow: auto;width: 380px;display: block;padding: 0px;margin-top: 2px;margin-bottom: 2px;">
+							<div id="divBillItemDtl" style="border: 1px solid rgb(204, 204, 204);height: 655px;overflow: auto;width: 380px;display: block;padding: 0px;margin-top: 2px;margin-bottom: 2px;">
 								
 								<table id="tblBillItemDtl"   style="border-collapse: separate;" ><!-- class="transTablex" -->
 									<tr>
@@ -4131,44 +4342,48 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 								
 							</div>
 							
-							<div id="divTotalDtl" style="border: 1px solid rgb(204, 204, 204);height: 90px;width: 100%;margin-bottom:  2px;display: block;">									
+							<div id="divTotalDtl" style="border: 1px solid rgb(204, 204, 204);height: 45px;width: 100%;margin-bottom:  2px;display: block;">									
 									<table style="border-collapse: separate;">
 										<tr>
-											<td style="padding-right:  3px; padding-left:  3px;"><input type="button" id="chgQty" value="CHG QTY" style="width: 60px;height: 30px; white-space: normal;" onclick="funChgQtyBtnClicked()" class="btn btn-warning" /></td>
-											<td style="padding-right:  3px; padding-left:  3px;" ><input type="button" id="delete" value="Delete" style="width: 60px;height: 30px; " onclick="funDeleteBtnClicked()" class="btn btn-warning" /></td>
-											<td style="padding-right:  3px; padding-left:  3px;">&nbsp;&nbsp;&nbsp;<label >TOTAL</label></td>
-											<td>&nbsp;&nbsp;&nbsp;</td>
-											<td style="padding-right:  3px; padding-left:  3px;"><input  disabled type="text"  id="txtTotal" style="width: 160px;text-align: right; margin-top:4px;" class="longTextBox jQKeyboard form-control"  class="btn btn-btn-warning" /></td>
+											<td style="padding-right:  1px; padding-left:  2px;"><input type="button" id="chgQty" value="CHG QTY" style="width: 50px;height: 30px; white-space: normal;" onclick="funChgQtyBtnClicked()" class="btn btn-warning" /></td>
+											<td style="padding-right:  1px; padding-left:  2px;" ><input type="button" id="delete" value="Delete" style="width: 50px;height: 30px; " onclick="funDeleteBtnClicked()" class="btn btn-warning" /></td>
+											<td style="padding-right:  1px; padding-left:  2px;" ><input  type="button" id="btnUp"  style="width: 50px;height: 30px;" value="Up" onclick="funMoveSelectedRow(this);" class="btn btn-warning" ></input></td>
+					        				<td style="padding-right:  1px; padding-left:  2px;" ><input id="btnDown" type="button" style="width: 50px;height: 30px;" value="Down" onclick="funMoveSelectedRow(this);" class="btn btn-warning"></input></td>
+											<td style="padding-right:  1px; padding-left:  2px;"><input  disabled type="text"  id="txtTotal" style="width: 130px;text-align: right;font-size: x-large; margin-top:4px;" class="longTextBox jQKeyboard form-control"  class="btn btn-btn-warning" /></td>
 										</tr>
-										<tr>	
-											<td style="padding-right:  3px; padding-left:  3px;" ><input  type="button" id="btnUp"  style="width: 60px;height: 30px;" value="Up" onclick="funMoveSelectedRow(this);" class="btn btn-warning" ></input></td>
-					        				<td style="padding-right:  3px; padding-left:  3px;" ><input id="btnDown" type="button" style="width: 60px;height: 30px;" value="Down" onclick="funMoveSelectedRow(this);" class="btn btn-warning"></input></td>
-										</tr>
-										<tr></tr>																		
 								</table>
 							</div>
 						</td>					
 						<td>
-							<div id="divArea" style="border: 1px solid rgb(204, 204, 204);height: 50px;overflow: hidden;width: 680px;display: block; margin-top:0px;" >																	
-								<table>
-								<tr>
-									<td><input  type="text" style="width: 200px;" id="Customer"  class="searchTextBox jQKeyboard form-control" placeholder="Select customer..."  ondblclick="funHelp('POSCustomerMaster')"/></td>
-									<td><label id="customerName" style="margin-left: 100px;"> vinayak padalkar</label></td>
-								</tr>
+							<div id="divArea" style="border: 1px solid rgb(204, 204, 204);height: 35px;overflow: hidden;width: 680px;display: block; margin-top:0px;" >																	
 								
-								<tr>
-									<td colspan="2"  style="padding: 2px;"><label>Section:</label> <label id="txtAreaName"> All</label></td>
-								</tr>
+								<div class="row" style="background-color: #fff; display: -webkit-box;">
 								
-								</table>
-									<span>
-									</span>
+									<div class="element-input col-lg-6" style="width: 25%; "> 
+				    					<input  type="text" style="width: 150px;" id="Customer"  class="searchTextBox jQKeyboard form-control" placeholder="Select customer..."  ondblclick="funHelp('POSCustomerMaster')"/>
+				    				</div>
+			    					<div class="element-input col-lg-6" style="width: 25%;"> 
+				    					<label id="customerName"> <!-- vinayak padalkar --></label>
+				    				</div>
+			    				
+								
+								
+									<div class="element-input col-lg-6" style="width: 20%;"> 
+				    					<label>Area :</label> <!-- <label id="txtAreaName"> All</label> -->
+				    				</div>
+			    					<div class="element-input col-lg-6" style="width: 25%;"> 
+										<s:select id="txtAreaName" items="${areaList}" path="" onchange="funShowTables()"  ></s:select>
+									</div>
+			    				
+								
+								
+								</div>
 							</div>
 							
 							<div id="divMenuHeadDtl" style="border: 1px solid rgb(204, 204, 204);height: 120px;overflow: auto;width: 680px;display: block; margin-top:0px;">									
 									<table id="tblMenuHeadDtl"    style="border-collapse: separate;"> <!-- class="table table-striped table-bordered table-hover" -->
 									 <tr>
-									 <td style="padding: 3px;" ><input type="button" id="PopularItem" value="POPULAR ITEM"  style="width: 155px;height: 50px; white-space: normal;"  onclick="funPopularItemButtonClicked(this)" class="btn btn-success" /></td>
+									 <td style="padding: 3px;" ><input type="button" id="PopularItem" value="POPULAR"  style="width: 155px;height: 50px; white-space: normal;"  onclick="funPopularItemButtonClicked(this)" class="btn btn-success" /></td>
 									 </tr>
 									 <c:set var="sizeOfmenu" value="${fn:length(command.jsonArrForDirectBillerMenuHeads)}"></c:set>
 									 <c:set var="menuCount" value="${0}"></c:set>
@@ -4203,8 +4418,9 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 									</table>
 							</div>
 							
-						<div id="divItemDtl" style="border: 1px solid rgb(204, 204, 204);height: 580px;overflow: auto;width: 680px;display: block; margin-top:2px; margin-left:2px;">									
-								
+						<div id="divItemDtl" style="border: 1px solid rgb(204, 204, 204);height: 580px;overflow: auto;width: 680px;display: block; margin-top:2px; margin-left:2px; font-family: sans-serif;">									
+								<s:input type="text"  id="txtItemSearch" path="" placeholder="Search..." cssStyle="width:200px; height:25px; display:block; margin-top:5px; margin-left:5px;"  cssClass="searchTextBox jQKeyboard form-control" onclick="funFillGridData('')" />
+								<div>
 									<table id="tblMenuItemDtl">
 										
 									<c:set var="sizeOfTables" value="${fn:length(command.jsonArrForTableDtl)}"></c:set>									   
@@ -4218,7 +4434,7 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 													{
 												%>														
 														<c:if test="${itemCounter lt sizeOfTables}">																																		
-															<td style="padding: 5px;"><input type="button" id="${command.jsonArrForTableDtl[itemCounter].strTableNo}"  value="${command.jsonArrForTableDtl[itemCounter].strTableName}" style=" width: 110px; height: 60px; white-space: normal;border-radius: 40px;" class="btn btn-primary "  onclick="funTableNoClicked(this,${itemCounter})"  />
+															<td style="padding: 5px;"><input type="button" id="${command.jsonArrForTableDtl[itemCounter].strTableNo}"  value="${command.jsonArrForTableDtl[itemCounter].strTableName}" style="width: 110px; height: 60px; white-space: normal;border-radius: 40px;" class="btn btn-primary "  onclick="funTableNoClicked(this,${itemCounter})"  />
 															</td>																																																			
 														<c:set var="itemCounter" value="${itemCounter +1}"></c:set>
 														</c:if>													
@@ -4229,9 +4445,10 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 										</c:forEach>
 										
 							</table>
+							</div>
 						</div>
 							<div id="divPLU" style=" border: 1px solid #ccc; height: 580px; margin-top:2px; margin-left:2px;  overflow-x: auto; overflow-y: auto; width: 680px;" >
-								<div style="position: fixed; margin-bottom:20px;background-color: white" >
+								<div style="position: absolute; margin-bottom:20px;background-color: white" >
 								<table>
 									<tr>
 										<td>
@@ -4295,8 +4512,9 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 		 		<!-- Instead of use these fields in frmPOSBillSettlement -->
 		 		
 		 		
-		 		
-		 				 		 				 																					
+		 		<div class="easy-get" style="display: none">
+		 			 <input type="text" id="numpadValue" class="easy-put" />
+		 			 </div>	 		 				 																					
 			</div>
 			</div>
 		

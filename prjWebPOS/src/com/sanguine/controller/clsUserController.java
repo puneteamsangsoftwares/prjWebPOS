@@ -301,7 +301,7 @@ public class clsUserController
 		req.getSession().setAttribute("gUserCode",user.getStrUserCode());
 		req.getSession().setAttribute("gUserType",user.getStrSuperType());
 		req.getSession().setAttribute("gSuperUser",user.getStrSuperType());
-		req.getSession().setAttribute("gUserName",user.getStrUserName());
+		req.getSession().setAttribute("gUserName",user.getStrUserName().toUpperCase());
 		String dayEndDate=	objGlobalFun.funGetCurrentDate("yyyy-MM-dd");
 		req.getSession().setAttribute("dayEndDate",dayEndDate);
 		

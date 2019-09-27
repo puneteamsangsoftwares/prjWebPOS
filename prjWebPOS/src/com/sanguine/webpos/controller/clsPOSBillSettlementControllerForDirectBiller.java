@@ -42,6 +42,7 @@ import com.sanguine.webpos.bean.clsPOSSettelementOptions;
 import com.sanguine.webpos.bean.clsPOSTaxCalculation;
 import com.sanguine.webpos.bean.clsPOSTaxCalculationBean;
 import com.sanguine.webpos.bean.clsPOSTaxDtlsOnBill;
+import com.sanguine.webpos.model.clsAreaMasterModel;
 import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.util.clsPOSSetupUtility;
@@ -147,15 +148,28 @@ public class clsPOSBillSettlementControllerForDirectBiller
 
 			obBillSettlementBean.setJsonArrForPopularItems(jsonArrForPopularItems);
 
-			JSONArray jsonArrForTableDtl = objMakeKOT.funLoadTableDtl(clientCode, posCode);
+			JSONArray jsonArrForTableDtl = objMakeKOT.funLoadTableDtl(clientCode, posCode,"All");
 			obBillSettlementBean.setJsonArrForTableDtl(jsonArrForTableDtl);
 
 			JSONArray jsonArrForWaiterDtl = objMakeKOT.funGetWaiterList(posCode,clientCode);
 			obBillSettlementBean.setJsonArrForWaiterDtl(jsonArrForWaiterDtl);
 
+		    List listArea=objMasterService.funLoadClientWiseArea(clientCode);
+		    //Area List
+		     Map areaList = new HashMap<>();
+		     areaList.put("All", "All");
+		     if(null!=listArea)
+		     {
+				for (int cnt = 0; cnt < listArea.size(); cnt++)
+				{
+					clsAreaMasterModel obModel = (clsAreaMasterModel) listArea.get(cnt);
+					areaList.put(obModel.getStrAreaCode(), obModel.getStrAreaName());
+				}
+		     }
+			     
 			model.put("gPOSCode", posCode);
 			model.put("gClientCode", clientCode);
-
+			model.put("areaList", areaList);
 			model.put("urlHits", urlHits);
 			model.put("billNo", "");
 			
@@ -163,7 +177,12 @@ public class clsPOSBillSettlementControllerForDirectBiller
 			model.put("gCustAddressSelectionForBill", objSetupHdModel.getStrCustAddressSelectionForBill());
 			model.put("gCMSIntegrationYN",objSetupHdModel.getStrCMSIntegrationYN());
 			model.put("gCRMInterface", objSetupHdModel.getStrCRMInterface());
-
+			
+			model.put("gItemQtyNumpad", false);
+			if(objSetupHdModel.getStrItemQtyNumpad().equalsIgnoreCase("Y")){
+				model.put("gItemQtyNumpad", true);	
+			}
+			
 			
 		}
 		catch (Exception e)
