@@ -2524,6 +2524,14 @@ public class clsPOSBillSettlementControllerForMakeKOT
 				{
 					areaCode = (String) listDtl.get(i);
 				}
+			}else{
+				sql.setLength(0);
+				sql.append("select strAreaCode from tbltablemaster where strTableNo='"+tableNo+"' and strClientCode='"+gClientCode+"'");
+				listDtl = objBaseService.funGetList(sql, "sql");
+				if (listDtl.size() > 0)
+				{
+					areaCode = (String) listDtl.get(0);
+				}	
 			}
 
 			sql.setLength(0);

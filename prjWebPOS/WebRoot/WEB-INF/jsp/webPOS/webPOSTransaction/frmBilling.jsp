@@ -1094,7 +1094,7 @@ var itemChangeQtySelected, itemPrice;
 	}
 	
 	
-	function funGetCostCenterListForKOT(tableNo,kotNo)
+	/* function funGetCostCenterListForKOT(tableNo,kotNo)
 	{
 		
 		var searchurl=getContextPath()+"/funGetCostCenterListForKOT.html?tableNo="+tableNo+"&kotNo="+kotNo  ;
@@ -1132,7 +1132,7 @@ var itemChangeQtySelected, itemPrice;
 
        });
 		
-   }
+   } */
 
 
 

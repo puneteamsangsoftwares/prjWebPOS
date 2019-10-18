@@ -339,18 +339,18 @@ function funRefreshSettlementItemGrid()
 
     finalNetTotal=finalSubTotal-finalDiscountAmt;
     finalGrandTotal=finalNetTotal;
-    funFillTableFooterDtl("","");
+    funFillTableFooterDtl("","","");
 	   
-    funFillTableFooterDtl(" SubTotal",finalSubTotal);
-    funFillTableFooterDtl(" Discount",finalDiscountAmt);
-    funFillTableFooterDtl(" NetTotal",finalNetTotal);
+    funFillTableFooterDtl(" SubTotal",finalSubTotal,"");
+    funFillTableFooterDtl(" Discount",finalDiscountAmt,"");
+    funFillTableFooterDtl(" NetTotal",finalNetTotal,"");
     
 	var taxTotal= funCalculateTaxForItemTbl();
 
     finalGrandTotal=taxTotal+finalNetTotal;
     
-    funFillTableFooterDtl(" GrandTotal",finalGrandTotal);
-    funFillTableFooterDtl(" PaymentMode","");
+    funFillTableFooterDtl(" GrandTotal",finalGrandTotal,"bold");
+    funFillTableFooterDtl(" PaymentMode","","bold");
     
     var discPer=(finalDiscountAmt/finalSubTotal)*100;
     $('#txtDiscountPer').val(discPer);	 
@@ -413,15 +413,15 @@ function funFillSettleTable(strItemName,dblQuantity,dblAmount,dblDiscountPer1,db
     
     
     
-    col1.innerHTML = "<input readonly=\"readonly\" size=\"33px\"  class=\"itemName\" style=\"text-align: left; color:black; height:30px;width:321px;border:none; padding-left:5px;\"   name=\"listOfBillItemDtl["+(rowCount)+"].itemName\" id=\"strItemName."+(rowCount)+"\" value='"+strItemName+"' />";
-    col2.innerHTML = "<input readonly=\"readonly\" size=\"6px\"   class=\"itemQty\" style=\"text-align: right; color:black; height:30px;width:76px;border:none;\"  name=\"listOfBillItemDtl["+(rowCount)+"].quantity\" id=\"dblQuantity."+(rowCount)+"\" value='"+dblQuantity+"' />";
-    col3.innerHTML = "<input readonly=\"readonly\" size=\"9.5px\"   class=\"itemAmt\" style=\"text-align: right; color:black; height:30px;width:97px;border:none;padding-right:5px;\"  name=\"listOfBillItemDtl["+(rowCount)+"].amount\" id=\"dblAmount."+(rowCount)+"\" value='"+dblAmount+"'/>";
+    col1.innerHTML = "<input readonly=\"readonly\" size=\"33px\"  class=\"itemName\" style=\"text-align: left; color:black; height:30px;width:275px;border:none; padding-left:5px;\"   name=\"listOfBillItemDtl["+(rowCount)+"].itemName\" id=\"strItemName."+(rowCount)+"\" value='"+strItemName+"' />";
+    col2.innerHTML = "<input readonly=\"readonly\" size=\"6px\"   class=\"itemQty\" style=\"text-align: right; color:black; height:30px;width:55px;border:none;\"  name=\"listOfBillItemDtl["+(rowCount)+"].quantity\" id=\"dblQuantity."+(rowCount)+"\" value='"+dblQuantity+"' />";
+    col3.innerHTML = "<input readonly=\"readonly\" size=\"9.5px\"   class=\"itemAmt\" style=\"text-align: right; color:black; height:30px;width:75px;border:none;padding-right:5px;\"  name=\"listOfBillItemDtl["+(rowCount)+"].amount\" id=\"dblAmount."+(rowCount)+"\" value='"+dblAmount+"'/>";
     /* col4.innerHTML = "<input readonly=\"readonly\" size=\"1px\" class=\"discountPer\"     style=\"text-align: right; color:blue; height:20px;background-color:lavenderblush;\"   name=\"listOfBillItemDtl["+(rowCount)+"].discountPer\" id=\"tblDiscountPer."+(rowCount)+"\" value='"+dblDiscountPer1+"' />";
     col5.innerHTML = "<input readonly=\"readonly\" size=\"1px\"   class=\"discountAmt\"  style=\"text-align: right; color:blue; height:20px;background-color:lavenderblush;\"  name=\"listOfBillItemDtl["+(rowCount)+"].discountAmt\" id=\"tblDiscountAmt."+(rowCount-1)+"\" value='"+dblDiscountAmt1+"' />"; */
     col6.innerHTML = "<input type=\"hidden\"  size=\"0px\"   class=\"groupcode\"    name=\"listOfBillItemDtl["+(rowCount)+"].strGroupcode\" id=\"strGroupcode."+(rowCount)+"\" value='"+strGroupCode+"' />";	    
     col7.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"subGroupCode\"  name=\"listOfBillItemDtl["+(rowCount)+"].strSubGroupCode\" id=\"strSubGroupCode."+(rowCount)+"\" value='"+strSubGroupCode+"' />";
    	col8.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"itemCode\"  name=\"listOfBillItemDtl["+(rowCount)+"].itemCode\" id=\"itemCode."+(rowCount)+"\" value='"+strItemCode+"' />";
-    col9innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"rate\"  name=\"listOfBillItemDtl["+(rowCount)+"].rate\" id=\"rate."+(rowCount)+"\" value='"+dblRate+"' />";
+    col9.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"rate\"  name=\"listOfBillItemDtl["+(rowCount)+"].rate\" id=\"rate."+(rowCount)+"\" value='"+dblRate+"' />";
 
   //For Calculaing Discount Fill the list with item Dtl
     var singleObj = {}
@@ -587,9 +587,9 @@ function funCalculatePromotion(listItmeDtl)
 	    col2.style.backgroundColor="#F5F5F5";
 	    col3.style.backgroundColor="#F5F5F5"; */
 	    
-	    col1.innerHTML = "<input readonly=\"readonly\" size=\"41px\"  name=\"  listTaxDtlOnBill["+(rowCountTax)+"].taxName\" id=\"taxName."+(rowCountTax)+"\" style=\"text-align: left; color:black; width:321px;height:30px;border:none; padding-left:5px;\"  value='"+taxName+"' />";
+	    col1.innerHTML = "<input readonly=\"readonly\" size=\"30px\"  name=\"  listTaxDtlOnBill["+(rowCountTax)+"].taxName\" id=\"taxName."+(rowCountTax)+"\" style=\"text-align: left; color:black; width:275px;height:30px;border:none; \"  value='"+taxName+"' />";
 	    col2.innerHTML = "<input readonly=\"readonly\" size=\"6px\"  style=\"text-align: right; color:black; height:30px; border:none;\"   />";
-	    col3.innerHTML = "<input readonly=\"readonly\" size=\"9.5px\"  name=\"  listTaxDtlOnBill["+(rowCountTax)+"].taxAmount\" id=\"taxAmount."+(rowCountTax)+"\"  style=\"text-align: right; color:black; width:97px; height:30px;border:none; padding-right:5px;\"  value='"+taxAmount+"'  />";
+	    col3.innerHTML = "<input readonly=\"readonly\" size=\"9.5px\"  name=\"  listTaxDtlOnBill["+(rowCountTax)+"].taxAmount\" id=\"taxAmount."+(rowCountTax)+"\"  style=\"text-align: right; color:black; width:65px; height:30px;border:none;\"  value='"+taxAmount+"'  />";
 	    /* col4.innerHTML = "<input readonly=\"readonly\" size=\"1px\"   style=\"text-align: right; color:blue; height:20px;\"  />";
 	    col5.innerHTML = "<input readonly=\"readonly\" size=\"1px\"   style=\"text-align: right; color:blue; height:20px;\"  />"; */
 	    col6.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"taxCode\"  name=\"listTaxDtlOnBill["+(rowCountTax)+"].taxCode\" id=\"taxCode."+(rowCountTax)+"\" value='"+taxCode+"' />";
@@ -600,7 +600,7 @@ function funCalculatePromotion(listItmeDtl)
 
 
       
-   function funFillTableFooterDtl(column1,column2){
+   function funFillTableFooterDtl(column1,column2,font){
 	   
 
 		var tblSettleItemDtl=document.getElementById('tblSettleItemTable');
@@ -613,24 +613,21 @@ function funCalculatePromotion(listItmeDtl)
 	    var col4=insertRow.insertCell(3);
 	    var col5=insertRow.insertCell(4);
 	    
-	    /* col1.style.backgroundColor="#F5F5F5";
-	    col2.style.backgroundColor="#F5F5F5";
-	    col3.style.backgroundColor="#F5F5F5"; */
-	    
-	   	var styleLeft="style=\"text-align: left; color:black; height:30px; border:none;\""; 
-	    var styleRight="style=\"text-align: right; color:black; height:30px; padding-right:5px;border:none;\"";
+	   	var styleLeft="style=\"text-align: left; color:black; height:30px; border:none;widht:240px;\""; 
+	    var styleRight="style=\"text-align: right; color:black; height:30px; padding-right:5px;border:none;width: 70px;\"";
 	    if(column1=="" && column2=="")
 	    {
 	    	styleLeft="style=\"text-align: left; color:blue; height:30px; border:none; \" "; 
-		    styleRight="style=\"text-align: right; color:blue; height:30px;border:none;\" ";
+		    styleRight="style=\"text-align: right; color:blue; height:30px;border:none;width: 70px;\" ";
+	    }else if(font.includes("bold")){
+	    	styleLeft="style=\"text-align: left; color:blue; height:30px; border:none;font-weight: bold; \" ";
+	    	styleRight="style=\"text-align: right; color:blue; height:30px; padding-right:5px;border:none;width: 80px;font-weight: bold; \"";
 	    }
 	    
 	    
-	    col1.innerHTML = "<input readonly=\"readonly\" size=\"41px\"  "+styleLeft+" id=\"column1."+(rowCount)+"\" value='"+column1+"'  />";
+	    col1.innerHTML = "<input readonly=\"readonly\" size=\"30px\"  "+styleLeft+" id=\"column1."+(rowCount)+"\" value='"+column1+"'  />";
 	    col2.innerHTML = "<input readonly=\"readonly\" size=\"6px\" "+styleLeft+"  />";
 	    col3.innerHTML = "<input readonly=\"readonly\" size=\"9.5px\"   "+styleRight+" id=\"column2."+(rowCount)+"\" value='"+column2+"' />";
-	   /*  col4.innerHTML = "<input readonly=\"readonly\" size=\"1px\" "+styleRight+"  />";
-	    col5.innerHTML = "<input readonly=\"readonly\" size=\"1px\"   "+styleRight+" />"; */
 	    
 	    
    }
@@ -661,9 +658,9 @@ function funFillModalTable(strItemName,dblQuantity,dblAmount)
     var col2=insertRow.insertCell(1);
     var col3=insertRow.insertCell(2);
    	
-    col1.innerHTML = "<input readonly=\"readonly\" size=\"33px\" style=\"text-align: left; color:black; height:30px;width:100%;border:none;\"   name=\"listOfBillItemDtl["+(rowCount)+"].itemName\" id=\"strItemName."+(rowCount)+"\" value='"+strItemName+"' />";
-    col2.innerHTML = "<input readonly=\"readonly\" size=\"6px\"    style=\"text-align: right; color:black; height:30px;width:100%;border:none;\"  name=\"listOfBillItemDtl["+(rowCount)+"].quantity\" id=\"dblQuantity."+(rowCount)+"\" value='"+dblQuantity+"' />";
-    col3.innerHTML = "<input readonly=\"readonly\" size=\"9.5px\"    style=\"text-align: right; color:black; height:30px;width:100%;border:none;padding-right:5px;\"  name=\"listOfBillItemDtl["+(rowCount)+"].amount\" id=\"dblAmount."+(rowCount)+"\" value='"+dblAmount+"'/>";
+    col1.innerHTML = "<input readonly=\"readonly\" size=\"33px\" style=\"text-align: left; color:black; height:30px;border:none;\"   name=\"listOfBillItemDtl["+(rowCount)+"].itemName\" id=\"strItemName."+(rowCount)+"\" value='"+strItemName+"' />";
+    col2.innerHTML = "<input readonly=\"readonly\" size=\"6px\"    style=\"text-align: right; color:black; height:30px;border:none;\"  name=\"listOfBillItemDtl["+(rowCount)+"].quantity\" id=\"dblQuantity."+(rowCount)+"\" value='"+dblQuantity+"' />";
+    col3.innerHTML = "<input readonly=\"readonly\" size=\"9.5px\"    style=\"text-align: right; color:black; height:30px;border:none;padding-right:5px;\"  name=\"listOfBillItemDtl["+(rowCount)+"].amount\" id=\"dblAmount."+(rowCount)+"\" value='"+dblAmount+"'/>";
 }
 
 

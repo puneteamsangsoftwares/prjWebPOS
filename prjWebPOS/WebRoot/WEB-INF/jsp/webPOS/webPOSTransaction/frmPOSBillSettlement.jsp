@@ -24,6 +24,7 @@
 {
     width: 05px;
     background-color: #F5F5F5;
+    height:10px;
 }
 
 #divOrder::-webkit-scrollbar-thumb
@@ -35,6 +36,13 @@
                                               transparent 100%,
                                               rgba(0, 0, 0, 1) 75%,
                                               transparent)
+                                              
+                                              /* -webkit-linear-gradient(90deg,
+                                              #6fb9f6 0%,
+                                              #87cefa 25%,
+                                              transparent 100%,
+                                              rgba(135, 188, 234, 1) 75%,
+                                              transparent) */
 }
 </style>
 	<script type="text/javascript" src="<spring:url value="/resources/js/jquery.min.js"/>"></script>
@@ -1543,7 +1551,7 @@
 	           
 	            //arrSettleOptions=hmSettlemetnOptions.get(settleName);
 	            
-			    col1.innerHTML = "<input readonly=\"readonly\"  size=\"30px\" style=\"text-align:left;border:none;\" name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].strSettelmentDesc\" id=\"strSettelmentDesc."+(rowCountSettle)+"\" value='"+arrSettleOptions[0]+"' />"; //settleName
+			    col1.innerHTML = "<input readonly=\"readonly\"  size=\"25px\" style=\"text-align:left;border:none;\" name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].strSettelmentDesc\" id=\"strSettelmentDesc."+(rowCountSettle)+"\" value='"+arrSettleOptions[0]+"' />"; //settleName
 			    /* col2.innerHTML = "<input readonly=\"readonly\"  style=\"text-align: right; color:blue; height:20px; border:none;\"  />"; */
 			    col3.innerHTML = "<input readonly=\"readonly\"  size=\"9.5px\" style=\"text-align: right; color:black; height:30px;border:none;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].dblPaidAmt\" id=\"dblPaidAmt."+(rowCountSettle)+"\" value='"+arrSettleOptions[3]+"'/>"; //paid Amt
 			    /*col4.innerHTML = "<input readonly=\"readonly\"  size=\"1px\"      style=\"text-align: right; color:blue; height:20px;\"  />";
@@ -1586,7 +1594,7 @@
 		    var col8=insertRow.insertCell(7);
 		    
 		    
-		    col1.innerHTML = "<input readonly=\"readonly\"  size=\"30px\"   style=\"text-align: left; color:black; height:30px;border:none;\"   value='Balance Amount' />";
+		    col1.innerHTML = "<input readonly=\"readonly\"  size=\"30px\"   style=\"text-align: left; color:black; height:30px;border:none;width=200px;\"   value='Balance Amount' />";
 		    /* col2.innerHTML = "<input readonly=\"readonly\"        style=\"text-align: right; color:blue; height:20px;\"  />"; */
 		    col3.innerHTML = "<input readonly=\"readonly\"  size=\"9.5px\"    style=\"text-align: right; color:blue; height:20px;border:none;\"  value='"+balanceAmount+"' />";
 		   /*  col4.innerHTML = "<input readonly=\"readonly\" />";
@@ -2391,7 +2399,7 @@ function funDiscOkClicked()
 <body>
 <!-- onload="loadofBillSettlemntTab()">  -->
 <!--  -->
-<s:form  name="frmBillSettlement"  method="GET"   action="" style="background-color:#FFFFFF;font-size:14px;font-family:'Open Sans','Helvetica Neue','Helvetica',Arial,Verdana,sans-serif;color:#666666;max-width:100%;min-width:25%;margin-left: 50px; height: 560px;margin-top:2%;" >
+<s:form  name="frmBillSettlement"  method="GET"   action="" style="background-color:#FFFFFF;font-size:14px;font-family:'Open Sans','Helvetica Neue','Helvetica',Arial,Verdana,sans-serif;color:#666666;max-width:100%;min-width:25%;margin-left: 2%; height: 700px;" >
 
 <div id="divMain" class="formoid-default-skyblue" >
 <table>
@@ -2401,38 +2409,30 @@ function funDiscOkClicked()
 	</tr>
 	<tr>
 		<td>
-			<div id="divOrder" style=" border: 2px solid #ccc; height: 650px;  overflow-x: auto; width: 100%;">
-				<label id="billNoForDisplay" style=" display: inline-block;width: 175px;text-align: left;" >Bill No: ${billNo}</label>
-				<label id="tableNameForDisplay" style=" display: inline-block;width: 175px;text-align: left;">Table No: ${gTableName}</label>
-				<br/>
-				<br/>
-				<%-- <br>
-				<label id="billDateForDisplay" style=" display: inline-block;width: 130px;text-align: left;">Date: ${billDate}</label> --%>
+			<div id="divOrder" style="border: 1px solid rgb(204, 204, 204);height: 700px;overflow: auto;width: 420px;display: block;padding: 0px;margin-top: 2px;margin-bottom: 2px;">
+				<div style="padding-left: 5px;background: lightskyblue;color: aliceblue;">
+					<label id="billNoForDisplay" style=" display: inline-block;width: 175px;text-align: left;" >Bill No: ${billNo}</label>
+					<label id="tableNameForDisplay" style=" display: inline-block;width: 175px;text-align: left;">Table No: ${gTableName}</label>
+				</div>
 				
-				<!--  here the div of Item table-->
-				<!-- <div id="divItemTable" style=" border: 1px solid #ccc; height: 460px; width: 400px;"> -->
+				<br/>
 					<table id="tblSettleItemTableHead" style="width: 100%; height:40px; border-collapse: collapse;overflow: auto;
 								font-size: 10px;font-weight: bold;"> 
 						<tr style="margin-bottom:0px">
-							  <th><input type="button" value="Description" style="width: 321px; height: 37px;" class="btn" ></input></th>
-							  <th><input type="button" value="Qty" style="width: 76px; height: 37px;" class="btn" ></input></th>
-							  <th><input type="button" value="Amount" style="width: 97px; height: 37px;" class="btn"></input></th>
+							  <th><input type="button" value="Description" style="width: 275px; height: 37px;" class="btn" ></input></th>
+							  <th><input type="button" value="Qty" style="width: 55px; height: 37px;" class="btn" ></input></th>
+							  <th><input type="button" value="Amount" style="width: 75px; height: 37px;" class="btn"></input></th>
 							  <!-- <th><input type="button" value="%" style="width: 1px;height: 37px;"  class="btn"></input></th>
 							  <th><input type="button" value="Amt" style="width: 1px;height: 37px;"  class="btn"></input></th> -->
 						</tr>
-							
 					</table> 
-					<!-- <div id="divItemTableInner" style=" border: 0px solid #ccc; height: 460px;  overflow-x: auto; overflow-y: auto; width: 400px;"> -->
-						<table id="tblSettleItemTable" style="width: 100%; height:400px;border-collapse: collapse;overflow: auto;
+						<table id="tblSettleItemTable" style=" height:400px;border-collapse: collapse;overflow: auto;
 									font-size: 14px;">
 						</table>
-					<!-- </div> -->
-<!-- 				</div> --> 
-				
 			</div>
 		</td>
 		<td>
-		  <div id="divSettlement" style="border: 2px solid #ccc;height: 650px;overflow-x: auto;overflow-y: auto;width: 90%;margin: 3px;margin-right: 30px;">
+		  <div id="divSettlement" style="border: 1px solid #ccc;height: 700px;overflow-x: auto;overflow-y: auto;width: 90%;margin: 3px;margin-right: 30px;">
 				<div id="divSettlementButtons" style="text-align: right; height:50px; overflow-x: auto; overflow-y: auto; width: 100%;">
 					 	<table id="tblSettlementButtons"  cellpadding="0" cellspacing="2"  >				 																																	
 								<tr>							
