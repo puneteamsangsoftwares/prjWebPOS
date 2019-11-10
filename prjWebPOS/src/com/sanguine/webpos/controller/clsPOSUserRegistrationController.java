@@ -331,7 +331,7 @@ public class clsPOSUserRegistrationController
 		{
 			String clientCode = req.getSession().getAttribute("gClientCode").toString();
 			String strLoginUser = req.getSession().getAttribute("gUserCode").toString();
-			String userCode = objBean.getStrUserCode();
+			String userCode = objBean.getStrUserCode().toUpperCase();
 			clsUserHdModel objModel = new clsUserHdModel(new clsUserHDModel_ID(userCode, clientCode));
 			if(objBean.getStrOldUserCode()!=null){
 				if(!objBean.getStrOldUserCode().equals(objBean.getStrUserCode())){
@@ -351,7 +351,7 @@ public class clsPOSUserRegistrationController
 			if(validD.split("-")[0].length()>2){validDate=validD;}
 			objModel.setDteValidTill(validDate);
 			String encKey = "04081977";
-			String Password=objBean.getStrPassword();
+			String Password=objBean.getStrPassword().toUpperCase();
 			Password = clsPOSGlobalSingleObject.getObjPasswordEncryptDecreat().encrypt(encKey, Password);
 			objModel.setStrPassword(Password);
 			objModel.setStrConfirmPassword(Password);

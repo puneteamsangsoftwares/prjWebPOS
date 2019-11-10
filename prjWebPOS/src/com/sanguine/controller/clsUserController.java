@@ -241,7 +241,7 @@ public class clsUserController
 								try
 									{
 									String encKey = "04081977";
-						            String password = clsPOSGlobalSingleObject.getObjPasswordEncryptDecreat().encrypt(encKey, userBean.getStrPassword().trim());
+						            String password = clsPOSGlobalSingleObject.getObjPasswordEncryptDecreat().encrypt(encKey, userBean.getStrPassword().trim().toUpperCase());
 									BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 									if(password.equals(user.getStrPassword()))
 									{
