@@ -274,12 +274,14 @@ public class clsPOSSalesReportController {
 				if(resMap.containsKey("headerList"))
 				{
 					List Listt=(List)resMap.get("headerList");
-					String[] headerListt = new String[List.size()];
-					
-					for(int i = 0; i < Listt.size(); i++){
-						headerListt[i]=(String)Listt.get(i);
+					if(Listt!=null)
+					{					
+						String[] headerListt = new String[Listt.size()];					
+						for(int i = 0; i < Listt.size(); i++){
+							headerListt[i]=(String)Listt.get(i);
+						}
+						ExportList.add(headerListt);
 					}
-					ExportList.add(headerListt);
 				}
 				
 				List rowlist=new ArrayList();

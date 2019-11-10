@@ -30,18 +30,37 @@ public class clsExcelBuilderWithReportName extends AbstractExcelView{
 	        // get data model which is passed by the Spring container
 			
 		 	List Datalist = (List) model.get("listWithReportName");
-
 		 	String reportName= (String) Datalist.get(0);
 		 	String[] HeaderList= (String[]) Datalist.get(1);
+		 	String[] HeaderListt= (String[]) Datalist.get(1);
+	        List listStock = new ArrayList();
+		 	if(Datalist.size()>=4)
+		 	{
+			 	 reportName= (String) Datalist.get(0);
+			 	 HeaderListt= (String[]) Datalist.get(1);
+			 	 HeaderList= (String[]) Datalist.get(2);
+		        
+		        try{
+		        	listStock =(List) Datalist.get(3);
+		        }catch(Exception e){
+		        	listStock=new ArrayList();
+		        }
+		 	}
+		 	else
+		 	{
+		 		reportName= (String) Datalist.get(0);
+			 	 HeaderList= (String[]) Datalist.get(1);		      
+		        try{
+		        	listStock =(List) Datalist.get(2);
+		        }catch(Exception e){
+		        	listStock=new ArrayList();
+		        }
+		 	}
+		 	
 		 	response.setContentType("application/vnd.ms-excel");
 		 	response.setHeader("Content-disposition", "attachment; filename="+reportName.trim() +".xls");
 		 	
-	        List listStock = new ArrayList();
-	        try{
-	        	listStock =(List) Datalist.get(2);
-	        }catch(Exception e){
-	        	listStock=new ArrayList();
-	        }
+		 	
 	        
 	        // create a new Excel sheet
 	        HSSFSheet sheet = workbook.createSheet("Sheet");
@@ -57,22 +76,60 @@ public class clsExcelBuilderWithReportName extends AbstractExcelView{
 	        font.setColor(HSSFColor.WHITE.index);
 	        style.setFont(font);
 	         
-	        // create header row
-	        HSSFRow header = sheet.createRow(0);
-	        for (int rowCount = 0;rowCount<HeaderList.length;rowCount++)
+	        
+	   /*  // create header row
+	        HSSFRow headerr = sheet.createRow(0);
+	        for (int rowCount = 0;rowCount<HeaderListt.length;rowCount++)
 	        {
-		        header.createCell(rowCount).setCellValue(HeaderList[rowCount].toString());
-		        header.getCell(rowCount).setCellStyle(style);
+		        headerr.createCell(rowCount).setCellValue(HeaderListt[rowCount].toString());
+		        headerr.getCell(rowCount).setCellStyle(style);
+	        }*/
+	        
+	        // create header row
+	        int ColrowCount = 1  ;
+	        if(Datalist.size()>=4)
+		 	{
+		        HSSFRow header = sheet.createRow(0);
+		        for (int rowCount = 0;rowCount<HeaderListt.length;rowCount++)
+		        {
+		        	header.createCell(rowCount).setCellValue(HeaderListt[rowCount].toString());		        
+		        }
+		        HSSFRow headerr = sheet.createRow(2);
+		        for (int rowCount = 0;rowCount<HeaderList.length;rowCount++)
+		        {
+		        	headerr.createCell(rowCount).setCellValue(HeaderList[rowCount].toString());		
+		        	headerr.getCell(rowCount).setCellStyle(style);
+		        }
+		        ColrowCount = 3  ;
+		 	}
+	        else
+	        {	        	
+		        HSSFRow headerr = sheet.createRow(0);
+		        for (int rowCount = 0;rowCount<HeaderList.length;rowCount++)
+		        {
+		        	headerr.createCell(rowCount).setCellValue(HeaderList[rowCount].toString());		
+		        	headerr.getCell(rowCount).setCellStyle(style);
+		        }
+	        	
 	        }
 	        	        
 	        // create data rows
 	        // aRow is  add Row
-	        int ColrowCount = 1  ;
+	        
+	        int Countt=0;
 	        for(int rowCount=0;rowCount<listStock.size();rowCount++)
 				{
+	        		
 	            	HSSFRow aRow = sheet.createRow(ColrowCount++);
-					List arrObj=(List) listStock.get(rowCount);
-					for(int Count=0;Count<arrObj.size();Count++)
+	            	
+	            	if(listStock.get(rowCount).equals(""))
+	            	{	            		       								
+						 aRow.createCell(Countt).setCellValue("");            		
+	            	}	            	
+	            	else
+	            	{
+	            	List  arrObj=(List) listStock.get(rowCount);
+	                for(int Count=0;Count<arrObj.size();Count++)
 					{
 						if(null!=arrObj.get(Count) && arrObj.get(Count).toString().length()>0)
 						{
@@ -91,13 +148,15 @@ public class clsExcelBuilderWithReportName extends AbstractExcelView{
 						{
 							aRow.createCell(Count).setCellValue("");
 						}
-					}					
-	           
+						Countt=Count;
+					}		
+	            	
+	            	}
 	        }
 
 	        
 	        
-	}     
+	}      
 	public static boolean isNumeric(String str)
 	{
 	  return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
