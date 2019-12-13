@@ -492,7 +492,7 @@
 							</table>
 							<div style="background-color: #a4d7ff;border: 1px solid #ccc;display: block; height: 150px;
 			    				margin: auto;overflow-x: hidden; overflow-y: scroll;width: 80%;">
-									<table id="tblDeliveryCharges" class="transTablex col5-center" style="width: 100%;">
+									<table id="tblRecipedetails" class="transTablex col5-center" style="width: 100%;">
 									<tbody>    
 											<col style="width:30%"><!--  COl1   -->
 											<col style="width:40%"><!--  COl2   -->

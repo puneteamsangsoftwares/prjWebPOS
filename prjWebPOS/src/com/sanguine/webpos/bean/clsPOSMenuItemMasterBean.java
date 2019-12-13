@@ -84,6 +84,16 @@ public class clsPOSMenuItemMasterBean{
 	private double dblReceivedConversion;
 	private double dblRecipeConversion;
 	private String strHSNNo;
+	
+	private String strRecipeCode;
+	
+	private String strReceipeItemCode;
+	
+	private String strReceipeItemName;
+	
+	private String dteFromDate,dteToDate;
+	
+	
 
 
 //Setter-Getter Methods
@@ -411,6 +421,46 @@ public class clsPOSMenuItemMasterBean{
 	public void setStrHSNNo(String strHSNNo)
 	{
 		this.strHSNNo = strHSNNo;
+	}
+	public String getStrRecipeCode()
+	{
+		return strRecipeCode;
+	}
+	public void setStrRecipeCode(String strRecipeCode)
+	{
+		this.strRecipeCode = strRecipeCode;
+	}
+	public String getStrReceipeItemCode()
+	{
+		return strReceipeItemCode;
+	}
+	public void setStrReceipeItemCode(String strReceipeItemCode)
+	{
+		this.strReceipeItemCode = strReceipeItemCode;
+	}
+	public String getStrReceipeItemName()
+	{
+		return strReceipeItemName;
+	}
+	public void setStrReceipeItemName(String strReceipeItemName)
+	{
+		this.strReceipeItemName = strReceipeItemName;
+	}
+	public String getDteFromDate()
+	{
+		return dteFromDate;
+	}
+	public void setDteFromDate(String dteFromDate)
+	{
+		this.dteFromDate = dteFromDate;
+	}
+	public String getDteToDate()
+	{
+		return dteToDate;
+	}
+	public void setDteToDate(String dteToDate)
+	{
+		this.dteToDate = dteToDate;
 	}
 
 

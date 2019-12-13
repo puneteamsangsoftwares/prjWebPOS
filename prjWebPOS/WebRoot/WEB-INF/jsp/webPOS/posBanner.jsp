@@ -107,16 +107,16 @@
 			</div>
 	
 			
-			<div class="col-lg-3 col-md-3 col-sm-2 col-xs-4" style="width: 30%;color:rgba(83,159,225,1);margin-top: 10px;"> 
+			<div class="col-lg-3 col-md-3 col-sm-2 col-xs-4" style="width: 20%;color:rgba(83,159,225,1);margin-top: 10px;"> 
               	<label style="font-family: trebuchet ms, Helvetica, sans-serif;font-weight: 100;font-size: 16px;"> ${gPOSName} &nbsp;&nbsp; 
                	</label>  
            </div>
            
-           <div class="col-lg-3 col-md-3 col-sm-2 col-xs-4" style="width: 20%;color:rgba(83,159,225,1);margin-top: 10px;">
+           <div class="col-lg-3 col-md-3 col-sm-2 col-xs-4" style="width: 15%;color:rgba(83,159,225,1);margin-top: 10px;">
              	 <label style="font-family: trebuchet ms, Helvetica, sans-serif;font-weight: 100;font-size: 16px;">${gUserName} &nbsp;&nbsp;</label>
            </div>
 
-			<div class="col-lg-3 col-md-3 col-sm-2 col-xs-4" style="width: 15%;color:rgba(83,159,225,1);margin-top: 10px;"> 
+			<div class="col-lg-3 col-md-3 col-sm-2 col-xs-4" style="width: 12%;color:rgba(83,159,225,1);margin-top: 10px;"> 
               	<label id="lblPOSDate" style="font-family: trebuchet ms, Helvetica, sans-serif;font-weight: 100;font-size: 16px;"> &nbsp;&nbsp; 
               	</label>  
            </div>

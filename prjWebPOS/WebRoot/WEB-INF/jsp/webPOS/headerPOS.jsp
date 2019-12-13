@@ -157,7 +157,7 @@ function stopRKey(evt) {
 		<div class="row01" style="background-color: #fff;display: -webkit-box;margin-bottom: -20px;height:18% ;">
 		
 		    <div class="element-input col-lg-6" style="width: 20%;margin-top: 0px;margin-left: 50px;">
-				<img  src="../${pageContext.request.contextPath}/resources/newdesign/images/companyLogo.png" title="LOGOUT" Style="width: 85%;height:90%;">
+				<img  src="../${pageContext.request.contextPath}/resources/newdesign/images/companyLogo.png" title="LOGOUT" Style="width: 30%;height:75%;">
 			</div>
 			
 			<div class="col-lg-3 col-md-3 col-sm-2 col-xs-4" id="formname" style="width: 18%;color:rgba(83,159,225,1);margin-top: 15px;margin-left: 50px;font-weight: bold;"> 
@@ -171,6 +171,7 @@ function stopRKey(evt) {
 
 			<div class="col-lg-3 col-md-3 col-sm-2 col-xs-4" id="formname" style="width: 11%;color:rgba(83,159,225,1);margin-top: 15px;font-weight: bold;"> 
               	<label id="lblPOSDate"> <!-- &nbsp;&nbsp;  -->
+              
               	</label>  
            </div>
            
@@ -192,11 +193,12 @@ function stopRKey(evt) {
 		
 		<div class="row01" style="background-color: #fff;display: -webkit-box;margin-bottom: -15px;">
 		
-		<div class="col-lg-3 col-md-3 col-sm-2 col-xs-4" id="formname" style="width: 18%;color:rgba(83,159,225,1);margin-top: 15px;margin-left: 50px;font-weight: bold;"> 
+		<div class="col-lg-3 col-md-3 col-sm-2 col-xs-4" id="formname" style="width: 18%;color:rgba(83,159,225,1);margin-top: 15px;margin-left: 1px;font-weight: bold;"> 
               	<%-- <label> ${gPOSName} &nbsp;&nbsp; 
                	</label>   --%>
            </div>
-		<div class="element-input col-lg-6" style="width: 22%;margin-top: 10px;margin-left: 17%;">
+           <!--class="element-input col-lg-6"  -->
+		<div  style="width: 22%;margin-top: 10px;margin-left: 17%;">
 				<input type="text" class="menusearchTextBox" id="txtSearch" onkeypress="funGetKeyPressSeachFormName(event);" style="height: 27px;width: 85%;margin-top: 12px;" placeholder="Search..."></input>
 			</div>
 			

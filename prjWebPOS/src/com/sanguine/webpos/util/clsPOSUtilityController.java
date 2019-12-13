@@ -3161,8 +3161,9 @@ public class clsPOSUtilityController
 
 	public long funGetDocumentCodeFromInternal(String masterName,String clientCode) throws Exception
 	{
+		//and strClientCode='"+clientCode+"' 
 		long code = 0;
-		StringBuilder sql = new StringBuilder("select dblLastNo from tblinternal where strTransactionType='" + masterName + "' and strClientCode='"+clientCode+"' ");
+		StringBuilder sql = new StringBuilder("select dblLastNo from tblinternal where strTransactionType='" + masterName + "' ");
 		List list = objBaseServiceImpl.funGetList(sql, "sql");
 		if (list.size() == 0)
 		{

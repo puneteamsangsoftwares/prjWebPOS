@@ -4467,77 +4467,78 @@ ul.tab li {
 
 							<td colspan="4">
 								<div id="tableImg"
-									style="width: 1170px; height: 120px; margin-left: 15px; border: 1px solid #ccc; overflow-x: scroll; overflow-y: hidden;">
+									style="width: 1170px; height: 140px; margin-left: 15px; border: 1px solid #ccc; overflow-x: scroll; overflow-y: hidden;">
 									<table class="">
 										<!-- style="height:120px; border: #0F0;width: 100%;font-size:11px;overflow-x: scroll; font-weight: bold;"> -->
 
 
-										<td style="padding-right: 12px;" id="divSettlementWiseee"><img
-											src="../${pageContext.request.contextPath}/resources/images/imgSettlementWise.png"
-											onclick="funSelectedReport('divSettlementWise')"></td>
-										<td style="text-align: center; padding-right: 12px;"><img
-											src="../${pageContext.request.contextPath}/resources/images/imgBillWise.png"
-											onclick="funSelectedReport('divBillWise','xyz')"></td>
-										<td style="text-align: center; padding-right: 12px;"><img
-											src="../${pageContext.request.contextPath}/resources/images/imgItemWise.png"
-											onclick="funSelectedReport('divItemWise')"></td>
-										<td style="text-align: center; padding-right: 12px;"><img
-											src="../${pageContext.request.contextPath}/resources/images/imgMenuHeadWise.png"
-											onclick="funSelectedReport('divMenuHeadWise')"></td>
-										<td style="text-align: center; padding-right: 12px;"><img
-											src="../${pageContext.request.contextPath}/resources/images/imgGroupWise.png"
-											onclick="funSelectedReport('divGroupWise')"></td>
-										<td style="text-align: center; padding-right: 12px;"><img
-											src="../${pageContext.request.contextPath}/resources/images/imgSubGroupWise.png"
-											onclick="funSelectedReport('divSubGroupWise')"></td>
-										<td style="text-align: center; padding-right: 12px;"><img
+										<td style="text-align: center; padding: 10px;" id="divSettlementWiseee"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgSettlementWise.png"  width="60px" height="60px" style="position:center;"
+											onclick="funSelectedReport('divSettlementWise')"><label style="padding-top:6px;">Settlement<br>Wise</label></td>
+										<td style="text-align: center; padding: 10px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgBillWise.png"  width="60px" height="60px" style="position:center;"
+											onclick="funSelectedReport('divBillWise','xyz')"><label style="padding-top:6px;">Bill<br>Wise</label></td>
+										<td style="text-align: center; padding: 10px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgItemWise.png"  width="60px" height="60px" style="position:center;"
+											onclick="funSelectedReport('divItemWise')"><label style="padding-top:6px;">Item<br>Wise</label></td>
+										<td style="text-align: center; padding: 10px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgMenuHeadWise.png"  width="60px" height="60px" style="position:center;"
+											onclick="funSelectedReport('divMenuHeadWise')"><label style="padding-top:6px;">MenuHead<br>Wise</label></td>
+										<td style="text-align: center; padding: 10px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgGroupWise.png"  width="60px" height="60px" style="position:center;"
+											onclick="funSelectedReport('divGroupWise')"><label style="padding-top:6px;">Group<br>Wise</label></td>
+										<td style="text-align: center; padding: 10px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgSubGroupWise.png"  width="60px" height="60px" style="position:center;"
+											onclick="funSelectedReport('divSubGroupWise')"><label style="padding-top:6px;">SubGroup<br>Wise</label></td>
+										<td style="text-align: center; padding: 10px;"><img
 											src="../${pageContext.request.contextPath}/resources/images/imgCustWise.png"
-											onclick="funSelectedReport('divCustWise')"></td>
-										<td style="text-align: center; padding-right: 12px;"><img
-											src="../${pageContext.request.contextPath}/resources/images/imgWaiterWise.png"
-											onclick="funSelectedReport('divWaiterWise')"></td>
-										<td style="text-align: center; padding-right: 12px;"><img
-											src="../${pageContext.request.contextPath}/resources/images/imgDeliveryBoyWise.png"
-											onclick="funSelectedReport('divDeliveryBoyWise')"></td>
-										<td style="text-align: center; padding-right: 12px;"><img
-											src="../${pageContext.request.contextPath}/resources/images/imgCostCenterWise.png"
-											onclick="funSelectedReport('divCostCenterWise')"></td>
-										<td style="text-align: center; padding-right: 12px;"><img
-											src="../${pageContext.request.contextPath}/resources/images/imgHomeDeliveryWise.png"
-											onclick="funSelectedReport('divHomeDeliveryWise')"></td>
-										<td style="text-align: center; padding-right: 12px;"><img
-											src="../${pageContext.request.contextPath}/resources/images/imgTableWise.png"
-											onclick="funSelectedReport('divTableWise')"></td>
-										<td style="text-align: center; padding-right: 12px;"><img
-											src="../${pageContext.request.contextPath}/resources/images/imgHourlyWise.png"
-											onclick="funSelectedReport('divHourlyWise')"></td>
-										<td style="text-align: center; padding-right: 12px;"><img
-											src="../${pageContext.request.contextPath}/resources/images/imgAreaWise.png"
-											onclick="funSelectedReport('divAreaWise')"></td>
-										<td style="text-align: center; padding-right: 12px;"><img
-											src="../${pageContext.request.contextPath}/resources/images/imgDayWiseSales.png"
-											onclick="funSelectedReport('divDayWiseSales')"></td>
-										<td style="text-align: center; padding-right: 12px;"><img
-											src="../${pageContext.request.contextPath}/resources/images/imgTaxWiseSales.png"
-											onclick="funSelectedReport('divTaxWiseSales')"></td>
-										<td style="text-align: center; padding-right: 12px;"><img
-											src="../${pageContext.request.contextPath}/resources/images/imgTipreport.png"
-											onclick="funSelectedReport('divTipReport')"></td>
-										<td style="text-align: center; padding-right: 12px;"><img
-											src="../${pageContext.request.contextPath}/resources/images/imgItemModifierWise.png"
-											onclick="funSelectedReport('divItemModifierWise')"></td>
-										<td style="text-align: center; padding-right: 12px;"><img
-											src="../${pageContext.request.contextPath}/resources/images/imgMenuHeadWiseWithModifier.png"
-											onclick="funSelectedReport('divMenuHeadWiseWithModifier')"></td>
-										<td style="text-align: center; padding-right: 12px;"><img
-											src="../${pageContext.request.contextPath}/resources/images/imgItemHourlyWise.png"
-											onclick="funSelectedReport('divItemHourlyWise')"></td>
-										<td style="text-align: center; padding-right: 12px;"><img
-											src="../${pageContext.request.contextPath}/resources/images/imgOperatorWise.png"
-											onclick="funSelectedReport('divOperatorWise')"></td>
-										<td style="text-align: center; padding-right: 12px;"><img
-											src="../${pageContext.request.contextPath}/resources/images/imgMonthlySalesFlash.png"
-											onclick="funSelectedReport('divMonthlySalesFlash')"></td>
+											width="60px" height="60px" style="position: center;"
+											onclick="funSelectedReport('divCustWise')"><label style="padding-top:6px;">Cust<br>Wise</label></td>
+										<td style="text-align: center; padding: 10px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgWaiterWise.png"  width="60px" height="60px" style="position:center;"
+											onclick="funSelectedReport('divWaiterWise')"><label style="padding-top:6px;">Waiter<br>Wise</label></td>
+										<td style="text-align: center; padding: 10px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgDeliveryBoyWise.png"  width="60px" height="60px" style="position:center;"
+											onclick="funSelectedReport('divDeliveryBoyWise')"><label style="padding-top:6px;">DeliveryBoy<br>Wise</label></td>
+										<td style="text-align: center; padding: 10px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgCostCenterWise.png"  width="60px" height="60px" style="position:center;"
+											onclick="funSelectedReport('divCostCenterWise')"><label style="padding-top:6px;">CostCenter<br>Wise</label></td>
+										<td style="text-align: center; padding: 10px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgHomeDeliveryWise.png"  width="60px" height="60px" style="position:center;"
+											onclick="funSelectedReport('divHomeDeliveryWise')"><label style="padding-top:6px;">HomeDelivery<br>Wise</label></td>
+										<td style="text-align: center; padding: 10px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgTableWise.png"  width="60px" height="60px" style="position:center;"
+											onclick="funSelectedReport('divTableWise')"><label style="padding-top:6px;">Table<br>Wise</label></td>
+										<td style="text-align: center; padding: 10px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgHourlyWise.png"  width="60px" height="60px" style="position:center;"
+											onclick="funSelectedReport('divHourlyWise')"><label style="padding-top:6px;">Hourly<br>Wise</label></td>
+										<td style="text-align: center; padding: 10px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgAreaWise.png"  width="60px" height="60px" style="position:center;"
+											onclick="funSelectedReport('divAreaWise')"><label style="padding-top:6px;">Area<br>Wise</label></td>
+										<td style="text-align: center; padding: 10px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgDayWiseSales.png"  width="60px" height="60px" style="position:center;"
+											onclick="funSelectedReport('divDayWiseSales')"><label style="padding-top:6px;">DayWise<br>Sales</label></td>
+										<td style="text-align: center; padding: 10px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgTaxWiseSales.png"  width="60px" height="60px" style="position:center;"
+											onclick="funSelectedReport('divTaxWiseSales')"><label style="padding-top:6px;">TaxWise<br>Sales</label></td>
+										<td style="text-align: center; padding: 10px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgTipreport.png"  width="60px" height="60px" style="position:center;"
+											onclick="funSelectedReport('divTipReport')"><label style="padding-top:6px;">Tip<br>report</label></td>
+										<td style="text-align: center; padding: 10px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgItemModifierWise.png"  width="60px" height="60px" style="position:center;"
+											onclick="funSelectedReport('divItemModifierWise')"><label style="padding-top:6px;">ItemModifier<br>Wise</label></td>
+										<td style="text-align: center; padding: 10px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgMenuHeadWiseWithModifier.png"  width="60px" height="60px" style="position:center;"
+											onclick="funSelectedReport('divMenuHeadWiseWithModifier')"><label style="padding-top:6px;">MenuHeadWise<br>WithModifier</label></td>
+										<td style="text-align: center; padding: 10px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgItemHourlyWise.png"  width="60px" height="60px" style="position:center;"
+											onclick="funSelectedReport('divItemHourlyWise')"><label style="padding-top:6px;">ItemHourly<br>Wise</label></td>
+										<td style="text-align: center; padding: 10px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgOperatorWise.png"  width="70px" height="70px" style="position:center;"
+											onclick="funSelectedReport('divOperatorWise')"><label style="padding-top:6px;">Operator<br>Wise</label></td>
+										<td style="text-align: center; padding: 10px;"><img
+											src="../${pageContext.request.contextPath}/resources/images/imgMonthlySalesFlash.png"  width="70px" height="70px" style="position:center;"
+											onclick="funSelectedReport('divMonthlySalesFlash')"><label style="padding-top:6px;">MonthlySales<br>Flash</label></td>
 
 									</table>
 								</div>

@@ -215,8 +215,8 @@ public class clsPOSPricingMasterController
 			objPricingMasterBean.setStrPriceSaturday(Double.parseDouble(objPricingMasterModel.getStrPriceSaturday()));
 			objPricingMasterBean.setStrPriceSunday(Double.parseDouble(objPricingMasterModel.getStrPriceSunday()));
 
-			objPricingMasterBean.setDteFromDate(objGlobal.funGetDate("dd-MM-yyyy",objPricingMasterModel.getDteFromDate()));
-			objPricingMasterBean.setDteToDate(objGlobal.funGetDate("dd-MM-yyyy",objPricingMasterModel.getDteToDate()));
+			objPricingMasterBean.setDteFromDate(objPricingMasterModel.getDteFromDate());
+			objPricingMasterBean.setDteToDate(objPricingMasterModel.getDteToDate());
 
 			objPricingMasterBean.setTmeTimeFrom(objPricingMasterModel.getTmeTimeFrom());
 			objPricingMasterBean.setStrAMPMFrom(objPricingMasterModel.getStrAMPMFrom());
@@ -308,8 +308,8 @@ public class clsPOSPricingMasterController
 				objModel.setStrPriceSaturday(String.valueOf(objBean.getStrPriceSaturday()));
 				objModel.setStrPriceSunday(String.valueOf(objBean.getStrPriceSunday()));			
 				
-				objModel.setDteFromDate(objGlobal.funGetDate("yyyy-MM-dd",objBean.getDteFromDate()));
-				objModel.setDteToDate(objGlobal.funGetDate("yyyy-MM-dd",objBean.getDteToDate()));
+				objModel.setDteFromDate(objBean.getDteFromDate());
+				objModel.setDteToDate(objBean.getDteToDate());
 				if (objBean.getStrHourlyPricing() && objBean.getTmeTimeFrom() != null)
 				{
 					String arrFromTime[] = objBean.getTmeTimeFrom().split(":");
