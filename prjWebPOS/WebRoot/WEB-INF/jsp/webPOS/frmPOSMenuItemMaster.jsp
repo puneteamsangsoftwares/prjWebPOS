@@ -205,6 +205,8 @@
 
 			        	$("#txtItemDetails").val(response.strItemDetails);
 			        	$("#txtProcDay").val(response.intProcDay);
+			        	
+			        	funLoadRecipeData(response.strItemCode);
 		        	}
 		        },
 		        error: function(jqXHR, exception)
@@ -247,6 +249,8 @@
 		        	else
 		        	{
 		        		$("#strReceipeChildItemName").text(response.strItemName);
+		        		$("#strReceipeChildItemUOM").text(response.strRecipeUOM);
+		        		
 		    		}
 		        },
 		        error: function(jqXHR, exception)
@@ -272,6 +276,48 @@
 	}
 
 
+	function funLoadRecipeData(itemCode){
+		
+		var searchurl=getContextPath()+"/loadRecipeData.html?itemCode="+code;
+		 $.ajax({
+		        type: "GET",
+		        url: searchurl,
+		        dataType: "json",
+		        success: function(response)
+		        {
+		        	if(response.strItemCode=='Invalid Code')
+		        	{
+		        		confirmDialog("Invalid Item Code ","");
+		        		$("#txtChildItemName").val('');
+		        	}
+		        	else
+		        	{
+		        		$("#strReceipeChildItemName").text(response.strItemName);
+		        		$("#strReceipeChildItemUOM").text(response.strRecipeUOM);
+		        		
+		    		}
+		        },
+		        error: function(jqXHR, exception)
+		        {
+		            if (jqXHR.status === 0) {
+		                alert('Not connect.n Verify Network.');
+		            } else if (jqXHR.status == 404) {
+		                alert('Requested page not found. [404]');
+		            } else if (jqXHR.status == 500) {
+		                alert('Internal Server Error [500].');
+		            } else if (exception === 'parsererror') {
+		                alert('Requested JSON parse failed.');
+		            } else if (exception === 'timeout') {
+		                alert('Time out error.');
+		            } else if (exception === 'abort') {
+		                alert('Ajax request aborted.');
+		            } else {
+		                alert('Uncaught Error.n' + jqXHR.responseText);
+		            }		            
+		        }
+	 	});
+		
+	}
 
 	function funHelp(transactionName)
 	{
@@ -344,6 +390,137 @@
 
 		return flg;
 	}
+		
+		
+	function btnAdd_onclick() 
+	{
+		var qty=$("#txtQuantity").val();
+		
+			if($("#txtReceipeItemCode").val()=="") 
+		    {
+				alert("Please select Menu Item");
+		   		
+		       	return false;
+			}
+			else if($("#txtChildItemName").val()=="")
+		    {
+				alert("Please Select Child Item!");
+		       	return false;
+			}
+			else if(qty=="")
+			{
+				alert("Please Check Quantity !");
+		       	return false;
+				
+			}else if(qty<=0)
+			{
+				alert("Please Check Quantity !");
+		       	return false;
+			}
+			else
+			{
+				funAddRow();
+			}
+		
+	}
+	
+/* 	function btnRemove_onclick() 
+	{
+		
+		
+		var table = document.getElementById("tblRecipedetails");
+	    table.deleteRow(selectedRowIndex);
+		
+	}
+ */
+	
+	function funAddRow() 
+	{
+		var quantity=$("#txtQuantity").val();
+	    var table = document.getElementById("tblRecipedetails");
+	    var rowCount = table.rows.length;
+	    var row = table.insertRow(rowCount);
+	    var childMenuCode=$("#txtChildItemName").val();
+	    var childMenuName=$("#strReceipeChildItemName").text();
+	    var childUOM=$("#strReceipeChildItemUOM").text();
+	    if(funDuplicateItem(childMenuCode))
+	    {
+		    row.insertCell(0).innerHTML= "<input class=\"Box\" name=\"listChildItemDtl["+(rowCount)+"].strChildItemCode\" size=\"30%\"  id=\"txtItemCode."+(rowCount)+"\" value='"+childMenuCode+"' \"/>";
+		    row.insertCell(1).innerHTML= "<input class=\"Box\" name=\"listChildItemDtl["+(rowCount)+"].strItemName\" size=\"40%\"  id=\"txtItemName."+(rowCount)+"\" value='"+childMenuName+"' \"/>";
+		    row.insertCell(2).innerHTML= "<input class=\"Box\" name=\"listChildItemDtl["+(rowCount)+"].dblQuantity\" size=\"30%\"  id=\"txtQty."+(rowCount)+"\" value='"+quantity+"'\"/>";
+		    row.insertCell(3).innerHTML= "<input class=\"Box\"  size=\"10%\"  id=\"childUOM."+(rowCount)+"\" value='"+childUOM+"' \"/>";
+		    row.insertCell(4).innerHTML= '<input type="button" class="deletebutton" value = "Del" onClick="Javacsript:funDeleteRow(this)">';	
+	    }	
+	    
+	   
+	}
+
+ 	function funDeleteRow(obj)
+	{
+		 var index = obj.parentNode.parentNode.rowIndex;
+	     var table = document.getElementById("tblRecipedetails");
+	     table.deleteRow(index);
+		
+	}
+ 	
+	//Check Duplicate Product in grid
+	function funDuplicateItem(itemCode)
+	{
+	    var table = document.getElementById("tblRecipedetails");
+	    var rowCount = table.rows.length;
+	    var flag=true;
+	    if(rowCount > 0)
+    	{
+		    $('#tblRecipedetails tr').each(function()
+		    {
+			    if(itemCode==$(this).find('input').val())// `this` is TR DOM element
+				{
+			    	alert("Already added "+ itemCode);
+			    	
+    				flag=false;
+				}
+			});
+	    }
+	    return flag;
+	}
+	
+	function funGetSelectedRowIndex(obj)
+	{
+		 var index = obj.parentNode.parentNode.rowIndex;
+		 var table = document.getElementById("tblDeliveryCharges");
+		 if((selectedRowIndex>0) && (index!=selectedRowIndex))
+		 {
+			 if(selectedRowIndex%2==0)
+			 {
+				 row = table.rows[selectedRowIndex];
+				 row.style.backgroundColor='#A3D0F7';
+				 selectedRowIndex=index;
+				 row = table.rows[selectedRowIndex];
+				 row.style.backgroundColor='#ffd966';
+				 row.hilite = true;
+			 }
+			 else
+			 {
+				 row = table.rows[selectedRowIndex];
+				 row.style.backgroundColor='#C0E4FF';
+				 selectedRowIndex=index;
+				 row = table.rows[selectedRowIndex];
+				 row.style.backgroundColor='#ffd966';
+				 row.hilite = true;
+	         }
+			
+		 }
+		 else
+		 {
+			 selectedRowIndex=index;
+			 row = table.rows[selectedRowIndex];
+			 row.style.backgroundColor='#ffd966';
+			 row.hilite = true;
+		 }
+		 
+		
+	}
+	
 </script>
 
 </head>
@@ -667,6 +844,9 @@
 						<s:select id="cmbRecipeUOM" path="strRecipeUOM">
 							<option selected="selected" value=""></option>
 	
+							<option value="Gram">Gram</option>
+							<option value="Kg">Kg</option>
+							<option value="Unit">Unit</option>
 						</s:select>
 					</div>
 					<div class="element-textarea col-lg-6" style="width: 20%;">
@@ -791,6 +971,9 @@
 						 class="longTextBox jQKeyboard form-control"  /> 
 				
 			</div>
+			<div class="element-input col-lg-6" style="width: 20%;">
+						<label id="strReceipeChildItemUOM" readonly="true" /> 
+					</div>
 			</div>
 			
 			<div class="row" style="background-color: #fff; display: -webkit-box; margin-bottom: 10px;">
@@ -820,7 +1003,8 @@
 									<th>Item Code</th>
 									<th>Item Name</th>
 									<th>Quantity</th>
-									
+									<th>UOM</th>
+									<th>Delete</th>
 								</tr>
 							</thead>
 						</table>

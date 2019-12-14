@@ -23,6 +23,8 @@ import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSMenuItemMasterBean;
 import com.sanguine.webpos.model.clsMenuItemMasterModel;
 import com.sanguine.webpos.model.clsMenuItemMasterModel_ID;
+import com.sanguine.webpos.model.clsRecipeDtlModel;
+import com.sanguine.webpos.model.clsRecipeMasterModel;
 import com.sanguine.webpos.model.clsSubGroupMasterHdModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.util.clsPOSUtilityController;
@@ -160,7 +162,8 @@ public class clsPOSMenuItemMasterController{
 		{
 			urlHits=req.getParameter("saddr").toString();
 			String clientCode=req.getSession().getAttribute("gClientCode").toString();
-			String webStockUserCode=req.getSession().getAttribute("gUserCode").toString();
+			String userCode=req.getSession().getAttribute("gUserCode").toString();
+			String posCode=req.getSession().getAttribute("gPOSCode").toString();
 			String itemCode = objBean.getStrItemCode();
 			if (itemCode.trim().isEmpty())
 			{
@@ -194,8 +197,8 @@ public class clsPOSMenuItemMasterController{
 		    objModel.setStrOpenItem(objGlobal.funIfNull(objBean.getStrOpenItem(),"N","Y"));
 		    objModel.setStrItemWiseKOTYN(objGlobal.funIfNull(objBean.getStrItemWiseKOTYN(),"N","Y"));
 		    objModel.setStrItemDetails(objBean.getStrItemDetails());
-		    objModel.setStrUserCreated(webStockUserCode);
-		    objModel.setStrUserEdited(webStockUserCode);
+		    objModel.setStrUserCreated(userCode);
+		    objModel.setStrUserEdited(userCode);
 		    objModel.setDteDateCreated(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
 		    objModel.setDteDateEdited(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
 		    objModel.setStrDiscountApply(objGlobal.funIfNull(objBean.getStrDiscountApply(),"N",objBean.getStrDiscountApply()));
@@ -226,6 +229,42 @@ public class clsPOSMenuItemMasterController{
 		    objModel.setImgImage("");
 		    objMasterService.funSaveUpdateMenuItemMaster(objModel);
 						
+		    if(objBean.getListChildItemDtl()!=null && objBean.getListChildItemDtl().size()>0)
+		    {
+		    	//List<clsRecipeDtlModel> listChildItemDtl=objBean.getListChildItemDtl();
+		    	
+		    	String recipeCode = objBean.getStrRecipeCode();
+				if (recipeCode.trim().isEmpty())
+				{
+					long intCode =objUtilityController.funGetDocumentCodeFromInternal("Recipe",clientCode);
+					recipeCode = "R" + String.format("%07d", intCode);
+				}
+		    	
+				clsRecipeMasterModel objRecipe=new clsRecipeMasterModel();
+				objRecipe.setStrRecipeCode(recipeCode);
+				objRecipe.setStrClientCode(clientCode);
+				objRecipe.setStrDataPostFlag("N");
+				objRecipe.setStrPOSCode(posCode);
+				objRecipe.setStrItemCode(itemCode);
+				objRecipe.setStrUserCreated(userCode);
+				objRecipe.setStrUserEdited(userCode);
+				objRecipe.setDteDateCreated(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
+				objRecipe.setDteDateEdited(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
+				
+				objRecipe.setDteFromDate(objBean.getDteFromDate());
+				objRecipe.setDteToDate(objBean.getDteToDate());
+				
+				List<clsRecipeDtlModel> listChildItemDtl=new ArrayList<>();
+				for(clsRecipeDtlModel objDtl:objBean.getListChildItemDtl() ){
+					objDtl.setStrPOSCode(posCode);
+					objDtl.setStrDataPostFlag("N");
+					listChildItemDtl.add(objDtl);
+				}
+			    
+				objRecipe.setListRecipeDtl(listChildItemDtl);
+				
+				objBaseServiceImpl.funSave(objRecipe);
+		    }
 			req.getSession().setAttribute("success", true);
 			req.getSession().setAttribute("successMessage"," "+itemCode);
 			
@@ -256,6 +295,21 @@ public class clsPOSMenuItemMasterController{
 			return true;
 	}
 	
+	@RequestMapping(value ="/loadRecipeData" ,method =RequestMethod.GET)
+	public  @ResponseBody boolean funLoadRecipeData(@RequestParam("itemCode") String itemCode, HttpServletRequest req) 
+	{
+		String clientCode =req.getSession().getAttribute("gClientCode").toString();
+		int count=0;//objPOSGlobal.funCheckName(itemCode,clientCode,"POSMenuItem");
+		
+		String sql="";
+
+		if(count>0)
+			return false;
+		else
+			return true;
+	}
+	//
+
 }
 
 

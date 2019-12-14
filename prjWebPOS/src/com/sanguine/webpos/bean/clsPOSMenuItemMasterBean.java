@@ -1,5 +1,9 @@
 package com.sanguine.webpos.bean;
 
+import java.util.List;
+
+import com.sanguine.webpos.model.clsRecipeDtlModel;
+
 public class clsPOSMenuItemMasterBean{
 //Variable Declaration
 	private String strItemCode;
@@ -94,7 +98,9 @@ public class clsPOSMenuItemMasterBean{
 	private String dteFromDate,dteToDate;
 	
 	
+	
 
+	private List<clsRecipeDtlModel> listChildItemDtl;
 
 //Setter-Getter Methods
 	public String getStrItemCode(){
@@ -461,6 +467,14 @@ public class clsPOSMenuItemMasterBean{
 	public void setDteToDate(String dteToDate)
 	{
 		this.dteToDate = dteToDate;
+	}
+	public List<clsRecipeDtlModel> getListChildItemDtl()
+	{
+		return listChildItemDtl;
+	}
+	public void setListChildItemDtl(List<clsRecipeDtlModel> listChildItemDtl)
+	{
+		this.listChildItemDtl = listChildItemDtl;
 	}
 
 
