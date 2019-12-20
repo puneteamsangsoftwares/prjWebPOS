@@ -23,7 +23,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class clsExportToExcel
 {
-	public void funGenerateExcelFile(List dataList, HttpServletRequest request, HttpServletResponse response, String excelFileExtension)throws Exception {/*
+	public void funGenerateExcelFile(List dataList, HttpServletRequest request, HttpServletResponse response, String excelFileExtension)throws Exception {
 
 		// get data model which is passed by the Spring container
 		
@@ -99,9 +99,9 @@ public class clsExportToExcel
 	    FileOutputStream outputStream = new FileOutputStream(file);
 	    workBook.write(outputStream);
 	    outputStream.flush();
-	*/}
+	}
 	
-	/*
+	
 	private Workbook funGetWorkBook(String excelFilePath) throws IOException {
 	    
 		Workbook workbook = null;
@@ -120,5 +120,5 @@ public class clsExportToExcel
 	public static boolean isNumeric(String str)
 	{
 	  return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
-	}*/
+	}
 }

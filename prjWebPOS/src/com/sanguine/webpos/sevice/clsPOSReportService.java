@@ -398,7 +398,7 @@ public class clsPOSReportService
 					+ "where  date(a.dteBillDate) Between '" + dteFromDate + "' and '" + dteToDate + "' ");
 
 			// Q modifiers
-			sqlQModifierBuilder.append("select a.strBillNo,DATE_FORMAT(date(a.dteBillDate),'%d-%m-%Y'),sum(b.dblRate*b.dblQuantity) ,f.strPosName,g.strWShortName,e.strReasonName, a.strRemarks "
+			sqlQModifierBuilder.append("select a.strBillNo,DATE_FORMAT(date(a.dteBillDate),'%d-%m-%Y'),sum(b.dblRate*b.dblQuantity) ,f.strPosName,ifnull(g.strWShortName,''),e.strReasonName, a.strRemarks "
 					+ " from tblqbillhd a"
 					+ " INNER JOIN  tblqbillmodifierdtl b on a.strBillNo = b.strBillNo  and date(a.dteBillDate)=date(b.dteBillDate)  and a.strClientCode=b.strClientCode  "
 					+ " left outer join  tblqbillsettlementdtl c on a.strBillNo = c.strBillNo  and date(a.dteBillDate)=date(c.dteBillDate)  and a.strClientCode=c.strClientCode  "
@@ -12042,14 +12042,14 @@ private void funGenerateItemWiseSales(StringBuilder sbSql)
 				sbSqlLiveBill.setLength(0);
 				sbSqlLiveBill.append(
 						"select a.strBillNo,left(a.dteBillDate,10),left(right(a.dteDateCreated,8),5) as BillTime "
-								+ " ,b.strTableName,f.strPOSName, d.strSettelmentDesc "
+								+ " ,ifnull(b.strTableName,''),f.strPOSName, d.strSettelmentDesc "
 								+ " ,a.dblSubTotal,a.dblDiscountPer, a.dblDiscountAmt,a.dblTaxAmt "
 								+ " ,c.dblSettlementAmt,a.strUserCreated "
 								+ " ,a.strUserEdited,a.dteDateCreated,a.dteDateEdited,a.strClientCode,a.strWaiterNo "
-								+ " ,a.strCustomerCode,a.dblDeliveryCharges,c.strRemark,e.strCustomerName "
+								+ " ,a.strCustomerCode,a.dblDeliveryCharges,c.strRemark,ifnull(e.strCustomerName,'') "
 								+ " ,a.dblTipAmount,'" + strUserCode
-								+ "',a.strDiscountRemark,h.strReasonName,a.intShiftCode,a.dblRoundOff,a.intBillSeriesPaxNo, "
-								+ " i.dblAdvDeposite, k.strAdvOrderTypeName"
+								+ "',a.strDiscountRemark,ifnull(h.strReasonName,''),a.intShiftCode,a.dblRoundOff,a.intBillSeriesPaxNo, "
+								+ " ifnull(i.dblAdvDeposite,0), ifnull(k.strAdvOrderTypeName,'')"
 								+ " from tblbillhd  a "
 							    + " left outer join  tbltablemaster b on a.strTableNo=b.strTableNo "
 							    + " left outer join tblposmaster f on a.strPOSCode=f.strPOSCode "

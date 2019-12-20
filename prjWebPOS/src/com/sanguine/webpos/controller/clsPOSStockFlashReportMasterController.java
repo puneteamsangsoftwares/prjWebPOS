@@ -223,11 +223,13 @@ public class clsPOSStockFlashReportMasterController
 						arrList.add(jObjtemp.get("groupName").toString());
 						arrList.add(jObjtemp.get("subGroupName").toString());
 						arrList.add(jObjtemp.get("itemName").toString());
+						arrList.add(jObjtemp.get("purchaseRate").toString());
 						arrList.add(jObjtemp.get("Opening Stock").toString());
 						arrList.add(jObjtemp.get("Stock In").toString());
 						arrList.add(jObjtemp.get("Stock Out").toString());
 						arrList.add(jObjtemp.get("Sale").toString());
 						arrList.add(jObjtemp.get("Balance").toString());	
+						
 						list.add(arrList);
 					 }
 					 
@@ -245,6 +247,7 @@ public class clsPOSStockFlashReportMasterController
 		  		arrListHeader.add("Group");
 		  		arrListHeader.add("SubGroup");
 		  		arrListHeader.add("Item Name");
+		  		arrListHeader.add("Purchase Rate");
 		  		arrListHeader.add("Opg Stock");
 		  		arrListHeader.add("Stock In");
 		  		arrListHeader.add("Stock Out");
@@ -357,7 +360,7 @@ public class clsPOSStockFlashReportMasterController
 				if(reportType.equals("Stock"))
 				{
 					sbSql.append(" select strGroupName,strSubgroupName,strItemName,strPOSCode"
-		                    + " ,intOpening,intIn,intOut,intSale,intBalance "
+		                    + " ,intOpening,intIn,intOut,intSale,intBalance,dblPurchaseRate "
 		                    + " from tblitemcurrentstk "
 		                    + " where strGroupName=if('All'='" + groupName.trim() + "'"
 		                    + ",strGroupName,'" + groupName.trim() + "') ");
@@ -402,6 +405,7 @@ public class clsPOSStockFlashReportMasterController
 							jObj.put("Stock Out", obj[6].toString());//Stk Out
 							jObj.put("Sale", obj[7].toString());//Sale
 							jObj.put("Balance", obj[8].toString());//Balance
+							jObj.put("purchaseRate", obj[9].toString());//Purchase Rate
 							
 							sumOpeningStock =sumOpeningStock+ Double.parseDouble(obj[4].toString());
 							sumStockIn = sumStockIn+ Double.parseDouble(obj[5].toString()); 
@@ -464,11 +468,13 @@ public class clsPOSStockFlashReportMasterController
 							arrList.add(jObjtemp.get("groupName").toString());
 							arrList.add(jObjtemp.get("subGroupName").toString());
 							arrList.add(jObjtemp.get("itemName").toString());
+							arrList.add(jObjtemp.get("purchaseRate").toString());
 							arrList.add(jObjtemp.get("Opening Stock").toString());
 							arrList.add(jObjtemp.get("Stock In").toString());
 							arrList.add(jObjtemp.get("Stock Out").toString());
 							arrList.add(jObjtemp.get("Sale").toString());
 							arrList.add(jObjtemp.get("Balance").toString());
+							
 							
 							vItemCode.add(jObjtemp.get("itemCode").toString());
 														

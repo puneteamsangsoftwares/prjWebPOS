@@ -8,9 +8,22 @@
 <head>
 
 
+
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Stock In Out Flash Report</title>
 <style>
+
+.mycsss {
+    width: 100px;
+    background-color: #2FABE9;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    background-image: -webkit-linear-gradient(top, #67c2ef, #2FABE9);
+    background-image: linear-gradient(top, #67c2ef, #2FABE9);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#67c2ef', endColorstr='#2FABE9', GradientType=0);
+    border-color: #1598d9 #1598d9 #007bb8 #1598d9;
+}
 
 </style>
 <script type="text/javascript">
@@ -27,28 +40,40 @@ $(function()
 		
 function funHelp(searchType)
 {
-	if(searchType=="StockInOutDetails")
+	if(searchType=="Type")
 	{
 		fieldName=searchType;
-		if(document.getElementById("cmbReportType").value=="Stock In")
-		{	
-			transactionType="StockIn";
-		    window.open("searchform.html?formname="+transactionType+"&searchText=","","dialogHeight:600px;dialogWidth:600px;dialogLeft:400px;")
+		
+		if (cmbType.value=="Item wise")
+		{
+		    transactionType = "POSMenuItemMaster";
+		    fieldName =transactionType;
 		}
-		else
-	    {
-			transactionType="StockOut";
-		    window.open("searchform.html?formname="+transactionType+"&searchText=","","dialogHeight:600px;dialogWidth:600px;dialogLeft:400px;")
-	    }
+		else if (cmbType.value=="Menuhead wise")
+		{
+			transactionType = "POSMenuHeadMaster";
+			 fieldName =transactionType;
+		}
+		else if (cmbType.value=="SubGroup wise")
+		{
+			transactionType = "POSSubGroupMaster";
+			 fieldName =transactionType;
+		}
+		else if (cmbType.value=="Group wise")
+		{
+			transactionType = "POSGroupMaster";
+			 fieldName =transactionType;
+		}
+
+		window.open("searchform.html?formname="+transactionType+"&searchText=","","dialogHeight:600px;dialogWidth:600px;dialogLeft:400px;")
 	}
 	else
 	{
 		fieldName=searchType;
-		if(document.getElementById("cmbType").value=="Item wise")
-		{	
-			transactionType="POSItemList";
+			
+			transactionType="StockIn";
 		    window.open("searchform.html?formname="+transactionType+"&searchText=","","dialogHeight:600px;dialogWidth:600px;dialogLeft:400px;")
-		}
+	
 		 
 	}	
 }
@@ -57,12 +82,21 @@ function funSetData(code)
 {
 	switch(fieldName)
 	{
+	
 		case "StockInOutDetails":
 			funLoadStockInOutDetails(code);
 			break;
+		
+		case "POSGroupMaster":
+			$("#txtViewType").val(code);
+			break;
 			
-		case "Type":
-			funLoadPOSItemList(code,transactionType);
+		case "POSMenuItemMaster":
+			$("#txtViewType").val(code);
+			break;
+			
+		case "POSSubGroupMaster":
+			$("#txtViewType").val(code);
 			break;
 	}
 }
@@ -94,7 +128,7 @@ function funLoadPOSItemList(code)
 	            if (jqXHR.status === 0) {
 	                alert('Not connect.n Verify Network.');
 	            } else if (jqXHR.status == 404) {
-	                alert('Requested page not found. [404]');
+	                //alert('Requested page not found. [404]');
 	            } else if (jqXHR.status == 500) {
 	                alert('Internal Server Error [500].');
 	            } else if (exception === 'parsererror') {
@@ -144,7 +178,7 @@ function funLoadStockInOutDetails(code)
 		            if (jqXHR.status === 0) {
 		                alert('Not connect.n Verify Network.');
 		            } else if (jqXHR.status == 404) {
-		                alert('Requested page not found. [404]');
+		                //alert('Requested page not found. [404]');
 		            } else if (jqXHR.status == 500) {
 		                alert('Internal Server Error [500].');
 		            } else if (exception === 'parsererror') {
@@ -189,7 +223,7 @@ function funLoadStockInOutDetails(code)
 		            if (jqXHR.status === 0) {
 		                alert('Not connect.n Verify Network.');
 		            } else if (jqXHR.status == 404) {
-		                alert('Requested page not found. [404]');
+		                //alert('Requested page not found. [404]');
 		            } else if (jqXHR.status == 500) {
 		                alert('Internal Server Error [500].');
 		            } else if (exception === 'parsererror') {
@@ -373,6 +407,10 @@ function funFillheaderCol(rowData)
     row.insertCell(4).innerHTML= "<input  readonly=\"readonly\" class=\"Box \"  size=\"10%\" id=\"txtVariance."+(rowCount)+"\" value='"+rowItem[4]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
     row.insertCell(5).innerHTML= "<input  readonly=\"readonly\" class=\"Box \"  size=\"15%\" id=\"txtDate."+(rowCount)+"\" value='"+rowItem[5]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
     row.insertCell(6).innerHTML= "<input  readonly=\"readonly\" class=\"Box \"  size=\"15%\" id=\"txtDate."+(rowCount)+"\" value='"+rowItem[6]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+    row.insertCell(7).innerHTML= "<input  readonly=\"readonly\" class=\"Box \"  size=\"15%\" id=\"txtDate."+(rowCount)+"\" value='"+rowItem[7]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+    row.insertCell(8).innerHTML= "<input  readonly=\"readonly\" class=\"Box \"  size=\"15%\" id=\"txtDate."+(rowCount)+"\" value='"+rowItem[8]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+    row.insertCell(9).innerHTML= "<input  readonly=\"readonly\" class=\"Box \"  size=\"15%\" id=\"txtDate."+(rowCount)+"\" value='"+rowItem[9]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+
     
     row = table.rows[0];
 	row.style.backgroundColor='#87CEFA';
@@ -403,7 +441,7 @@ function funSetDate()
 		            if (jqXHR.status === 0) {
 		                alert('Not connect.n Verify Network.');
 		            } else if (jqXHR.status == 404) {
-		                alert('Requested page not found. [404]');
+		                //alert('Requested page not found. [404]');
 		            } else if (jqXHR.status == 500) {
 		                alert('Internal Server Error [500].');
 		            } else if (exception === 'parsererror') {
@@ -442,12 +480,11 @@ function CalculateDateDiff(fromDate,toDate) {
 
 function funFetchColNames(callingTime) {
 	var posName=$('#cmbPOSName').val();
-	var operationTypeCode=$('#txtOperationType').val();
-	var operationType=$('#cmbReportType').val();
-	var searchValue="";
-	searchValue=selectedItemCode;
-	var viewType=$('#cmbType').val();	
-	var reasonName=$('#cmbReason').val();	
+	var type=$('#cmbType').val();
+	var reportType=$('#cmbReportType').val();
+	var groupwise=$('#cmbGroupName').val();
+	var showStockWith=$('#txtOperationType').val();
+	var showZeroBalYN=$('#txtViewType').val();		 
 	var gurl = getContextPath()+"/loadPOSStockInOutFlash.html";
 	var abc;
 	
@@ -456,11 +493,12 @@ function funFetchColNames(callingTime) {
 		data:{  fromDate:$('#txtFromDate').val(),
 				toDate:$('#txtToDate').val(),
 				posName:posName,
-				viewType:viewType,
-				operationType:operationType,
-				operationTypeCode:operationTypeCode,
-				searchValue:searchValue,
-				reasonName:reasonName,
+				type:type,
+				reportType:reportType,
+				groupwise:groupwise,
+				showStockWith:showStockWith,
+				showZeroBalStockYN:showZeroBalYN,
+				showZeroBalStockYN:showZeroBalYN,
 				time:callingTime,
 			},
 		url : gurl,
@@ -490,7 +528,7 @@ function funFetchColNames(callingTime) {
 				 $.each(response.listDetails,function(i,item)
 				  {
 	            	
-					 funFillStockTableCol(item[0],item[1],item[2],item[3],item[4],item[5],item[6]);
+					 funFillStockTableCol(item[0],item[1],item[2],item[3],item[4],item[5],item[6],item[7],item[8],item[9]);
             	  });
 						 
 				 $.each(response.totalList,function(i,item)
@@ -518,7 +556,7 @@ function funFetchColNames(callingTime) {
 	
 		
 
-		 	function funFillStockTableCol(item0,item1,item2,item3,item4,item5,item6,item7)
+		 	function funFillStockTableCol(item0,item1,item2,item3,item4,item5,item6,item7,item8,item9)
 			{
 				var table = document.getElementById("tblStockInOutFlashReport");
 				var rowCount = table.rows.length;
@@ -531,7 +569,11 @@ function funFetchColNames(callingTime) {
 			      row.insertCell(4).innerHTML= "<input  readonly=\"readonly\" class=\"Box \"  size=\"10%\" id=\"txtVariance."+(rowCount)+"\" value='"+item4+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
 			      row.insertCell(5).innerHTML= "<input  readonly=\"readonly\" class=\"Box \"  size=\"15%\" id=\"txtDate."+(rowCount)+"\" value='"+item5+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
 			      row.insertCell(6).innerHTML= "<input  readonly=\"readonly\" class=\"Box \"  size=\"15%\" id=\"txtDate."+(rowCount)+"\" value='"+item6+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
-			     
+			      row.insertCell(7).innerHTML= "<input  readonly=\"readonly\" class=\"Box \"  size=\"15%\" id=\"txtDate."+(rowCount)+"\" value='"+item7+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+			      row.insertCell(8).innerHTML= "<input  readonly=\"readonly\" class=\"Box \"  size=\"15%\" id=\"txtDate."+(rowCount)+"\" value='"+item8+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+			      row.insertCell(9).innerHTML= "<input  readonly=\"readonly\" class=\"Box \"  size=\"15%\" id=\"txtDate."+(rowCount)+"\" value='"+item9+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+
+			      
 			}   
 		 	
 		   function funFillTotalCol(rowData) 
@@ -551,7 +593,20 @@ function funFetchColNames(callingTime) {
 			    row.insertCell(6).innerHTML= "<input name=\"listPSPDtl["+(rowCount)+"].dblVariance\" readonly=\"readonly\" class=\"Box\"  size=\"15%\" id=\"txtVariance."+(rowCount)+"\" value='"+blankData+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
 			    row.insertCell(7).innerHTML= "<input name=\"listPSPDtl["+(rowCount)+"].dblCompStk\" readonly=\"readonly\" class=\"Box\"  size=\"15%\" id=\"txtCompStock."+(rowCount)+"\" value='"+blankData+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
 			    row.insertCell(8).innerHTML= "<input name=\"listPSPDtl["+(rowCount)+"].dblCompStk\" readonly=\"readonly\" class=\"Box\"  size=\"5%\" id=\"txtCompStock."+(rowCount)+"\" value='"+blankData+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+			    row.insertCell(9).innerHTML= "<input name=\"listPSPDtl["+(rowCount)+"].dblCompStk\" readonly=\"readonly\" class=\"Box\"  size=\"5%\" id=\"txtCompStock."+(rowCount)+"\" value='"+blankData+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+			    row.insertCell(10).innerHTML= "<input name=\"listPSPDtl["+(rowCount)+"].dblCompStk\" readonly=\"readonly\" class=\"Box\"  size=\"5%\" id=\"txtCompStock."+(rowCount)+"\" value='"+blankData+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+			    row.insertCell(11).innerHTML= "<input name=\"listPSPDtl["+(rowCount)+"].dblCompStk\" readonly=\"readonly\" class=\"Box\"  size=\"5%\" id=\"txtCompStock."+(rowCount)+"\" value='"+blankData+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+			    row.insertCell(12).innerHTML= "<input name=\"listPSPDtl["+(rowCount)+"].dblCompStk\" readonly=\"readonly\" class=\"Box\"  size=\"5%\" id=\"txtCompStock."+(rowCount)+"\" value='"+blankData+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+			    row.insertCell(13).innerHTML= "<input name=\"listPSPDtl["+(rowCount)+"].dblCompStk\" readonly=\"readonly\" class=\"Box\"  size=\"5%\" id=\"txtCompStock."+(rowCount)+"\" value='"+blankData+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+			    row.insertCell(14).innerHTML= "<input name=\"listPSPDtl["+(rowCount)+"].dblCompStk\" readonly=\"readonly\" class=\"Box\"  size=\"5%\" id=\"txtCompStock."+(rowCount)+"\" value='"+blankData+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+			    row.insertCell(15).innerHTML= "<input name=\"listPSPDtl["+(rowCount)+"].dblCompStk\" readonly=\"readonly\" class=\"Box\"  size=\"5%\" id=\"txtCompStock."+(rowCount)+"\" value='"+blankData+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+			    row.insertCell(16).innerHTML= "<input name=\"listPSPDtl["+(rowCount)+"].dblCompStk\" readonly=\"readonly\" class=\"Box\"  size=\"5%\" id=\"txtCompStock."+(rowCount)+"\" value='"+blankData+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+
+
 			}
+		   
+		   
+		   
 			
 
 </script>
@@ -591,12 +646,12 @@ function funFetchColNames(callingTime) {
 					
 					 <tr>
 					 
-					  <td width="80px" ><s:select id="cmbReportType" name="cmbReportType" path="strReportType" cssClass="BoxW124px" items="${operationTypeList}" >
+					  <td width="80px" ><s:select id="cmbReportType" name="cmbReportType" path="strReportType" cssClass="BoxW124px" items="${InOut}" >
 					  </s:select></td>
 					  <td ><s:input id="txtOperationType" name="txtOperationType" path="strOperationType" cssClass="BoxW124px" ondblclick="funHelp('StockInOutDetails')"/></td>
 					   
 				      <td width="80px">Reason :</td>
-					  <td colspan="9" ><s:select id="cmbReason" name="cmbReason" path="strReasonCode" cssClass="BoxW124px" items="${reasonList}"  >
+					  <td colspan="9" ><s:select id="cmbReason" name="cmbReason" path="strReasonCode" cssClass="BoxW124px" items="${reason}"  >
 					  </s:select>    </td>	
 					
 					</tr>
@@ -606,7 +661,7 @@ function funFetchColNames(callingTime) {
 			</div>
 			
 			
-				 <div style="background-color: #a4d7ff; border: 1px solid #ccc; display: block; height: 500px; margin-left: 130px; overflow-x: scroll; overflow-y: scroll; width: 80%;">
+				 <div style="border: 1px solid #ccc; display: block; height: 500px; margin:auto; overflow-x: scroll; overflow-y: scroll; width: 80%;">
 				
 				
 						<table id="tblStockInOutFlashHeader" class="transTablex"
@@ -614,15 +669,15 @@ function funFetchColNames(callingTime) {
 					
 					    </table>
 						
-						<table id="tblStockInOutFlashReport" class="transTablex"
+						<table id="tblStockInOutFlashReport" 
 							style="width: 100%; text-align: center !important;">
 						</table>
 				
 				  </div>	
 			
-			    <div style="background-color: #a4d7ff; border: 1px solid #ccc; display: block; height: 70px; margin-left: 130px; overflow-x: scroll; overflow-y: hidden; width: 80%;">
+			    <div style="background-color: #fff; display: block; margin-bottom: 10px; margin-left: 130px;">
 				
-						<table id="tblTotal" class="transTablex"
+						<table id="tblTotal" 
 						   style="width: 100%; text-align:">
 					    <col style="width:60%"><!--  COl1   -->
 					   </table>
@@ -635,12 +690,23 @@ function funFetchColNames(callingTime) {
 
 		<br />
 		<br />
-		<p align="center">
-			    <input type="button" value="Show" class="form_button"id="show" /> 
-			    <input type="submit" value="Export"	class="form_button"  id="export" />
-				<input type="reset" value="Reset"class="form_button" id="reset" />
+		
+		<div class="row" style="background-color: #fff; display: block; margin-bottom: 10px; margin-left: 350px;">
+		    				
+		    				<div class="col-lg-4 col-sm-4 col-xs-4" style="width: 100%;">
+					  		
+								<div class="submit col-lg-4 col-sm-4 col-xs-4" style="width: 10%;"><input type="button" value="Show" onClick="funLoadTableData()"  /></div>
+								<div class="submit col-lg-4 col-sm-4 col-xs-4" style="width: 10%;"><input type="submit" value="Export" id="export" /></div>
+								<div class="submit col-lg-4 col-sm-4 col-xs-4" style="width: 10%;"><input type="button" value="Reset"  /></div>
+								
+			  		  		</div>
+			  		  </div>
+		<!-- <p align="center">
+			    <input type="button" value="Show" class="submit col-lg-4 col-sm-4 col-xs-4"id="show" /> 
+			    <input type="submit" value="Export"	class="submit col-lg-4 col-sm-4 col-xs-4"  id="export" />
+				<input type="reset" value="Reset"class="submit col-lg-4 col-sm-4 col-xs-4" id="reset" />
 
-		</p>
+		</p> -->
 		<div id="wait"
 			style="display: none; width: 60px; height: 60px; border: 0px solid black; position: absolute; top: 60%; left: 40%; padding: 2px;">
 			<img

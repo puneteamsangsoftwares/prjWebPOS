@@ -179,6 +179,7 @@ function funLoadTableData()
 {
 	var callingTime="first";
 	var posdate="${gPOSDate}"
+	posdate = funConvertDate(posdate);
 	$("#txtFromDate").val(posdate);
  	$("#txtToDate").val(posdate);
  	
@@ -192,6 +193,12 @@ function funLoadTableData()
 	
 	
 }
+
+function funConvertDate(dateString){
+	var p = dateString.split(/\D/g)
+	return [p[2],p[1],p[0] ].join("-")
+	}
+
 
 function funDeleteTableAllRows()
 {
@@ -253,12 +260,14 @@ function funFillheaderCol(rowData,reportType)
     row.insertCell(5).innerHTML= "<input  readonly=\"readonly\" class=\"Box \" style=\"text-align: right\" size=\"10%\" id=\"txtDate."+(rowCount)+"\" value='"+rowItem[5]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
     row.insertCell(6).innerHTML= "<input  readonly=\"readonly\" class=\"Box \" style=\"text-align: right\" size=\"10%\" id=\"txtDate."+(rowCount)+"\" value='"+rowItem[6]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
     row.insertCell(7).innerHTML= "<input  readonly=\"readonly\" class=\"Box \" style=\"text-align: right\" size=\"10%\" id=\"txtDate."+(rowCount)+"\" value='"+rowItem[7]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+    row.insertCell(8).innerHTML= "<input  readonly=\"readonly\" class=\"Box \" style=\"text-align: right\" size=\"10%\" id=\"txtDate."+(rowCount)+"\" value='"+rowItem[8]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+
     if(reportType=="Not Stock")
 	{
-       row.insertCell(8).innerHTML= "<input  readonly=\"readonly\" class=\"Box \" style=\"text-align: right\" size=\"10%\" id=\"txtVariance."+(rowCount)+"\" value='"+rowItem[8]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
-       row.insertCell(9).innerHTML= "<input  readonly=\"readonly\" class=\"Box \" style=\"text-align: right\" size=\"10%\" id=\"txtDate."+(rowCount)+"\" value='"+rowItem[9]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
-       row.insertCell(10).innerHTML= "<input  readonly=\"readonly\" class=\"Box \" style=\"text-align: right\" size=\"10%\" id=\"txtDate."+(rowCount)+"\" value='"+rowItem[10]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
-       row.insertCell(11).innerHTML= "<input  readonly=\"readonly\" class=\"Box \" style=\"text-align: right\" size=\"10%\" id=\"txtDate."+(rowCount)+"\" value='"+rowItem[11]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+       row.insertCell(9).innerHTML= "<input  readonly=\"readonly\" class=\"Box \" style=\"text-align: right\" size=\"10%\" id=\"txtVariance."+(rowCount)+"\" value='"+rowItem[8]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+       row.insertCell(10).innerHTML= "<input  readonly=\"readonly\" class=\"Box \" style=\"text-align: right\" size=\"10%\" id=\"txtDate."+(rowCount)+"\" value='"+rowItem[9]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+       row.insertCell(11).innerHTML= "<input  readonly=\"readonly\" class=\"Box \" style=\"text-align: right\" size=\"10%\" id=\"txtDate."+(rowCount)+"\" value='"+rowItem[10]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+       row.insertCell(12).innerHTML= "<input  readonly=\"readonly\" class=\"Box \" style=\"text-align: right\" size=\"10%\" id=\"txtDate."+(rowCount)+"\" value='"+rowItem[11]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
     	   
 	}
     row = table.rows[0];

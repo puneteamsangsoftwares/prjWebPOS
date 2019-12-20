@@ -209,7 +209,7 @@ public class clsFillFormsTableStructureUpdate
 			//+ " ('frmPostPOSSalesDataToExcise', 'PostPOSSalesDataToExcise', 'T', 'imgPostPOSSalesDataToExcise', '160', 'imgPostPOSSalesDataToExcise', 'frmPOSPostPOSSalesDataToExcise.html'),"
 			+ " ('OpenItems', 'Open Items', 'AT', 'imgOpenItems', '161', 'imgOpenItems', 'frmPOSOpenItems.html'),"//AT for Authentication For Transaction 
 			+ " ('frmMultiBillSettle', 'Multi Bill Settle', 'T', 'imgMultiBillSettle', '162', 'imgMultiBillSettle1', 'frmPOSMultiBillSettle.html');";
-
+			
 	    }
 	    else //Enterprise
 	    {
@@ -425,6 +425,7 @@ public class clsFillFormsTableStructureUpdate
 			+ ",('frmConsolidatedDiscountReport', 'Consolidated Discount Report', 'R', 'imgConsolidatedDiscountReport', '209', 'imgConsolidatedDiscountReport1', 'frmConsolidatedDiscountReport.html') "
 			+ ",('frmWeraFoodOrders', 'Wera Food Online Orders', 'T', 'imgWeraFoodOrders', '210', 'imgWeraFoodOrders1', 'frmWeraFoodOrders.html')"
 			+ ",('frmCustomerLedger', 'Customer Ledger', 'R', 'imgCustomerLedger', '211', 'imgCustomerLedger1', 'frmCustomerLedger.html');";
+			
 	    }
 	    mapStructureUpdater.get("frmStructure").add(sql);
 
