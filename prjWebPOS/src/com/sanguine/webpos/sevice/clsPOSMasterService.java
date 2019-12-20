@@ -35,6 +35,7 @@ import com.sanguine.webpos.model.clsPOSZoneMasterModel;
 //import com.sanguine.webpos.model.clsPOSPromationMasterHdModel;
 import com.sanguine.webpos.model.clsPricingMasterHdModel;
 import com.sanguine.webpos.model.clsReasonMasterModel;
+import com.sanguine.webpos.model.clsRecipeMasterModel;
 import com.sanguine.webpos.model.clsRegisterDebitCardModel;
 import com.sanguine.webpos.model.clsSettlementMasterModel;
 import com.sanguine.webpos.model.clsSetupHdModel;
@@ -863,7 +864,6 @@ public class clsPOSMasterService
 		clsModifierMasterHdModel objModifierMasterModel = null;
 
 		objModifierMasterModel = (clsModifierMasterHdModel) obBaseService.funGetAllMasterDataByDocCodeWise("getModifierMaster", hmParameters);
-		System.out.println();
 		return objModifierMasterModel;
 	}
 
@@ -1142,5 +1142,32 @@ public class clsPOSMasterService
 	public void funDeleteUserMaster(String strUserCode,String strClientCode)
 	{
 		obBaseService.funDeletePOSUser(strUserCode, strClientCode);
+	}
+	
+
+	public clsRecipeMasterModel funGetSelectedRecipeMasterData(String itemCode, String clientCode) throws Exception
+	{
+		clsRecipeMasterModel objRecipeMasterModel = new clsRecipeMasterModel();
+		Map<String, String> hmParameters = new HashMap<String, String>();
+		//hmParameters.put("itemCode", itemCode);
+	//	hmParameters.put("clientCode", clientCode);
+		StringBuilder hql=new StringBuilder(" from clsRecipeMasterModel where strItemCode='"+itemCode+"' and strClientCode='"+clientCode+"' ");
+		List list=obBaseService.funGetList(hql,"hql");
+		if(list!=null && list.size()>0){
+			objRecipeMasterModel=(clsRecipeMasterModel)list.get(0);
+		}
+		//objRecipeMasterModel = (clsRecipeMasterModel) obBaseService.funGetAllMasterDataByDocCodeWise("getRecipeMasterItemWise", hmParameters);
+		return objRecipeMasterModel;
+	}
+	
+	public List<clsSubGroupMasterHdModel> funLoadAllSubGroupOnGroup(String groupCode,String strClientCode) throws Exception
+	{
+		List<clsSubGroupMasterHdModel> list = null;
+		StringBuilder hql=new StringBuilder(" from clsSubGroupMasterHdModel where strGroupCode='"+groupCode+"' and strClientCode='"+strClientCode+"' ");
+		list=(List<clsSubGroupMasterHdModel>)obBaseService.funGetList(hql,"hql");
+		
+		
+		return list;
+
 	}
 }

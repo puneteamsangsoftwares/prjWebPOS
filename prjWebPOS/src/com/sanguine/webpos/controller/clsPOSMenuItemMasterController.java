@@ -296,17 +296,48 @@ public class clsPOSMenuItemMasterController{
 	}
 	
 	@RequestMapping(value ="/loadRecipeData" ,method =RequestMethod.GET)
-	public  @ResponseBody boolean funLoadRecipeData(@RequestParam("itemCode") String itemCode, HttpServletRequest req) 
+	public  @ResponseBody clsRecipeMasterModel funLoadRecipeData(@RequestParam("itemCode") String itemCode, HttpServletRequest req) 
 	{
 		String clientCode =req.getSession().getAttribute("gClientCode").toString();
-		int count=0;//objPOSGlobal.funCheckName(itemCode,clientCode,"POSMenuItem");
+		clsRecipeMasterModel objModel=new clsRecipeMasterModel();
+		StringBuilder sbSql=new StringBuilder(); 
+		try
+		{
+			List<clsPOSMenuItemMasterBean> listChildItemDtl=new ArrayList<>();
+			clsPOSMenuItemMasterBean objDtlModel=null;
+			objModel=(clsRecipeMasterModel)objMasterService.funGetSelectedRecipeMasterData(itemCode, clientCode);
+			if(objModel.getStrRecipeCode()!=null){
+				sbSql.setLength(0);
+				sbSql.append("select a.strRecipeCode,a.strChildItemCode,a.dblQuantity,ifnull(b.strRecipeUOM,''),b.strItemName from tblrecipedtl a,tblitemmaster b "   
+						+" where a.strChildItemCode=b.strItemCode and a.strClientCode=b.strClientCode "
+						+"   and a.strRecipeCode='"+objModel.getStrRecipeCode() +"' and a.strClientCode ='"+clientCode+"';");
+				
+				List listRecipeDtl=objBaseServiceImpl.funGetList(sbSql,"sql");
+				
+				if(listRecipeDtl !=null && listRecipeDtl.size()>0){
+					for(int i=0;i<listRecipeDtl.size();i++){
+						objDtlModel=new clsPOSMenuItemMasterBean();
+						Object ob[]=(Object[]) listRecipeDtl.get(i);
+						objDtlModel.setStrItemCode(ob[1].toString());
+						objDtlModel.setDblRecipeQty(Double.parseDouble(ob[2].toString()));
+						objDtlModel.setStrItemName(ob[4].toString());
+						objDtlModel.setStrUOM(ob[3].toString());
+						listChildItemDtl.add(objDtlModel);
+					}
+					
+					objModel.setListChildItemDtl(listChildItemDtl);
+				}
+			}
+			
+		}
+		catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		String sql="";
 
-		if(count>0)
-			return false;
-		else
-			return true;
+		return objModel;
 	}
 	//
 

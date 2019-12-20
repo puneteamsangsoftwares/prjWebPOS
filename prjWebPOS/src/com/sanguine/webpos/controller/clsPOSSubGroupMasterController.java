@@ -158,4 +158,25 @@ public class clsPOSSubGroupMasterController
 		return objPOSSubGroupMaster;
 	}
 	
+	
+	 
+	 @RequestMapping(value = "/loadSubGroupCombo", method = RequestMethod.GET)
+		public @ResponseBody List<clsSubGroupMasterHdModel> funGetGropList(@RequestParam("code") String code, HttpServletRequest req) {
+			String clientCode=req.getSession().getAttribute("gClientCode").toString();
+			List listOfSubGroup=new ArrayList<>();
+			try
+			{
+				//code
+				listOfSubGroup = objMasterService.funLoadAllSubGroupOnGroup(code,clientCode);
+				//listGroupModels = objMasterService.funLoadAllGroupDetails(clientCode);
+			}
+			catch (Exception e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return listOfSubGroup;
+
+		}
+	
 }

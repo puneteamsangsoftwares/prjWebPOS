@@ -1,5 +1,6 @@
 package com.sanguine.webpos.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -145,5 +146,22 @@ public class clsPOSGroupMasterController {
 				else
 					return true;
 				
+			}
+		 
+		 @RequestMapping(value = "/loadAllGroupData", method = RequestMethod.GET)
+			public @ResponseBody List<clsGroupMasterModel> funGetGropList(HttpServletRequest req) {
+				String clientCode=req.getSession().getAttribute("gClientCode").toString();
+				List listGroupModels=new ArrayList<>();
+				try
+				{
+					listGroupModels = objMasterService.funLoadAllGroupDetails(clientCode);
+				}
+				catch (Exception e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return listGroupModels;
+
 			}
 }

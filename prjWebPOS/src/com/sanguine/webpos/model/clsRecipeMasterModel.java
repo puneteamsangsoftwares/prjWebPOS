@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -20,13 +22,16 @@ import javax.persistence.AttributeOverrides;
 import org.hibernate.annotations.CollectionOfElements;
 
 import com.sanguine.base.model.clsBaseModel;
+import com.sanguine.webpos.bean.clsPOSMenuItemMasterBean;
 
 
 @Entity
 @Table(name="tblrecipehd")
 @IdClass(clsRecipeMasterModel_ID.class)
 @NamedQueries({ @NamedQuery(name = "getRecipeMaster", 
-query = "from clsRecipeMasterModel where strRecipeCode=:recipeCode and strClientCode=:clientCode") })
+query = "from clsRecipeMasterModel where strRecipeCode=:recipeCode and strClientCode=:clientCode"),
+@NamedQuery(name = "getRecipeMasterItemWise", 
+query = "from clsRecipeMasterModel where strItemCode=:itemCode and strClientCode=:clientCode")})
 public class clsRecipeMasterModel extends clsBaseModel  implements Serializable{
 	private static final long serialVersionUID = 1L;
 	public clsRecipeMasterModel(){}
@@ -35,7 +40,8 @@ public class clsRecipeMasterModel extends clsBaseModel  implements Serializable{
 		strRecipeCode = objModelID.getStrRecipeCode();
 		strClientCode = objModelID.getStrClientCode();
 	}
-	@CollectionOfElements(fetch=FetchType.LAZY)
+	
+	@CollectionOfElements(fetch=FetchType.EAGER)
     @JoinTable(name="tblrecipedtl" , joinColumns={@JoinColumn(name="strClientCode"),@JoinColumn(name="strRecipeCode")})
 	@Id
 	@AttributeOverrides({
@@ -44,6 +50,10 @@ public class clsRecipeMasterModel extends clsBaseModel  implements Serializable{
 	})
 
 	List<clsRecipeDtlModel> listRecipeDtl = new ArrayList<clsRecipeDtlModel>();
+	
+	
+	@Embedded
+	List<clsPOSMenuItemMasterBean> listChildItemDtl =new ArrayList<clsPOSMenuItemMasterBean>();
 	
 	
 public List<clsRecipeDtlModel> getListRecipeDtl() {
@@ -183,6 +193,16 @@ public List<clsRecipeDtlModel> getListRecipeDtl() {
 		else{
 			return defaultValue;
 		}
+	}
+
+	public List<clsPOSMenuItemMasterBean> getListChildItemDtl()
+	{
+		return listChildItemDtl;
+	}
+
+	public void setListChildItemDtl(List<clsPOSMenuItemMasterBean> listChildItemDtl)
+	{
+		this.listChildItemDtl = listChildItemDtl;
 	}
 
 }

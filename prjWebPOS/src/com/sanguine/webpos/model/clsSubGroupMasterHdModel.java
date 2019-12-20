@@ -19,7 +19,8 @@ import com.sanguine.base.model.clsBaseModel;
 @NamedQueries({ 
 	@NamedQuery (name="POSSubGroupMaster",query="select strSubGroupCode,strSubGroupName,strGroupCode ,strIncentives from clsSubGroupMasterHdModel "
 			+ " where strClientCode=:clientCode"),
-	@NamedQuery (name="getSubGroupMaster",query="from clsSubGroupMasterHdModel where strSubGroupCode=:subGroupCode and strClientCode=:clientCode" ) })
+	@NamedQuery (name="getSubGroupMaster",query="from clsSubGroupMasterHdModel where strSubGroupCode=:subGroupCode and strClientCode=:clientCode" )
+ })
 @IdClass(clsSubGroupMasterModel_ID.class)
 
 public class clsSubGroupMasterHdModel extends clsBaseModel  implements Serializable{

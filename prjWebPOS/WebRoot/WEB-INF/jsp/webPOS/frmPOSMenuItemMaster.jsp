@@ -97,6 +97,8 @@
 			case 'MenuItemForRecipeChild' :
 				funSetRawItemData(code);
 				break;
+			case 'POSRecipeMaster' :
+				break;
 		}
 	}
 
@@ -278,7 +280,7 @@
 
 	function funLoadRecipeData(itemCode){
 		
-		var searchurl=getContextPath()+"/loadRecipeData.html?itemCode="+code;
+		var searchurl=getContextPath()+"/loadRecipeData.html?itemCode="+itemCode;
 		 $.ajax({
 		        type: "GET",
 		        url: searchurl,
@@ -292,10 +294,18 @@
 		        	}
 		        	else
 		        	{
-		        		$("#strReceipeChildItemName").text(response.strItemName);
-		        		$("#strReceipeChildItemUOM").text(response.strRecipeUOM);
+		        		$("#txtRecipeCode").val(response.strRecipeCode);
+		        		$("#txtReceipeItemCode").val(response.strItemCode);
 		        		
-		    		}
+		        	//	$("#txtChildItemName").text(response.strItemCode);
+		        	
+		        	
+		        		$.each(response.listChildItemDtl,function(i,item ){
+		        			
+		        			funAddRow(item.strItemCode,item.strItemName,item.dblRecipeQty,item.strUOM);	
+		        			
+		        		});
+		        	}
 		        },
 		        error: function(jqXHR, exception)
 		        {
@@ -419,7 +429,14 @@
 			}
 			else
 			{
-				funAddRow();
+			
+
+			    var childMenuCode=$("#txtChildItemName").val();
+			    var childMenuName=$("#strReceipeChildItemName").text();
+			    var quantity=$("#txtQuantity").val();
+			    var childUOM=$("#strReceipeChildItemUOM").text();
+			    
+				funAddRow(childMenuCode,childMenuName,quantity,childUOM);
 			}
 		
 	}
@@ -434,15 +451,12 @@
 	}
  */
 	
-	function funAddRow() 
+	function funAddRow(childMenuCode,childMenuName,quantity,childUOM) 
 	{
-		var quantity=$("#txtQuantity").val();
+		
 	    var table = document.getElementById("tblRecipedetails");
 	    var rowCount = table.rows.length;
 	    var row = table.insertRow(rowCount);
-	    var childMenuCode=$("#txtChildItemName").val();
-	    var childMenuName=$("#strReceipeChildItemName").text();
-	    var childUOM=$("#strReceipeChildItemUOM").text();
 	    if(funDuplicateItem(childMenuCode))
 	    {
 		    row.insertCell(0).innerHTML= "<input class=\"Box\" name=\"listChildItemDtl["+(rowCount)+"].strChildItemCode\" size=\"30%\"  id=\"txtItemCode."+(rowCount)+"\" value='"+childMenuCode+"' \"/>";
@@ -908,7 +922,7 @@
 						</div>
 						<div class="element-input col-lg-6" style="width: 20%;">
 							<s:input id="txtRecipeCode" path="strRecipeCode"
-						cssClass="searchTextBox jQKeyboard form-control" readonly="true" onclick="funHelp('POSRecipeMaster')" />
+						cssClass="searchTextBox jQKeyboard form-control" readonly="true" ondblclick="funHelp('POSRecipeMaster')" />
 						</div>
 						<div class="element-input col-lg-6" style="width: 20%;">
 							<label class="title" style="width: 100%">Menu Item </label>

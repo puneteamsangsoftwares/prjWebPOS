@@ -97,7 +97,7 @@ public class clsPOSMenuItemMasterBean{
 	
 	private String dteFromDate,dteToDate;
 	
-	
+	private double dblRecipeQty;
 	
 
 	private List<clsRecipeDtlModel> listChildItemDtl;
@@ -475,6 +475,14 @@ public class clsPOSMenuItemMasterBean{
 	public void setListChildItemDtl(List<clsRecipeDtlModel> listChildItemDtl)
 	{
 		this.listChildItemDtl = listChildItemDtl;
+	}
+	public double getDblRecipeQty()
+	{
+		return dblRecipeQty;
+	}
+	public void setDblRecipeQty(double dblRecipeQty)
+	{
+		this.dblRecipeQty = dblRecipeQty;
 	}
 
 
