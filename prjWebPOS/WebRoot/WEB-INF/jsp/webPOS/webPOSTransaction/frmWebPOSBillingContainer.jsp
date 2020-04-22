@@ -19,7 +19,20 @@
 		<script type="text/javascript" src="<spring:url value="/resources/js/print.min.js"/>"></script>
 		<script type="text/javascript" src="<spring:url value="/resources/js/jquery.autocomplete.min.js"/>"></script>
 		<script type="text/javascript" src="<spring:url value="/resources/js/easy-numpad.js"/>"></script>
-		
+		 <link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/jquery-confirm.min.css"/>"/>
+<script type="text/javascript" src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
+<script type="text/javascript" src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
+<script type="text/javascript" src="<spring:url value="/resources/js/jquery.autocomplete.min.js"/>"></script>
+<!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+ <link rel="stylesheet" href="/resources/demos/style.css">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+ -->  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+ <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+ 
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+ 
+
+
 <title>
 </title>
 
@@ -34,6 +47,7 @@ var finalNetTotal=0.0;
 var finalGrandTotal=0.0;
 var finalSubTotal=0,finalDiscountAmt=0;
 var finalDelCharges=0.0;
+var listOfCompItem=[];
 
 var gPopUpToApplyPromotionsOnBill="${gPopUpToApplyPromotionsOnBill}";
 
@@ -91,6 +105,7 @@ var gSelectWaiterFromCardSwipe="${gSelectWaiterFromCardSwipe}";
 var gPOSCode="${gPOSCode}";
 var gClientCode="${gClientCode}";
 var gBillDate="${billDate}";
+var gEnableSettleBtnForDirectBiller="${gEnableSettleBtnForDirectBiller}";
 var fieldName="";
 
 
@@ -164,28 +179,29 @@ function funOpenBillPrint(voucherNo){
 	var url=window.location.origin+getContextPath()+"/getBillPrint.html?voucherNo="+voucherNo+"#toolbar=1";
 	//alert(url);
 	 $("#plugin").attr("src", url);
-	
-	$("#dialog").dialog({
-		 	autoOpen: true,
+	 $("#dialog").dialog({
+		 	autoOpen: false,
 	        maxWidth:600,
 	        maxHeight: 500,
 	        width: 600,
 	        height: 500,
-	        modal: true,
+	        modal: false,
 	        buttons: {
 	            /* "Print": function() {
-	                //$(this).dialog("close");
-	            	//window.print();  
- 					//$("#plugin").print();
- 					printJS('plugin', 'html');
+	            	
+					printJS('plugin', 'html');
 	            }, */
 	            Cancel: function() {
-	                $(this).dialog("close");
+	                $(this).dialog("destroy");
+	                $('#dialog').dialog('destroy');
 	            }
 	        },
 	        close: function() {
+	        	 $(this).dialog("destroy");
 	        }
-	});
+		});
+	 
+	 $("#dialog").dialog('open');
 	
 	
 	
@@ -245,6 +261,13 @@ function funDoneBtnDirectBiller()
     document.getElementById("tab1").style.display='none';
 	document.getElementById("tab2").style.display='block';
 	
+	if(gEnableSettleBtnForDirectBiller=='Y')
+	{
+		document.getElementById("btnSettle").style.display='block';
+	 	funSetBillingSettlement('Y');
+
+	}
+
 	$("#txtDeliveryCharge").val(finalDelCharges);
 	
 	finalSubTotal=0.00;
@@ -257,7 +280,7 @@ function funDoneBtnDirectBiller()
 	 
 	 
 	 var listItmeDtl=[];	   
-	 var hmItempMap=new Map();
+	// var hmItempMap=new Map();
 	
 
 	var tblBillItemDtl=document.getElementById('tblBillItemDtl');
@@ -313,7 +336,8 @@ function funDoneBtnDirectBiller()
 		    singleObj['itemCode'] =itemCode;
 		    singleObj['rate'] =itemAmt/itemQty;
 		    singleObj['isModifier'] =isModifier;
-		    
+		    singleObj['dblCompQty'] ='0';
+
 		    listItmeDtl.push(singleObj); 
 		    
 		}
@@ -348,13 +372,14 @@ function funRefreshSettlementItemGrid()
 	var taxTotal= funCalculateTaxForItemTbl();
 
     finalGrandTotal=taxTotal+finalNetTotal;
+    finalGrandTotal=funCalculateRoundOffAmt(finalGrandTotal);
     
     funFillTableFooterDtl(" GrandTotal",finalGrandTotal,"bold");
     funFillTableFooterDtl(" PaymentMode","","bold");
     
     var discPer=(finalDiscountAmt/finalSubTotal)*100;
-    $('#txtDiscountPer').val(discPer);	 
-	$('#txtDiscountAmt').val(finalDiscountAmt);  
+   // $('#txtDiscountPer').val(discPer);	 
+//	$('#txtDiscountAmt').val(finalDiscountAmt);  
 	    
     $('#txtAmount').val(finalGrandTotal);
  	$('#txtPaidAmount').val(finalGrandTotal);
@@ -384,13 +409,13 @@ function funNoPromtionCalculation(listItmeDtl)
 	$('#tblmodalDataTable tbody').empty();
 	$.each(listItmeDtl,function(i,item)
 	{
-		funFillSettleTable(item.itemName,item.quantity,item.amount,item.discountPer,item.discountAmt,item.strGroupcode,item.strSubGroupCode,item.itemCode,item.rate);
-		funFillModalTable(item.itemName,item.quantity,item.amount);
+		funFillSettleTable(item.itemName,item.quantity,item.amount,item.discountPer,item.discountAmt,item.strGroupcode,item.strSubGroupCode,item.itemCode,item.rate,item.dblCompQty);
+		funFillModalTable(item.itemName,item.quantity,item.amount,item.dblCompQty,item.itemCode,item.rate);
 	});
 
 }
 
-function funFillSettleTable(strItemName,dblQuantity,dblAmount,dblDiscountPer1,dblDiscountAmt1,strGroupCode,strSubGroupCode,strItemCode,dblRate)
+function funFillSettleTable(strItemName,dblQuantity,dblAmount,dblDiscountPer1,dblDiscountAmt1,strGroupCode,strSubGroupCode,strItemCode,dblRate,dblCompQty)
 {
 	var tblSettleItemDtl=document.getElementById('tblSettleItemTable');
 	var rowCount = tblSettleItemDtl.rows.length;
@@ -406,7 +431,8 @@ function funFillSettleTable(strItemName,dblQuantity,dblAmount,dblDiscountPer1,db
     var col7=insertRow.insertCell(6);
     var col8=insertRow.insertCell(7);
     var col9=insertRow.insertCell(8);
-    
+    var col10=insertRow.insertCell(9);
+
     /* col1.style.backgroundColor="lavenderblush";
     col2.style.backgroundColor="lavenderblush";
     col3.style.backgroundColor="lavenderblush"; */
@@ -415,13 +441,14 @@ function funFillSettleTable(strItemName,dblQuantity,dblAmount,dblDiscountPer1,db
     
     col1.innerHTML = "<input readonly=\"readonly\" size=\"33px\"  class=\"itemName\" style=\"text-align: left; color:black; height:30px;width:275px;border:none; padding-left:5px;\"   name=\"listOfBillItemDtl["+(rowCount)+"].itemName\" id=\"strItemName."+(rowCount)+"\" value='"+strItemName+"' />";
     col2.innerHTML = "<input readonly=\"readonly\" size=\"6px\"   class=\"itemQty\" style=\"text-align: right; color:black; height:30px;width:55px;border:none;\"  name=\"listOfBillItemDtl["+(rowCount)+"].quantity\" id=\"dblQuantity."+(rowCount)+"\" value='"+dblQuantity+"' />";
-    col3.innerHTML = "<input readonly=\"readonly\" size=\"9.5px\"   class=\"itemAmt\" style=\"text-align: right; color:black; height:30px;width:75px;border:none;padding-right:5px;\"  name=\"listOfBillItemDtl["+(rowCount)+"].amount\" id=\"dblAmount."+(rowCount)+"\" value='"+dblAmount+"'/>";
-    /* col4.innerHTML = "<input readonly=\"readonly\" size=\"1px\" class=\"discountPer\"     style=\"text-align: right; color:blue; height:20px;background-color:lavenderblush;\"   name=\"listOfBillItemDtl["+(rowCount)+"].discountPer\" id=\"tblDiscountPer."+(rowCount)+"\" value='"+dblDiscountPer1+"' />";
-    col5.innerHTML = "<input readonly=\"readonly\" size=\"1px\"   class=\"discountAmt\"  style=\"text-align: right; color:blue; height:20px;background-color:lavenderblush;\"  name=\"listOfBillItemDtl["+(rowCount)+"].discountAmt\" id=\"tblDiscountAmt."+(rowCount-1)+"\" value='"+dblDiscountAmt1+"' />"; */
+    col3.innerHTML = "<input readonly=\"readonly\" size=\"20px\"   class=\"itemAmt\" style=\"text-align: right; color:black; height:30px;width:70px;border:none;padding-right:20px;\"  name=\"listOfBillItemDtl["+(rowCount)+"].amount\" id=\"dblAmount."+(rowCount)+"\" value='"+dblAmount+"'/>";
+    col4.innerHTML = "<input type=\"hidden\" size=\"0px\" class=\"discountPer\"      name=\"listOfBillItemDtl["+(rowCount)+"].discountPer\" id=\"tblDiscountPer."+(rowCount)+"\" value='"+dblDiscountPer1+"' />";
+    col5.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"discountAmt\"    name=\"listOfBillItemDtl["+(rowCount)+"].discountAmt\" id=\"tblDiscountAmt."+(rowCount-1)+"\" value='"+dblDiscountAmt1+"' />"; 
     col6.innerHTML = "<input type=\"hidden\"  size=\"0px\"   class=\"groupcode\"    name=\"listOfBillItemDtl["+(rowCount)+"].strGroupcode\" id=\"strGroupcode."+(rowCount)+"\" value='"+strGroupCode+"' />";	    
     col7.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"subGroupCode\"  name=\"listOfBillItemDtl["+(rowCount)+"].strSubGroupCode\" id=\"strSubGroupCode."+(rowCount)+"\" value='"+strSubGroupCode+"' />";
    	col8.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"itemCode\"  name=\"listOfBillItemDtl["+(rowCount)+"].itemCode\" id=\"itemCode."+(rowCount)+"\" value='"+strItemCode+"' />";
     col9.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"rate\"  name=\"listOfBillItemDtl["+(rowCount)+"].rate\" id=\"rate."+(rowCount)+"\" value='"+dblRate+"' />";
+    col10.innerHTML = "<input type=\"hidden\" size=\"0px\"    name=\"listOfBillItemDtl["+(rowCount)+"].dblCompQty\" id=\"dblCompQuantity."+(rowCount)+"\"  value='"+dblCompQty+"' />";
 
   //For Calculaing Discount Fill the list with item Dtl
     var singleObj = {}
@@ -433,7 +460,9 @@ function funFillSettleTable(strItemName,dblQuantity,dblAmount,dblDiscountPer1,db
     singleObj['strSubGroupCode'] =strSubGroupCode;
     singleObj['strGroupcode'] =strGroupCode;
     singleObj['itemCode'] =strItemCode;
-    
+    singleObj['rate'] =dblRate;
+    singleObj['dblCompQty'] =dblCompQty;
+
     listBillItem.push(singleObj);
     
     finalSubTotal=finalSubTotal+parseFloat(dblAmount);
@@ -467,8 +496,8 @@ function funCalculatePromotion(listItmeDtl)
                 			{
                 				$.each(response.listOfPromotionItem,function(i,item)
                 				{
-                    	    		funFillSettleTable(item.strItemName,item.dblQuantity,item.dblAmount,item.dblDiscountPer,item.dblDiscountAmt,item.strGroupCode,item.strSubGroupCode,item.strItemCode,item.dblRate);
-                    	    		funFillModalTable(item.itemName,item.quantity,item.amount);
+                    	    		funFillSettleTable(item.strItemName,item.dblQuantity,item.dblAmount,item.dblDiscountPer,item.dblDiscountAmt,item.strGroupCode,item.strSubGroupCode,item.strItemCode,item.dblRate,'0');
+                    	    		funFillModalTable(item.itemName,item.quantity,item.amount,'0',item.itemCode,item.rate);
                 				});
                 			}
                 			else
@@ -481,8 +510,8 @@ function funCalculatePromotion(listItmeDtl)
                 			
                 			$.each(response.listOfPromotionItem,function(i,item)
                 			{
-                	    		funFillSettleTable(item.strItemName,item.dblQuantity,item.dblAmount,item.dblDiscountPer,item.dblDiscountAmt,item.strGroupCode,item.strSubGroupCode,item.strItemCode,item.dblRate);
-                	    		funFillModalTable(item.itemName,item.quantity,item.amount);
+                	    		funFillSettleTable(item.strItemName,item.dblQuantity,item.dblAmount,item.dblDiscountPer,item.dblDiscountAmt,item.strGroupCode,item.strSubGroupCode,item.strItemCode,item.dblRate,'0');
+                	    		funFillModalTable(item.itemName,item.quantity,item.amount,'0',item.itemCode,item.rate);
                 			});
                 			
                 		}
@@ -589,7 +618,7 @@ function funCalculatePromotion(listItmeDtl)
 	    
 	    col1.innerHTML = "<input readonly=\"readonly\" size=\"30px\"  name=\"  listTaxDtlOnBill["+(rowCountTax)+"].taxName\" id=\"taxName."+(rowCountTax)+"\" style=\"text-align: left; color:black; width:275px;height:30px;border:none; \"  value='"+taxName+"' />";
 	    col2.innerHTML = "<input readonly=\"readonly\" size=\"6px\"  style=\"text-align: right; color:black; height:30px; border:none;\"   />";
-	    col3.innerHTML = "<input readonly=\"readonly\" size=\"9.5px\"  name=\"  listTaxDtlOnBill["+(rowCountTax)+"].taxAmount\" id=\"taxAmount."+(rowCountTax)+"\"  style=\"text-align: right; color:black; width:65px; height:30px;border:none;\"  value='"+taxAmount+"'  />";
+	    col3.innerHTML = "<input readonly=\"readonly\" size=\"20px\"  name=\"  listTaxDtlOnBill["+(rowCountTax)+"].taxAmount\" id=\"taxAmount."+(rowCountTax)+"\"  style=\"text-align: right; color:black; width:70px; height:30px;border:none;padding-right:20px;\"  value='"+taxAmount+"'  />";
 	    /* col4.innerHTML = "<input readonly=\"readonly\" size=\"1px\"   style=\"text-align: right; color:blue; height:20px;\"  />";
 	    col5.innerHTML = "<input readonly=\"readonly\" size=\"1px\"   style=\"text-align: right; color:blue; height:20px;\"  />"; */
 	    col6.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"taxCode\"  name=\"listTaxDtlOnBill["+(rowCountTax)+"].taxCode\" id=\"taxCode."+(rowCountTax)+"\" value='"+taxCode+"' />";
@@ -614,20 +643,20 @@ function funCalculatePromotion(listItmeDtl)
 	    var col5=insertRow.insertCell(4);
 	    
 	   	var styleLeft="style=\"text-align: left; color:black; height:30px; border:none;widht:240px;\""; 
-	    var styleRight="style=\"text-align: right; color:black; height:30px; padding-right:5px;border:none;width: 70px;\"";
+	    var styleRight="style=\"text-align: right; color:black; height:30px; padding-right:20px;border:none;width: 70px;\"";
 	    if(column1=="" && column2=="")
 	    {
 	    	styleLeft="style=\"text-align: left; color:blue; height:30px; border:none; \" "; 
 		    styleRight="style=\"text-align: right; color:blue; height:30px;border:none;width: 70px;\" ";
 	    }else if(font.includes("bold")){
 	    	styleLeft="style=\"text-align: left; color:blue; height:30px; border:none;font-weight: bold; \" ";
-	    	styleRight="style=\"text-align: right; color:blue; height:30px; padding-right:5px;border:none;width: 80px;font-weight: bold; \"";
+	    	styleRight="style=\"text-align: right; color:blue; height:30px; padding-right:20px;border:none;width: 70px;font-weight: bold; \"";
 	    }
 	    
 	    
 	    col1.innerHTML = "<input readonly=\"readonly\" size=\"30px\"  "+styleLeft+" id=\"column1."+(rowCount)+"\" value='"+column1+"'  />";
 	    col2.innerHTML = "<input readonly=\"readonly\" size=\"6px\" "+styleLeft+"  />";
-	    col3.innerHTML = "<input readonly=\"readonly\" size=\"9.5px\"   "+styleRight+" id=\"column2."+(rowCount)+"\" value='"+column2+"' />";
+	    col3.innerHTML = "<input readonly=\"readonly\" size=\"20px\"   "+styleRight+" id=\"column2."+(rowCount)+"\" value='"+column2+"' />";
 	    
 	    
    }
@@ -648,7 +677,7 @@ function setTwoNumberDecimal(el) {
 
 
 
-function funFillModalTable(strItemName,dblQuantity,dblAmount)
+function funFillModalTable(strItemName,dblQuantity,dblAmount,dblCompQty,strItemCode,dblRate)
 {
 	var tblmodalDataTable=document.getElementById('tblmodalDataTable');
 	var rowCount = tblmodalDataTable.rows.length;
@@ -656,12 +685,140 @@ function funFillModalTable(strItemName,dblQuantity,dblAmount)
 			     	
     var col1=insertRow.insertCell(0);
     var col2=insertRow.insertCell(1);
+
     var col3=insertRow.insertCell(2);
+    var col4=insertRow.insertCell(3);
+    var col5=insertRow.insertCell(4);
+    var col6=insertRow.insertCell(5);
    	
     col1.innerHTML = "<input readonly=\"readonly\" size=\"33px\" style=\"text-align: left; color:black; height:30px;border:none;\"   name=\"listOfBillItemDtl["+(rowCount)+"].itemName\" id=\"strItemName."+(rowCount)+"\" value='"+strItemName+"' />";
-    col2.innerHTML = "<input readonly=\"readonly\" size=\"6px\"    style=\"text-align: right; color:black; height:30px;border:none;\"  name=\"listOfBillItemDtl["+(rowCount)+"].quantity\" id=\"dblQuantity."+(rowCount)+"\" value='"+dblQuantity+"' />";
-    col3.innerHTML = "<input readonly=\"readonly\" size=\"9.5px\"    style=\"text-align: right; color:black; height:30px;border:none;padding-right:5px;\"  name=\"listOfBillItemDtl["+(rowCount)+"].amount\" id=\"dblAmount."+(rowCount)+"\" value='"+dblAmount+"'/>";
+    col2.innerHTML = "<input readonly=\"readonly\" size=\"6px\"    style=\"text-align: right; color:black; height:30px;border:none;\"  name=\"listOfBillItemDtl["+(rowCount)+"].dblCompQty\" id=\"dblCompQuantity."+(rowCount)+"\" onclick=\"funOpenCompNumDialog(this,"+(rowCount)+")\" value='"+dblCompQty+"' />";
+    col3.innerHTML = "<input readonly=\"readonly\" size=\"6px\"    style=\"text-align: right; color:black; height:30px;border:none;\"  name=\"listOfBillItemDtl["+(rowCount)+"].quantity\" id=\"dblQuantity."+(rowCount)+"\" value='"+dblQuantity+"' />";
+    col4.innerHTML = "<input readonly=\"readonly\" size=\"20px\"    style=\"text-align: right; color:black; height:30px;border:none;padding-right:20px;\"  name=\"listOfBillItemDtl["+(rowCount)+"].amount\" id=\"dblAmount."+(rowCount)+"\" value='"+dblAmount+"'/>";
+ 	col5.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"itemCode\"  name=\"listOfBillItemDtl["+(rowCount)+"].itemCode\" id=\"itemCode."+(rowCount)+"\" value='"+strItemCode+"' />";
+    col6.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"rate\"  name=\"listOfBillItemDtl["+(rowCount)+"].rate\" id=\"rate."+(rowCount)+"\" value='"+dblRate+"' />";
+
 }
+var listOfCompItem=[];
+function funOpenCompNumDialog(obj,gridHelpRow)
+{
+	 listOfCompItem=[];
+	 var compQty =prompt("Enter Comp Quantity", "");
+	 document.getElementById("dblCompQuantity."+gridHelpRow).value=compQty;	
+	 var tblBillCompItemDtl=document.getElementById('tblmodalDataTable');
+	 var rowCompCount = tblBillCompItemDtl.rows.length;
+		
+	for(var k=0;k<rowCompCount;k++)
+	{
+		 var singleObj = {}
+	     
+         singleObj['itemCode'] =	 document.getElementById("itemCode."+k).value;
+	     singleObj['itemName'] =	 document.getElementById("strItemName."+k).value;
+	     singleObj['Compquantity'] =document.getElementById("dblCompQuantity."+k).value;
+	     singleObj['rate'] =	 document.getElementById("rate."+k).value;	     
+	     listOfCompItem.push(singleObj);
+ 
+	}
+	
+}
+function funCalculationForCompItem()
+{
+	  var listItmeDtl=[];	   
+
+	 $.each(listBillItem,function(i,obj)
+			 { 
+
+	        	    hmItempMap.set(obj.itemCode,obj.itemName);
+	        	    
+	        	    var discAmt=0,discPer=0;
+	        	    var rate=0,comp=0;
+	        	    $.each(listOfCompItem,function(i,objCompItem)
+	        		{
+	        	    	if(obj.itemCode==objCompItem.itemCode)
+	        	    	{
+	        	    		comp=objCompItem.Compquantity;
+	        	    		rate=objCompItem.rate;
+	        	    	}
+	        		})
+					
+	        	    var singleObj = {}
+	        	    var amount=0;
+	        	    amount=(obj.rate * obj.quantity) - (comp * rate);
+	        	    
+				    singleObj['itemName'] =obj.itemName;
+				    singleObj['quantity'] =obj.quantity; 
+				    singleObj['amount'] = amount;
+				    singleObj['discountPer'] = discPer;
+	        	    singleObj['discountAmt'] = discAmt;				    
+				    singleObj['itemCode'] = obj.itemCode;
+				    singleObj['rate'] =obj.rate;
+				    singleObj['strSubGroupCode'] =obj.strSubGroupCode;
+				    singleObj['strGroupcode'] =obj.strGroupcode;
+				    singleObj['dblCompQty'] =comp;
+
+				   
+				    
+				    
+				    listItmeDtl.push(singleObj);
+				        	
+			 })		
+			 var oTable = document.getElementById('tblSettleItemTable');
+			var rowLength = oTable.rows.length;
+			
+			var $rows = $('#tblSettleItemTable').empty();
+			listBillItem=[];
+			
+
+			
+			finalSubTotal=0.00;
+			finalDiscountAmt=0.00;
+			finalNetTotal=0.00;
+			taxTotal=0.00;
+			taxAmt=0.00;
+			finalGrandTotal=0.00;	
+
+			 funNoPromtionCalculation(listItmeDtl);
+		
+	    
+		    funRefreshSettlementItemGrid();	
+	
+
+}
+	function funCalculateRoundOffAmt(settlementAmt)
+    {
+
+	var roundOffTo = "${roundoff}";
+
+	if (roundOffTo == 0.00)
+	{
+	    roundOffTo = 1.00;
+	}
+
+	var roundOffSettleAmt = settlementAmt;
+	var remainderAmt = (settlementAmt % roundOffTo);
+	var roundOffToBy2 = roundOffTo / 2;
+	var x = 0.00;
+
+	if (remainderAmt <= roundOffToBy2)
+	{
+	    x = (-1) * remainderAmt;
+
+	    roundOffSettleAmt = (Math.floor(settlementAmt / roundOffTo) * roundOffTo);
+
+	    //System.out.println(settleAmt + " " + roundOffSettleAmt + " " + x);
+	}
+	else
+	{
+	    x = roundOffTo - remainderAmt;
+
+	    roundOffSettleAmt = (Math.ceil(settlementAmt / roundOffTo) * roundOffTo);
+
+	    // System.out.println(settleAmt + " " + roundOffSettleAmt + " " + x);
+	}
+
+	return roundOffSettleAmt;
+
+    }
 
 
 </script>
@@ -676,17 +833,37 @@ function funFillModalTable(strItemName,dblQuantity,dblAmount)
 	<s:form name="Billing" method="GET" action=""  style="width: 100%; height: 100%;">	
 	
 	<br>
-	<div id="myModal" class="modal">
+	<div class="modal fade" id="myModalReason" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  
+  <div class="modal-dialog">
+  <div class="modal-content">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Select  Reason</h3>
+  </div>
+  <div class="modal-body">
+  <s:select id="cmbReason" name="cmbReason" path=""  items="${reason}" style="height:20px;" />	
+  </div>
+  <div class="modal-footer">
+    <button class="btn" id ="btnOKReason" class="close" data-dismiss="modal" aria-hidden="true" >OK</button>
+  </div>
+  </div>
+  </div>
+</div>
+	
+	<div id="myModalShowBillItems" class="modal">
 		<div class="modal-content" >
 			  <div class="modal-header">
-			    <span class="close">&times;</span>
+			      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			  
 			    <h4>Make Items Complimentary</h4>
 			  </div>
 			  <div class="modal-body" >
 			    <table id="modalTable" class=" table" style="border:1px border #ccc; width:100%; height:100px;;">
 			    	<thead>
 			    	<tr style="border:1px border #ccc;">
-			    		<th style="width:65%;">Item Name</th>
+			    		<th style="text-align: left;">Item Name</th>
+			    	    <th style="width:17.5%;">Comp Qty</th>
 			    		<th style="width:17.5%;">Qty</th>
 			    		<th style="width:17.5%;">Amount</th>
 			    	</tr>
@@ -697,6 +874,10 @@ function funFillModalTable(strItemName,dblQuantity,dblAmount)
 			    	
 			    </table>
 			  </div>
+			  <div class="modal-footer">
+             <button class="btn" id ="btnOKCompItems" class="close" data-dismiss="modal" aria-hidden="true" onclick="funCalculationForCompItem()" >OK</button>
+  </div>
+  
 		</div>
 	</div>
 		<table>
@@ -714,7 +895,7 @@ function funFillModalTable(strItemName,dblQuantity,dblAmount)
 						
 						<!--This is tab1 which is use to show the main form which we want to show -->
 						<!--This depends on the form name which is passed from controller  -->
-						<div id="tab1" class="tab_content" style="width: 100%;height: 700px;">
+						<div id="tab1" class="tab_content" style="width: 100%;height: 100%;">
 							
 							<!-- Include the jsp form in first tab based on the form name which is passed from contoller -->	
 													
@@ -747,6 +928,7 @@ function funFillModalTable(strItemName,dblQuantity,dblAmount)
 						    </c:choose>
 																			
 			   	 		</div>
+			   	 
 			   	 
 			   	 
 			    <!-- This is a tab2  -->

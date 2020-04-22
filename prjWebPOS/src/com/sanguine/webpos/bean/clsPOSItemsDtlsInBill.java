@@ -55,8 +55,20 @@ public class clsPOSItemsDtlsInBill {
 	 
 	 private String waiterNo;
 	
-	private List<clsPOSModifiersOnItem> listModifierDtl=new ArrayList<clsPOSModifiersOnItem>();
+	 private double dblCompQty;
+	 
+	 public double getDblCompQty()
+	{
+		return dblCompQty;
+	}
 
+	public void setDblCompQty(double dblCompQty)
+	{
+		this.dblCompQty = dblCompQty;
+	}
+
+	private List<clsPOSModifiersOnItem> listModifierDtl=new ArrayList<clsPOSModifiersOnItem>();
+     
 	public String getItemCode() {
 		return itemCode;
 	}

@@ -55,6 +55,7 @@ import com.sanguine.webpos.bean.clsPOSBillDtl;
 import com.sanguine.webpos.bean.clsPOSBillSeriesBillDtl;
 import com.sanguine.webpos.bean.clsPOSBillSettlementBean;
 import com.sanguine.webpos.bean.clsPOSItemDtlForTax;
+import com.sanguine.webpos.bean.clsPOSItemsDtlsInBill;
 import com.sanguine.webpos.bean.clsPOSKOTItemDtl;
 import com.sanguine.webpos.bean.clsPOSPromotionItems;
 import com.sanguine.webpos.bean.clsPOSTaxCalculationBean;
@@ -2070,6 +2071,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+		
 		String split = POSDate;
 		String billDateTime = split;
 		String custCode = "";
@@ -2086,6 +2088,16 @@ public class clsPOSBillSettlementControllerForMakeKOT
 			isBillSeries = true;
 		}
 
+		
+		//This map is to check complimentary item
+		Map<String,clsPOSItemsDtlsInBill> mapToCheckCompItem= new HashMap();
+		for (clsPOSItemsDtlsInBill objItem : objBean.getListOfBillItemDtl())
+		{
+			if(objItem.getDblCompQty()>0)
+			{
+				mapToCheckCompItem.put(objItem.getItemCode(), objItem);
+			}
+		}
 		/**
 		 * Filling KOT item details in a list
 		 */
@@ -2099,12 +2111,18 @@ public class clsPOSBillSettlementControllerForMakeKOT
 		{
 			for (int i = 0; i < listItemKOTDtl.size(); i++)
 			{
+				
 				Object[] arrKOTItem = (Object[]) listItemKOTDtl.get(i);
 
 				String iCode = arrKOTItem[0].toString();
 				String iName = arrKOTItem[1].toString();
 				double iQty = new Double(arrKOTItem[2].toString());
-				String iAmt = arrKOTItem[3].toString();
+				double iAmt =  Double.parseDouble(arrKOTItem[3].toString());
+
+				if(mapToCheckCompItem.containsKey(iCode))
+				{
+					iAmt -= mapToCheckCompItem.get(iCode).getDblCompQty() * mapToCheckCompItem.get(iCode).getRate();
+				}
 
 				double rate = Double.parseDouble(arrKOTItem[12].toString());
 				String kotNo = arrKOTItem[4].toString();
@@ -2124,7 +2142,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 				objKOTItem.setStrItemCode(iCode);
 				objKOTItem.setStrItemName(iName);
 				objKOTItem.setDblItemQuantity(iQty);
-				objKOTItem.setDblAmount(Double.parseDouble(iAmt));
+				objKOTItem.setDblAmount(iAmt);
 				objKOTItem.setDblRate(rate);
 				objKOTItem.setStrKOTNo(kotNo);
 				objKOTItem.setStrManualKOTNo(manualKOTNo);
@@ -2253,7 +2271,11 @@ public class clsPOSBillSettlementControllerForMakeKOT
 
 		if (objBean.getTransactionType().equalsIgnoreCase("Make Bill"))
 		{
+			
+			request.getSession().setAttribute("success", true);
+			request.getSession().setAttribute("voucherNo",voucherNo);
 			return new ModelAndView("redirect:/frmPOSMakeBill.html?saddr=1");
+			
 		}
 		else
 		{

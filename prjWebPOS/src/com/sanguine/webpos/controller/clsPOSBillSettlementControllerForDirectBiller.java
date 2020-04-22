@@ -2,6 +2,7 @@ package com.sanguine.webpos.controller;
 
 import java.lang.reflect.Type;
 import java.sql.ResultSet;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,10 +40,14 @@ import com.sanguine.webpos.bean.clsPOSItemsDtlsInBill;
 import com.sanguine.webpos.bean.clsPOSKOTItemDtl;
 import com.sanguine.webpos.bean.clsPOSPromotionItems;
 import com.sanguine.webpos.bean.clsPOSSettelementOptions;
+import com.sanguine.webpos.bean.clsPOSSettlementDtlsOnBill;
 import com.sanguine.webpos.bean.clsPOSTaxCalculation;
 import com.sanguine.webpos.bean.clsPOSTaxCalculationBean;
 import com.sanguine.webpos.bean.clsPOSTaxDtlsOnBill;
 import com.sanguine.webpos.model.clsAreaMasterModel;
+import com.sanguine.webpos.model.clsBillDtlModel;
+import com.sanguine.webpos.model.clsBillHdModel;
+import com.sanguine.webpos.model.clsBillSettlementDtlModel;
 import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.util.clsPOSSetupUtility;
@@ -105,8 +110,12 @@ public class clsPOSBillSettlementControllerForDirectBiller
 		JSONArray listReasonCode,listReasonName;
 		try
 		{
+			urlHits="1";
+			if(request.getParameter("saddr")!=null)
+			{
+				urlHits = request.getParameter("saddr").toString();
 
-			urlHits = request.getParameter("saddr").toString();
+			}
 			request.getSession().setAttribute("customerMobile", ""); // mobile no
 			model.put("voucherNo", voucherNo);
 			voucherNo=request.getParameter("voucherNo");
@@ -157,7 +166,7 @@ public class clsPOSBillSettlementControllerForDirectBiller
 		    List listArea=objMasterService.funLoadClientWiseArea(clientCode);
 		    //Area List
 		     Map areaList = new HashMap<>();
-		     areaList.put("All", "All");
+		 //    areaList.put("All", "All");
 		     if(null!=listArea)
 		     {
 				for (int cnt = 0; cnt < listArea.size(); cnt++)
@@ -176,9 +185,9 @@ public class clsPOSBillSettlementControllerForDirectBiller
 			model.put("billDate", posDate.split("-")[2] + "-" + posDate.split("-")[1] + "-" + posDate.split("-")[0]);
 			model.put("gCustAddressSelectionForBill", objSetupHdModel.getStrCustAddressSelectionForBill());
 			model.put("gCMSIntegrationYN",objSetupHdModel.getStrCMSIntegrationYN());
-			model.put("gCRMInterface", objSetupHdModel.getStrCRMInterface());
-			
+			model.put("gCRMInterface", objSetupHdModel.getStrCRMInterface());			
 			model.put("gItemQtyNumpad", false);
+			model.put("roundoff",objSetupHdModel.getDblRoundOff());
 			if(objSetupHdModel.getStrItemQtyNumpad().equalsIgnoreCase("Y")){
 				model.put("gItemQtyNumpad", true);	
 			}
@@ -205,8 +214,26 @@ public class clsPOSBillSettlementControllerForDirectBiller
 		}
 
 		List listSettlementObject = new ArrayList<clsPOSSettelementOptions>();
+		
 		try
 		{
+			Map reason =new HashMap<>();
+			StringBuilder sqlBuilder = new StringBuilder();
+			String sqlModifyBill = "select strReasonCode,strReasonName from tblreasonmaster where strDiscount='Y' and strClientCode='" + clientCode + "'";
+			sqlBuilder.setLength(0);
+			sqlBuilder.append(sqlModifyBill);
+			List list = objBaseService.funGetList(sqlBuilder, "sql");
+			if (list.size() > 0)
+			{
+
+				for (int i = 0; i < list.size(); i++)
+				{
+					Object[] ob = (Object[]) list.get(i);
+					reason.put(ob[0].toString(),ob[1].toString());
+					
+				}
+			}
+			model.put("reason", reason);
 			String gPickSettlementsFromPOSMaster=objSetupHdModel.getStrSettlementsFromPOSMaster();
 			String gEnablePMSIntegrationYN=objSetupHdModel.getStrEnablePMSIntegrationYN();
 
@@ -251,7 +278,7 @@ public class clsPOSBillSettlementControllerForDirectBiller
 		
 		model.put("gSkipPax",objSetupHdModel.getStrSkipPax());// clsPOSGlobalFunctionsController.hmPOSSetupValues.get("SkipPax"));
 		model.put("gSkipWaiter",objSetupHdModel.getStrSkipWaiter());//CreditCard clsPOSGlobalFunctionsController.hmPOSSetupValues.get("SkipWaiter"));
-
+        model.put("gEnableSettleBtnForDirectBiller",objSetupHdModel.getStrSettleBtnForDirectBillerBill());
 		funLoadAllReasonMasterData(request);
 		
 		
@@ -463,7 +490,18 @@ public class clsPOSBillSettlementControllerForDirectBiller
 		posCode = request.getSession().getAttribute("gPOSCode").toString();
 		posDate = request.getSession().getAttribute("gPOSDate").toString().split(" ")[0];
 		userCode = request.getSession().getAttribute("gUserCode").toString();
-
+		clsSetupHdModel  objSetupHdModel=null;
+		try
+		{
+			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,posCode);
+		}
+		catch(Exception ex)
+		{
+		  ex.printStackTrace();
+		}
+		
+		
+        DecimalFormat deciformat=objUtility.funGetGlobalDecimalFormatter(objSetupHdModel.getDblNoOfDecimalPlace());
 		JSONObject jsonSelectedItemDtl = new JSONObject();
 		JSONArray jArrClass = new JSONArray();
 		for (int cnt = 0; cnt < listBillItem.size(); cnt++)
@@ -503,10 +541,10 @@ public class clsPOSBillSettlementControllerForDirectBiller
 			objTaxDtl = new clsPOSTaxDtlsOnBill();
 			jsonTax = (JSONObject) jArrTaxList.get(i);
 			objTaxDtl.setTaxName(jsonTax.get("TaxName").toString());
-			objTaxDtl.setTaxAmount(Double.parseDouble(jsonTax.get("TaxAmt").toString()));
+			objTaxDtl.setTaxAmount(Double.parseDouble(deciformat.format(Double.parseDouble(jsonTax.get("TaxAmt").toString()))));
 			objTaxDtl.setTaxCode(jsonTax.get("taxCode").toString());
 			objTaxDtl.setTaxCalculationType(jsonTax.get("taxCalculationType").toString());
-			objTaxDtl.setTaxableAmount(Double.parseDouble(jsonTax.get("taxableAmount").toString()));
+			objTaxDtl.setTaxableAmount(Double.parseDouble(deciformat.format(Double.parseDouble(jsonTax.get("taxableAmount").toString()))));
 
 			listTaxDtlOnBill.add(objTaxDtl);
 
@@ -943,7 +981,7 @@ public class clsPOSBillSettlementControllerForDirectBiller
 			objBillDtl.setStrItemCode(itemCode);
 			objBillDtl.setStrItemName(itemName);
 			objBillDtl.setStrAdvBookingNo("");
-			objBillDtl.setDblRate(objDirectBillerItem.getAmount()/objDirectBillerItem.getQuantity());
+			objBillDtl.setDblRate(objDirectBillerItem.getRate());
 			objBillDtl.setDblItemQuantity(objDirectBillerItem.getQuantity());
 			objBillDtl.setDblAmount(objDirectBillerItem.getAmount());
 			objBillDtl.setDblTaxAmount(0);
@@ -990,6 +1028,7 @@ public class clsPOSBillSettlementControllerForDirectBiller
 				if (mapBillSeries.containsKey("NoBillSeries"))
 				{
 					result.addError(new ObjectError("BillSeries", "Please Create Bill Series"));
+					
 
 					objBillingAPI.funUpdateTableStatus(tableNo, "Occupied",clientCode);
 
@@ -1058,7 +1097,6 @@ public class clsPOSBillSettlementControllerForDirectBiller
 					boolean flgHomeDelPrint = objBillSeriesBillDtl.isFlgHomeDelPrint();
 
 					/* printing bill............... */
-					objTextFileGeneration.funGenerateAndPrintBill(hdBillNo, POSCode, clientCode);
 				}
 
 			}
@@ -1069,9 +1107,111 @@ public class clsPOSBillSettlementControllerForDirectBiller
 
 			/* To save normal bill */
 			objBillingAPI.funSaveBill(isBillSeries, "", listBillSeriesBillDtl, voucherNo, listOfWholeKOTItemDtl, objBean, request, hmPromoItem);
+            if(objBean.getIsSettleBill().equalsIgnoreCase("Y"))
+            {
+    			StringBuilder hqlBuilder=new StringBuilder();
+    			hqlBuilder.append(" from clsBillHdModel where strBillNo='" + voucherNo + "' and strClientCode='" + clientCode + "' and dtBillDate='" + POSDate + "'  ");
+    			List<clsBillHdModel> listOfHd = objBaseService.funGetList(hqlBuilder, "hql");
 
+    			clsBillHdModel objBillHdModel = listOfHd.get(0);
+    			List<clsBillDtlModel> listBillDtlModel = objBillHdModel.getListBillDtlModel();
+
+    			objBillHdModel.setStrTransactionType(objBillHdModel.getStrTransactionType() + "," + "Settle Bill");
+
+            	List<clsPOSSettlementDtlsOnBill> listObjBillSettlementDtl = objBean.getListSettlementDtlOnBill();
+
+    			List<clsBillSettlementDtlModel> listBillSettlementDtlModel = new ArrayList<clsBillSettlementDtlModel>();
+
+    			boolean isComplementarySettle = false;
+    			if (listObjBillSettlementDtl.size() == 1 && listObjBillSettlementDtl.get(0).getStrSettelmentType().equalsIgnoreCase("Complementary"))
+    			{
+    				isComplementarySettle = true;
+    			}
+    			String strSettlement="";
+    			for (clsPOSSettlementDtlsOnBill objBillSettlementDtl : listObjBillSettlementDtl)
+    			{
+    				clsBillSettlementDtlModel objSettleModel = new clsBillSettlementDtlModel();
+
+    				if(objBillSettlementDtl.getStrSettelmentCode()!=null && objBillSettlementDtl.getDblPaidAmt()>0){
+    					strSettlement=objBillSettlementDtl.getStrSettelmentDesc();
+    					objSettleModel.setStrSettlementCode(objBillSettlementDtl.getStrSettelmentCode());
+    					if (isComplementarySettle)
+    					{
+    						objSettleModel.setDblSettlementAmt(0.00);
+    						objSettleModel.setDblPaidAmt(0.00);
+    						
+    						objSettleModel.setDblActualAmt(0.00);
+    						objSettleModel.setDblRefundAmt(0.00);
+    						
+    						objBillHdModel.setDblDeliveryCharges(0.00);
+    						objBillHdModel.setDblDiscountAmt(0);
+    						objBillHdModel.setDblDiscountPer(0);
+    						objBillHdModel.setDblGrandTotal(0);
+    						objBillHdModel.setDblRoundOff(0);
+    						objBillHdModel.setDblSubTotal(0);
+    						objBillHdModel.setDblTaxAmt(0);
+    						objBillHdModel.setDblTipAmount(0);
+    						
+    					}
+    					else
+    					{
+    						objSettleModel.setDblSettlementAmt(objBillSettlementDtl.getDblPaidAmt());
+    						objSettleModel.setDblPaidAmt(objBillSettlementDtl.getDblPaidAmt());
+    						
+    						objSettleModel.setDblActualAmt(objBillSettlementDtl.getDblActualAmt());
+    						objSettleModel.setDblRefundAmt(objBillSettlementDtl.getDblRefundAmt());
+    					}
+    					
+    					
+    					
+    					objSettleModel.setStrExpiryDate("");
+    					objSettleModel.setStrCardName("");
+    					objSettleModel.setStrRemark("");
+    					objSettleModel.setStrCustomerCode("");
+                        if(objBillSettlementDtl.getStrSettelmentType().equalsIgnoreCase("Credit"))
+                        {
+        					objSettleModel.setStrCustomerCode(objGlobalFunctions.funIfNull(objBean.getStrCustomerCode(), "", objBean.getStrCustomerCode()));
+
+                        }
+    					
+    					objSettleModel.setStrGiftVoucherCode("");
+    					objSettleModel.setStrDataPostFlag("");
+
+    					objSettleModel.setStrFolioNo("");
+    					objSettleModel.setStrRoomNo("");
+
+    					listBillSettlementDtlModel.add(objSettleModel);
+
+    				}
+    				
+    			}
+
+    			objBillHdModel.setStrSettelmentMode("");
+
+    			if (listBillSettlementDtlModel != null && listBillSettlementDtlModel.size() == 0)
+    			{
+    				objBillHdModel.setStrSettelmentMode("");
+    			}
+    			else if (listBillSettlementDtlModel != null && listBillSettlementDtlModel.size() == 1)
+    			{
+    				objBillHdModel.setStrSettelmentMode(strSettlement);
+    			}
+    			else
+    			{
+    				objBillHdModel.setStrSettelmentMode("MultiSettle");
+    			}
+
+    			objBillHdModel.setListBillSettlementDtlModel(listBillSettlementDtlModel);
+    			objBillHdModel.setStrCustomerCode(objGlobalFunctions.funIfNull(objBean.getStrCustomerCode(), "", objBean.getStrCustomerCode()));
+    			
+    			/* Save Bill HD */
+    			objBaseServiceImpl.funSave(objBillHdModel);
+    			objBillingAPI.funUpdateTableStatus(objBillHdModel.getStrTableNo(), "Normal",clientCode);
+
+            }
 			/* printing bill............... */
-			//objTextFileGeneration.funGenerateAndPrintBill(voucherNo, POSCode, clientCode);
+			objTextFileGeneration.funGenerateAndPrintBill(voucherNo, POSCode, clientCode);
+			
 		}
 
 		Map<String, Object> model = new HashMap<String, Object>();

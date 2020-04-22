@@ -376,7 +376,7 @@ public class clsPOSJasperFormat7ForBill
 				if (funIsDirectBillerBill(strBillNo, billhd))
 				{
 					flag_DirectBillerBill = true;
-					sql_BillHD = "select a.dteBillDate,time(a.dteBillDate),a.dblDiscountAmt,a.dblSubTotal," + "a.strCustomerCode,a.dblGrandTotal,a.dblTaxAmt,a.strReasonCode,a.strRemarks,a.strUserCreated" + ",ifnull(dblDeliveryCharges,0.00),ifnull(b.dblAdvDeposite,0.00),a.dblDiscountPer,c.strPOSName " + "from " + billhd + " a left outer join tbladvancereceipthd b on a.strAdvBookingNo=b.strAdvBookingNo " + "left outer join tblposmaster c on a.strPOSCode=c.strPOSCode " + "where a.strBillNo='" + strBillNo + "'  and date(a.dteBillDate)='" + strBillDate + "' ";
+					sql_BillHD = "select a.dteBillDate,time(a.dteBillDate),a.dblDiscountAmt,a.dblSubTotal," + "a.strCustomerCode,a.dblGrandTotal,a.dblTaxAmt,a.strReasonCode,a.strRemarks,a.strUserCreated" + ",ifnull(dblDeliveryCharges,0.00),ifnull(b.dblAdvDeposite,0.00),a.dblDiscountPer,c.strPOSName,a.intOrderNo,a.strKOTToBillNote,a.dblTipAmount  " + "from " + billhd + " a left outer join tbladvancereceipthd b on a.strAdvBookingNo=b.strAdvBookingNo " + "left outer join tblposmaster c on a.strPOSCode=c.strPOSCode " + "where a.strBillNo='" + strBillNo + "'  and date(a.dteBillDate)='" + strBillDate + "' ";
 					list = objBaseService.funGetList(new StringBuilder(sql_BillHD), "sql");
 					if (list.size() > 0)
 					{
@@ -427,11 +427,12 @@ public class clsPOSJasperFormat7ForBill
 					hm.put("POS", obj[13].toString());
 					hm.put("BillNo", strBillNo);
 
-					String orderNo = obj[14].toString();
+					
 
 					
 					  if (strPrintOrderNoOnBillYN.length()>0) {
-					  hm.put("orderNo", "Your order no is " + orderNo);
+						  String orderNo = obj[14].toString();
+					     hm.put("orderNo", "Your order no is " + orderNo);
 					  
 					  }
 					 

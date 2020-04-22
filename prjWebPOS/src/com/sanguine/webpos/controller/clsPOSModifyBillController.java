@@ -25,6 +25,7 @@ import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSBillDtl;
 import com.sanguine.webpos.bean.clsPOSBillSeriesBillDtl;
 import com.sanguine.webpos.bean.clsPOSBillSettlementBean;
+import com.sanguine.webpos.bean.clsPOSItemsDtlsInBill;
 import com.sanguine.webpos.bean.clsPOSKOTItemDtl;
 import com.sanguine.webpos.bean.clsPOSPromotionItems;
 import com.sanguine.webpos.model.clsBillDtlModel;
@@ -70,17 +71,40 @@ public class clsPOSModifyBillController
 			String clientCode = request.getSession().getAttribute("gClientCode").toString();
 			String posCode = request.getSession().getAttribute("gPOSCode").toString();
 			String posDate = request.getSession().getAttribute("gPOSDate").toString().split(" ")[0];
-			
+			Map reason =new HashMap<>();
+			StringBuilder sqlBuilder = new StringBuilder();
+			String sqlModifyBill = "select strReasonCode,strReasonName from tblreasonmaster where strDiscount='Y' and strClientCode='" + clientCode + "'";
+			sqlBuilder.setLength(0);
+			sqlBuilder.append(sqlModifyBill);
+			List list = objBaseService.funGetList(sqlBuilder, "sql");
+			if (list.size() > 0)
+			{
+
+				for (int i = 0; i < list.size(); i++)
+				{
+					Object[] ob = (Object[]) list.get(i);
+					reason.put(ob[0].toString(),ob[1].toString());
+					
+				}
+			}
+			model.put("reason", reason);
+
 			model.put("gPOSCode", posCode);
 			model.put("gClientCode", clientCode);
-
+			clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,posCode);
 			model.put("urlHits", urlHits);
 			model.put("billNo", "");
 			model.put("billDate", posDate.split("-")[2] + "-" + posDate.split("-")[1] + "-" + posDate.split("-")[0]);
-
+			model.put("gItemQtyNumpad", false);
+			if(objSetupHdModel.getStrItemQtyNumpad().equalsIgnoreCase("Y")){
+				model.put("gItemQtyNumpad", true);	
+			}
+			model.put("roundoff", objSetupHdModel.getDblRoundOff());
+			
 		}
-		catch (NullPointerException e)
+		catch (Exception e)
 		{
+			e.printStackTrace();
 			urlHits = "1";
 		}
 
@@ -90,7 +114,7 @@ public class clsPOSModifyBillController
 		model.put("urlHits", urlHits);
 		String formToBeOpen = "Modify Bill";
 		model.put("formToBeOpen", formToBeOpen);
-
+		
 		if ("2".equalsIgnoreCase(urlHits))
 		{
 			return new ModelAndView("frmWebPOSBilling", "command", new clsPOSBillSettlementBean());
@@ -124,8 +148,8 @@ public class clsPOSModifyBillController
 			String clientCode = request.getSession().getAttribute("gClientCode").toString();
 			
 			sql.setLength(0);
-			sql.append("SELECT c.strItemCode,c.strItemName,c.dblRate,c.dblQuantity,c.dblAmount,c.dblTaxAmount,c.dblDiscAmt,c.isModifier,c.strSequenceNo,d.strSubGroupCode,e.strSubGroupName,e.strGroupCode,f.strGroupName FROM ( "
-					+" SELECT a.strItemCode,a.strItemName,a.dblRate, SUM(a.dblQuantity)dblQuantity, SUM(a.dblAmount)dblAmount, SUM(a.dblTaxAmount)dblTaxAmount, SUM(a.dblDiscountAmt)dblDiscAmt,'false' isModifier,a.strSequenceNo strSequenceNo,a.strClientCode strClientCode "
+			sql.append("SELECT c.strItemCode,c.strItemName,c.dblRate,c.dblQuantity,c.dblAmount,c.dblTaxAmount,c.dblDiscAmt,c.isModifier,c.strSequenceNo,d.strSubGroupCode,e.strSubGroupName,e.strGroupCode,f.strGroupName "
+					+ "FROM ( SELECT a.strItemCode,a.strItemName,a.dblRate, SUM(a.dblQuantity)dblQuantity, SUM(a.dblAmount)dblAmount, SUM(a.dblTaxAmount)dblTaxAmount, SUM(a.dblDiscountAmt)dblDiscAmt,'false' isModifier,a.strSequenceNo strSequenceNo,a.strClientCode strClientCode "
 					+" FROM tblbilldtl a "
 					+" WHERE a.strBillNo='"+billNo+"' and a.strClientCode='"+clientCode+"' and date(a.dteBillDate)='"+posDate+"'  "  
 					+" GROUP BY a.strItemCode UNION ALL "
@@ -145,10 +169,25 @@ public class clsPOSModifyBillController
 					Object[] arrObj = (Object[]) listPendBillData.get(i);
 
 					clsPOSBillDtl objItemDtl = new clsPOSBillDtl();
-
+                
 					objItemDtl.setStrItemCode(arrObj[0].toString());
 					objItemDtl.setStrItemName(arrObj[1].toString());
+					objItemDtl.setDblComplQty(0);
+					sql.setLength(0);
+					sql.append(" select a.strItemCode,a.strItemName ,sum(a.dblQuantity) "
+                    	    + " from tblbillcomplementrydtl a where a.strBillNo='"+billNo+"' "
+                    	    + " and a.strItemCode='"+objItemDtl.getStrItemCode()+"' and date(a.dteBillDate)='"+posDate+"' "
+                    	    + " group by  a.strItemCode ");
+          
+        			List listCompBillData = objBaseService.funGetList(sql, "sql");
+        			if (listCompBillData != null && listCompBillData.size() > 0)
+        			{
+        				
+        					Object[] arrCompObj = (Object[]) listCompBillData.get(0);
+        					objItemDtl.setDblComplQty(Double.parseDouble(arrCompObj[2].toString()));
 
+        				
+        			}
 					objItemDtl.setDblRate(Double.parseDouble(arrObj[2].toString()));
 					objItemDtl.setDblQuantity(Double.parseDouble(arrObj[3].toString()));
 					objItemDtl.setDblAmount(Double.parseDouble(arrObj[4].toString()));
@@ -186,6 +225,8 @@ public class clsPOSModifyBillController
 	@RequestMapping(value = "/actionModifyBill", method = RequestMethod.POST)
 	public ModelAndView printBill(Map<String, Object> model, @ModelAttribute("command") clsPOSBillSettlementBean objBean, BindingResult result, HttpServletRequest request) throws Exception
 	{
+		String billNo = objBean.getStrBillNo();
+
 		try
 		{
 			String posDate = request.getSession().getAttribute("gPOSDate").toString().split(" ")[0];
@@ -199,7 +240,6 @@ public class clsPOSModifyBillController
 			StringBuilder sbSql = new StringBuilder();
 			sbSql.setLength(0);
 
-			String billNo = objBean.getStrBillNo();
 
 			boolean isBillSeries = false;
 			clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup( clientCode,posCode);
@@ -210,7 +250,16 @@ public class clsPOSModifyBillController
 			}
 
 			List<clsPOSBillSeriesBillDtl> listBillSeriesBillDtl = new ArrayList<clsPOSBillSeriesBillDtl>();
-
+			//This map is to check complimentary item
+			Map<String,clsPOSItemsDtlsInBill> mapToCheckCompItem= new HashMap();
+			for (clsPOSItemsDtlsInBill objItem : objBean.getListOfBillItemDtl())
+			{
+				if(objItem.getDblCompQty()>0)
+				{
+					mapToCheckCompItem.put(objItem.getItemCode(), objItem);
+				}
+			}
+			
 			/**
 			 * Filling item details in a list
 			 */
@@ -232,7 +281,21 @@ public class clsPOSModifyBillController
 					objKOTItem.setStrItemName(objBillDtlModel.getStrItemName());
 					objKOTItem.setDblItemQuantity(objBillDtlModel.getDblQuantity());
 					objKOTItem.setDblAmount(objBillDtlModel.getDblAmount());
+					
+					
 					objKOTItem.setDblRate(objBillDtlModel.getDblRate());
+
+					if(mapToCheckCompItem.containsKey(objKOTItem.getStrItemCode()))
+					{
+						if(objBillDtlModel.getDblAmount() >0)
+						{
+							double iAmt=0;
+						    iAmt =(objKOTItem.getDblItemQuantity() * objKOTItem.getDblRate()) -(mapToCheckCompItem.get(objKOTItem.getStrItemCode()).getDblCompQty() * mapToCheckCompItem.get(objKOTItem.getStrItemCode()).getRate());
+						    objKOTItem.setDblAmount(iAmt);
+						
+						}
+					}
+
 					objKOTItem.setStrKOTNo(objBillDtlModel.getStrKOTNo());
 					objKOTItem.setStrManualKOTNo(objBillDtlModel.getStrManualKOTNo());
 					objKOTItem.setStrKOTDateTime(billDateTime);
@@ -290,7 +353,10 @@ public class clsPOSModifyBillController
 		}
 		finally
 		{
-			return new ModelAndView("redirect:/frmPOSModifyBill.html");
+			request.getSession().setAttribute("success", true);
+			request.getSession().setAttribute("voucherNo",billNo);
+			
+			return new ModelAndView("redirect:/frmPOSModifyBill.html?saddr=1");
 		}
 	}
 

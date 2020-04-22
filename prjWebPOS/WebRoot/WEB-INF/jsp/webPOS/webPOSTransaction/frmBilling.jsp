@@ -287,7 +287,7 @@ var itemChangeQtySelected, itemPrice;
 	
 	/*
 	*make bill button clicked
-	*/
+	*///tblsetup
 	function funMakeBillClicked()
 	{
 		var $rows = $('#tblSettleItemTable').empty();
@@ -462,7 +462,8 @@ var itemChangeQtySelected, itemPrice;
 					    singleObj['kotNo'] =kotNo;
 					    singleObj['WaiterNo'] =waiterNo;
 					    singleObj['isModifier'] =isModifier;
-					    
+					    singleObj['dblCompQty'] =0.0;
+
 					    listItmeDtl.push(singleObj);
 																
 						
@@ -939,7 +940,7 @@ var itemChangeQtySelected, itemPrice;
 	function funValidateForDoneButton()
 	{
 		
-		
+		gAreaCode=$("#txtAreaName").val();
 		 if (gDebitCardPayment=="Yes")
 	        {
 	            if (gCheckDebitCardBalanceOnTrans=="Y")
@@ -1408,6 +1409,7 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 		
 		var jsonArrForTableDtl=${command.jsonArrForTableDtl};	
 		var areaCode=$("#txtAreaName").val();
+		gAreaCode=$("#txtAreaName").val();
 		
 		
 		/**
@@ -2978,7 +2980,10 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 				}else if(NumPadDialogFor=='pax'){
 					funChangePAX1(objIndex,numpadValue);
 				}
-				
+				else
+				{
+					
+				}	
 				
 					
 			}else{

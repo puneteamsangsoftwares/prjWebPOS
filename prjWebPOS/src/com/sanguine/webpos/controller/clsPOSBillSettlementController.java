@@ -1,5 +1,6 @@
 package com.sanguine.webpos.controller;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,6 +34,7 @@ import com.sanguine.webpos.model.clsBillHdModel;
 import com.sanguine.webpos.model.clsBillSettlementDtlModel;
 import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
+import com.sanguine.webpos.util.clsPOSUtilityController;
 
 @Controller
 public class clsPOSBillSettlementController
@@ -58,6 +60,9 @@ public class clsPOSBillSettlementController
 
 	@Autowired 
 	clsPOSMasterService objMasterService;
+	
+	@Autowired
+	clsPOSUtilityController objUtility;
 	
 	@SuppressWarnings("finally")
 	@RequestMapping(value = "/frmPOSRestaurantDtl", method = RequestMethod.GET)
@@ -115,7 +120,11 @@ public class clsPOSBillSettlementController
 				}
 			}
 			model.put("ObSettleObject", jsSettle);
-
+			model.put("gItemQtyNumpad", false);
+			if(objSetupHdModel.getStrItemQtyNumpad().equalsIgnoreCase("Y")){
+				model.put("gItemQtyNumpad", true);	
+			}
+			model.put("roundoff", objSetupHdModel.getDblRoundOff());
 			objBillSettlementBean.setJsonArrForSettleButtons(jArr);
 
 			objBillSettlementBean.setDteExpiryDate(posDate);
@@ -162,6 +171,7 @@ public class clsPOSBillSettlementController
 				String gCMSIntegrationYN = objSetupHdModel.getStrCMSIntegrationYN();
 				hmUnsettleBill.put("gShowBillsType", gShowBillsType);
 				hmUnsettleBill.put("gCMSIntegrationYN", gCMSIntegrationYN);
+		        DecimalFormat deciformat=objUtility.funGetGlobalDecimalFormatter(objSetupHdModel.getDblNoOfDecimalPlace());
 
 				if (gShowBillsType.equalsIgnoreCase("Table Detail Wise"))
 				{
@@ -186,7 +196,7 @@ public class clsPOSBillSettlementController
 							setFillGrid.add(obj[4].toString());
 							setFillGrid.add(obj[6].toString());
 							setFillGrid.add(obj[8].toString());
-							setFillGrid.add(obj[7].toString());
+							setFillGrid.add(deciformat.format(Double.parseDouble(obj[7].toString())));
 							setFillGrid.add(obj[1].toString());
 
 							listUnsettlebill.add(setFillGrid);
@@ -199,7 +209,7 @@ public class clsPOSBillSettlementController
 							setFillGrid.add(obj[2].toString());
 							setFillGrid.add(obj[3].toString());
 							setFillGrid.add(obj[7].toString());
-							setFillGrid.add(obj[4].toString());
+							setFillGrid.add(deciformat.format(Double.parseDouble(obj[4].toString())));
 							setFillGrid.add(obj[5].toString());
 
 							listUnsettlebill.add(setFillGrid);
@@ -285,6 +295,7 @@ public class clsPOSBillSettlementController
 		return hmReturn;
 	}
 
+	
 	@SuppressWarnings("finally")
 	@RequestMapping(value = "/actionBillSettle", method = RequestMethod.POST)
 	public ModelAndView printBill(@ModelAttribute("command") clsPOSBillSettlementBean objBean, BindingResult result, HttpServletRequest request) throws Exception
@@ -363,7 +374,7 @@ public class clsPOSBillSettlementController
 					}
 					else
 					{
-						objSettleModel.setDblSettlementAmt(objBillSettlementDtl.getDblSettlementAmt());
+						objSettleModel.setDblSettlementAmt(objBillSettlementDtl.getDblPaidAmt());
 						objSettleModel.setDblPaidAmt(objBillSettlementDtl.getDblPaidAmt());
 						
 						objSettleModel.setDblActualAmt(objBillSettlementDtl.getDblActualAmt());
@@ -375,8 +386,12 @@ public class clsPOSBillSettlementController
 					objSettleModel.setStrExpiryDate("");
 					objSettleModel.setStrCardName("");
 					objSettleModel.setStrRemark("");
-
 					objSettleModel.setStrCustomerCode("");
+                    if(objBillSettlementDtl.getStrSettelmentType().equalsIgnoreCase("Credit"))
+                    {
+    					objSettleModel.setStrCustomerCode(objGlobalFunctions.funIfNull(objBean.getStrCustomerCode(), "", objBean.getStrCustomerCode()));
+
+                    }
 					
 					objSettleModel.setStrGiftVoucherCode("");
 					objSettleModel.setStrDataPostFlag("");
@@ -406,7 +421,8 @@ public class clsPOSBillSettlementController
 			}
 
 			objBillHdModel.setListBillSettlementDtlModel(listBillSettlementDtlModel);
-
+			objBillHdModel.setStrCustomerCode(objGlobalFunctions.funIfNull(objBean.getStrCustomerCode(), "", objBean.getStrCustomerCode()));
+			
 			/* Save Bill HD */
 			objBaseServiceImpl.funSave(objBillHdModel);
 			objBillingAPI.funUpdateTableStatus(objBillHdModel.getStrTableNo(), "Normal",clientCode);

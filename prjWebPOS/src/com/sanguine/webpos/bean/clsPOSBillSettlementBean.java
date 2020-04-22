@@ -45,7 +45,7 @@ public class clsPOSBillSettlementBean
     private String strTableName;
     private String strPosCode;
     private String strReasonName;
-
+    private String isSettleBill;
     
     private List<clsPOSPricingMasterBean> listOfDirectBillerMenuItemPricing=new  LinkedList<>();
     private List<clsPOSMenuHeadBean> listOfDirectBillerMenuHeads=new  LinkedList<>();
@@ -89,6 +89,8 @@ public class clsPOSBillSettlementBean
 	
 	private List<clsPOSDeliveryBoyMasterBean> listDeliveryBoyMasterBeanl=new ArrayList<clsPOSDeliveryBoyMasterBean>();
 	
+	private List<clsPOSComplimentayDtlsOnBill> listComplimentaryDtlOnBill=new ArrayList<clsPOSComplimentayDtlsOnBill>();
+
 	private double dblSubTotal;
 	
 	private double dblDicountTotal;
@@ -662,8 +664,24 @@ public class clsPOSBillSettlementBean
 	{
 		this.strReasonName = strReasonName;
 	}
+	public List<clsPOSComplimentayDtlsOnBill> getListComplimentaryDtlOnBill()
+	{
+		return listComplimentaryDtlOnBill;
+	}
+	public void setListComplimentaryDtlOnBill(List<clsPOSComplimentayDtlsOnBill> listComplimentaryDtlOnBill)
+	{
+		this.listComplimentaryDtlOnBill = listComplimentaryDtlOnBill;
+	}
 	
-	
+	 public String getIsSettleBill()
+	{
+		return isSettleBill;
+	}
+	public void setIsSettleBill(String isSettleBill)
+	{
+		this.isSettleBill = isSettleBill;
+	}
+		
 	
 	
 	

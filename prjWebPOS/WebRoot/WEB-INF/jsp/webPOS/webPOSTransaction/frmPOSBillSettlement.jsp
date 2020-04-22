@@ -11,6 +11,14 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
 <title>BILL SETTLEMENT</title>
+ <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+ <link rel="stylesheet" href="/resources/demos/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  -->
+<%--   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+ <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+ --%>
 
 <style type="text/css">
 
@@ -76,7 +84,8 @@
 		var arrObjReasonName ="";//${listReasonName};
         var checkSetteType="";
         var rowCountSettle=0,totalItemRow=0;
-		
+		  var listOfDicountItem=[];
+
 		var disCount=0;
 		var totalDiscAmt=0;
 		 
@@ -173,7 +182,7 @@
         
        
 	}
-	function funSetBillingSettlement(){
+	function funSetBillingSettlement(isDirectBiller){
 		  var objPOSSettelementOptions='${cashSettlement}';
 		  var arr=objPOSSettelementOptions.split(',');
 				 if(arr[1]=="Cash"){
@@ -181,9 +190,12 @@
 					funSettleOptionSelected(arr[0],arr[1],arr[2],arr[3],arr[4]);
 				 }
 				 
-				 
-				 document.getElementById("btnOpenBillItems").style.display='none';
-				 $("#btnPrint").val("Settle");
+				if(isDirectBiller=='N')
+				{
+					 document.getElementById("btnOpenBillItems").style.display='none';
+					 $("#btnPrint").val("Settle");
+					
+				}
 				 
 	}
 	function funNumpadButtonClicked(ObjNumPadBtn)
@@ -845,6 +857,7 @@
 			        success: function(response)
 			        {
 			        	$("#hidCustomerName").val(response.strCustomerName);
+			        	$("#hidCustomerCode").val(response.strCustomerCode); 
 			        	//gCustomerCode=response.strCustomerCode;
 			        	$("#lblCreditCustCode").val(code);
 			        	//$("#hidCustomerName").val(response.strCustomerName);
@@ -894,7 +907,8 @@
 
 	 function funEnterButtonClicked()
 	 {
-		if ($("#txtPaidAmount").val().length==0)
+		 
+		    if ($("#txtPaidAmount").val().length==0)
 	        {
 	            paidAmount = 0.00;
 	        }
@@ -1003,7 +1017,8 @@
 		                     {
 		                         if (objCreditCardExpDate == null)
 		                         {
-		                            alert("Please Select Expiry Date");
+		        
+		                        	 alert("Please Select Expiry Date");
 		                        	return;
 		                         }
 		                         else
@@ -1553,7 +1568,7 @@
 	            
 			    col1.innerHTML = "<input readonly=\"readonly\"  size=\"25px\" style=\"text-align:left;border:none;\" name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].strSettelmentDesc\" id=\"strSettelmentDesc."+(rowCountSettle)+"\" value='"+arrSettleOptions[0]+"' />"; //settleName
 			    /* col2.innerHTML = "<input readonly=\"readonly\"  style=\"text-align: right; color:blue; height:20px; border:none;\"  />"; */
-			    col3.innerHTML = "<input readonly=\"readonly\"  size=\"9.5px\" style=\"text-align: right; color:black; height:30px;border:none;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].dblPaidAmt\" id=\"dblPaidAmt."+(rowCountSettle)+"\" value='"+arrSettleOptions[3]+"'/>"; //paid Amt
+			    col3.innerHTML = "<input readonly=\"readonly\"  size=\"20px\" style=\"text-align: right; color:black; height:30px;border:none;padding-right:20px;width:70px;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].dblPaidAmt\" id=\"dblPaidAmt."+(rowCountSettle)+"\" value='"+arrSettleOptions[3]+"'/>"; //paid Amt
 			    /*col4.innerHTML = "<input readonly=\"readonly\"  size=\"1px\"      style=\"text-align: right; color:blue; height:20px;\"  />";
 			    col5.innerHTML = "<input readonly=\"readonly\"  size=\"1px\"      style=\"text-align: right; color:blue; height:20px;\"  />"; */
 			    col5.innerHTML = "<input type=\"hidden\" style=\"text-align: right; color:blue; height:20px;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].strSettelmentCode\" id=\"strSettelmentCode."+(rowCountSettle)+"\" value='"+arrSettleOptions[1]+"' />"; //code
@@ -1561,18 +1576,19 @@
 			    col7.innerHTML = "<input type=\"hidden\" style=\"text-align: right; color:blue; height:20px;\"   name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].dblSettlementAmt\" id=\"dblSettlementAmt."+(rowCountSettle)+"\" value="+arrSettleOptions[2]+" />"; //settl amt
 			    col8.innerHTML = "<input type=\"hidden\" style=\"text-align: right; color:blue; height:20px;\"  name=\"listSettlementDtlOnBill["+(rowCountSettle)+"].dblRefundAmt\" id=\"dblRefundAmt."+(rowCountSettle)+"\" value="+arrSettleOptions[5]+" />";   //refund amt
 			    
-				
+			    rowCountSettle++;
+			    rowCount++;
 			}
 			
 				//alert(iterator1.next().value);
 			
 			
-		    document.getElementById("divRemarks").style.display='none';
-		    document.getElementById("divAmt").style.display='none';
+		    document.getElementById("divRemarks").style.display='block';
+		    document.getElementById("divAmt").style.display='block';
 		    
 		    funFillBalanceAmt();
 		    
-		    rowCountSettle++;
+		    
 		}
 		
 			
@@ -1596,7 +1612,7 @@
 		    
 		    col1.innerHTML = "<input readonly=\"readonly\"  size=\"30px\"   style=\"text-align: left; color:black; height:30px;border:none;width=200px;\"   value='Balance Amount' />";
 		    /* col2.innerHTML = "<input readonly=\"readonly\"        style=\"text-align: right; color:blue; height:20px;\"  />"; */
-		    col3.innerHTML = "<input readonly=\"readonly\"  size=\"9.5px\"    style=\"text-align: right; color:blue; height:20px;border:none;\"  value='"+balanceAmount+"' />";
+		    col3.innerHTML = "<input readonly=\"readonly\"  size=\"20px\"    style=\"text-align: right; color:blue; height:30px;border:none;padding-right:20px;width:70px;\"  value='"+balanceAmount+"' />";
 		   /*  col4.innerHTML = "<input readonly=\"readonly\" />";
 		    col5.innerHTML = "<input readonly=\"readonly\"/>"; */
 		    
@@ -1822,14 +1838,24 @@
 	  
 	  function funBackButtonClicked(backButton)
 	  {
+		  
+		  $('#txtDiscountPer').val('0.00');
+		  $('#txtDiscountAmt').val('0.00');
+	
+		  listOfDicountItem=[];
+		  listOfCompItem=[];
+		  listBillItem=[];
+		  disountType="";
 		  document.getElementById("tab2").style.display='none';		
 		  document.getElementById("tab1").style.display='block';  
+		  hmSettlemetnOptions=new Map();
 	  }
 	  
 	  
 	  
 	  function funSaveBtnClicked()
 	  {
+		   listOfDicountItem=[];
 
 		  if(balanceAmount ===''){
 			  alert("Balance is not zero.");
@@ -1876,7 +1902,8 @@
 			 else  if(operationType=="HomeDelivery" && transactionType=="Direct Biller")
 			 {
 				 
-				 
+                 $("#hidIsSettleBill").val("N");				 
+
 		    	 document.frmBillSettlement.action = "actionBillSettlement.html";
 		    	 document.frmBillSettlement.method = "POST";
 				 document.frmBillSettlement.submit();
@@ -1884,7 +1911,7 @@
 			 else  if(operationType=="TakeAway" && transactionType=="Direct Biller")
 			 {
 				 
-				 
+                 $("#hidIsSettleBill").val("N");				 
 		    	 document.frmBillSettlement.action = "actionBillSettlement.html";
 		    	 document.frmBillSettlement.method = "POST";
 				 document.frmBillSettlement.submit();
@@ -1934,6 +1961,18 @@
 			 
 	    }
 	  
+	  
+	  
+	  function funClickedSettleBtnForDirectBiller()
+	  {
+
+             $("#hidIsSettleBill").val("Y");				 
+
+	    	 document.frmBillSettlement.action = "actionBillSettlement.html";
+	    	 document.frmBillSettlement.method = "POST";
+			 document.frmBillSettlement.submit();
+
+	  }
 	  /*  TEst  */
 	  
 	  /**
@@ -1966,12 +2005,32 @@
 	  
 	  
 	  
-	  
+	$("#btnOKReason").click(function()
+	{
+		
+		funDiscOkClicked();
+	});
+
 	  
 	  
 // 	///Click on OK Button of Discount
+function funDiscOkForReason()
+{
+    $('#myModalReason').modal('show');
+    var strReason=$("#cmbReason").val();
+}
 function funDiscOkClicked()
 { 
+	
+	
+
+	// var rematk=promptDialog("Enter Remark","");
+	 //var reason=  promptComboDialog("Select Reason","");
+	 var strRemark =prompt("Enter Remark", "");
+				
+    var strReason=$("#cmbReason").val();
+	 
+	 
 	var discOnType="Total";
 	var discOnValue="Total";
   	var discGroup=disountType;
@@ -2100,8 +2159,7 @@ function funDiscOkClicked()
 		  
 		  var amtDisc= $('#txtDiscountAmt').val();
 		  
-	
-		  var listOfDicountItem=[];
+
 		  
 		  var checkTaxTotal=0;
 		  var dblTaxTotal=0;
@@ -2114,7 +2172,7 @@ function funDiscOkClicked()
 		  {
 			  //perDisc=(amtDisc/dblDiscountOnAmt)*100;
 			  
-			  $('#txtDiscountPer').val(perDisc);
+			 $('#txtDiscountPer').val(perDisc);
 		  }
 		  
 		  
@@ -2142,12 +2200,12 @@ function funDiscOkClicked()
 			 
  		  });
 		  
-		  $("#txtDiscountAmt").val(totalDiscAmt);
+		//  $("#txtDiscountAmt").val(totalDiscAmt);
 		  
 		 	 
 		  var listItmeDtl=[];	   
 		  
-		  var hmItempMap=new Map();	
+		  hmItempMap=new Map();	
 			 
 			 $.each(listBillItem,function(i,obj)
 			 { 
@@ -2173,7 +2231,11 @@ function funDiscOkClicked()
 				    singleObj['discountPer'] = discPer;
 	        	    singleObj['discountAmt'] = discAmt;				    
 				    singleObj['itemCode'] = obj.itemCode;
-				    singleObj['rate'] =obj.amount/obj.quantity;
+				    singleObj['rate'] =obj.dblRate;
+				    singleObj['strSubGroupCode'] =obj.strSubGroupCode;
+				    singleObj['strGroupcode'] =obj.strGroupcode;
+				    singleObj['dblCompQty'] ='0';
+
 				    
 				    
 				    listItmeDtl.push(singleObj);
@@ -2229,7 +2291,7 @@ function funDiscOkClicked()
 	    var col7=insertRow.insertCell(6);
 	    
 		  var per= $("#txtDiscountPer").val();
-		  var amt=$("#txtDiscountAmt").val();
+		  var amt=totalDiscAmt;
 
 	  
 	    col1.innerHTML = "<input type=\"hidden\"  name=\"listDiscountDtlOnBill["+(disCount)+"].discountPer\" id=\"discountPer."+(disCount)+"\" value='"+per+"' />" ;;
@@ -2237,13 +2299,12 @@ function funDiscOkClicked()
  	    col3.innerHTML =  "<input type=\"hidden\"  name=\"listDiscountDtlOnBill["+(disCount)+"].discountOnAmt\" id=\"discountOnAmt."+(disCount)+"\" value='"+dblDiscountOnAmt+"' />";
  	    col4.innerHTML = "<input type=\"hidden\"  name=\"listDiscountDtlOnBill["+(disCount)+"].discountOnType\" id=\"discountOnType."+(disCount)+"\" value='"+discOnType+"' />";
 	    col5.innerHTML = "<input type=\"hidden\"  name=\"listDiscountDtlOnBill["+(disCount)+"].discountOnValue\" id=\"discountOnValue."+(disCount)+"\" value='"+discOnValue+"' />";
- 	    col6.innerHTML = "<input type=\"hidden\"  name=\"listDiscountDtlOnBill["+(disCount)+"].discountReasonCode\" id=\"discountReasonCode."+(disCount)+"\" value='' />";	    
- 	    col7.innerHTML =  "<input type=\"hidden\"  name=\"listDiscountDtlOnBill["+(disCount)+"].discountRemarks\" id=\"discountRemarks."+(disCount)+"\" value='Discount' />";
+ 	    col6.innerHTML = "<input type=\"hidden\"  name=\"listDiscountDtlOnBill["+(disCount)+"].discountReasonCode\" id=\"discountReasonCode."+(disCount)+"\" value='"+strReason+"' />";	    
+ 	    col7.innerHTML =  "<input type=\"hidden\"  name=\"listDiscountDtlOnBill["+(disCount)+"].discountRemarks\" id=\"discountRemarks."+(disCount)+"\" value='"+strRemark+"' />";
  	    
      		
  	    disCount++;
      		
-	
 			
  	  }
 	  
@@ -2358,7 +2419,7 @@ function funDiscOkClicked()
 		}
 		
 		
-		function funModalOperation(objModal)
+	 function funModalOperation(objModal)
 		{
 			/* var tblmodalDataTable=document.getElementById('tblmodalDataTable');
 			var rowCount = tblmodalDataTable.rows.length; */
@@ -2377,12 +2438,13 @@ function funDiscOkClicked()
 				  }
 				} */
 		}
-		
+		 
 		function funModalOperate(objModal)
 		{
 			var modal2 = document.getElementById('mySecModal');
 			var span = document.getElementsByClassName("close")[0];
 			modal2.style.display = "block";
+			
 			
 			span.onclick = function() {
 				  modal2.style.display = "none";
@@ -2392,7 +2454,13 @@ function funDiscOkClicked()
 			$(".modal-body").html('<iframe width="100%" height="100%" frameborder="0" scrolling="no" allowtransparency="true" src="'+url+'"></iframe>'); */
 			
 		}
+		function funOpenBillItemButtonClicked()
+		{
+		    $('#myModalShowBillItems').modal('show');
+	
+		}
 		
+
 	
  </script>
 </head>
@@ -2432,7 +2500,7 @@ function funDiscOkClicked()
 			</div>
 		</td>
 		<td>
-		  <div id="divSettlement" style="border: 1px solid #ccc;height: 700px;overflow-x: auto;overflow-y: auto;width: 90%;margin: 3px;margin-right: 30px;">
+		  <div id="divSettlement" style="border: 1px solid #ccc;height: 700px;overflow-x: auto;overflow-y: auto;width: 95%;margin: 3px;margin-right: 30px;">
 				<div id="divSettlementButtons" style="text-align: right; height:50px; overflow-x: auto; overflow-y: auto; width: 100%;">
 					 	<table id="tblSettlementButtons"  cellpadding="0" cellspacing="2"  >				 																																	
 								<tr>							
@@ -2565,7 +2633,7 @@ function funDiscOkClicked()
 			 	<!-- div Discount  -->
 			 	
 				
-			 	<div id="divDiscount" style=" border: 0px solid #ccc;height:160px;width:300px; position:absolute;top:160px; left:880px;display :block;">
+			 	<div id="divDiscount" style=" border: 0px solid #ccc;height:160px;width:300px; position:absolute;top:160px; left:780px;display :block;">
 			 		<table style="width:98%;height:105px;font-size:12px; border:0px solid black;">
 					 		<tr>
 					 			<td style="padding-bottom: 2px;"><label id="lblDisc" style=" display: inline-block;width: 100%;text-align: left;margin-top:2px;">Discount %</label></td>
@@ -2593,11 +2661,11 @@ function funDiscOkClicked()
 								<td></td>
 				 			</tr>
 				 			<tr style="width:20px;">				 				
-					 			<td colspan="2" style="padding-bottom: 2px;">
+					 			<td colspan="0" style="padding-bottom: 2px;">
 						 			<s:select id="cmbItemCategary" name="cmbItemCategary" path=""  items="${listItemName}" style="height:20px;" />	
 						 		</td>	
 						 		<td>				 			
-						 			<input type="button" id="btnDiscOk" value="OK" style="width: 45px; height:28px;"  onclick="funDiscOkClicked(this)" class="btn btn-primary btn-sm" ></input> 
+						 			<input type="button" id="btnDiscOk" value="OK" style="width: 45px; height:28px;margin-left:115px;"  onclick="funDiscOkForReason(this)" class="btn btn-primary btn-sm" ></input> 
 					 			</td>	
 					 			<td></td>				 			
 				 			</tr>
@@ -2650,7 +2718,7 @@ function funDiscOkClicked()
 				</div>
 			 	
 			 	<!-- Extra .. bill no and Tip -->
-			 	<div id="divExtraFileds" style=" border: 0px solid #ccc;height:100px;width:350px;display :block; position:absolute; top:295px;left:880px;" >
+			 	<div id="divExtraFileds" style=" border: 0px solid #ccc;height:100px;width:350px;display :block; position:absolute; top:295px;left:720px;" >
 			 		<table style="width:100%;height:100%;font-size:12px;border:0px solid black; border-collapse:separate;">
 				 		<tr>
 				 			<td style="width:100px;"><label id="lblManualBillNO" style=" display: inline-block;width: 90%;text-align: left;">Manual Bill No.</label></td>
@@ -2703,7 +2771,7 @@ function funDiscOkClicked()
 				 	
 				 </div>
 			 	<!--Div for numeric pad  -->
-			 	<div id="divNumericPad" style="border: 0px solid #ccc; height:190px; width: 255px; position:absolute;top:400px;left:880px; ">
+			 	<div id="divNumericPad" style="border: 0px solid #ccc; height:190px; width: 255px; position:absolute;top:400px;left:800px; ">
 				 	<table id="tblNumricbtn" cellpadding="0" cellspacing="2">
 				 	<tr>
 					 	<td width=45px style="padding-top: 3px;" >
@@ -2777,15 +2845,14 @@ function funDiscOkClicked()
 						 <tr>
 						 	<td style="padding-right: 5px;" ><input type="button" id="btnBack" value="BACK" style="width: 60px; height:40px; margin-left:25px;"  onclick="funBackButtonClicked(this)" class="btn btn-outline-success" ></input></td>
 						 	<td style="padding-right: 5px;"><input type="button" id="btnPrint"  value="PRINT" style="width: 72px; height:40px; margin-left:10px;" onclick="return funSaveBtnClicked()" class="btn btn-outline-success"></input></td>
-						 	<td style="padding-right: 5px;"><input type="button" id="btnSettle" name = "settleBill" value="Need To Remove" style="width: 130px; height:40px; display:none" class="btn btn-outline-success"></input></td>
+						 	<td style="padding-right: 5px;"><input type="button" id="btnSettle" name = "settle Bill" value="Settle Bill" style="width: 130px; height:40px; display:none" onclick="funClickedSettleBtnForDirectBiller()"  class="btn btn-outline-success"></input></td>
+						 	
 						 	<td style="padding-right: 5px;"><input type="button" id="btnGetOffer" value="CHECK OFFER" style="width: 80px; height:40px;display:block"  onclick="funGetOfferButtonClicked(this)" class="btn btn-outline-success"></input></td>			 	
-						 	<td colspan="3" style="padding: 5px;"><input type="button" id="btnOpenBillItems" value="SHOW BILL ITEMS" style="width: 150px; height:40px;" onclick="funModalOperation(this)" class="btn btn-outline-info"></input></td>
-						 </tr> <!--  onclick="funModalOperate(this)" --> 
+						 	
+						 	<td colspan="3" style="padding: 5px;"><input type="button" id="btnOpenBillItems" value="SHOW BILL ITEMS" style="width: 150px; height:40px;" onclick="funOpenBillItemButtonClicked(this)" class="btn btn-outline-info"></input></td>
+						
 						 
-						 <!-- <tr>
-							 <td colspan="3" style="padding: 5px;"><input type="button" id="btnOpenBillItems" value="SHOW BILL ITEMS" style="width: 150px; height:40px;"  onclick="funOpenBillItemButtonClicked(this)" class="btn btn-outline-info"></input></td>
-						 </tr> -->
-					 </table>
+				</table>
 			 	</div>
 			</div>
 		</td>
@@ -2793,35 +2860,16 @@ function funDiscOkClicked()
 </tr>
 </table>
 	
-	<div id="mySecModal" class="modal fade" role="dialog">
-            <div class="modal-dialog modal-lg">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Modal Header</h4>
-                    </div>
-                    <div class="modal-body">
-
-                        <embed src="D:\\setup\\eclipse\\Bill\\Bill_P0109204__2019-01-13_SANGUINE.pdf"
-                               frameborder="0" width="100%" height="400px">
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-	
+<div class="easy-get" style="display: none">
+		 			 <input type="text" id="numpadValue" class="easy-put" />
+		 			 </div>
 
 </div>
 <div id="divFillDisountList" style=" height:0px;width:0px; display:none;" >
 	<table id="tblFillDisountList" class="transTable">
 					</table>
 </div>
+
                 <s:hidden id="hidSubTotal" path="dblSubTotal"/>
 		 		<s:hidden id="hidDiscountTotal" path="dblDicountTotal"/>
 		 		<s:hidden id="hidNetTotal" path="dblNetTotal"/>
@@ -2844,6 +2892,9 @@ function funDiscOkClicked()
 				<s:hidden id="hidWaiterNo" path="strWaiter"/>
 				<s:hidden id="hidAreaCode" path="strAreaCode"   />
 				<s:hidden id="hidBillNo" path="strBillNo"   />
+				<s:hidden id="hidIsSettleBill" path="isSettleBill"   />
+				
+				
 				
 				
 

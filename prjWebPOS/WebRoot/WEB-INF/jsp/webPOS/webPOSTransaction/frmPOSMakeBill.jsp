@@ -47,6 +47,27 @@ var selctedTableNo="";
 				  flg=funCallFormAction();
 				  return flg;
 			  }
+			  /* var MakeBillVoucherNo="${MakeBillVoucherNo}";
+				if(MakeBillVoucherNo!=''){
+					funOpenBillPrint(MakeBillVoucherNo);
+				}
+ */            
+			  var voucherNo='';
+				<%if (session.getAttribute("success") != null) {
+					if(session.getAttribute("voucherNo") != null){%>
+					voucherNo='<%=session.getAttribute("voucherNo").toString()%>';
+						<%
+						session.removeAttribute("voucherNo");
+					}
+					boolean test = ((Boolean) session.getAttribute("success")).booleanValue();
+					session.removeAttribute("success");
+					if (test) {
+						%>	
+						funOpenBillPrint(voucherNo);
+						<%
+					}
+				}%>
+				
 			});
 		}); 
 
@@ -518,7 +539,7 @@ var selctedTableNo="";
 			    
 			    var listItmeDtl=[];
 			    var mergeduplicateItm = new Map();
-			    var hmItempMap=new Map();
+			   /*  var hmItempMap=new Map(); */
 			    
 			    
 			    
@@ -571,7 +592,8 @@ var selctedTableNo="";
 								    singleObj['discountAmt'] =0.0;
 								    singleObj['strSubGroupCode'] =subgroupcode;
 								    singleObj['strGroupcode'] =groupcode;
-								    
+								    singleObj['dblCompQty'] ='0';
+
 								   
 								    
 								    listItmeDtl.push(singleObj);

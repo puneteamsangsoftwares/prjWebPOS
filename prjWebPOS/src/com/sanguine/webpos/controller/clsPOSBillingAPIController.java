@@ -30,6 +30,7 @@ import com.sanguine.webpos.bean.clsPOSPromotionItems;
 import com.sanguine.webpos.bean.clsPOSSettelementOptions;
 import com.sanguine.webpos.bean.clsPOSSettlementDtlsOnBill;
 import com.sanguine.webpos.bean.clsPOSTaxCalculationBean;
+import com.sanguine.webpos.model.clsBillComplementaryDtlModel;
 import com.sanguine.webpos.model.clsBillDiscDtlModel;
 import com.sanguine.webpos.model.clsBillDtlModel;
 import com.sanguine.webpos.model.clsBillHdModel;
@@ -40,6 +41,8 @@ import com.sanguine.webpos.model.clsBillSettlementDtlModel;
 import com.sanguine.webpos.model.clsBillTaxDtl;
 import com.sanguine.webpos.model.clsHomeDeliveryDtlModel;
 import com.sanguine.webpos.model.clsHomeDeliveryHdModel;
+import com.sanguine.webpos.model.clsSetupHdModel;
+import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.util.clsPOSSetupUtility;
 import com.sanguine.webpos.util.clsPOSTextFileGenerator;
 import com.sanguine.webpos.util.clsPOSUtilityController;
@@ -64,6 +67,9 @@ public class clsPOSBillingAPIController
 
 	@Autowired
 	clsBaseServiceImpl objBaseServiceImpl;
+    
+	@Autowired
+	clsPOSMasterService objMasterService;
 
 	//private StringBuilder sqlBuilder = new StringBuilder();
 
@@ -842,7 +848,8 @@ public class clsPOSBillingAPIController
 	{
 		try
 		{
-
+	
+			
 			StringBuilder sbSql = new StringBuilder();
 			sbSql.setLength(0);
 
@@ -859,7 +866,8 @@ public class clsPOSBillingAPIController
 			POSDate = request.getSession().getAttribute("gPOSDate").toString().split(" ")[0];
 			userCode = request.getSession().getAttribute("gUserCode").toString();
 			int shiftCode = Integer.parseInt(request.getSession().getAttribute("gShiftNo").toString());
-
+			clsSetupHdModel objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,POSCode);
+			
 			String split = POSDate;
 			String billDateTime = split;
 			String custCode = "";
@@ -1139,6 +1147,8 @@ public class clsPOSBillingAPIController
 			 * save discount
 			 */
 			List<clsBillDiscDtlModel> listBillDiscDtlModel = funSaveBillDiscountDetail(voucherNo, rootBeanObjectForReference, dateTime, POSCode, userCode);
+            
+			List<clsBillComplementaryDtlModel> listBillCompDtlModel = funSaveBillCompDetail(voucherNo, rootBeanObjectForReference, dateTime, POSCode, userCode);
 
 			/**
 			 * calculating list of items for tax calculation
@@ -1203,7 +1213,13 @@ public class clsPOSBillingAPIController
 			discPer = (discAmt / subTotalForTax) * 100;
 
 			grandTotal = subTotalForTax - discAmt + totalTaxAmt;
-
+			Map<String, Double> mapRoundOff = objUtility.funCalculateRoundOffAmount(grandTotal,objSetupHdModel);
+		    double _grandTotalRoundOffBy = mapRoundOff.get("roundOffByAmt");
+		    
+            if(objSetupHdModel.getStrRoundOffBillFinalAmt().equalsIgnoreCase("Y"))
+            {
+            	grandTotal = mapRoundOff.get("roundOffAmt");
+            }
 			// Insert into tblbillhd table
 			clsBillHdModel objBillHd = new clsBillHdModel(new clsBillHdModel_ID(voucherNo, POSDate, clientCode));
 			objBillHd.setStrBillNo(voucherNo);
@@ -1248,7 +1264,7 @@ public class clsPOSBillingAPIController
 			objBillHd.setStrJioMoneyTxnDateTime("");
 			objBillHd.setStrJioMoneyCardNo("");
 			objBillHd.setStrJioMoneyCardType("");
-			objBillHd.setDblRoundOff(0.00);
+			objBillHd.setDblRoundOff(_grandTotalRoundOffBy);
 			objBillHd.setIntBillSeriesPaxNo(totalPAXNo);
 			objBillHd.setDtBillDate(POSDate);
 			objBillHd.setIntOrderNo(0);
@@ -1293,12 +1309,12 @@ public class clsPOSBillingAPIController
 			objBillHd.setListBillDtlModel(listObjBillDtl);
 			objBillHd.setListBillModifierDtlModel(listObjBillModBillDtls);
 
-			/* Save bill settlement data */
+/*			 Save bill settlement data 
 			List<clsPOSSettlementDtlsOnBill> listObjBillSettlementDtl = rootBeanObjectForReference.getListSettlementDtlOnBill();
 			double totalSettlementAmt = 0.00;
 			for (clsPOSSettlementDtlsOnBill objBillSettlementDtl : listObjBillSettlementDtl)
 			{
-				totalSettlementAmt += objBillSettlementDtl.getDblSettlementAmt();
+				totalSettlementAmt += objBillSettlementDtl.getDblPaidAmt();
 			}
 
 			List<clsBillSettlementDtlModel> listOfBillSettlementToBeSave = new ArrayList<clsBillSettlementDtlModel>();
@@ -1373,7 +1389,7 @@ public class clsPOSBillingAPIController
 
 			if (listObjBillSettlementDtl != null && listObjBillSettlementDtl.size() == 0)
 			{
-				objBillHd.setStrSettelmentMode("");
+//				objBillHd.setStrSettelmentMode("");
 			}
 			else if (listObjBillSettlementDtl != null && listObjBillSettlementDtl.size() == 1)
 			{
@@ -1383,13 +1399,16 @@ public class clsPOSBillingAPIController
 			{
 				objBillHd.setStrSettelmentMode("MultiSettle");
 			}
-
-			objBillHd.setListBillDiscDtlModel(listBillDiscDtlModel);
 			objBillHd.setListBillSettlementDtlModel(listOfBillSettlementToBeSave);
+
+*/
+			objBillHd.setListBillDiscDtlModel(listBillDiscDtlModel);
 			objBillHd.setListBillDtlModel(listObjBillDtl);
 			objBillHd.setListBillTaxDtl(listObjBillTaxBillDtls);
 			objBillHd.setListBillPromotionDtlModel(listBillPromotionDtlModel);
+			objBillHd.setListBillComplementaryDtlModel(listBillCompDtlModel);
 
+			
 			/* Save Bill HD */
 			objBaseServiceImpl.funSave(objBillHd);
 
@@ -1449,12 +1468,13 @@ public class clsPOSBillingAPIController
 			}
 
 			/* updating table status */
-			if (listOfBillSettlementToBeSave != null && listOfBillSettlementToBeSave.size() > 0 && operationTypeForBilling!="Bill For Items")
+			/*if (listOfBillSettlementToBeSave != null && listOfBillSettlementToBeSave.size() > 0 && operationTypeForBilling!="Bill For Items")
 			{
-				/* table billed and settled */
+				 table billed and settled 
 				funUpdateTableStatus(tableNo, "Normal",clientCode);
 			}
-			else if( !operationTypeForBilling.equalsIgnoreCase("Bill For Items") || !operationTypeForBilling.equalsIgnoreCase("TakeAway"))
+			else*/ 
+			if( !operationTypeForBilling.equalsIgnoreCase("Bill For Items") || !operationTypeForBilling.equalsIgnoreCase("TakeAway"))
 			{
 				/* table only billed and not settled */
 				funUpdateTableStatus(tableNo, "Billed",clientCode );
@@ -1524,25 +1544,28 @@ public class clsPOSBillingAPIController
 		for (clsPOSSettlementDtlsOnBill objBillSettlementDtl : listObjBillSettlementDtl)
 		{
 			clsBillSettlementDtlModel objSettleModel = new clsBillSettlementDtlModel();
+			if(objBillSettlementDtl.getStrSettelmentCode()!=null && objBillSettlementDtl.getDblPaidAmt()>0)
+			{
+				objSettleModel.setStrSettlementCode(objBillSettlementDtl.getStrSettelmentCode());
+				objSettleModel.setDblSettlementAmt(objBillSettlementDtl.getDblPaidAmt());
+				objSettleModel.setDblPaidAmt(objBillSettlementDtl.getDblPaidAmt());
+				objSettleModel.setStrExpiryDate("");
+				objSettleModel.setStrCardName("");
+				objSettleModel.setStrRemark("");
 
-			objSettleModel.setStrSettlementCode(objBillSettlementDtl.getStrSettelmentCode());
-			objSettleModel.setDblSettlementAmt(objBillSettlementDtl.getDblSettlementAmt());
-			objSettleModel.setDblPaidAmt(objBillSettlementDtl.getDblPaidAmt());
-			objSettleModel.setStrExpiryDate("");
-			objSettleModel.setStrCardName("");
-			objSettleModel.setStrRemark("");
+				objSettleModel.setStrCustomerCode("");
+				objSettleModel.setDblActualAmt(objBillSettlementDtl.getDblActualAmt());
+				objSettleModel.setDblRefundAmt(objBillSettlementDtl.getDblRefundAmt());
+				objSettleModel.setStrGiftVoucherCode("");
+				objSettleModel.setStrDataPostFlag("");
 
-			objSettleModel.setStrCustomerCode("");
-			objSettleModel.setDblActualAmt(objBillSettlementDtl.getDblActualAmt());
-			objSettleModel.setDblRefundAmt(objBillSettlementDtl.getDblRefundAmt());
-			objSettleModel.setStrGiftVoucherCode("");
-			objSettleModel.setStrDataPostFlag("");
+				objSettleModel.setStrFolioNo("");
+				objSettleModel.setStrRoomNo("");
 
-			objSettleModel.setStrFolioNo("");
-			objSettleModel.setStrRoomNo("");
+				listBillSettlementDtlModel.add(objSettleModel);
 
-			listBillSettlementDtlModel.add(objSettleModel);
-
+			}
+		
 		}
 
 		return listBillSettlementDtlModel;
@@ -1681,6 +1704,52 @@ public class clsPOSBillingAPIController
 				}
 			}
 		}
+	}
+
+	private List funSaveBillCompDetail(String voucherNo, clsPOSBillSettlementBean objBean, String dateTime, String POSCode, String userCode)
+	{
+		List<clsBillComplementaryDtlModel> listBillDiscDtlModel = new ArrayList<clsBillComplementaryDtlModel>();
+		
+		for(clsPOSItemsDtlsInBill objComp:objBean.getListOfBillItemDtl())
+		{
+			if(objComp.getDblCompQty()>0)
+			{
+				clsBillComplementaryDtlModel objCompDtl= new clsBillComplementaryDtlModel();
+                objCompDtl.setStrItemCode(objComp.getItemCode());
+                objCompDtl.setStrItemName(objComp.getItemName());
+                objCompDtl.setDblQuantity(objComp.getDblCompQty());
+                objCompDtl.setDblRate(objComp.getRate());
+                objCompDtl.setDblAmount(objComp.getDblCompQty()*objComp.getRate());
+                objCompDtl.setDteBillDate(dateTime);
+                objCompDtl.setDblDiscountAmt(0);
+                objCompDtl.setDblDiscountPer(0);
+                objCompDtl.setStrKOTNo(objGlobalFunctions.funIfNull(objComp.getKOTNo(), "", objComp.getKOTNo()));
+                objCompDtl.setStrCustomerCode("");
+                objCompDtl.setStrAdvBookingNo("");
+                objCompDtl.setDblTaxAmount(0);
+                objCompDtl.setStrCounterCode("");
+                objCompDtl.setStrDataPostFlag("N");
+                objCompDtl.setStrMMSDataPostFlag("N");
+                objCompDtl.setStrPromoCode("");
+                objCompDtl.setStrManualKOTNo("");
+                objCompDtl.setStrWaiterNo("");
+                objCompDtl.setStrSequenceNo("");
+                objCompDtl.setTdhYN("");
+                objCompDtl.setTmeOrderPickup("00:00:00");
+                objCompDtl.setTmeOrderProcessing("00:00:00");
+                objCompDtl.setStrType("Item Complimentary");
+           
+                
+                
+                
+                listBillDiscDtlModel.add(objCompDtl);
+                
+				
+			}
+                
+		}
+		return listBillDiscDtlModel;
+
 	}
 
 }

@@ -69,6 +69,7 @@ public class clsPOSBillItemDtl {
 	    
 	    private String reason;
 	    
+	    private double CompQuantity;
 	    public String getStrBillNo() {
 			return strBillNo;
 		}
@@ -422,6 +423,16 @@ public class clsPOSBillItemDtl {
 		public void setReason(String reason)
 		{
 			this.reason = reason;
+		}
+
+		public double getCompQuantity()
+		{
+			return CompQuantity;
+		}
+
+		public void setCompQuantity(double compQuantity)
+		{
+			CompQuantity = compQuantity;
 		}
 	    
 	    

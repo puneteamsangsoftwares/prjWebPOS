@@ -4634,5 +4634,74 @@ public class clsPOSUtilityController
             + " " + currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
         return strCurrentDate;
     }*/
+ 	
+ 	public Map funCalculateRoundOffAmount(double settlementAmt,clsSetupHdModel objSetupHdModel)
+    {
+	Map<String, Double> hm = new HashMap<>();
 
+	double roundOffTo = objSetupHdModel.getDblRoundOff();
+
+	if (roundOffTo == 0.00)
+	{
+	    roundOffTo = 1.00;
+	}
+
+	double roundOffSettleAmt = settlementAmt;
+	double remainderAmt = (settlementAmt % roundOffTo);
+	double roundOffToBy2 = roundOffTo / 2;
+	double x = 0.00;
+
+	if (remainderAmt <= roundOffToBy2)
+	{
+	    x = (-1) * remainderAmt;
+
+	    roundOffSettleAmt = (Math.floor(settlementAmt / roundOffTo) * roundOffTo);
+
+	    //System.out.println(settleAmt + " " + roundOffSettleAmt + " " + x);
+	}
+	else
+	{
+	    x = roundOffTo - remainderAmt;
+
+	    roundOffSettleAmt = (Math.ceil(settlementAmt / roundOffTo) * roundOffTo);
+
+	    // System.out.println(settleAmt + " " + roundOffSettleAmt + " " + x);
+	}
+
+	hm.put("roundOffAmt", roundOffSettleAmt);
+	hm.put("roundOffByAmt", x);
+
+
+	System.out.println("Original Settl Amt=" + settlementAmt + " RoundOff Settle Amt=" + roundOffSettleAmt + " RoundOff To=" + roundOffTo + " RoundOff By=" + x);
+
+	return hm;
+
+    }
+
+ 	public DecimalFormat funGetGlobalDecimalFormatter(int intdecimalPlace)
+    {
+
+	DecimalFormat gDecimalFormat = new DecimalFormat(funGetGlobalDecimalFormatString(intdecimalPlace));
+
+	return gDecimalFormat;
+    }
+
+    public static String funGetGlobalDecimalFormatString(int intdecimalPlace)
+    {
+
+	StringBuilder decimalFormatBuilderForDoubleValue = new StringBuilder("0");
+	for (int i = 0; i < intdecimalPlace; i++)
+	{
+	    if (i == 0)
+	    {
+		decimalFormatBuilderForDoubleValue.append(".0");
+	    }
+	    else
+	    {
+		decimalFormatBuilderForDoubleValue.append("0");
+	    }
+	}
+	return decimalFormatBuilderForDoubleValue.toString();
+    }
+    
 }

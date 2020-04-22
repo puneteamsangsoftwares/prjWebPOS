@@ -1,11 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+pageEncoding="ISO-8859-1"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="s"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
 <html>
-<head>
-	
+<head>	
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Bill Settlement</title>
 <script type="text/javascript">
@@ -16,8 +14,25 @@ var arrTableNo= new Array(100);
 
 	$(function() 
 	{
-	
+		$('#tblModifyData tbody').empty()
+
 		funFillUnsettleBillGrid();
+
+		  var voucherNo='';
+			<%if (session.getAttribute("success") != null) {
+				if(session.getAttribute("voucherNo") != null){%>
+				voucherNo='<%=session.getAttribute("voucherNo").toString()%>';
+					<%
+					session.removeAttribute("voucherNo");
+				}
+				boolean test = ((Boolean) session.getAttribute("success")).booleanValue();
+				session.removeAttribute("success");
+				if (test) {
+					%>	
+					funOpenBillPrint(voucherNo);
+					<%
+				}
+			}%>
 	
 	});
 	function funFillUnsettleBillGrid()
@@ -35,10 +50,7 @@ var arrTableNo= new Array(100);
 		        data:"tableName="+tableName,
 			    success: function(response)
 			    {
-			    	$.each(response, function(i,item)
-					{
-			    		funAddFullRow(response.listUnsettlebill,response.gShowBillsType,response.gCMSIntegrationYN);
-					});
+			    	funAddFullRow(response.listUnsettlebill,response.gShowBillsType,response.gCMSIntegrationYN);
 			    },
 			    error: function(jqXHR, exception) {
 		            if (jqXHR.status === 0) {
@@ -66,8 +78,7 @@ var arrTableNo= new Array(100);
 	{
 		
 		
-			$('#tblData tbody').empty()
-			var table = document.getElementById("tblData");
+			var table = document.getElementById("tblModifyData");
 			var rowCount = table.rows.length;
 			var row = table.insertRow(rowCount);
 
@@ -139,7 +150,7 @@ var arrTableNo= new Array(100);
 	function funGetSelectedRowIndex(obj)
 	{
 		 var index = obj.parentNode.parentNode.rowIndex;
-		 var table = document.getElementById("tblData");
+		 var table = document.getElementById("tblModifyData");
 		 $("#hidTableNo").val(arrTableNo[index-1]);
 		 gTableNo=arrTableNo[index-1];
 		 if((selectedRowIndex>0) && (index!=selectedRowIndex))
@@ -214,8 +225,7 @@ var arrTableNo= new Array(100);
 	 {
 		 
 		 var searchUrl="";
-			
-		 var tableName = document.getElementById("tblData");
+		 var tableName = document.getElementById("tblModifyData");
 	     var dataBilNo= tableName.rows[selectedRowIndex].cells[0].innerHTML; 
 	     var btnBackground=dataBilNo.split('value=');
 	     var billData=btnBackground[1].split("onclick");
@@ -244,13 +254,15 @@ var arrTableNo= new Array(100);
 			  var $rows = $('#tblSettleItemTable').empty();	
 		 	 
 		 	 //invisible div Extra Fileds div
-			  document.getElementById("divAmt").style.display='none'; 
+			  document.getElementById("divAmt").style.display='block'; 
 		 	 
 			  //invisible settlement amount div
-			  document.getElementById("divExtraFileds").style.display='none'; 
+			  document.getElementById("divExtraFileds").style.display='block'; 
 			  
 			  //invisible div Numeric Pad amount div
-			  document.getElementById("divNumericPad").style.display='none'; 
+			  document.getElementById("divNumericPad").style.display='block'; 
+			 document.getElementById("divSettlementButtons").style.display='block';
+
 			  
 			  
 		 	 
@@ -317,7 +329,7 @@ var arrTableNo= new Array(100);
 			 	 		var subgroupcode=item.strSubGroupCode;
 			 	 		var subgroupName=item.strSubGroupName;
 			 	 		var groupName=item.strGroupName;
-			 			
+			 			var comp=item.dblComplQty;
 			 	 		
 			 			hmGroupMap.set(groupcode, groupName); 
 			 			hmSubGroupMap.set(subgroupcode, subgroupName);
@@ -335,9 +347,9 @@ var arrTableNo= new Array(100);
 			 		    singleObj['strSubGroupCode'] =subgroupcode;
 			 		    singleObj['strGroupcode'] =groupcode;
 			 		    singleObj['itemCode'] =itemCode;
-			 		    singleObj['rate'] =itemAmt/itemQty;
+			 		    singleObj['rate'] =item.dblRate;
 			 		    singleObj['isModifier'] =isModifier;
-			 		    
+			 		    singleObj['dblCompQty'] =comp;
 			 		    listItmeDtl.push(singleObj); 
 		        	});
 		         },
@@ -382,7 +394,6 @@ var arrTableNo= new Array(100);
 	</head>
 	<body>
 
-	<s:form name="ModifyBill" method="GET" action=""  target="_blank">
 	
     
     <div id="formHeading">
@@ -390,11 +401,9 @@ var arrTableNo= new Array(100);
 			</div>
 <br/>
 <br/>
-<br/>
-<br/>
-<br/>
-    <div style=" background-color: #C0E2FE; border: 1px solid #ccc; display: block; height: 400px; margin: auto; overflow-x: scroll; overflow-y: scroll; width: 90%;">
-	<table id="tblData"
+
+<%--     <div style=" background-color: #C0E2FE; border: 1px solid #ccc; display: block; height: 400px; margin: auto; overflow-x: scroll; overflow-y: scroll; width: 90%;">
+	<table id="tblModifyData"
 			style="width: 100%; border: #0F0; table-layout: fixed; overflow: scroll"
 			class="transTablex col2-right col3-right col4-right col5-right">
 
@@ -404,11 +413,39 @@ var arrTableNo= new Array(100);
 	
 </div>
 	<s:input type="hidden" path="strBillNo" id="hiddBillNo" />
-	<%-- <s:input type="hidden" path="strTableNo" id="hiddTableNO" /> --%>
+	<s:input type="hidden" path="strTableNo" id="hiddTableNO" />
 	<s:input type="hidden" path="selectedRow" id="hiddSelectedRow" />
 	</s:form>
 
+ --%>
+ <s:form name="ModifyBill" method="GET" action="fillBillSettlementData.html?
+saddr=${urlHits}"  target="_blank" class="formoid-default-skyblue" 
+style="background-color:#FFFFFF;font-size:14px;font-family:'Open Sans',
+'Helvetica Neue','Helvetica',Arial,Verdana,sans-serif;color:#666666;max-width:99%;
+min-width:25%;">
+    <div class="row" style=" background-color: #ffffff; border: 1px solid #ccc; display: block; margin: auto; width: 90%;height: 100%">
+	
+	<table id="tblModifyData" style="width: 100%; border: 1px solid black; table-layout: fixed; height:100%; overflow: scroll">
+	
+	</table>
+	
+	 <!-- <table id="tblData"
+			style="width: 100%; border: #0F0; table-layout: fixed; overflow: scroll"
+			class="scroll">
 
+	</table>
+ -->	
+	<p align="center">
+	<s:input  type="text"  id="txtTotalModifyBillAmount" path="" cssStyle="width:120px;" cssClass="longTextBox jQKeyboard form-control"  />
+	</p>
+</div>
+
+	<s:input type="hidden" path="strBillNo" id="hiddBillNo" />
+	<s:input type="hidden" path="strTableNo" id="hiddTableNO" />
+	<s:input type="hidden" path="selectedRow" id="hiddSelectedRow" />
+	</s:form>
+
+ 
 
 	</body>
 	</html>

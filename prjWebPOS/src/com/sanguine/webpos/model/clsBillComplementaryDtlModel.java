@@ -66,7 +66,7 @@ public class clsBillComplementaryDtlModel implements Serializable{
 
     private double dblDiscountPer;
 
-    private double strType;
+    private String strType;
 	
 	public String getStrItemCode() {
 		return strItemCode;
@@ -248,11 +248,11 @@ public class clsBillComplementaryDtlModel implements Serializable{
 		this.dblDiscountPer = dblDiscountPer;
 	}
 
-	public double getStrType() {
+	public String getStrType() {
 		return strType;
 	}
 
-	public void setStrType(double strType) {
+	public void setStrType(String strType) {
 		this.strType = strType;
 	}
 	

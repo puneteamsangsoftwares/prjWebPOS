@@ -56,8 +56,9 @@ var selectedRowIndex="";
 	
 	function funAddFullRow(data,gShowBillsType,gCMSIntegrationYN)
 	{
-			$('#tblData tbody').empty()
-			var table = document.getElementById("tblHeader");
+/* 			$('#tblData tbody').empty()
+ */			
+           var table = document.getElementById("tblHeader");
 			var rowCount = table.rows.length;
 			var row = table.insertRow(rowCount);
 
@@ -94,10 +95,11 @@ var selectedRowIndex="";
                }
 	           
 	            row.insertCell(3).innerHTML= "<input name=\readonly=\"readonly\" class=\"Box \" size=\"15%\" id=\"Area\" value=Area >";
-	            row.insertCell(4).innerHTML= "<input name=\readonly=\"readonly\" class=\"Box \" size=\"15%\" id=\"DelBoy\" value=Del Boy >";
+	            row.insertCell(4).innerHTML= "<input name=\readonly=\"readonly\" class=\"Box \" size=\"15%\" id=\"DelBoy\" value=Del_Boy >";
 	            row.insertCell(5).innerHTML= "<input name=\readonly=\"readonly\" class=\"Box \" size=\"15%\" id=\"BillTime\" value=Time >";
 	            row.insertCell(6).innerHTML= "<input name=\readonly=\"readonly\" class=\"Box \" size=\"15%\" id=\"GrandTotal\" value=Amount >";
-        
+	            row.insertCell(7).innerHTML= "<input name=\readonly=\"readonly\" class=\"Box \" size=\"15%\" id=\"TableNo\" value=Table_No >";
+
            }	         
 			
 			rowCount++;
@@ -323,7 +325,7 @@ var selectedRowIndex="";
 
 		 	    
 		 	funRefreshSettlementItemGrid();
-		 	funSetBillingSettlement();
+		 	funSetBillingSettlement('N');
 		
 	 }
 
@@ -337,14 +339,18 @@ var selectedRowIndex="";
 <br/>
 <br/>
 
-<s:form name=" BillSettlement" method="GET" action="fillBillSettlementData.html?saddr=${urlHits}"  target="_blank" class="formoid-default-skyblue" style="background-color:#FFFFFF;font-size:14px;font-family:'Open Sans','Helvetica Neue','Helvetica',Arial,Verdana,sans-serif;color:#666666;max-width:99%;min-width:25%;">
-    <div class="row" style=" background-color: #ffffff; border: 1px solid #ccc; display: block; margin: auto; width: 90%;">
+<s:form name=" BillSettlement" method="GET" action="fillBillSettlementData.html?
+saddr=${urlHits}"  target="_blank" class="formoid-default-skyblue" 
+style="background-color:#FFFFFF;font-size:14px;font-family:'Open Sans',
+'Helvetica Neue','Helvetica',Arial,Verdana,sans-serif;color:#666666;max-width:99%;
+min-width:25%;">
+    <div class="row" style=" background-color: #ffffff; border: 1px solid #ccc; display: block; margin: auto; width: 90%;height: 100%">
 	
-	<table id="tblHeader" style="width: 100%; border: 1px solid black; table-layout: fixed; height:5%; overflow: scroll">
+	<table id="tblHeader" style="width: 100%; border: 1px solid black; table-layout: fixed; height:100%; overflow: scroll">
 	
 	</table>
 	
-	<table id="tblData"
+	 <table id="tblData"
 			style="width: 100%; border: #0F0; table-layout: fixed; overflow: scroll"
 			class="scroll">
 

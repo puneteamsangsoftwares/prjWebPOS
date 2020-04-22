@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sanguine.base.service.clsBaseServiceImpl;
+import com.sanguine.base.service.intfBaseService;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSBillSettlementBean;
 import com.sanguine.webpos.model.clsSetupHdModel;
@@ -30,12 +31,12 @@ public class clsPOSMakeBillController {
 	private clsPOSGlobalFunctionsController	objPOSGlobal;
 	@Autowired
 	private clsGlobalFunctions	objGlobal;
-	
 	@Autowired
 	clsBaseServiceImpl objBaseServiceImpl;
-	
 	@Autowired
 	clsPOSMasterService objMasterService;
+	@Autowired
+	intfBaseService objBaseService;
 
 
 	@RequestMapping(value = "/frmPOSMakeBill", method = RequestMethod.GET)
@@ -53,6 +54,24 @@ public class clsPOSMakeBillController {
 		
 		clsSetupHdModel objSetupHdModel=null;
 		try{
+			Map reason =new HashMap<>();
+			StringBuilder sqlBuilder = new StringBuilder();
+			String sqlModifyBill = "select strReasonCode,strReasonName from tblreasonmaster where strDiscount='Y' and strClientCode='" + clientCode + "'";
+			sqlBuilder.setLength(0);
+			sqlBuilder.append(sqlModifyBill);
+			List list = objBaseService.funGetList(sqlBuilder, "sql");
+			if (list.size() > 0)
+			{
+
+				for (int i = 0; i < list.size(); i++)
+				{
+					Object[] ob = (Object[]) list.get(i);
+					reason.put(ob[0].toString(),ob[1].toString());
+					
+				}
+			}
+			model.put("reason", reason);
+
 			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,posCode);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -73,7 +92,12 @@ public class clsPOSMakeBillController {
 			
 		 String formToBeOpen="Make Bill";
 		 model.put("formToBeOpen", formToBeOpen);
-			
+		 model.put("gItemQtyNumpad", false);
+	     model.put("roundoff",objSetupHdModel.getDblRoundOff());
+
+		 if(objSetupHdModel.getStrItemQtyNumpad().equalsIgnoreCase("Y")){
+				model.put("gItemQtyNumpad", true);	
+		 }	
 		 
 		 return new ModelAndView("frmWebPOSBilling", "command", objBillSettlementBean);
 		
