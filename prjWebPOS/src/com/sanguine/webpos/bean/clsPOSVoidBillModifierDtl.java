@@ -25,6 +25,8 @@ public class clsPOSVoidBillModifierDtl {
     private String strRemarks;
     
     private String strReasonCode;
+    
+    private String dteBillDate;
 
     public String getStrBillNo() {
         return strBillNo;
@@ -113,6 +115,16 @@ public class clsPOSVoidBillModifierDtl {
     public void setStrReasonCode(String strReasonCode) {
         this.strReasonCode = strReasonCode;
     }
+
+	public String getDteBillDate()
+	{
+		return dteBillDate;
+	}
+
+	public void setDteBillDate(String dteBillDate)
+	{
+		this.dteBillDate = dteBillDate;
+	}
     
    
 

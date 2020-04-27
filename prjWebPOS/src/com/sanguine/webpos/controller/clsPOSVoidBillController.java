@@ -2,6 +2,7 @@ package com.sanguine.webpos.controller;
 
 import java.lang.reflect.Type;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -408,6 +409,7 @@ public class clsPOSVoidBillController {
 								objVoidBillModDtl.setStrRemarks(remark);
 								objVoidBillModDtl
 										.setStrReasonCode(selectedReasonCode);
+								objVoidBillModDtl.setDteBillDate(voidBillDate);
 								billModiIt.remove();
 								arrListVoidBillModifierDtl
 										.add(objVoidBillModDtl);
@@ -631,6 +633,8 @@ public class clsPOSVoidBillController {
 															.setStrRemarks(remark);
 													objVoidBillModDtl
 															.setStrReasonCode(selectedReasonCode);
+													objVoidBillModDtl
+													.setDteBillDate(voidBillDate);
 													billModiIt.remove();
 													arrListVoidBillModifierDtl
 															.add(objVoidBillModDtl);
@@ -840,6 +844,7 @@ public class clsPOSVoidBillController {
 						objVoidBillHd.setStrDataPostFlag(objBillHd
 								.getStrDataPostFlag());
 						objVoidBillHd.setStrRemark(remark);
+						objVoidBillHd.setStrVoidBillType("Item Void");
 						arrListVoidBillHd.add(objVoidBillHd);
 					}
 
@@ -999,16 +1004,15 @@ public class clsPOSVoidBillController {
 
     	        arrListTaxCal.clear();
     	      //funCalculateTax(List<clsPOSItemDtlForTax> arrListItemDtl, String POSCode, String dtPOSDate, String billAreaCode, String operationTypeForTax, double subTotal, double discountAmt, String transType, String settlementCode, String taxOnSP,String strSCTaxForRemove,String strClientCode) throws Exception       
-    	      arrListTaxCal = objUtility.funCalculateTax(arrListItemDtls,gPOSCode, dtPOSDate, areaCode, operationTypeForTax, subTotalForTax, totalDiscAmt, "", "S01","Sales","N",clientCode);
+    	        arrListTaxCal = objUtility.funCalculateTax(arrListItemDtls,gPOSCode, dtPOSDate, areaCode, operationTypeForTax, subTotalForTax, totalDiscAmt, "", "S01","Sales","N",clientCode);
     	        arrListBillTaxDtl.clear();
     	        double totalTaxAmount = 0;
     	        for (int cnt = 0; cnt < arrListTaxCal.size(); cnt++)
     	        {
     	        	clsPOSTaxCalculationBean objTaxDtl = arrListTaxCal.get(cnt);
-    	            if(cnt!=(arrListTaxCal.size() - 1))
-    	            {	
+    	           
     	        	totalTaxAmount += objTaxDtl.getTaxAmount();
-    	            }
+    	            
     	        	clsPOSBillTaxDtl objBillTaxDtl = new clsPOSBillTaxDtl();
     	            objBillTaxDtl.setStrBillNo(billNo);
     	            objBillTaxDtl.setStrTaxCode(objTaxDtl.getTaxCode());
@@ -1055,7 +1059,7 @@ public class clsPOSVoidBillController {
 			        StringBuilder strBuilder = new StringBuilder("insert into tblvoidbillhd (strPosCode,strReasonCode,strReasonName,strBillNo,"
 			                + "dblActualAmount,dblModifiedAmount,dteBillDate,"
 			                + "strTransType,dteModifyVoidBill,strTableNo,strWaiterNo,intShiftCode,"
-			                + "strUserCreated,strUserEdited,strClientCode,strRemark) values "
+			                + "strUserCreated,strUserEdited,strClientCode,strRemark,strVoidBillType) values "
 			                + "('" + objVoidBillHd.getStrPosCode() + "','" + objVoidBillHd.getStrReasonCode() + "'"
 			                + ",'" + objVoidBillHd.getStrReasonName() + "','" + objVoidBillHd.getStrBillNo() + "'"
 			                + ",'" + objVoidBillHd.getDblActualAmount() + "'," + objVoidBillHd.getDblModifiedAmount() + ""
@@ -1063,7 +1067,7 @@ public class clsPOSVoidBillController {
 			                + ",'" + objVoidBillHd.getDteModifyVoidBill() + "','" + objVoidBillHd.getStrTableNo() + "'"
 			                + ",'" + objVoidBillHd.getStrWaiterNo() + "','" + objVoidBillHd.getIntShiftCode() + "'"
 			                + ",'" + objVoidBillHd.getStrUserCreated() + "','" + objVoidBillHd.getStrUserEdited() + "'"
-			                + ",'" + objVoidBillHd.getStrClientCode() + "','" + objVoidBillHd.getStrRemark() + "')");
+			                + ",'" + objVoidBillHd.getStrClientCode() + "','" + objVoidBillHd.getStrRemark() + "','"+objVoidBillHd.getStrVoidBillType()+"')");
 			        //System.out.println(sql);
 	                 
 		       	       List listSql= objBaseServiceImpl.funGetList(sqlBuilder, "sql"); 
@@ -1127,13 +1131,13 @@ public class clsPOSVoidBillController {
 			        	strBuilder.setLength(0);
 			       	    strBuilder.append("insert into tblvoidmodifierdtl(strBillNo,strItemCode,strModifierCode,"
 			                    + "strModifierName,dblQuantity,dblAmount,strClientCode,strCustomerCode"
-			                    + ",strDataPostFlag,strRemarks,strReasonCode) values "
+			                    + ",strDataPostFlag,strRemarks,strReasonCode,dteBillDate) values "
 			                    + "('" + objVoidBillModDtl.getStrBillNo() + "','" + objVoidBillModDtl.getStrItemCode() + "'"
 			                    + ",'" + objVoidBillModDtl.getStrModifierCode() + "','" + objVoidBillModDtl.getStrModifierName() + "'"
 			                    + ",'" + objVoidBillModDtl.getDblQuantity() + "','" + objVoidBillModDtl.getDblAmount() + "'"
 			                    + ",'" + objVoidBillModDtl.getStrClientCode() + "','" + objVoidBillModDtl.getStrCustomerCode() + "'"
 			                    + ",'" + objVoidBillModDtl.getStrDataPostFlag() + "','" + objVoidBillModDtl.getStrRemarks() + "'"
-			                    + ",'" + objVoidBillModDtl.getStrReasonCode() + "')");
+			                    + ",'" + objVoidBillModDtl.getStrReasonCode() + "','"+objVoidBillModDtl.getDteBillDate()+"')");
 			          
 			            if(listSql.size()>0)
 			       	       {
@@ -1402,6 +1406,7 @@ public class clsPOSVoidBillController {
 			  
 			  public Map funVoidBill(String posDate,String billNo,String favoritereason,String remark,String userCode,String strPOSCode,String strClientCode)
 			    {
+
 					Map objRetrun=new HashMap();
 					String voidBillDate="";
 					String[] reason;
@@ -1505,15 +1510,16 @@ public class clsPOSVoidBillController {
 			                                String KOTNo =obj[8].toString();
 
 			                                sqlBuilder.setLength(0);
+			                                
 			                                sqlBuilder.append("insert into tblvoidmodifierdtl(strBillNo,strItemCode,strModifierCode,"
 			                                        + "strModifierName,dblQuantity,dblAmount,strClientCode,strCustomerCode"
-			                                        + ",strRemarks,strReasonCode)"
+			                                        + ",strRemarks,strReasonCode,dteBillDate)"
 			                                        + " (select strBillNo,strItemCode,strModifierCode,strModifierName,dblQuantity,"
-			                                        + "dblAmount,strClientCode,strCustomerCode,'" + remark + "','" + reasoncode + "' "
+			                                        + "dblAmount,strClientCode,strCustomerCode,'" + remark + "','" + reasoncode + "','"+voidBillDate+"' "
 			                                        + "from tblbillmodifierdtl "
 			                                        + "where strBillNo='" + billno + "' and left(strItemCode,7)='" + itemCode + "')");
 			                                
-			                                if (userCode.equalsIgnoreCase(("super")))
+			                                /*if (userCode.equalsIgnoreCase(("super")))
 			                                {
 			                                	objBaseServiceImpl.funExecuteUpdate(sqlBuilder.toString(),"sql");
 			                                }
@@ -1532,6 +1538,8 @@ public class clsPOSVoidBillController {
 			                                        }
 			                                    }
 			                                }
+*/                                          
+		                                	objBaseServiceImpl.funExecuteUpdate(sqlBuilder.toString(),"sql");
 
 			                                sqlBuilder.setLength(0);
 			                                sqlBuilder.append("insert into tblvoidbilldtl(strPosCode,strReasonCode,strReasonName,strItemCode"
@@ -1545,7 +1553,7 @@ public class clsPOSVoidBillController {
 			                                        + ",'" + userCode + "','" +strClientCode+ "'"
 			                                        + ",'" + KOTNo + "','" + remark + "')");
 			                             
-			                                if (userCode.equalsIgnoreCase(("super")))
+			                                /*if (userCode.equalsIgnoreCase(("super")))
 			                                {
 			                                	objBaseServiceImpl.funExecuteUpdate(sqlBuilder.toString(),"sql");
 			                                }
@@ -1561,7 +1569,9 @@ public class clsPOSVoidBillController {
 				                                        	objBaseServiceImpl.funExecuteUpdate(sqlBuilder.toString(),"sql");;
 				                                        }
 				                                    }
-			                                }
+			                                }*/
+		                                	objBaseServiceImpl.funExecuteUpdate(sqlBuilder.toString(),"sql");
+
 			                                String tableStatus = funGetTableStatus(tableNo);
 			                                if (tableStatus.equalsIgnoreCase("Normal"))
 			                                {
@@ -1591,17 +1601,17 @@ public class clsPOSVoidBillController {
 			                                sqlBuilder.setLength(0);
 			                                sqlBuilder.append("insert into tblvoidbillhd (strPosCode,strReasonCode,strReasonName,strBillNo,"
 			                                        + "dblActualAmount,dblModifiedAmount,dteBillDate,strTransType,dteModifyVoidBill,strTableNo,strWaiterNo"
-			                                        + ",intShiftCode,strUserCreated,strUserEdited,strClientCode,strRemark) "
+			                                        + ",intShiftCode,strUserCreated,strUserEdited,strClientCode,strRemark,strVoidBillType) "
 			                                        + "(select '" + strPOSCode + "','" + reasoncode + "','" + favoritereason + "','"
 			                                        + billNo+ "'," + "dblGrandTotal,dblGrandTotal,'" + billDate + "','VB','"
 			                                        + voidBillDate + "',strTableNo,strWaiterNo,'" + shiftNo
-			                                        + "','" + userCode + "','" + userCode + "',strClientCode,'" + remark + "' "
+			                                        + "','" + userCode + "','" + userCode + "',strClientCode,'" + remark + "','Bill Void' "
 			                                        + "from tblbillhd where strBillNo='" + billNo + "')");
-			                                if (userCode.equalsIgnoreCase(("super")))
-			                                {
+			                               // if (userCode.equalsIgnoreCase(("super")))
+			                                //{
 			                                	objBaseServiceImpl.funExecuteUpdate(sqlBuilder.toString(),"sql");
-			                                }
-			                                else
+			                              //  }
+			                              /*  else
 			                                {
 			                                	  
 											  	    List listSql= objBaseServiceImpl.funGetList(sqlQuery, "sql");
@@ -1615,16 +1625,16 @@ public class clsPOSVoidBillController {
 				                                        }
 				                                    }
 			                                }
-
+*/
 			                                sqlBuilder.setLength(0);
 			                                sqlBuilder.append( "update tblvoidbillhd set dblActualAmount=dblActualAmount+" +Double.parseDouble(obj[4].toString()) + ""
-			                                        + ",dblModifiedAmount=dblModifiedAmount+" + Double.parseDouble(obj[58].toString())+ " "
+			                                        + ",dblModifiedAmount=dblModifiedAmount+" + Double.parseDouble(obj[5].toString())+ " "
 			                                        + " where strBillNo='" + billNo + "' ");
-			                                if (userCode.equalsIgnoreCase(("super")))
-			                                {
+			                               // if (userCode.equalsIgnoreCase(("super")))
+			                               // {
 			                                	objBaseServiceImpl.funExecuteUpdate(sqlBuilder.toString(),"sql");
-			                                }
-			                                else
+			                               // }
+			                                /*else
 			                                {
 											  	    List listSql= objBaseServiceImpl.funGetList(sqlQuery, "sql");
 											  	    if(!listSql.isEmpty())
@@ -1637,19 +1647,19 @@ public class clsPOSVoidBillController {
 				                                        }
 				                                    }
 			                                }
-			                            }
+*/			                            }
 			                            else
 			                            {
 			                            	 sqlBuilder.setLength(0);
 				                                sqlBuilder.append( "insert into tblvoidbillhd (strPosCode,strReasonCode,strReasonName,strBillNo,"
 			                                        + "dblActualAmount,dblModifiedAmount,dteBillDate,strTransType,dteModifyVoidBill,strTableNo,strWaiterNo"
-			                                        + ",intShiftCode,strUserCreated,strUserEdited,strClientCode,strRemark) "
+			                                        + ",intShiftCode,strUserCreated,strUserEdited,strClientCode,strRemark,strVoidBillType) "
 			                                        + "(select '" + strPOSCode + "','" + reasoncode + "','" + favoritereason + "','"
 			                                        + billNo+ "'," + "dblGrandTotal,dblGrandTotal,'" + billDate + "','VB','"
 			                                        + voidBillDate + "',strTableNo,strWaiterNo,'" + shiftNo
-			                                        + "','" + userCode + "','" + userCode + "',strClientCode,'" + remark + "' "
+			                                        + "','" + userCode + "','" + userCode + "',strClientCode,'" + remark + "','Bill Void' "
 			                                        + "from tblbillhd where strBillNo='" + billNo + "')");
-			                                if (userCode.equalsIgnoreCase(("super")))
+			                               /* if (userCode.equalsIgnoreCase(("super")))
 			                                {
 			                                	objBaseServiceImpl.funExecuteUpdate(sqlBuilder.toString(),"sql");
 			                                }
@@ -1665,7 +1675,9 @@ public class clsPOSVoidBillController {
 				                                        	objBaseServiceImpl.funExecuteUpdate(sqlBuilder.toString(),"sql");
 				                                        }
 				                                    }
-			                                }
+			                                }*/
+			                                	objBaseServiceImpl.funExecuteUpdate(sqlBuilder.toString(),"sql");
+
 			                            }
 			                            }
 			                          
@@ -1674,13 +1686,13 @@ public class clsPOSVoidBillController {
 			                                    + "(strBillNo,strSettlementCode,dblSettlementAmt,"
 			                                    + "dblPaidAmt,strExpiryDate,strCardName,"
 			                                    + "strRemark,strClientCode,strCustomerCode,"
-			                                    + "dblActualAmt,dblRefundAmt,strGiftVoucherCode)"
+			                                    + "dblActualAmt,dblRefundAmt,strGiftVoucherCode,dteBillDate)"
 			                                    + "(select strBillNo,strSettlementCode,dblSettlementAmt,"
 			                                    + "dblPaidAmt,strExpiryDate,strCardName,"
 			                                    + "strRemark,strClientCode,strCustomerCode,"
-			                                    + "dblActualAmt,dblRefundAmt,strGiftVoucherCode "
+			                                    + "dblActualAmt,dblRefundAmt,strGiftVoucherCode,dteBillDate  "
 			                                    + " from tblbillsettlementdtl where strBillNo='" + billNo + "')");
-			                            if (userCode.equalsIgnoreCase(("super")))
+			                          /*  if (userCode.equalsIgnoreCase(("super")))
 		                                {
 			                            	objBaseServiceImpl.funExecuteUpdate(sqlBuilder.toString(),"sql");
 		                                }
@@ -1696,7 +1708,9 @@ public class clsPOSVoidBillController {
 			                                        	objBaseServiceImpl.funExecuteUpdate(sqlBuilder.toString(),"sql");
 			                                        }
 			                                    }
-		                                }
+		                                }*/
+		                            	objBaseServiceImpl.funExecuteUpdate(sqlBuilder.toString(),"sql");
+
 		                            }
 
        
@@ -2234,6 +2248,7 @@ public class clsPOSVoidBillController {
 					objVoidBillHd.setStrClientCode(obj[14].toString());
 					objVoidBillHd.setStrDataPostFlag(obj[15].toString());
 					objVoidBillHd.setStrRemark(obj[16].toString());
+					objVoidBillHd.setStrVoidBillType(obj[17].toString());
 					arrListVoidBillHd.add(objVoidBillHd);
 				}
 			}
@@ -2303,6 +2318,7 @@ public class clsPOSVoidBillController {
 					objVoidBillModDtl.setStrDataPostFlag(obj[8].toString());
 					objVoidBillModDtl.setStrRemarks(obj[9].toString());
 					objVoidBillModDtl.setStrReasonCode(obj[10].toString());
+					objVoidBillModDtl.setDteBillDate(obj[11].toString());
 					arrListVoidBillModifierDtl.add(objVoidBillModDtl);
 				}
 			}

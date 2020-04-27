@@ -35,7 +35,9 @@ public class clsPOSVoidBillHd {
 	   private String strDataPostFlag;
 	   
 	   private String strRemark;
-
+       
+	   private String strVoidBillType;
+	   
 	    public String getStrPosCode() {
 	        return strPosCode;
 	    }
@@ -174,6 +176,16 @@ public class clsPOSVoidBillHd {
 	    public void setStrRemark(String strRemark) {
 	        this.strRemark = strRemark;
 	    }
+
+		public String getStrVoidBillType()
+		{
+			return strVoidBillType;
+		}
+
+		public void setStrVoidBillType(String strVoidBillType)
+		{
+			this.strVoidBillType = strVoidBillType;
+		}
 	    
 	   
 	   

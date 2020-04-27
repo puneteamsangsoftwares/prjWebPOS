@@ -568,7 +568,9 @@
 				var voidedItemDtl=obj.parentNode.parentNode.children[3].firstChild.defaultValue+"#"+obj.parentNode.parentNode.children[0].firstChild.defaultValue+"#"+obj.parentNode.parentNode.children[3].firstChild.defaultValue+"#"+originalQty+"#"+amount+"#"+person+"#"+newamount;
 			    arrVoidedItemDtlList[count]=voidedItemDtl;
 			    count++;	
-		    	 table.deleteRow(deletedIndex);
+			    var index = obj.parentNode.parentNode.rowIndex;
+				  
+		    	 table.deleteRow(index);
 		    }	
 		  	
 	}
