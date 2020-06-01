@@ -574,7 +574,7 @@ public class clsSetupHdModel extends clsBaseModel implements Serializable
 	private String strShowReportsPOSWise;
 
 	@Column(name = "blobReportImage")
-	private Blob blobReportImage;
+	private byte[] blobReportImage;
 
 	@Column(name = "strEnableDineIn")
 	private String strEnableDineIn;
@@ -2626,14 +2626,14 @@ public class clsSetupHdModel extends clsBaseModel implements Serializable
 		this.strShowReportsPOSWise = strShowReportsPOSWise;
 	}
 
-	public Blob getBlobReportImage()
+	public byte[] getBlobReportImage()
 	{
 		return blobReportImage;
 	}
 
-	public void setBlobReportImage(Blob blobReportImage)
+	public void setBlobReportImage(byte[] imageBytes)
 	{
-		this.blobReportImage = blobReportImage;
+		this.blobReportImage = imageBytes;
 	}
 
 	public String getStrEnableDineIn()

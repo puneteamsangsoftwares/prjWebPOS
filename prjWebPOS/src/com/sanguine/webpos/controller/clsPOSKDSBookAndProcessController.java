@@ -7,6 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sanguine.base.service.intfBaseService;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSMoveKOTItemsToTableBean;
 
@@ -34,6 +36,9 @@ public class clsPOSKDSBookAndProcessController {
 	private clsGlobalFunctions objGlobal;
 	@Autowired
 	private clsPOSGlobalFunctionsController objPOSGlobal;
+	
+	@Autowired
+	intfBaseService objBaseService;
 	
 	@RequestMapping(value = "/frmPOSKDSBookAndProcess", method = RequestMethod.GET)
 	public ModelAndView funOpenForm(@ModelAttribute("command") @Valid clsPOSMoveKOTItemsToTableBean objBean,BindingResult result,Map<String,Object> model, HttpServletRequest request){
@@ -98,20 +103,52 @@ public class clsPOSKDSBookAndProcessController {
 
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/funGetBillHdDtl", method = RequestMethod.GET)
-	public @ResponseBody JSONObject funGetBillHdDtl(HttpServletRequest req)
+	public @ResponseBody List funGetBillHdDtl(HttpServletRequest req)
 	{
 		
 		LinkedHashMap<String, ArrayList<JSONObject>> mapBillHd;
 		 mapBillHd = new LinkedHashMap<String, ArrayList<JSONObject>>();
-		JSONObject jObjSettlementData=new JSONObject();
+	/*	JSONObject jObjSettlementData=new JSONObject();
 		String posUrl = "http://localhost:8080/prjSanguineWebService/WebKDSBookAndProcessController/funGetBillHdDtl";
 			
 	
 			jObjSettlementData =null;//objGlobal.funGETMethodUrlJosnObjectData(posUrl);
 		
 			JSONObject	billHd=(JSONObject)jObjSettlementData.get("mapBillHd");
-	        
-	     return billHd;
+			
+	*/      
+		 
+		 StringBuilder  sbSql = new StringBuilder();
+		 
+		 List listReturn = new ArrayList<>();
+		 sbSql.append("select a.strTableNo,a.strItemCode,a.strItemName,a.dblItemQuantity from tblitemrtemp a");
+		 List list;
+		try
+		{
+			list = objBaseService.funGetList(sbSql, "sql");
+			 if(list!=null && list.size()>0)
+			 {
+				 for(int i =0 ;i<list.size();i++)
+					{
+						Object obj =  list.get(i);
+						
+						listReturn.add(obj);
+						
+					}
+			 }
+		}
+		catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
+		
+		 
+		 
+			 
+			 
+	     return listReturn;
 	
 }
 	

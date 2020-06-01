@@ -203,21 +203,31 @@ ul.tab li.a:FOCUS {
 			}
 		});
 	}
+		function funloadPropertyImage()
+		{
+			var code = $("#cmbPosCode").val();			
+			var searchUrl1=getContextPath()+"/loadPropertyImage.html?";
+			 $.ajax({
+			        type: "GET",
+			        url: searchUrl1,
+			        cache: false
+			 });
+			$("#clientImage").attr('src', searchUrl1);
+		}  
+	
+		
 	//Fill Pos wise data when we change the posname
 	function funFillPOSWiseData() {
+		funloadPropertyImage();
 		var code = $("#cmbPosCode").val();
-		var searchurl = getContextPath()
-				+ "/loadPOSWisePropertySetupData.html?posCode="
-				+ $("#cmbPosCode").val();
+		var searchurl = getContextPath()+ "/loadPOSWisePropertySetupData.html?posCode="+ $("#cmbPosCode").val();
 		$.ajax({
 					type : "GET",
 					url : searchurl,
 					dataType : "json",
 					async : true,
 					success : function(response) {
-
 						$("#cmbCity").val(response.strCity);
-
 						$("#txtClientCode").val(response.strClientCode);
 						$("#txtClientName").val(response.strClientName);
 						$("#txtAddrLine1").val(response.strAddrLine1);
@@ -228,9 +238,7 @@ ul.tab li.a:FOCUS {
 						$("#cmbCountry").val(response.strCountry);
 						$("#txtTelephone").val(response.strTelephone);
 						$("#txtEmail").val(response.strEmail);
-						$("#cmbNatureOfBussness").val(
-								response.strNatureOfBussness);
-
+						$("#cmbNatureOfBussness").val(response.strNatureOfBussness);
 						$("#txtBillFooter").val(response.strBillFooter);
 						$("#cmbBillPaperSize").val(response.intBiilPaperSize);
 						$("#cmbPrintMode").val(response.strBillPrintMode);
@@ -1234,7 +1242,9 @@ ul.tab li.a:FOCUS {
 								response.strNatureOfBussness);
 
 						$("#txtBillFooter").val(response.strBillFooter);
-
+						//image load function
+						funloadPropertyImage();
+						
 						$("#cmbBillPaperSize").val(response.intBiilPaperSize);
 						$("#cmbPrintMode").val(response.strBillPrintMode);
 						$("#cmbColumnSize").val(response.intColumnSize);

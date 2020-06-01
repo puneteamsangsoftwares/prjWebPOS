@@ -1,17 +1,22 @@
 package com.sanguine.webpos.controller;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.Socket;
 import java.net.URL;
-import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,12 +24,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.persistence.Column;
+import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.swing.ImageIcon;
 import javax.validation.Valid;
 
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -39,25 +45,17 @@ import org.springframework.web.servlet.ModelAndView;
 import com.sanguine.base.service.intfBaseService;
 import com.sanguine.controller.clsGlobalFunctions;
 import com.sanguine.webpos.bean.clsPOSBillSeriesDtlBean;
-import com.sanguine.webpos.bean.clsPOSCreditBillReceiptBean;
-import com.sanguine.webpos.bean.clsPOSPropertySetupBean;
 import com.sanguine.webpos.bean.clsPOSPrinterSetupBean;
-import com.sanguine.webpos.bean.clsPOSSMSSetupBean;
-import com.sanguine.webpos.bean.clsPOSSettlementDetailsBean;
-import com.sanguine.webpos.model.clsAreaMasterModel;
-import com.sanguine.webpos.model.clsBillHdModel;
-import com.sanguine.webpos.model.clsBillSeriesHdModel;
-import com.sanguine.webpos.model.clsBillSeriesModel_ID;
-import com.sanguine.webpos.model.clsGroupMasterModel;
+import com.sanguine.webpos.bean.clsPOSPropertySetupBean;
 import com.sanguine.webpos.model.clsPOSSMSSetupModel;
 import com.sanguine.webpos.model.clsPOSSMSSetupModel_ID;
 import com.sanguine.webpos.model.clsPrinterSetupHdModel;
 import com.sanguine.webpos.model.clsPrinterSetupModel_ID;
-import com.sanguine.webpos.model.clsSettlementMasterModel;
 import com.sanguine.webpos.model.clsSetupHdModel;
 import com.sanguine.webpos.model.clsSetupModel_ID;
 import com.sanguine.webpos.sevice.clsPOSMasterService;
 import com.sanguine.webpos.util.clsPOSUtilityController;
+
 
 @Controller
 public class clsPOSPropertySetupController
@@ -193,13 +191,13 @@ public class clsPOSPropertySetupController
 
 					if (objSetupHdModel.getBlobReportImage() != null)
 					{
-						Blob blob = objSetupHdModel.getBlobReportImage();
+						/*Blob blob = objSetupHdModel.getBlobReportImage();
 						byte[] byteContent = blob.toString().getBytes();
 						String imagePath = servletContext.getRealPath("/resources/images");
 						int blobLength = (int) blob.length();
 						fileOuputStream = new FileOutputStream(imagePath + "/imgClientImage.jpg");
 						fileOuputStream.write(byteContent);
-						fileOuputStream.close();
+						fileOuputStream.close();*/
 					}
 				}
 			}
@@ -552,10 +550,39 @@ public class clsPOSPropertySetupController
 		}
 		return count;
 	}
-
+	//porperty image download
+		@RequestMapping(value = "/loadPropertyImage", method = RequestMethod.GET)
+		public void getImage(HttpServletRequest req, HttpServletResponse response) throws Exception {
+			String clientCode = req.getSession().getAttribute("gClientCode").toString();
+			String gPOSCode = req.getSession().getAttribute("gPOSCode").toString();			
+			clsSetupHdModel objModel = new clsSetupHdModel(new clsSetupModel_ID(clientCode, gPOSCode));
+				//objModel = objWebClubMemberPhotoService.funGetWebClubMemberPhoto(prodCode, clientCode);
+			
+			clsSetupHdModel objSetupHdModel = new clsSetupHdModel();
+			List list = objBaseService.funLoadAllPOSWise(objSetupHdModel, clientCode,gPOSCode);
+			objSetupHdModel = (clsSetupHdModel) list.get(0);
+			
+			try {
+				//Blob image = null;
+				byte[] imgData = null;
+			//	image = objModel.getStrProductImage();
+				//if (null != image && image.length() > 0) {
+					imgData =objSetupHdModel.getBlobReportImage();
+					response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
+					OutputStream o = response.getOutputStream();
+					o.write(imgData);
+					o.flush();
+					o.close();
+				//}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	
+	
 	// Loading the data when we open the form
 	@RequestMapping(value = "/loadPOSPropertySetupData", method = RequestMethod.GET)
-	public @ResponseBody clsPOSPropertySetupBean funSetSearchFields(HttpServletRequest request)
+	public @ResponseBody clsPOSPropertySetupBean funSetSearchFields(HttpServletRequest request,HttpServletResponse response)
 	{
 		String clientCode = request.getSession().getAttribute("gClientCode").toString();
 		String posCode = request.getSession().getAttribute("loginPOS").toString();
@@ -567,7 +594,6 @@ public class clsPOSPropertySetupController
        
 		try
 		{
-			
 			List list = objBaseService.funLoadAllPOSWise(objSetupHdModel, clientCode,posCode);
 
 			for (int cnt = 0; cnt < list.size(); cnt++)
@@ -577,14 +603,31 @@ public class clsPOSPropertySetupController
 				{
 					if (objSetupHdModel.getBlobReportImage() != null)
 					{
-						Blob blob = objSetupHdModel.getBlobReportImage();
+						/*
+						try {
+							//Blob image = null;
+							byte[] imgData = null;
+						//	image = objModel.getStrProductImage();
+							//if (null != image && image.length() > 0) {
+								imgData =objSetupHdModel.getBlobReportImage();
+								response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
+								OutputStream o = response.getOutputStream();
+								o.write(imgData);
+								o.flush();
+								o.close();
+							//}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}*/
+						
+						/*Blob blob = objSetupHdModel.getBlobReportImage();
 						byte[] byteContent = blob.toString().getBytes();
 						String imagePath = servletContext.getRealPath("/resources/images");
 						int blobLength = (int) blob.length();
 
 						fileOuputStream = new FileOutputStream(imagePath + "/imgClientImage.jpg");
 						fileOuputStream.write(byteContent);
-						fileOuputStream.close();
+						fileOuputStream.close();*/
 					}
 				}
 			}
@@ -1120,7 +1163,42 @@ public class clsPOSPropertySetupController
 			String dateTime = obUtilityController.funGetCurrentDateTime();
 			if (file.getSize() != 0)
 			{
-				Blob blobProdImage = Hibernate.createBlob(file.getInputStream());
+				
+				if (file.getSize() != 0) {
+					System.out.println(file.getOriginalFilename());
+					File imgFolder = new File(System.getProperty("user.dir") + "\\ProductIcon");
+					if (!imgFolder.exists()) {
+						if (imgFolder.mkdir()) {
+							System.out.println("Directory is created! " + imgFolder.getAbsolutePath());
+						} else {
+							System.out.println("Failed to create directory!");
+						}
+					}
+					File fileImageIcon = new File(System.getProperty("user.dir") + "\\ProductIcon\\" + file.getOriginalFilename());
+					String formatName = "jpg";
+					ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+					BufferedImage bufferedImage = ImageIO.read(funInputStreamToBytearrayInputStrean(file.getInputStream()));
+					String path = fileImageIcon.getPath().toString();
+					ImageIO.write(bufferedImage, "jpg", new File(path));
+					BufferedImage bfImg = scaleImage(150, 155, path);
+					ImageIO.write(bfImg, "jpg", byteArrayOutputStream);
+					byte[] imageBytes = byteArrayOutputStream.toByteArray();
+					ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageBytes);
+
+					//Blob blobProdImage = Hibernate.createBlob(byteArrayInputStream);
+					//objModel.setStrMemberImage(blobProdImage);
+
+					if (fileImageIcon.exists()) {
+						fileImageIcon.delete();
+						objModel.setBlobReportImage(imageBytes);
+					}
+					else {
+					}
+				}
+				
+				
+				
+				/*Blob blobProdImage = Hibernate.createBlob(file.getInputStream());
 				objModel.setBlobReportImage(blobProdImage);
 				FileOutputStream fileOuputStream = null;
 				try
@@ -1134,7 +1212,7 @@ public class clsPOSPropertySetupController
 				catch (IOException e)
 				{
 					e.printStackTrace();
-				}
+				}*/
 			}
 			objModel.setStrActivePromotions(objGlobal.funIfNull(objBean.getChkActivePromotions(), "N", "Y"));
 			objModel.setDblMaxDiscount(objBean.getDblMaxDiscount());
@@ -1621,6 +1699,48 @@ public class clsPOSPropertySetupController
 			return new ModelAndView("redirect:/frmFail.html");
 		}
 	}
+
+	public BufferedImage scaleImage(int WIDTH, int HEIGHT, String filename) {
+		BufferedImage bi = null;
+		try {
+			ImageIcon ii = new ImageIcon(filename);// path to image
+			bi = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+			Graphics2D gra2d = (Graphics2D) bi.createGraphics();
+			gra2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
+			gra2d.drawImage(ii.getImage(), 0, 0, WIDTH, HEIGHT, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return bi;
+	}
+
+	@SuppressWarnings("finally")
+	private ByteArrayInputStream funInputStreamToBytearrayInputStrean(InputStream ins) {
+		ByteArrayInputStream byteArrayInputStream = null;
+		try {
+			byte[] buff = new byte[8000];
+
+			int bytesRead = 0;
+
+			ByteArrayOutputStream bao = new ByteArrayOutputStream();
+
+			while ((bytesRead = ins.read(buff)) != -1) {
+				bao.write(buff, 0, bytesRead);
+			}
+
+			byte[] data = bao.toByteArray();
+
+			byteArrayInputStream = new ByteArrayInputStream(data);
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+
+		} finally {
+			return byteArrayInputStream;
+		}
+	}
+
 
 	/*public void funSaveUpdatePropertySetup(clsSetupHdModel objModel)
 	{
