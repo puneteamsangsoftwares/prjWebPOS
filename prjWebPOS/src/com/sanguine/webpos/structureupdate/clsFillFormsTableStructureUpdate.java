@@ -525,6 +525,12 @@ public class clsFillFormsTableStructureUpdate
 	    
 	    sql= sqlInsertSyntax +"('frmHourlyItemWiseReport', 'Hourly Item Wise Report', 'R', 'imgHourlyItemWise', '215', 'imgHourlyItemWise1', 'frmHourlyItemWiseReport.html', 'Hourly Item Wise Report');";
 	    mapStructureUpdater.get("frmStructure").add(sql);
+
+	    sql=sqlInsertSyntax +"('frmMultipleCreditBillReceipt', 'Multiple Credit Bill Receipt', 'T', 'imgMultiBillReceipt', 202, 'imgMultiBillReceipt1', 'frmMultipleCreditBillReceipt.html', 'Multiple Bill Receipt');"; 
+         mapStructureUpdater.get("frmStructure").add(sql);
+	    
+	    sql=sqlInsertSyntax +"('frmMultiChangeSettlement', 'Multi Change Settlement', 'T', 'imgMutliChangeSettlement', 121, 'imgMutliChangeSettlement1', 'frmMultiChangeSettlement.html', 'Multi Change Settlement');";
+	    mapStructureUpdater.get("frmStructure").add(sql);
 	
 	}
 	

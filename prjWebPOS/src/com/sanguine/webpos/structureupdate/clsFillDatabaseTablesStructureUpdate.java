@@ -7143,7 +7143,104 @@ public class clsFillDatabaseTablesStructureUpdate
 		sql="ALTER TABLE `tblreasonmaster`\n" +
 		" ADD COLUMN `strTransactionType` VARCHAR(20) NOT NULL AFTER `strOperational`;";
 		mapStructureUpdater.get("tblStructure").add(sql);
+	
 		
+
+		sql="ALTER TABLE `tblsetup`\n" +
+	            " ADD COLUMN `strPrintOrderNoOnMakeKot` VARCHAR(1) NOT NULL DEFAULT 'N' AFTER `strDirectSettleOnSelection`;";
+		mapStructureUpdater.get("tblStructure").add(sql);
+		
+		sql="ALTER TABLE `tbluserhd`\n" +
+		    " ADD COLUMN `strShowDocs` VARCHAR(10) NOT NULL DEFAULT 'All' AFTER `intNoOfDaysReportsView`;";
+		mapStructureUpdater.get("tblStructure").add(sql);
+		
+		sql="ALTER TABLE `tblregisterterminal`\n" +
+	            " DROP PRIMARY KEY,\n" +
+		    " ADD PRIMARY KEY (`strClientCode`, `strMACAddress`, `strTerminalName`);";
+		mapStructureUpdater.get("tblStructure").add(sql);
+		
+		sql="ALTER TABLE `tblplaceorderdtl`\n" +
+	            " ADD COLUMN `dblWeight` DECIMAL(18,2) NOT NULL DEFAULT '0' AFTER `strAdvOrderNo`;";
+		mapStructureUpdater.get("tblStructure").add(sql);
+		
+		sql="ALTER TABLE `tblsetup`\n" +
+	            " ADD COLUMN `strPaxOnBilling` VARCHAR(1) NOT NULL DEFAULT 'N' AFTER `strPrintOrderNoOnMakeKot`";
+		mapStructureUpdater.get("tblStructure").add(sql);
+		
+		sql="ALTER TABLE `tblsettelmenthd`\n" +
+		" ADD COLUMN `strApplicableForChangeSettlement` VARCHAR(1) NOT NULL DEFAULT 'Y' AFTER `strPrinterType`;";
+		mapStructureUpdater.get("tblStructure").add(sql);
+		
+		sql="UPDATE tblsettelmenthd SET strApplicableForChangeSettlement='N' WHERE  strSettelmentType='Credit';";
+		mapStructureUpdater.get("tblStructure").add(sql);
+		
+		sql="ALTER TABLE `tblaudit`\n" +
+	            " CHANGE COLUMN `strFormName` `strFormName` VARCHAR(40) NOT NULL AFTER `strDocNo`;";
+		mapStructureUpdater.get("tblStructure").add(sql);
+		
+		sql="ALTER TABLE `tblvoidbillhd`\n" +
+		    " CHANGE COLUMN `strTransType` `strTransType` CHAR(30) NOT NULL DEFAULT '' AFTER `dteBillDate`;";
+		mapStructureUpdater.get("tblStructure").add(sql);
+		
+		sql="ALTER TABLE `tblvoidbilldtl`\n" +
+		    " CHANGE COLUMN `strTransType` `strTransType` CHAR(30) NOT NULL AFTER `dteBillDate`;";
+		mapStructureUpdater.get("tblStructure").add(sql);
+		
+		sql="ALTER TABLE `tblvoidbilltaxdtl`\n" +
+		    " CHANGE COLUMN `strTransType` `strTransType` CHAR(30) NOT NULL DEFAULT '' AFTER `dteBillDate`;";
+		mapStructureUpdater.get("tblStructure").add(sql);
+		
+		sql="ALTER TABLE `tblreasonmaster`\n" +
+		    " ADD COLUMN `strChangeSettlement` VARCHAR(1) NOT NULL DEFAULT 'Y' AFTER `strTransactionType`;";
+		mapStructureUpdater.get("tblStructure").add(sql);
+		
+		sql="ALTER TABLE `tblvoidbilldtl`\n" +
+	            " CHANGE COLUMN `strItemCode` `strItemCode` VARCHAR(30) NOT NULL AFTER `strReasonName`;";
+		mapStructureUpdater.get("tblStructure").add(sql);
+		
+		sql="ALTER TABLE `tblsetup` ADD COLUMN `strDirectBillFromMakeKOTOnBarTable` VARCHAR(1) NOT NULL DEFAULT 'N' AFTER `strPaxOnBilling`;";
+		mapStructureUpdater.get("tblStructure").add(sql);
+		
+		sql="ALTER TABLE `tblsetup` ADD COLUMN `strTakeFFModifierAmt` VARCHAR(1) NOT NULL DEFAULT 'Y' AFTER `strDirectBillFromMakeKOTOnBarTable`;";
+		mapStructureUpdater.get("tblStructure").add(sql);
+		
+		sql="ALTER TABLE `tblsetup`  ADD COLUMN `strImmediateSettlement` VARCHAR(1) NOT NULL DEFAULT 'N' AFTER `strTakeFFModifierAmt`;";
+	        mapStructureUpdater.get("tblStructure").add(sql);
+		
+		sql="ALTER TABLE `tblmodifiermaster` CHANGE COLUMN `strModifierCode` `strModifierCode` VARCHAR(20) NOT NULL FIRST; ";
+		mapStructureUpdater.get("tblStructure").add(sql);
+		
+		sql="ALTER TABLE `tblitemmodofier` CHANGE COLUMN `strModifierCode` `strModifierCode` VARCHAR(20) NOT NULL AFTER `strItemCode`;";
+	        mapStructureUpdater.get("tblStructure").add(sql);
+		
+		sql="ALTER TABLE `tblitemmasterlinkupdtl` ADD COLUMN `isModifier` VARCHAR(1) NOT NULL DEFAULT 'N' AFTER `strDataPostFlag`;";
+	        mapStructureUpdater.get("tblStructure").add(sql);
+		
+	        sql="ALTER TABLE `tbltaxhd` CHANGE COLUMN `strTaxOnGD` `strTaxOnGD` VARCHAR(15) NOT NULL AFTER `dteValidTo`;";
+	      	mapStructureUpdater.get("tblStructure").add(sql);
+		
+		sql=" ALTER TABLE `tblmenuitempricingdtl` ADD COLUMN `strFontColor` VARCHAR(15) NOT NULL DEFAULT '' AFTER `strClientCode` ; ";
+	       	mapStructureUpdater.get("tblStructure").add(sql);
+		
+		sql="ALTER TABLE `tblsubgrouphd` ADD COLUMN `strSubGroupShortName` VARCHAR(20) NOT NULL DEFAULT '' AFTER `strFactoryCode`;";
+	        mapStructureUpdater.get("tblStructure").add(sql);
+		
+		sql="ALTER TABLE `tblsetup` ADD COLUMN `strShowSubGroupShortName` VARCHAR(1) NOT NULL DEFAULT 'N' AFTER `strImmediateSettlement`;";
+		mapStructureUpdater.get("tblStructure").add(sql);
+		
+		sql="ALTER TABLE `tblitemmaster` "
+			+ " CHANGE COLUMN `strItemDetails` `strItemDetails` VARCHAR(400) NOT NULL DEFAULT '0.00' AFTER `strExternalCode`,"
+			+ " CHANGE COLUMN `strShortName` `strShortName` VARCHAR(80) NOT NULL DEFAULT '' AFTER `strDiscountApply`;";
+	    	mapStructureUpdater.get("tblStructure").add(sql);
+
+		
+		
+		
+		
+	    	
+	    	
+		
+		//start Client code is not present desktop pos
 		sql="ALTER TABLE `tblitemrtemp` ADD COLUMN `strClientCode` VARCHAR(10) NOT NULL DEFAULT '' AFTER `strBillNote`;";
 		mapStructureUpdater.get("tblStructure").add(sql);
 			
@@ -7189,9 +7286,11 @@ public class clsFillDatabaseTablesStructureUpdate
 		
 		sql="ALTER TABLE `tblreasonmaster` CHANGE COLUMN `strTransactionType` `strTransactionType` VARCHAR(20) NOT NULL DEFAULT '' AFTER `strOperational`;";
 		mapStructureUpdater.get("tblStructure").add(sql);
+		//end till here
 		
 		//sql="ALTER TABLE `tbltaxtemp` ADD COLUMN `strClientCode` VARCHAR(10) NOT NULL AFTER `strItemName`;";
 		//mapStructureUpdater.get("tblStructure").add(sql);
+		
 		
 	    }
 	    

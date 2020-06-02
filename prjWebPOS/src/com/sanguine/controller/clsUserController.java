@@ -296,6 +296,19 @@ public class clsUserController
 	@SuppressWarnings("rawtypes")
 	private ModelAndView funSessionValue(clsUserHdModel user,HttpServletRequest req)
 	{
+		String clientCode=req.getSession().getAttribute("gClientCode").toString();
+
+		String sql="select a.strPosCode from tblposmaster a "
+				+ " where  a.strClientCode='"+clientCode+"'  and a.strOperationalYN='Y' ";
+		
+		List list=objGlobalService.funGetList(sql,"sql");
+
+		if(list.size()==1)
+		{
+			req.getSession().setAttribute("loginPOS",list.get(0).toString());
+
+		}
+		
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("users", funPrepareUserBean(user));
 		req.getSession().setAttribute("gUserCode",user.getStrUserCode());
@@ -894,7 +907,7 @@ public class clsUserController
 		
 		
 		List listMainMenuForms=objMainMenuService.funGetMainMenuForms(moduleType, superUserYN, POSCode, userCode, clientCode,"");
-		List<clsUserDesktopUtil> listMenu=new  ArrayList<clsUserDesktopUtil>();
+ 		List<clsUserDesktopUtil> listMenu=new  ArrayList<clsUserDesktopUtil>();
 		
 		if(null!=listMainMenuForms)
 		{	

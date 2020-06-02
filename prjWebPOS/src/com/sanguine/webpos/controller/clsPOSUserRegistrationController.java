@@ -562,7 +562,7 @@ public class clsPOSUserRegistrationController
 					{
 						clsPOSUserAccessBean objBean1 = listMaster.get(i);
 						clsSuperUserDetailHdModel objSuperUserModel = new clsSuperUserDetailHdModel();
-						objSuperUserModel.setStrFormName(objBean.getStrFormName());
+						objSuperUserModel.setStrFormName(objBean1.getStrFormName());
 
 						objSuperUserModel.setStrButtonName(objBean1.getStrButtonName());
 						objSuperUserModel.setStrGrant("true");

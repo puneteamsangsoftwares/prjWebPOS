@@ -89,7 +89,6 @@ public class clsPOSBillSettlementBean
 	
 	private List<clsPOSDeliveryBoyMasterBean> listDeliveryBoyMasterBeanl=new ArrayList<clsPOSDeliveryBoyMasterBean>();
 	
-	private List<clsPOSComplimentayDtlsOnBill> listComplimentaryDtlOnBill=new ArrayList<clsPOSComplimentayDtlsOnBill>();
 
 	private double dblSubTotal;
 	
@@ -663,14 +662,6 @@ public class clsPOSBillSettlementBean
 	public void setStrReasonName(String strReasonName)
 	{
 		this.strReasonName = strReasonName;
-	}
-	public List<clsPOSComplimentayDtlsOnBill> getListComplimentaryDtlOnBill()
-	{
-		return listComplimentaryDtlOnBill;
-	}
-	public void setListComplimentaryDtlOnBill(List<clsPOSComplimentayDtlsOnBill> listComplimentaryDtlOnBill)
-	{
-		this.listComplimentaryDtlOnBill = listComplimentaryDtlOnBill;
 	}
 	
 	 public String getIsSettleBill()

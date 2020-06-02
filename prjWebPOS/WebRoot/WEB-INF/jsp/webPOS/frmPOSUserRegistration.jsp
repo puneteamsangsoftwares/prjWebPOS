@@ -279,7 +279,7 @@ $(document).ready(function()
 
 					$("#cmbWaiterNo").val(response.strWaiterNo);
 					$("#txtPassword").val(response.strPassword);
-					$("#txtConfirmPassword").val(response.strConfirmPassword);
+					$("#txtConfirmPassword").val(response.strPassword);
 					$("#txtintNoOfDaysReportsView").val(
 							response.intNoOfDaysReportsView);
 

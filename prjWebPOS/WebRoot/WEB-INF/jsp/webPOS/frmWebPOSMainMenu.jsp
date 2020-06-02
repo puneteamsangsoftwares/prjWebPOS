@@ -120,12 +120,12 @@
 	   
 	}
 
-	var items_per_page = 50;
+	var items_per_page = 40;
 	function getOptionsFromForm()
 	{
 	    var opt = {callback: pageselectCallback};
 		opt['items_per_page'] = items_per_page;
-		opt['num_display_entries'] = 50;
+		opt['num_display_entries'] = 40;
 		opt['num_edge_entries'] = 3;
 		opt['prev_text'] = "Prev";
 		opt['next_text'] = "Next";
