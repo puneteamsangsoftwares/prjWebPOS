@@ -198,10 +198,15 @@ function stopRKey(evt) {
 				
 								<label id="lblClientName" style="margin-top:18px;color:rgba(83,159,225,1);font-family: trebuchet ms, Helvetica, sans-serif;font-weight: 100;font-size: 16px;"> &nbsp;&nbsp; 
               	</label>
-              	&nbsp;&nbsp;
-              	<img  src="" id="memImage" title="Client Logo" Style="width: 184px;height:54px;margin-top: 8px;">
-              	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+              	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+              	<img  src="" id="memImage" title="Client Logo" Style="width: 170px;height:45px;margin-top: 5px;">
+
+              	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;&nbsp;&nbsp;&nbsp;
 				
+					
 				
 				<label id="lblPOSDate" style="margin-top:18px;color:rgba(83,159,225,1);font-family: trebuchet ms, Helvetica, sans-serif;font-weight: 100;font-size: 16px;"> &nbsp;&nbsp; 
               	</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -253,9 +258,9 @@ function stopRKey(evt) {
 		
 		<div class="row01" style="background-color: #fff;display: -webkit-box;margin-bottom: -15px;">
 		
-		<!-- <div  style="width: 22%;margin-top: 10px;margin-left: 57%;">
+		 <div  style="width: 22%;margin-top: 10px;margin-left: 20%;">
 				<input type="text" class="menusearchTextBox" id="txtSearch" onkeypress="funGetKeyPressSeachFormName(event);" style="height: 27px;width: 85%;margin-top: 12px;" placeholder="Search..."></input>
-			</div> -->
+			</div> 
          
 			
 		 <div style="width:200px;margin-top: 10px;margin-bottom: 10px;margin-left: 17%;">

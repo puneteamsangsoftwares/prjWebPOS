@@ -173,15 +173,15 @@ public class clsUserController
                 	 
                 	 Date webPOSExpiryDate = dFormat.parse(decryptedExpDate);
 					 if (systemDate.compareTo(webPOSExpiryDate)<=0) 
-					 {						 
-						if(userBean.getStrUserCode().equalsIgnoreCase("SANGUINE"))
+					 {
+						 if(userBean.getStrUserCode().equalsIgnoreCase("SANGUINE"))
 						 {
 							 Date dt = new Date();
 						     int day = dt.getDate();
 						     int month = dt.getMonth() + 1;
 						     int year = dt.getYear() + 1900;
 						     int password = year + month + day + day;
-							 
+							
 						     String strpass=Integer.toString(password);
 						     char num1 =strpass.charAt(0);
 						     char num2 =strpass.charAt(1);
@@ -293,8 +293,9 @@ public class clsUserController
 
 	
 	
+	
 	@SuppressWarnings("rawtypes")
-	private ModelAndView funSessionValue(clsUserHdModel user,HttpServletRequest req)
+	public ModelAndView funSessionValue(clsUserHdModel user,HttpServletRequest req)
 	{
 		String clientCode=req.getSession().getAttribute("gClientCode").toString();
 
