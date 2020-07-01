@@ -1352,6 +1352,7 @@
 		<put-attribute name="body"
 			value="/WEB-INF/jsp/webPOS/webPOSReport/frmPOSRecipesListReport.jsp"></put-attribute>
 	</definition>
+	
 
 	<!-- End Of WebPOS Tiles Entry -->
 

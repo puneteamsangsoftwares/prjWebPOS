@@ -207,7 +207,7 @@
 
 			        	$("#txtItemDetails").val(response.strItemDetails);
 			        	$("#txtProcDay").val(response.intProcDay);
-			        	
+			        	funloadMemberPhoto(response.strItemCode);
 			        	funLoadRecipeData(response.strItemCode);
 		        	}
 		        },
@@ -535,6 +535,30 @@
 		
 	}
 	
+	function funShowImagePreview(input)
+	 {
+		 if (input.files && input.files[0])
+		 {
+			 var filerdr = new FileReader();
+			 filerdr.onload = function(e) 
+			 {
+			 $('#memImage1').attr('src', e.target.result);
+			 }
+			 filerdr.readAsDataURL(input.files[0]);
+		 }
+	 }
+	
+	function funloadMemberPhoto(code)
+	{
+		var searchUrl1=getContextPath()+"/loadGuestImage.html?guestCode="+code;
+		 $.ajax({
+		        type: "GET",
+		        url: searchUrl1,
+		        cache: false
+		 });
+		$("#memImage1").attr('src', searchUrl1);
+	}  
+	
 </script>
 
 </head>
@@ -547,6 +571,7 @@
 	<s:form name="menuItemMaster" method="POST"
 		action="saveMenuItemMaster.html?saddr=${urlHits}"
 		class="formoid-default-skyblue"
+		enctype="multipart/form-data"
 		style="background-color:#FFFFFF;font-size:14px;font-family:'Open Sans','Helvetica Neue','Helvetica',Arial,Verdana,sans-serif;color:#666666;max-width:880px;min-width:150px;margin-top:2%;">
 
 <div id="tab_container" style="height: 405px; overflow: inherit;">
@@ -893,6 +918,11 @@
 							
 					</div>
 				</div>
+				
+				<div class="col-md-2">					
+				 	<div><img id="memImage1" src="" style="width:auto;height:150px;margin: 10% 0%;font-size:14px;" alt="Item Image"></div>
+			        <div><input  id="memberImage" name="memberImage" type="file" accept="image/gif,image/png,image/jpeg" onchange="funShowImagePreview(this);" style="width:220px; background-color: #fbfafa"/></div>
+       			</div>
 	
 			</div>
 			

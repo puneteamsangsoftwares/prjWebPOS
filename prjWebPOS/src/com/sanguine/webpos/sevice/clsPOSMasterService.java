@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sanguine.base.model.clsBaseModel;
+import com.sanguine.base.service.clsBaseServiceImpl;
 import com.sanguine.base.service.intfBaseService;
 import com.sanguine.webpos.bean.clsPOSWiseItemIncentiveDtlBean;
 import com.sanguine.webpos.model.clsAreaMasterModel;
@@ -54,7 +55,8 @@ public class clsPOSMasterService
 
 	@Autowired
 	intfBaseService obBaseService;
-
+	@Autowired
+	clsBaseServiceImpl objBaseServiceImpl;
 	public void funSaveReasonMaster(clsBaseModel objBaseModel) throws Exception
 	{
 		obBaseService.funSave(objBaseModel);
@@ -191,10 +193,11 @@ public class clsPOSMasterService
 
 	public List funGetPOSList(String clientCode) throws Exception
 	{
-		List list = null;
+		/*List list = null;*/
 		StringBuilder sqlBuilder = new StringBuilder();
 		sqlBuilder.append("select strPOSCode,strPOSName from tblposmaster where strOperationalYN='Y' and strClientCode='" + clientCode + "' ");
-		list = obBaseService.funGetList(sqlBuilder, "sql");
+		/*list = obBaseService.funGetList(sqlBuilder, "sql");*/
+		List list =	objBaseServiceImpl.funGetList(sqlBuilder, "sql");
 		return list;
 	}
 

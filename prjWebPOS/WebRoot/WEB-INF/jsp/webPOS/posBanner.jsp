@@ -35,7 +35,8 @@
    	
     function funPOSHome()
    	{
-    	var posCode='<%=session.getAttribute("loginPOS").toString()%>';
+    	<%-- var posCode='<%=session.getAttribute("loginPOS").toString()%>'; --%>
+    	var posCode="Sumeet";
     	window.location.href=getContextPath()+"/frmGetPOSSelection.html?strPosCode="+posCode;
    	}
    	
@@ -48,12 +49,18 @@
 	<script type="text/javascript">
     	$(function() {
     		
-			var posDate="${gPOSDate}";
+			 var posDate="${gPOSDate}"; 
+			 /* var date=posDate.split("-");
+	    		posDate=date[2]+"-"+date[1]+"-"+date[0]; */ 
+    		var clientName="${gCompanyName}"; 
     		
-    		var date=posDate.split("-");
-    		posDate=date[2]+"-"+date[1]+"-"+date[0];
+    		//funloadClientPhoto();
+    		funloadClientPhoto();
+    		
+    		/* var date=posDate.split("-");
+    		posDate=date[2]+"-"+date[1]+"-"+date[0]; */
       		$("#lblPOSDate").text(posDate);
-      		
+    		$("#lblClientName").text(clientName);
   			setInterval(function() {
     			var seconds = new Date().getTime() / 1000;
     			var time = new Date(),
@@ -93,6 +100,37 @@
   }, 100);
 
 });
+    	
+    	
+    	/* function funloadClientPhoto()
+		{
+			var code="All";
+			var searchUrl1=getContextPath()+"/loadRestImage.html?guestCode="+code;
+			 $.ajax({
+			        type: "GET",
+			        url: searchUrl1,
+			        cache: false
+			        
+			 });
+			$("#memImage").attr('src', searchUrl1);
+		}  */
+	   /*  $(document).ready(function(){
+	    	funloadPropertyImage();
+	    	
+	    }); */
+		
+		
+		function funloadClientPhoto()
+		{
+			var code = $("#cmbPosCode").val();			
+			var searchUrl1=getContextPath()+"/loadPropertyImage.html?";
+			 $.ajax({
+			        type: "GET",
+			        url: searchUrl1,
+			        cache: false
+			 });
+			$("#memImage").attr('src', searchUrl1);
+		}  
 	</script>
 	
 	
@@ -102,34 +140,32 @@
 
 	<div class="row" style="background-color: #fff;display: -webkit-box; margin-right: 0%; margin-left: 0%;">
 		
-		    <div class="element-input col-lg-6" style="width: 15%;margin-top: 5px;margin-left: 20px;">
-				<div id="clientlogo"><img src="../${pageContext.request.contextPath}/resources/newdesign/images/companyLogo.png" style="height: 34px;"" id="clientimg" ></div>
-			</div>
-	
+<!-- 		    <div class="element-input col-lg-6" style="width: 15%;margin-top: 5px;margin-left: 20px;"> -->
+			<img src="../${pageContext.request.contextPath}/resources/newdesign/images/companyLogo.png" id="clientlogo" style="height: 54px;padding-left: 20px;" id="clientimg" >
+				 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ 				&nbsp;&nbsp;
+				 
+				<label id="lblClientName" style="margin-top:10px;color:rgba(83,159,225,1);font-family: trebuchet ms, Helvetica, sans-serif;font-weight: 100;font-size: 16px;"> &nbsp;&nbsp; 
+              	</label>
+              	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              	<img  src="" id="memImage" title="LOGOUT" Style="width: 184px;height:54px;margin-top: 8px;">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ 				 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				 
+		
+           <label id="lblPOSDate" style="color:rgba(83,159,225,1);font-family: trebuchet ms, Helvetica, sans-serif;font-weight: 100;font-size: 16px;"> &nbsp;&nbsp; 
+              	</label>    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;          	  
+              <label id="time" style="color:rgba(83,159,225,1);font-family: trebuchet ms, Helvetica, sans-serif;font-weight: 100;font-size: 16px;"><span id="hours"> </span><span id="min"> </span><span id="sec"> </span></label>
+            				 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           <%-- <label style="font-family: trebuchet ms, Helvetica, sans-serif;font-weight: 100;font-size: 16px;"> ${gPOSName} &nbsp;&nbsp; 
+               	</label> --%>
+               	            	 <label style="color:rgba(83,159,225,1);font-family: trebuchet ms, Helvetica, sans-serif;font-weight: 100;font-size: 16px;">${gUserName} &nbsp;&nbsp;</label>
+               	
+                          				 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;              
+                    	<a href="#" id="hdrbtn" onclick="funPOSHome()"><img src="../${pageContext.request.contextPath}/resources/newdesign/images/arrows (2).png" id="return"></a>
+				
 			
-			<div class="col-lg-3 col-md-3 col-sm-2 col-xs-4" style="width: 20%;color:rgba(83,159,225,1);margin-top: 10px;"> 
-              	<label style="font-family: trebuchet ms, Helvetica, sans-serif;font-weight: 100;font-size: 16px;"> ${gPOSName} &nbsp;&nbsp; 
-               	</label>  
-           </div>
-           
-           <div class="col-lg-3 col-md-3 col-sm-2 col-xs-4" style="width: 15%;color:rgba(83,159,225,1);margin-top: 10px;">
-             	 <label style="font-family: trebuchet ms, Helvetica, sans-serif;font-weight: 100;font-size: 16px;">${gUserName} &nbsp;&nbsp;</label>
-           </div>
-
-			<div class="col-lg-3 col-md-3 col-sm-2 col-xs-4" style="width: 12%;color:rgba(83,159,225,1);margin-top: 10px;"> 
-              	<label id="lblPOSDate" style="font-family: trebuchet ms, Helvetica, sans-serif;font-weight: 100;font-size: 16px;"> &nbsp;&nbsp; 
-              	</label>  
-           </div>
-           
-           <div class="col-lg-3 col-md-3 col-sm-2 col-xs-4" style="width: 10%;color:rgba(83,159,225,1);margin-top: 10px;">
-                 <label id="time" style="font-family: trebuchet ms, Helvetica, sans-serif;font-weight: 100;font-size: 16px;"><span id="hours"> </span><span id="min"> </span><span id="sec"> </span></label>
-           </div> 
-           
-           <div class="col-lg-5 col-md-5 col-sm-7 col-xs-5" id="buttons" style="width: 15%;margin-top: 5px;">
-                <div id="hdrbtn">
-                    	<a href="#" onclick="funPOSHome()"><img src="../${pageContext.request.contextPath}/resources/newdesign/images/arrows (2).png" id="return"></a>
-				</div>
-			</div>
 			
 	 </div>
 

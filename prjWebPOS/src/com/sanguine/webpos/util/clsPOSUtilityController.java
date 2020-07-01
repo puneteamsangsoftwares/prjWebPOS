@@ -3168,7 +3168,7 @@ public class clsPOSUtilityController
 		if (list.size() == 0)
 		{
 			sql.setLength(0);
-			sql.append("insert into tblinternal values('" + masterName + "'," + 1 + ")");
+			sql.append("insert into tblinternal values('" + masterName + "'," + 1 + ",'"+clientCode+"')");
 			objBaseServiceImpl.funExecuteUpdate(sql.toString(), "sql");
 			code = 1;
 		}

@@ -2367,12 +2367,11 @@ public class clsPOSBillSettlementControllerForMakeKOT
 				}
 				else
 				{
-					sql.append("select LEFT(a.strItemCode,7),b.strItemName,a.dblItemQuantity,a.strKOTNo,a.strSerialNo,d.strShortName "
-							+ " from tblitemrtemp a,tblmenuitempricingdtl b,tblprintersetup c,tblitemmaster d "
-							+ " where a.strTableNo='" + tableNo + "' and a.strKOTNo='" + kotNo + "' and b.strCostCenterCode=c.strCostCenterCode "
-							+ " and b.strCostCenterCode='" + costCenterCode + "' and a.strItemCode=d.strItemCode " + " and (b.strPOSCode='" + posCode + "' or b.strPOSCode='All') " + " and (b.strAreaCode IN (SELECT strAreaCode FROM tbltablemaster where strTableNo='" + tableNo + "' ) " + " OR b.strAreaCode ='" + areaCode + "') " + " and LEFT(a.strItemCode,7)=b.strItemCode and b.strHourlyPricing='No' "
-							+ " and a.strClientCode='"+clientCode+"' and a.strClientCode=b.strClientCode and a.strClientCode=c.strClientCode and a.strClientCode=d.strClientCode "
-							+ " order by a.strSerialNo ");
+					sql.append("SELECT "
+							+ "a.strItemCode,a.strItemName,a.dblItemQuantity,a.strKOTNo,a.strSerialNo,d.strShortName "
+							+ "FROM tblitemrtemp a,tblitemmaster d "
+							+ "WHERE a.strTableNo='"+tableNo+"' AND a.strKOTNo='"+kotNo+"' AND a.strItemCode=d.strItemCode "
+							+ "ORDER BY a.strSerialNo");
 					// + " group by a.strKOTNo,a.strItemCode order by a.strSerialNo ");
 				}
 				// System.out.println(sqlKOTItems);
@@ -2387,24 +2386,25 @@ public class clsPOSBillSettlementControllerForMakeKOT
 				hm.put("PAX", String.valueOf(pax));
 
 				StringBuilder sqlQuery = new StringBuilder();
-				sqlQuery.append("select b.strWaiterNo,ifnull(b.strWShortName,''),a.dteDateCreated from tblitemrtemp a left outer join tblwaitermaster b on a.strWaiterNo=b.strWaiterNo" + " where a.strKOTNo='" + kotNo + "'  and a.strTableNo='" + tableNo + "'"
-						+ " and a.strClientCode=b.strClientCode and a.strClientCode='"+clientCode+"' group by a.strKOTNo ;");
+				sqlQuery.append("SELECT TIME_FORMAT(a.tmeOrderProcessing,'%H:%i') "
+						+ "FROM tblitemrtemp a" + " where a.strKOTNo='" + kotNo + "'  and a.strTableNo='" + tableNo + "'"
+						+ " and a.strClientCode='"+clientCode+"' group by a.strKOTNo ;");
 
 				List listDtl = objBaseService.funGetList(sqlQuery, "sql");
 				if (listDtl.size() > 0)
 				{
 					for (int i = 0; i < listDtl.size(); i++)
 					{
-						Object[] obj = (Object[]) listDtl.get(i);
-						hm.put("waiterName", obj[1].toString());
-						hm.put("DATE_TIME", obj[2].toString());
+						
+						hm.put("DATE_TIME", listDtl.get(0).toString());
 					}
 				}
 
 				InetAddress ipAddress = InetAddress.getLocalHost();
-				String hostName = ipAddress.getHostName();
+				String hostName = "QR Menu";
+				String userC = "Dinner";
 				hm.put("KOT From", hostName);
-				hm.put("kotByUser", userCode);
+				hm.put("kotByUser", userC);
 
 				list = objBaseService.funGetList(sql, "sql");
 				if (list.size() > 0)
@@ -2557,24 +2557,18 @@ public class clsPOSBillSettlementControllerForMakeKOT
 			}
 
 			sql.setLength(0);
-			sql.append("SELECT a.strItemName,e.strCostCenterCode,IFNULL(d.strPrimaryPrinterPort,''),IFNULL(d.strSecondaryPrinterPort,''),e.strCostCenterName,a.strNCKotYN, "
-					+ " ifnull(e.strLabelOnKOT,'KOT') strLabelOnKOT ,sum(a.dblPrintQty) FROM tblitemrtemp a "
-					+ " LEFT OUTER JOIN tblmenuitempricingdtl c ON a.strItemCode = c.strItemCode and a.strClientCode=c.strClientCode "
-					+ " left outer join tblprintersetup d on c.strCostCenterCode=d.strCostCenterCode  and d.strClientCode=c.strClientCode "
-					+ " LEFT OUTER JOIN tblcostcentermaster e ON c.strCostCenterCode=e.strCostCenterCode  and e.strClientCode=c.strClientCode "
-					+ " WHERE a.strKOTNo='" + kotNo + "' AND a.strTableNo='" + tableNo + "' AND (c.strPOSCode='" + POSCode + "' OR c.strPOSCode='All') "
-					+ " AND (c.strAreaCode IN ( SELECT strAreaCode FROM tbltablemaster WHERE strTableNo='" + tableNo + "') OR c.strAreaCode ='" + areaCode + "')"
-					+ " And c.strClientCode='"+gClientCode+"' "
-					+ " group by d.strCostCenterCode ");
+			sql.append("SELECT a.strItemCode,a.strItemName,a.strNCKotYN "
+					+ " fROM tblitemrtemp a "
+					+ "where a.strKOTNo='"+kotNo+" ' and a.strClientCode='"+gClientCode+"' ");
 			listDtl = objBaseService.funGetList(sql, "sql");
 			if (listDtl.size() > 0)
 			{
-				for (int i = 0; i < listDtl.size(); i++)
+				for (int i = 0; i < 1; i++)
 				{
 					Object[] obj = (Object[]) listDtl.get(i);
 					clsPOSBillDtl objBillDtl = new clsPOSBillDtl();
-					objBillDtl.setStrItemCode(obj[1].toString());
-					objBillDtl.setStrItemName(obj[4].toString());
+					objBillDtl.setStrItemCode(obj[0].toString());
+					objBillDtl.setStrItemName(obj[1].toString());
 					objBillDtl.setStrArea(areaCode);
 					listOfKOTDetail.add(objBillDtl);
 				}

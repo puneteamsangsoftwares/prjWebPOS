@@ -84,7 +84,7 @@ public class clsPOSMainMenuService {
 	    			+ "or a.strModuleName='TableStatusReport' or a.strModuleName='NCKOT' "
 	    	        + "or a.strModuleName='Take Away' or a.strModuleName='Table Reservation' "
 	    			+ "or a.strModuleName='POS Wise Sales' or a.strModuleName='Customer Order' "
-	    			+ "or a.strModuleName='Day End' or a.strModuleName='KDSForKOTBookAndProcess' "
+	    			+ "or a.strModuleName='Day End' or a.strModuleName='Kitchen Process System' "
 	    			+ "or a.strModuleName='Kitchen Process System' ) "
 	    			+ "AND a.strModuleName LIKE '%"+searchFrom+"%' ");																		  
 	    	}
@@ -138,7 +138,7 @@ public class clsPOSMainMenuService {
 					+ ",'Make Bill','Sales Report','Reprint','SettleBill','TableStatusReport'"
 					+ ",'NCKOT','Take Away','Table Reservation','POS Wise Sales','Customer Order'"
 					//+ ",'Non Available Items','Mini Make KOT','Day End','KDSForKOTBookAndProcess','Kitchen Process System') "
-					+ ",'Day End','KDSForKOTBookAndProcess','Kitchen Process System') "
+					+ ",'Day End','Kitchen Process System','Kitchen Process System') "
 					+ "AND a.strModuleName LIKE '%"+searchFrom+"%' "
 					+ " order by b.intSequence");
 	    	}

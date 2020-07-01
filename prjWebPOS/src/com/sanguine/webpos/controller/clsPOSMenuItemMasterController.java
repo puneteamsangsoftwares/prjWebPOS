@@ -1,11 +1,25 @@
 package com.sanguine.webpos.controller;
 
+
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.swing.ImageIcon;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +30,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.io.File;
+
 import org.springframework.web.servlet.ModelAndView;
+
+import com.lowagie.text.pdf.codec.Base64.InputStream;
+
+import java.io.OutputStream;
 
 import com.sanguine.base.service.clsBaseServiceImpl;
 import com.sanguine.controller.clsGlobalFunctions;
@@ -49,6 +70,9 @@ public class clsPOSMenuItemMasterController{
 	
 	@Autowired
 	clsPOSMasterService objMasterService;
+	@Autowired
+	private ServletContext servletContext;
+
 
 	Map<String,String> hmSubGroupName=new HashMap<String,String>();
 	Map<String,String> hmSubGroupCode=new HashMap<String,String>();
@@ -154,7 +178,7 @@ public class clsPOSMenuItemMasterController{
 	
 
 	@RequestMapping(value = "/saveMenuItemMaster", method = RequestMethod.POST)
-	public ModelAndView funAddUpdate(@ModelAttribute("command") @Valid clsPOSMenuItemMasterBean objBean,BindingResult result,HttpServletRequest req)
+	public ModelAndView funAddUpdate(@ModelAttribute("command") @Valid clsPOSMenuItemMasterBean objBean,BindingResult result,HttpServletRequest req, @RequestParam("memberImage") MultipartFile file)
 	{
 		String urlHits="1";
 		                                                                                                                                                                   
@@ -226,7 +250,92 @@ public class clsPOSMenuItemMasterController{
 		    objModel.setDblReceivedConversion(objBean.getDblReceivedConversion());
 		    objModel.setDblRecipeConversion(objBean.getDblRecipeConversion());
 		    objModel.setStrHSNNo(objBean.getStrHSNNo());
-		    objModel.setImgImage("");
+		    if (file!=null && file.getSize() != 0) {
+				System.out.println(file.getOriginalFilename());
+				File imgFolder = new File(System.getProperty("user.dir") + "\\ProductIcon");
+				if (!imgFolder.exists()) {
+					if (imgFolder.mkdir()) {
+						System.out.println("Directory is created! " + imgFolder.getAbsolutePath());
+					} else {
+						System.out.println("Failed to create directory!");
+					}
+				}
+				
+				try {
+				File fileImageIcon = new File(System.getProperty("user.dir") + "\\ProductIcon\\" + file.getOriginalFilename());
+				String formatName = "jpg";
+				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+				BufferedImage bufferedImage = ImageIO.read(funInputStreamToBytearrayInputStrean(file.getInputStream()));
+				String path = fileImageIcon.getPath().toString();			
+				ImageIO.write(bufferedImage, "jpg", new File(path));			
+				BufferedImage bfImg = scaleImage(150, 155, path);
+				ImageIO.write(bfImg, "jpg", byteArrayOutputStream);
+				byte[] imageBytes = byteArrayOutputStream.toByteArray();
+				ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageBytes);
+				
+					if (fileImageIcon.exists()) {
+						fileImageIcon.delete();
+						objModel.setImgImage(imageBytes);
+					}
+					else {
+						//objModel.setStrMemberImage(funBlankBlob());
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			else
+			{
+				String imagePath = servletContext.getRealPath("/resources/images/NoImageAlternate.png");
+				
+
+				/*System.out.println(file.getOriginalFilename());*/
+				File imgFolder = new File(imagePath);
+				if (!imgFolder.exists()) {
+					if (imgFolder.mkdir()) {
+						System.out.println("Directory is created! " + imgFolder.getAbsolutePath());
+					} else {
+						System.out.println("Failed to create directory!");
+					}
+				}
+				
+				try {
+					if(file!=null && !file.isEmpty()){
+				File fileImageIcon = new File(System.getProperty("user.dir") + "\\ProductIcon\\" + file.getOriginalFilename());
+				String formatName = "jpg";
+				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+				BufferedImage bufferedImage = ImageIO.read(funInputStreamToBytearrayInputStrean(file.getInputStream()));
+				String path = fileImageIcon.getPath().toString();	
+				
+				if(bufferedImage!=null)
+				{
+					ImageIO.write(bufferedImage, "jpg", new File(imagePath));	
+				}
+					
+				
+						
+				BufferedImage bfImg = scaleImage(150, 155, imagePath);
+				ImageIO.write(bfImg, "jpg", byteArrayOutputStream);
+				byte[] imageBytes = byteArrayOutputStream.toByteArray();
+				ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageBytes);
+				
+					if (fileImageIcon.exists()) {
+						fileImageIcon.delete();
+						objModel.setImgImage(imageBytes);
+					}
+					}
+					else {
+						//objModel.setStrMemberImage(funBlankBlob());
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+			}
+		    
 		    objMasterService.funSaveUpdateMenuItemMaster(objModel);
 						
 		    if(objBean.getListChildItemDtl()!=null && objBean.getListChildItemDtl().size()>0)
@@ -340,6 +449,75 @@ public class clsPOSMenuItemMasterController{
 		return objModel;
 	}
 	//
+	@SuppressWarnings("resource")
+	@RequestMapping(value = "/loadGuestImage", method = RequestMethod.GET)
+	public void getImage(@RequestParam("guestCode") String itemCode, HttpServletRequest req, HttpServletResponse response) throws Exception {
+		String clientCode = req.getSession().getAttribute("gClientCode").toString();			
+		StringBuilder sbSql = new StringBuilder();
+		clsPOSMenuItemMasterBean objMenuItemMasterBean=null;
+		
+		clsMenuItemMasterModel objMenuItemMasterModel = objMasterService.funGetMenuItemMasterData(itemCode,clientCode);
+		objMenuItemMasterBean=new clsPOSMenuItemMasterBean();
+		
+		try {
+			//Blob image = null;
+			
+			if(objMenuItemMasterModel!=null && !objMenuItemMasterModel.toString().isEmpty())
+			{
+				byte[] imgData = null;
+				imgData =objMenuItemMasterModel.getImgImage();
+				response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
+				OutputStream o = response.getOutputStream();
+				o.write(imgData);
+				o.flush();
+				o.close();
+			}
+			//}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@SuppressWarnings("finally")
+	private ByteArrayInputStream funInputStreamToBytearrayInputStrean(java.io.InputStream inputStream) {
+		ByteArrayInputStream byteArrayInputStream = null;
+		try {
+			byte[] buff = new byte[8000];
+
+			int bytesRead = 0;
+
+			ByteArrayOutputStream bao = new ByteArrayOutputStream();
+
+			while ((bytesRead = inputStream.read(buff)) != -1) {
+				bao.write(buff, 0, bytesRead);
+			}
+
+			byte[] data = bao.toByteArray();
+
+			byteArrayInputStream = new ByteArrayInputStream(data);
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+
+		} finally {
+			return byteArrayInputStream;
+		}
+	}
+	
+	public BufferedImage scaleImage(int WIDTH, int HEIGHT, String filename) {
+		BufferedImage bi = null;
+		try {
+			ImageIcon ii = new ImageIcon(filename);// path to image
+			bi = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+			Graphics2D gra2d = (Graphics2D) bi.createGraphics();
+			gra2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
+			gra2d.drawImage(ii.getImage(), 0, 0, WIDTH, HEIGHT, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return bi;
+	}
 
 }
 

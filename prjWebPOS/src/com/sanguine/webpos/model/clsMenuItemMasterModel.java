@@ -157,7 +157,7 @@ public class clsMenuItemMasterModel extends clsBaseModel implements Serializable
 	private String strUOM;
 	
 	@Column(name="imgImage")
-	private String imgImage;
+	private byte[] imgImage;
 	
 	@Column(name="tmeTargetMiss")
 	private String tmeTargetMiss;
@@ -190,14 +190,6 @@ public class clsMenuItemMasterModel extends clsBaseModel implements Serializable
 //	@Column(name="strHSNNo")
 //	private String strHSNNo;
 	
-	public String getImgImage() {
-		return imgImage;
-	}
-
-	public void setImgImage(String imgImage) {
-		this.imgImage =(String) setDefaultValue(imgImage, "");
-	}
-
 	public String getStrUOM() {
 		return strUOM;
 	}
@@ -228,12 +220,6 @@ public class clsMenuItemMasterModel extends clsBaseModel implements Serializable
 		this. strSubGroupCode = (String) setDefaultValue( strSubGroupCode, "NA");
 	}
 
-	public String getStrItemImage(){
-		return strItemImage;
-	}
-	public void setStrItemImage(String strItemImage){
-		this. strItemImage = (String) setDefaultValue( strItemImage, "");
-	}
 
 	public String getStrTaxIndicator(){
 		return strTaxIndicator;
@@ -545,6 +531,28 @@ public class clsMenuItemMasterModel extends clsBaseModel implements Serializable
 	{
 		return serialVersionUID;
 	}
+
+	public String getStrItemImage()
+	{
+		return strItemImage;
+	}
+
+	public void setStrItemImage(String strItemImage)
+	{
+		this.strItemImage = strItemImage;
+	}
+
+	public byte[] getImgImage()
+	{
+		return imgImage;
+	}
+
+	public void setImgImage(byte[] imgImage)
+	{
+		this.imgImage = imgImage;
+	}
+
+	
 
 
 
