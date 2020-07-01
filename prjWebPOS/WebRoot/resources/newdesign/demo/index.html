@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Material Dash</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="../assets/vendors/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="../assets/vendors/css/vendor.bundle.base.css">
+  <!-- endinject -->
+  <!-- Plugin css for this page -->
+  <link rel="stylesheet" href="../assets/vendors/flag-icon-css/css/flag-icon.min.css">
+  <link rel="stylesheet" href="../assets/vendors/jvectormap/jquery-jvectormap.css">
+  <!-- End plugin css for this page -->
+  <!-- Layout styles -->
+  <link rel="stylesheet" href="../assets/css/demo/style.css">
+  <!-- End layout styles -->
+  <link rel="shortcut icon" href="../assets/images/favicon.png" />
+</head>
+<body>
+<script src="../assets/js/preloader.js"></script>
+  <div class="body-wrapper">
+    <!-- partial:partials/_sidebar.html -->
+    <aside class="mdc-drawer mdc-drawer--dismissible mdc-drawer--open">
+      
+      <div class="mdc-drawer__content">
+        <div class="user-info">
+          <p class="name">Sumeet1</p>
+          <p class="email">sumeet@zbot.com</p>
+        </div>
+        <div class="mdc-list-group">
+          <nav class="mdc-list mdc-drawer-menu">
+            <div class="mdc-list-item mdc-drawer-item">
+              <a class="mdc-drawer-link" href="index.html">
+                <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">home</i>
+                Dashboard
+              </a>
+            </div>
+            <div class="mdc-list-item mdc-drawer-item">
+              <a class="mdc-drawer-link" href="pages/forms/basic-forms.html">
+                <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">track_changes</i>
+                Forms
+              </a>
+            </div>
+            <div class="mdc-list-item mdc-drawer-item">
+              <a class="mdc-expansion-panel-link" href="#" data-toggle="expansionPanel" data-target="ui-sub-menu">
+                <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">dashboard</i>
+                UI Features
+                <i class="mdc-drawer-arrow material-icons">chevron_right</i>
+              </a>
+              <div class="mdc-expansion-panel" id="ui-sub-menu">
+                <nav class="mdc-list mdc-drawer-submenu">
+                  <div class="mdc-list-item mdc-drawer-item">
+                    <a class="mdc-drawer-link" href="pages/ui-features/buttons.html">
+                      Buttons
+                    </a>
+                  </div>
+                  <div class="mdc-list-item mdc-drawer-item">
+                    <a class="mdc-drawer-link" href="pages/ui-features/typography.html">
+                      Typography
+                    </a>
+                  </div>
+                </nav>
+              </div>
+            </div>
+            <div class="mdc-list-item mdc-drawer-item">
+              <a class="mdc-drawer-link" href="pages/tables/basic-tables.html">
+                <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">grid_on</i>
+                Tables
+              </a>
+            </div>
+            <div class="mdc-list-item mdc-drawer-item">
+              <a class="mdc-drawer-link" href="pages/charts/chartjs.html">
+                <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">pie_chart_outlined</i>
+                Charts
+              </a>
+            </div>
+            <div class="mdc-list-item mdc-drawer-item">
+              <a class="mdc-expansion-panel-link" href="#" data-toggle="expansionPanel" data-target="sample-page-submenu">
+                <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">pages</i>
+                Sample Pages
+                <i class="mdc-drawer-arrow material-icons">chevron_right</i>
+              </a>
+              <div class="mdc-expansion-panel" id="sample-page-submenu">
+                <nav class="mdc-list mdc-drawer-submenu">
+                  <div class="mdc-list-item mdc-drawer-item">
+                    <a class="mdc-drawer-link" href="pages/samples/blank-page.html">
+                      Blank Page
+                    </a>
+                  </div>
+                  <div class="mdc-list-item mdc-drawer-item">
+                    <a class="mdc-drawer-link" href="pages/samples/403.html">
+                      403
+                    </a>
+                  </div>
+                  <div class="mdc-list-item mdc-drawer-item">
+                    <a class="mdc-drawer-link" href="pages/samples/404.html">
+                      404
+                    </a>
+                  </div>
+                  <div class="mdc-list-item mdc-drawer-item">
+                    <a class="mdc-drawer-link" href="pages/samples/500.html">
+                      500
+                    </a>
+                  </div>
+                  <div class="mdc-list-item mdc-drawer-item">
+                    <a class="mdc-drawer-link" href="pages/samples/505.html">
+                      505
+                    </a>
+                  </div>
+                  <div class="mdc-list-item mdc-drawer-item">
+                    <a class="mdc-drawer-link" href="pages/samples/login.html">
+                      Login
+                    </a>
+                  </div>
+                  <div class="mdc-list-item mdc-drawer-item">
+                    <a class="mdc-drawer-link" href="pages/samples/register.html">
+                      Register
+                    </a>
+                  </div>
+                </nav>
+              </div>
+            </div>
+            <div class="mdc-list-item mdc-drawer-item">
+              <a class="mdc-drawer-link" href="https://www.bootstrapdash.com/demo/material-admin-free/jquery/documentation/documentation.html" target="_blank">
+                <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">description</i>
+                Documentation
+              </a>
+            </div>
+          </nav>
+        </div>
+        <div class="profile-actions">
+          <a href="javascript:;">Settings</a>
+          <span class="divider"></span>
+          <a href="javascript:;">Logout</a>
+        </div>
+        <!--div class="mdc-card premium-card">
+          <div class="d-flex align-items-center">
+            <div class="mdc-card icon-card box-shadow-0">
+              <i class="mdi mdi-shield-outline"></i>
+            </div>
+            <div>
+              <p class="mt-0 mb-1 ml-2 font-weight-bold tx-12">Material Dash</p>
+              <p class="mt-0 mb-0 ml-2 tx-10">Pro available</p>
+            </div>
+          </div>
+          <p class="tx-8 mt-3 mb-1">More elements. More Pages.</p>
+          <p class="tx-8 mb-3">Starting from $25.</p>
+          <a href="https://www.bootstrapdash.com/product/material-design-admin-template/" target="_blank">
+						<span class="mdc-button mdc-button--raised mdc-button--white">Upgrade to Pro</span>
+					</a>
+        </div-->
+      </div>
+    </aside>
+    <!-- partial -->
+    <div class="main-wrapper mdc-drawer-app-content">
+      <!-- partial:partials/_navbar.html -->
+      <header class="mdc-top-app-bar">
+        <div class="mdc-top-app-bar__row">
+          <div class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+            <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button sidebar-toggler">menu</button>
+            <span class="mdc-top-app-bar__title"><img src="../assets/images/sanguinelogo.jpg"></span>
+            <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none d-md-flex">
+              <i class="material-icons mdc-text-field__icon">search</i>
+              <input class="mdc-text-field__input" id="text-field-hero-input">
+              <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__notch">
+                  <label for="text-field-hero-input" class="mdc-floating-label">Search..</label>
+                </div>
+                <div class="mdc-notched-outline__trailing"></div>
+              </div>
+            </div>
+          </div>
+          <div class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end mdc-top-app-bar__section-right">
+            <div class="menu-button-container menu-profile d-none d-md-block">
+              <button class="mdc-button mdc-menu-button">
+                <span class="d-flex align-items-center">
+                  <span class="figure">
+                    <img src="../assets/images/faces/face1.jpg" alt="user" class="user">
+                  </span>
+                  <span class="user-name">Sumit1</span>
+                </span>
+              </button>
+              <div class="mdc-menu mdc-menu-surface" tabindex="-1">
+                <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+                  <li class="mdc-list-item" role="menuitem">
+                    <div class="item-thumbnail item-thumbnail-icon-only">
+                      <i class="mdi mdi-account-edit-outline text-primary"></i>
+                    </div>
+                    <div class="item-content d-flex align-items-start flex-column justify-content-center">
+                      <h6 class="item-subject font-weight-normal">Edit profile</h6>
+                    </div>
+                  </li>
+                  <li class="mdc-list-item" role="menuitem">
+                    <div class="item-thumbnail item-thumbnail-icon-only">
+                      <i class="mdi mdi-settings-outline text-primary"></i>                      
+                    </div>
+                    <div class="item-content d-flex align-items-start flex-column justify-content-center">
+                      <h6 class="item-subject font-weight-normal">Logout</h6>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="divider d-none d-md-block"></div>
+            
+            <div class="menu-button-container">
+			
+              <button class="mdc-button mdc-menu-button">
+                <i class="mdi mdi-home"></i>
+               
+              </button>
+              <div class="mdc-menu mdc-menu-surface" tabindex="-1">
+                <h6 class="title"><i class="mdi mdi-email-outline mr-2 tx-16"></i> Messages</h6>
+                <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+                  <li class="mdc-list-item" role="menuitem">
+                    <div class="item-thumbnail">
+                      <img src="../assets/images/faces/face4.jpg" alt="user">
+                    </div>
+                    <div class="item-content d-flex align-items-start flex-column justify-content-center">
+                      <h6 class="item-subject font-weight-normal">Mark send you a message</h6>
+                      <small class="text-muted"> 1 Minutes ago </small>
+                    </div>
+                  </li>
+                  <li class="mdc-list-item" role="menuitem">
+                    <div class="item-thumbnail">
+                      <img src="../assets/images/faces/face2.jpg" alt="user">
+                    </div>
+                    <div class="item-content d-flex align-items-start flex-column justify-content-center">
+                      <h6 class="item-subject font-weight-normal">Cregh send you a message</h6>
+                      <small class="text-muted"> 15 Minutes ago </small>
+                    </div>
+                  </li>
+                  <li class="mdc-list-item" role="menuitem">
+                    <div class="item-thumbnail">
+                      <img src="../assets/images/faces/face3.jpg" alt="user">
+                    </div>
+                    <div class="item-content d-flex align-items-start flex-column justify-content-center">
+                      <h6 class="item-subject font-weight-normal">Profile picture updated</h6>
+                      <small class="text-muted"> 18 Minutes ago </small>
+                    </div>
+                  </li>                
+                </ul>
+              </div>
+            </div>
+            <div class="menu-button-container">
+			
+              <button class="mdc-button mdc-menu-button">
+                <i class="mdi mdi-bell"></i>
+                <span class="count-indicator">
+                  <span class="count">3</span>
+                </span>
+              </button>
+              <div class="mdc-menu mdc-menu-surface" tabindex="-1">
+                <h6 class="title"><i class="mdi mdi-email-outline mr-2 tx-16"></i> Messages</h6>
+                <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+                  <li class="mdc-list-item" role="menuitem">
+                    <div class="item-thumbnail">
+                      <img src="../assets/images/faces/face4.jpg" alt="user">
+                    </div>
+                    <div class="item-content d-flex align-items-start flex-column justify-content-center">
+                      <h6 class="item-subject font-weight-normal">Mark send you a message</h6>
+                      <small class="text-muted"> 1 Minutes ago </small>
+                    </div>
+                  </li>
+                  <li class="mdc-list-item" role="menuitem">
+                    <div class="item-thumbnail">
+                      <img src="../assets/images/faces/face2.jpg" alt="user">
+                    </div>
+                    <div class="item-content d-flex align-items-start flex-column justify-content-center">
+                      <h6 class="item-subject font-weight-normal">Cregh send you a message</h6>
+                      <small class="text-muted"> 15 Minutes ago </small>
+                    </div>
+                  </li>
+                  <li class="mdc-list-item" role="menuitem">
+                    <div class="item-thumbnail">
+                      <img src="../assets/images/faces/face3.jpg" alt="user">
+                    </div>
+                    <div class="item-content d-flex align-items-start flex-column justify-content-center">
+                      <h6 class="item-subject font-weight-normal">Profile picture updated</h6>
+                      <small class="text-muted"> 18 Minutes ago </small>
+                    </div>
+                  </li>                
+                </ul>
+              </div>
+            </div>
+            <div class="menu-button-container d-none d-md-block">
+              <button class="mdc-button mdc-menu-button">
+                <i class="mdi mdi-arrow-down-bold-box"></i>
+              </button>
+              <div class="mdc-menu mdc-menu-surface" tabindex="-1">
+                <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+                  <li class="mdc-list-item" role="menuitem">
+                    <div class="item-thumbnail item-thumbnail-icon-only">
+                      <i class="mdi mdi-lock-outline text-primary"></i>
+                    </div>
+                    <div class="item-content d-flex align-items-start flex-column justify-content-center">
+                      <h6 class="item-subject font-weight-normal">Lock screen</h6>
+                    </div>
+                  </li>
+                  <li class="mdc-list-item" role="menuitem">
+                    <div class="item-thumbnail item-thumbnail-icon-only">
+                      <i class="mdi mdi-logout-variant text-primary"></i>                      
+                    </div>
+                    <div class="item-content d-flex align-items-start flex-column justify-content-center">
+                      <h6 class="item-subject font-weight-normal">Logout</h6>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      <!-- partial -->
+      <div class="page-wrapper mdc-toolbar-fixed-adjust">
+        <main class="content-wrapper">
+		<table width="100%" border="0">
+			<tr width="100%">
+			<td width="25%">
+					<table width="100%" class="mdc-card info-card">
+						<tr>
+							<td width="50%">
+								<h5 class="tablehead" nowrap>Bill No: 343434</h5> 
+							</td>
+							
+							<td width="50%">
+								<h5 class="tablehead" nowrap>Table No: 343</h5>
+							</td>
+							
+						</tr>
+					</table>	
+					
+					<table width="100%" class="mdc-card info-card3">
+						<tr>
+						
+							<td width="65%">
+								<h5 class="tablehead" nowrap>Description</h5> 
+							</td>
+							<td width="15%">
+								<h5 class="tablehead">Qty</h5> 
+							</td>
+							<td width="15%">
+								<h5 class="tablehead" nowrap align="right">Amount</h5>
+							</td>
+						</tr>
+						<tr class="trcolor">						
+							<td width="65%">
+								<h5 class="tablehead" nowrap>Asahi</h5> 
+							</td>
+							<td width="15%">
+								<h5 class="tablehead" align="right">1</h5> 
+							</td>
+							<td width="15%">
+								<h5 class="tablehead" nowrap align="right">2364</h5>
+							</td>
+						</tr>	
+						<tr class="trcolor">						
+							<td width="65%">
+								<h5 class="tablehead" nowrap>Asahi</h5> 
+							</td>
+							<td width="15%">
+								<h5 class="tablehead" align="right">1</h5> 
+							</td>
+							<td width="15%">
+								<h5 class="tablehead" nowrap align="right">2364</h5>
+							</td>
+						</tr>
+						<tr class="trcolor">						
+							<td width="65%">
+								<h5 class="tablehead" nowrap>Asahi</h5> 
+							</td>
+							<td width="15%">
+								<h5 class="tablehead" align="right">1</h5> 
+							</td>
+							<td width="15%">
+								<h5 class="tablehead" nowrap align="right">2364</h5>
+							</td>
+						</tr>
+						<tr class="trcolor">						
+							<td width="65%">
+								<h5 class="tablehead" nowrap>Asahi</h5> 
+							</td>
+							<td width="15%">
+								<h5 class="tablehead" align="right">1</h5> 
+							</td>
+							<td width="15%">
+								<h5 class="tablehead" nowrap align="right">2364</h5>
+							</td>
+						</tr>
+						<tr class="trcolor">						
+							<td width="65%">
+								<h5 class="tablehead" nowrap>Asahi</h5> 
+							</td>
+							<td width="15%">
+								<h5 class="tablehead" align="right">1</h5> 
+							</td>
+							<td width="15%">
+								<h5 class="tablehead" nowrap align="right">2364</h5>
+							</td>
+						</tr>
+						<tr>						
+							<td width="65%" height="100">
+								
+							</td>
+							<td width="15%">
+								
+							</td>
+							<td width="15%">
+								
+							</td>
+						</tr>	
+						
+						<tr class="trcolor">						
+							<td width="65%" colspan="2">
+								<h5 class="tablehead" nowrap>Asahi</h5> 
+							</td>
+							
+							<td width="15%">
+								<h5 class="tablehead" nowrap align="right">2364</h5>
+							</td>
+						</tr>
+						<tr class="trcolorred">						
+							<td width="65%" colspan="2">
+								<h5 class="tablehead" nowrap>Discount</h5> 
+							</td>
+							
+							<td width="15%">
+								<h5 class="tablehead" nowrap align="right">100</h5>
+							</td>
+						</tr>
+						<tr class="trcolor">						
+							<td width="65%" colspan="2">
+								<h5 class="tablehead" nowrap>Net Total</h5> 
+							</td>
+							
+							<td width="15%">
+								<h5 class="tablehead" nowrap align="right">2343</h5>
+							</td>
+						</tr>
+						<tr class="trcolor">						
+							<td width="65%" colspan="2">
+								<h5 class="tablehead" nowrap>Asahi</h5> 
+							</td>
+							
+							<td width="15%">
+								<h5 class="tablehead" nowrap align="right">2364</h5>
+							</td>
+						</tr>
+						<tr class="trcolor">						
+							<td width="65%" colspan="2">
+								<h5 class="tablehead" nowrap>VAT @ 5% (LIQUOR)</h5> 
+							</td>
+							
+							<td width="15%">
+								<h5 class="tablehead" nowrap align="right">8773</h5>
+							</td>
+						</tr>
+						<tr class="trcolor">						
+							<td width="65%" colspan="2">
+								<h5 class="tablehead" nowrap>GRAND TOTAL</h5> 
+							</td>
+							
+							<td width="15%">
+								<h5 class="tablehead" nowrap align="right">9837</h5>
+							</td>
+						</tr>
+						<tr class="trcolor">						
+							<td width="65%" colspan="2">
+								<h5 class="tablehead" nowrap>PAYMENT MODE</h5> 
+							</td>
+							
+							<td width="15%">
+								<h5 class="tablehead" nowrap align="right">CASH</h5>
+							</td>
+						</tr>
+						
+					</table>					
+			</td>
+			<td width="100%">
+			
+			
+			<table width="100%" class="mdc-card info-card2">
+						<tr>
+							<td align="center">
+								<table width="95%" class="mdc-card info-card4">
+									<tr>
+										<td align="center">
+											<img src="../assets/images/cashicon.png" border="0"> 
+										</td>
+										
+										
+									</tr>
+									<tr align="center">
+										<td>
+											<h5 class="tablehead" nowrap>Cash</h5> 
+										</td>						
+									</tr>
+								</table>
+							</td>
+							<td align="center">
+								<table width="95%" class="mdc-card info-card4">
+									<tr>
+										<td align="center">
+											<img src="../assets/images/cashicon.png" border="0"> 
+										</td>
+										
+										
+									</tr>
+									<tr align="center">
+										<td>
+											<h5 class="tablehead" nowrap>Cash</h5> 
+										</td>						
+									</tr>
+								</table>
+							</td>
+							<td align="center">
+								<table width="95%" class="mdc-card info-card4">
+									<tr>
+										<td align="center">
+											<img src="../assets/images/cashicon.png" border="0"> 
+										</td>
+										
+										
+									</tr>
+									<tr align="center">
+										<td>
+											<h5 class="tablehead" nowrap>Cash</h5> 
+										</td>						
+									</tr>
+								</table>
+							</td>
+							<td align="center">
+								<table width="95%" class="mdc-card info-card4">
+									<tr>
+										<td align="center">
+											<img src="../assets/images/cashicon.png" border="0"> 
+										</td>
+										
+										
+									</tr>
+									<tr align="center">
+										<td>
+											<h5 class="tablehead" nowrap>Cash</h5> 
+										</td>						
+									</tr>
+								</table>
+							</td>
+							<td align="center">
+								<table width="95%" class="mdc-card info-card4">
+									<tr>
+										<td align="center">
+											<img src="../assets/images/cashicon.png" border="0"> 
+										</td>
+										
+										
+									</tr>
+									<tr align="center">
+										<td>
+											<h5 class="tablehead" nowrap>Cash</h5> 
+										</td>						
+									</tr>
+								</table>
+							</td>
+							<td align="center">
+								<table width="95%" class="mdc-card info-card4">
+									<tr>
+										<td align="center">
+											<img src="../assets/images/cashicon.png" border="0"> 
+										</td>
+										
+										
+									</tr>
+									<tr align="center">
+										<td>
+											<h5 class="tablehead" nowrap>Cash</h5> 
+										</td>						
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="6" width="100%">
+							<table width="100%" border="0">
+								<tr>
+									<td width="15%">
+										<h5 class="tablehead" nowrap>Bill Amount</h5>
+									</td>
+									<td width="20%">
+										<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none d-md-flex">
+										  <input class="mdc-text-field__input" id="text-field-hero-input">
+											  <div class="mdc-notched-outline mdc-notched-outline--upgraded">
+												<div class="mdc-notched-outline__leading"></div>
+												<div class="mdc-notched-outline__notch" style="">
+												  <label for="text-field-hero-input" style=""></label>
+												</div>
+												<div class="mdc-notched-outline__trailing"></div>
+											  </div>
+										</div>
+									</td>
+									<td width="2%">
+										
+									</td>
+									
+									<td width="22%">
+										<h5 class="tablehead" nowrap></h5>
+									</td>
+									<td width="15%">
+										<h5 class="tablehead" nowrap>Discount %</h5>
+									</td>
+									<td width="30%">
+										<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none d-md-flex">
+										  <input class="mdc-text-field__input" id="text-field-hero-input">
+											  <div class="mdc-notched-outline mdc-notched-outline--upgraded">
+												<div class="mdc-notched-outline__leading"></div>
+												<div class="mdc-notched-outline__notch" style="">
+												  <label for="text-field-hero-input" style=""></label>
+												</div>
+												<div class="mdc-notched-outline__trailing"></div>
+											  </div>
+										</div>
+									</td>
+									<td width="2%">
+										
+									</td>
+								</tr>
+								<tr>
+									<td width="15%">
+										<h5 class="tablehead" nowrap>Paid Amount</h5>
+									</td>
+									<td width="20%">
+										<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none d-md-flex">
+										  <input class="mdc-text-field__input" id="text-field-hero-input">
+											  <div class="mdc-notched-outline mdc-notched-outline--upgraded">
+												<div class="mdc-notched-outline__leading"></div>
+												<div class="mdc-notched-outline__notch" style="">
+												  <label for="text-field-hero-input" style=""></label>
+												</div>
+												<div class="mdc-notched-outline__trailing"></div>
+											  </div>
+										</div>
+									</td>
+									<td width="2%">
+										
+									</td>
+									
+									<td width="22%">
+										<h5 class="tablehead" nowrap></h5>
+									</td>
+									<td width="15%">
+										<h5 class="tablehead" nowrap>Discount Amt</h5>
+									</td>
+									<td width="30%">
+										<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none d-md-flex">
+										  <input class="mdc-text-field__input" id="text-field-hero-input">
+											  <div class="mdc-notched-outline mdc-notched-outline--upgraded">
+												<div class="mdc-notched-outline__leading"></div>
+												<div class="mdc-notched-outline__notch" style="">
+												  <label for="text-field-hero-input" style=""></label>
+												</div>
+												<div class="mdc-notched-outline__trailing"></div>
+											  </div>
+										</div>
+									</td>
+									<td width="2%">
+										<a href="javascript:void(0)" class="mdc-button mdc-button--raised mdc-ripple-upgraded" style="--mdc-ripple-fg-size:38px; --mdc-ripple-fg-scale:2.19553; --mdc-ripple-fg-translate-start:4.28125px, 4px; --mdc-ripple-fg-translate-end:13px, -1px;">
+										  OK
+										</a>
+									</td>
+								</tr>
+								<tr>
+									<td width="15%">
+										<h5 class="tablehead" nowrap>Balance</h5>
+									</td>
+									<td width="20%">
+										<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none d-md-flex">
+										  <input class="mdc-text-field__input" id="text-field-hero-input">
+											  <div class="mdc-notched-outline mdc-notched-outline--upgraded">
+												<div class="mdc-notched-outline__leading"></div>
+												<div class="mdc-notched-outline__notch" style="">
+												  <label for="text-field-hero-input" style=""></label>
+												</div>
+												<div class="mdc-notched-outline__trailing"></div>
+											  </div>
+										</div>
+									</td>
+									
+									<td width="67%" colspan="4" align="right">
+										<table>
+											<tr>
+												<td><h5 class="tablehead" nowrap><input type="radio" id="male" name="gender" value="Sub Group">
+										<label for="male">Sub Group</label></h5>
+												</td>
+												<td>
+										<h5 class="tablehead" nowrap><input type="radio" id="male" name="gender" value="Sub Group">
+										<label for="male">Item</label></h5>
+												</td>
+												<td>
+										<h5 class="tablehead" nowrap><input type="radio" id="male" name="gender" value="Sub Group">
+										<label for="male">Group</label></h5>
+												</td>
+												<td>
+										<h5 class="tablehead" nowrap><input type="radio" id="male" name="gender" value="Sub Group">
+										<label for="male">Total</label></h5>
+												</td>
+											</tr>
+										</table>
+										
+									</td>
+
+								</tr>
+								<tr>
+									<td width="15%">
+										<h5 class="tablehead" nowrap>Card Balance</h5>
+									</td>
+									<td width="20%">
+										<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none d-md-flex">
+										  <input class="mdc-text-field__input" id="text-field-hero-input">
+											  <div class="mdc-notched-outline mdc-notched-outline--upgraded">
+												<div class="mdc-notched-outline__leading"></div>
+												<div class="mdc-notched-outline__notch" style="">
+												  <label for="text-field-hero-input" style=""></label>
+												</div>
+												<div class="mdc-notched-outline__trailing"></div>
+											  </div>
+										</div>
+									</td>
+								
+									<td width="67%" colspan="4" align="right">
+										<table width="94%">
+											<tr>
+												<td><h5 class="tablehead" style="white-space:nowrap" align="right">Manual Bil No.</h5></td>
+												<td width="20%">
+														<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none d-md-flex">
+														  <input class="mdc-text-field__input" id="text-field-hero-input">
+															  <div class="mdc-notched-outline mdc-notched-outline--upgraded">
+																<div class="mdc-notched-outline__leading"></div>
+																<div class="mdc-notched-outline__notch" style="">
+																  <label for="text-field-hero-input" style=""></label>
+																</div>
+																<div class="mdc-notched-outline__trailing"></div>
+															  </div>
+														</div>
+												</td>
+												<td><h5 class="tablehead" align="right" >Tip</h5></td>
+												<td width="10%">
+														<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none d-md-flex">
+														  <input class="mdc-text-field__input" id="text-field-hero-input">
+															  <div class="mdc-notched-outline mdc-notched-outline--upgraded">
+																<div class="mdc-notched-outline__leading"></div>
+																<div class="mdc-notched-outline__notch" style="">
+																  <label for="text-field-hero-input" style=""></label>
+																</div>
+																<div class="mdc-notched-outline__trailing"></div>
+															  </div>
+														</div>
+												</td>
+												<td><h5 class="tablehead" style="white-space:nowrap" align="right">Del Charges</h5></td>
+												<td width="10%">
+													<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none d-md-flex">
+														  <input class="mdc-text-field__input" id="text-field-hero-input">
+															  <div class="mdc-notched-outline mdc-notched-outline--upgraded">
+																<div class="mdc-notched-outline__leading"></div>
+																<div class="mdc-notched-outline__notch" style="">
+																  <label for="text-field-hero-input" style=""></label>
+																</div>
+																<div class="mdc-notched-outline__trailing"></div>
+															  </div>
+														</div>
+												</td>
+											</tr>
+										</table>
+										
+										
+									</td>
+									
+									<td width="2%">
+										<a href="javascript:void(0)" class="mdc-button mdc-button--raised mdc-ripple-upgraded" style="--mdc-ripple-fg-size:38px; --mdc-ripple-fg-scale:2.19553; --mdc-ripple-fg-translate-start:4.28125px, 4px; --mdc-ripple-fg-translate-end:13px, -1px;">
+										  OK
+										</a>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="6" height="25">
+									</td>
+								</tr>
+								<tr>
+									<td width="15%">
+										<h5 class="tablehead" nowrap>Voucher Name</h5>
+									</td>
+									<td width="20%">
+										<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none d-md-flex">
+										  <input class="mdc-text-field__input" id="text-field-hero-input">
+											  <div class="mdc-notched-outline mdc-notched-outline--upgraded">
+												<div class="mdc-notched-outline__leading"></div>
+												<div class="mdc-notched-outline__notch" style="">
+												  <label for="text-field-hero-input" style=""></label>
+												</div>
+												<div class="mdc-notched-outline__trailing"></div>
+											  </div>
+										</div>
+									</td>
+									<td width="2%">
+										
+									</td>
+									
+									<td width="22%">
+										<h5 class="tablehead" nowrap></h5>
+									</td>
+									<td width="15%">
+										
+									</td>
+									<td width="30%">
+										
+									</td>
+									<td width="2%">
+										
+									</td>
+								</tr>
+								<tr>
+									<td width="15%">
+										<h5 class="tablehead" nowrap>Cheque No.</h5>
+									</td>
+									<td width="20%">
+										<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none d-md-flex">
+										  <input class="mdc-text-field__input" id="text-field-hero-input">
+											  <div class="mdc-notched-outline mdc-notched-outline--upgraded">
+												<div class="mdc-notched-outline__leading"></div>
+												<div class="mdc-notched-outline__notch" style="">
+												  <label for="text-field-hero-input" style=""></label>
+												</div>
+												<div class="mdc-notched-outline__trailing"></div>
+											  </div>
+										</div>
+									</td>
+									<td width="2%">
+										<a href="javascript:void(0)" class="mdc-button mdc-button--raised mdc-ripple-upgraded" style="--mdc-ripple-fg-size:38px; --mdc-ripple-fg-scale:2.19553; --mdc-ripple-fg-translate-start:4.28125px, 4px; --mdc-ripple-fg-translate-end:13px, -1px;">
+										  OK
+										</a>
+									</td>
+									
+									<td width="22%">
+										<h5 class="tablehead" nowrap></h5>
+									</td>
+									<td width="15%">
+										
+									</td>
+									<td width="30%">
+										
+									</td>
+									<td width="2%">
+										
+									</td>
+								</tr>								
+							</td>
+						</tr>						
+					</table>
+					
+					<table width="100%" border="0">
+						<td width="70%" valign="bottom">
+							<table width="80%">
+								<td><img src="../assets/images/backbt.png">
+								</td>
+								<td><img src="../assets/images/printbt.png">
+								</td>
+								<td><img src="../assets/images/settlebillbt.png">
+								</td>
+								<td><img src="../assets/images/showbillbt.png">
+								</td>
+							</table>
+						
+						</td>
+						<td width="30%">
+							<table width="100%">
+								<tr>
+										<td width="2%">
+											<a href="javascript:void(0)" class="mdc-buttongrey mdc-ripple-upgraded" style="--mdc-ripple-fg-size:38px; --mdc-ripple-fg-scale:2.19553; --mdc-ripple-fg-translate-start:4.28125px, 4px; --mdc-ripple-fg-translate-end:13px, -1px;">
+											  7
+											</a>
+										</td>
+										<td width="2%">
+											<a href="javascript:void(0)" class="mdc-buttongrey  mdc-ripple-upgraded" style="--mdc-ripple-fg-size:38px; --mdc-ripple-fg-scale:2.19553; --mdc-ripple-fg-translate-start:4.28125px, 4px; --mdc-ripple-fg-translate-end:13px, -1px;">
+											  8
+											</a>
+										</td>
+										<td width="2%">
+											<a href="javascript:void(0)" class="mdc-buttongrey  mdc-ripple-upgraded" style="--mdc-ripple-fg-size:38px; --mdc-ripple-fg-scale:2.19553; --mdc-ripple-fg-translate-start:4.28125px, 4px; --mdc-ripple-fg-translate-end:13px, -1px;">
+											  9
+											</a>
+										</td>
+										<td width="2%">
+											<a href="javascript:void(0)" class="mdc-buttongrey  mdc-ripple-upgraded" style="--mdc-ripple-fg-size:38px; --mdc-ripple-fg-scale:2.19553; --mdc-ripple-fg-translate-start:4.28125px, 4px; --mdc-ripple-fg-translate-end:13px, -1px;">
+											  C
+											</a>
+										</td>
+										<td width="2%">
+											<a href="javascript:void(0)" class="mdc-buttongrey mdc-ripple-upgraded" style="--mdc-ripple-fg-size:38px; --mdc-ripple-fg-scale:2.19553; --mdc-ripple-fg-translate-start:4.28125px, 4px; --mdc-ripple-fg-translate-end:13px, -1px;">
+											  10
+											</a>
+										</td>
+								</tr>
+								<tr>
+										<td width="2%">
+											<a href="javascript:void(0)" class="mdc-buttongrey mdc-ripple-upgraded" style="--mdc-ripple-fg-size:38px; --mdc-ripple-fg-scale:2.19553; --mdc-ripple-fg-translate-start:4.28125px, 4px; --mdc-ripple-fg-translate-end:13px, -1px;">
+											  4
+											</a>
+										</td>
+										<td width="2%">
+											<a href="javascript:void(0)" class="mdc-buttongrey mdc-ripple-upgraded" style="--mdc-ripple-fg-size:38px; --mdc-ripple-fg-scale:2.19553; --mdc-ripple-fg-translate-start:4.28125px, 4px; --mdc-ripple-fg-translate-end:13px, -1px;">
+											  5
+											</a>
+										</td>
+										<td width="2%">
+											<a href="javascript:void(0)" class="mdc-buttongrey mdc-ripple-upgraded" style="--mdc-ripple-fg-size:38px; --mdc-ripple-fg-scale:2.19553; --mdc-ripple-fg-translate-start:4.28125px, 4px; --mdc-ripple-fg-translate-end:13px, -1px;">
+											  6
+											</a>
+										</td>
+										<td width="2%">
+											<a href="javascript:void(0)" class="mdc-buttongrey mdc-ripple-upgraded" style="--mdc-ripple-fg-size:38px; --mdc-ripple-fg-scale:2.19553; --mdc-ripple-fg-translate-start:4.28125px, 4px; --mdc-ripple-fg-translate-end:13px, -1px;">
+											  0
+											</a>
+										</td>
+										<td width="2%">
+											<a href="javascript:void(0)" class="mdc-buttongrey mdc-ripple-upgraded" style="--mdc-ripple-fg-size:38px; --mdc-ripple-fg-scale:2.19553; --mdc-ripple-fg-translate-start:4.28125px, 4px; --mdc-ripple-fg-translate-end:13px, -1px;">
+											  20
+											</a>
+										</td>
+								</tr>
+								<tr>
+										<td width="2%">
+											<a href="javascript:void(0)" class="mdc-buttongrey mdc-ripple-upgraded" style="--mdc-ripple-fg-size:38px; --mdc-ripple-fg-scale:2.19553; --mdc-ripple-fg-translate-start:4.28125px, 4px; --mdc-ripple-fg-translate-end:13px, -1px;">
+											  1
+											</a>
+										</td>
+										<td width="2%">
+											<a href="javascript:void(0)" class="mdc-buttongrey mdc-ripple-upgraded" style="--mdc-ripple-fg-size:38px; --mdc-ripple-fg-scale:2.19553; --mdc-ripple-fg-translate-start:4.28125px, 4px; --mdc-ripple-fg-translate-end:13px, -1px;">
+											  2
+											</a>
+										</td>
+										<td width="2%">
+											<a href="javascript:void(0)" class="mdc-buttongrey mdc-ripple-upgraded" style="--mdc-ripple-fg-size:38px; --mdc-ripple-fg-scale:2.19553; --mdc-ripple-fg-translate-start:4.28125px, 4px; --mdc-ripple-fg-translate-end:13px, -1px;">
+											  3
+											</a>
+										</td>
+										<td width="2%">
+											<a href="javascript:void(0)" class="mdc-buttongrey mdc-ripple-upgraded" style="--mdc-ripple-fg-size:38px; --mdc-ripple-fg-scale:2.19553; --mdc-ripple-fg-translate-start:4.28125px, 4px; --mdc-ripple-fg-translate-end:13px, -1px;">
+											  00
+											</a>
+										</td>
+										<td width="2%">
+											<a href="javascript:void(0)" class="mdc-buttongrey mdc-ripple-upgraded" style="--mdc-ripple-fg-size:38px; --mdc-ripple-fg-scale:2.19553; --mdc-ripple-fg-translate-start:4.28125px, 4px; --mdc-ripple-fg-translate-end:13px, -1px;">
+											  100
+											</a>
+										</td>
+								</tr>
+								<tr>
+										<td width="2%">
+											<a href="javascript:void(0)" class="mdc-buttongrey mdc-ripple-upgraded" style="--mdc-ripple-fg-size:38px; --mdc-ripple-fg-scale:2.19553; --mdc-ripple-fg-translate-start:4.28125px, 4px; --mdc-ripple-fg-translate-end:13px, -1px;">
+											  . 	
+											</a>
+										</td>
+										<td width="2%">
+											<a href="javascript:void(0)" class="mdc-buttongrey mdc-ripple-upgraded" style="--mdc-ripple-fg-size:38px; --mdc-ripple-fg-scale:2.19553; --mdc-ripple-fg-translate-start:4.28125px, 4px; --mdc-ripple-fg-translate-end:13px, -1px;">
+											  x
+											</a>
+										</td>
+										<td width="4%" colspan="2">
+											<a href="javascript:void(0)" class="mdc-button2 mdc-button--raised mdc-ripple-upgraded" style="--mdc-ripple-fg-size:38px; --mdc-ripple-fg-scale:2.19553; --mdc-ripple-fg-translate-start:4.28125px, 4px; --mdc-ripple-fg-translate-end:13px, -1px;">
+											  e n t e r
+											</a>
+										</td>
+										mdc-buttongrey
+										<td width="2%">
+											<a href="javascript:void(0)" class="mdc-buttongrey mdc-ripple-upgraded" style="--mdc-ripple-fg-size:38px; --mdc-ripple-fg-scale:2.19553; --mdc-ripple-fg-translate-start:4.28125px, 4px; --mdc-ripple-fg-translate-end:13px, -1px;">
+											  500
+											</a>
+										</td>
+								</tr>
+							</table>
+						</td>
+					</table>
+					
+					
+					
+					
+					
+					
+					
+					
+			</td>
+			</tr>
+			
+		</table>
+		
+		
+		
+        
+		  
+				
+                 
+                    
+         
+		 
+		
+				  
+				 
+         
+              
+             
+             
+             
+              
+              
+              
+           
+        </main>
+        
+      </div>
+    </div>
+  </div>
+  <!-- plugins:js -->
+  <script src="../assets/vendors/js/vendor.bundle.base.js"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page-->
+  <script src="../assets/vendors/chartjs/Chart.min.js"></script>
+  <script src="../assets/vendors/jvectormap/jquery-jvectormap.min.js"></script>
+  <script src="../assets/vendors/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+  <!-- End plugin js for this page-->
+  <!-- inject:js -->
+  <script src="../assets/js/material.js"></script>
+  <script src="../assets/js/misc.js"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="../assets/js/dashboard.js"></script>
+  <!-- End custom js for this page-->
+</body>
+</html> 

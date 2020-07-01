@@ -9,7 +9,7 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<%-- <script type="text/javascript" src="<spring:url value="/resources/js/Transaction/WebPOSBillSettlement.js "/>"></script> --%>
+<script type="text/javascript" src="<spring:url value="/resources/js/Transaction/WebPOSBillSettlement.js "/>"></script>
 
 <link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/easy-numpad.css"/>"/>
 
@@ -439,7 +439,7 @@ function funFillSettleTable(strItemName,dblQuantity,dblAmount,dblDiscountPer1,db
     
     
     
-    col1.innerHTML = "<input readonly=\"readonly\" size=\"33px\"  class=\"itemName\" style=\"text-align: left; color:black; height:30px;width:275px;border:none; padding-left:5px;\"   name=\"listOfBillItemDtl["+(rowCount)+"].itemName\" id=\"strItemName."+(rowCount)+"\" value='"+strItemName+"' />";
+    col1.innerHTML = "<input readonly=\"readonly\" size=\"33px\"  class=\"itemName\" style=\"text-align: left; color:black; height:30px;width:260px;border:none; padding-left:5px;\"   name=\"listOfBillItemDtl["+(rowCount)+"].itemName\" id=\"strItemName."+(rowCount)+"\" value='"+strItemName+"' />";
     col2.innerHTML = "<input readonly=\"readonly\" size=\"6px\"   class=\"itemQty\" style=\"text-align: right; color:black; height:30px;width:55px;border:none;\"  name=\"listOfBillItemDtl["+(rowCount)+"].quantity\" id=\"dblQuantity."+(rowCount)+"\" value='"+dblQuantity+"' />";
     col3.innerHTML = "<input readonly=\"readonly\" size=\"20px\"   class=\"itemAmt\" style=\"text-align: right; color:black; height:30px;width:70px;border:none;padding-right:20px;\"  name=\"listOfBillItemDtl["+(rowCount)+"].amount\" id=\"dblAmount."+(rowCount)+"\" value='"+dblAmount+"'/>";
     col4.innerHTML = "<input type=\"hidden\" size=\"0px\" class=\"discountPer\"      name=\"listOfBillItemDtl["+(rowCount)+"].discountPer\" id=\"tblDiscountPer."+(rowCount)+"\" value='"+dblDiscountPer1+"' />";
@@ -934,9 +934,8 @@ function funCalculationForCompItem()
 			    <!-- This is a tab2  -->
 			    <!-- This tab is use to show only bill settlement window on second tab which is invisible by default -->
 			    <div id="tab2" class="tab_content" style="height: 700px; width:100%;">
-					
-			   			<jsp:include page="frmPOSBillSettlement.jsp" /> 
-			   			<%-- <jsp:include page="frmPOSMakeBill.jsp" /> --%>
+						<jsp:include page="frmPOSBillSettlement.jsp" /> 
+			   			<jsp:include page="frmPOSMakeBill.jsp" />
 			    </div>
 			    
 			    <!-- Modal -->
@@ -956,4 +955,4 @@ function funCalculationForCompItem()
 			    </s:form>
 			   
 </body>
-</html>
+</html> 

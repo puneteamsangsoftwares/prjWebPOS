@@ -1234,15 +1234,11 @@ public class clsPOSBillSettlementControllerForDirectBiller
 			sqlBuilder.setLength(0);
 			sqlBuilder.append("select strBillNo from tblstorelastbill where strPosCode='" + posCode + "'");
 			List listItemDtl = objBaseServiceImpl.funGetList(sqlBuilder, "sql");
-
 			if (listItemDtl != null && listItemDtl.size() > 0)
 			{
-
 				Object objItemDtl = (Object) listItemDtl.get(0);
-
 				code = Math.round(Double.parseDouble(objItemDtl.toString()));
 				code = code + 1;
-
 				voucherNo = posCode + String.format("%05d", code);
 				objBaseServiceImpl.funExecuteUpdate("update tblstorelastbill set strBillNo='" + code + "' where strPosCode='" + posCode + "'", "sql");
 			}
@@ -1280,7 +1276,6 @@ public class clsPOSBillSettlementControllerForDirectBiller
 				double discPer = objBillDiscDtl.getDiscountPer();
 				double discAmt = objBillDiscDtl.getDiscountAmt();
 				double discOnAmt = objBillDiscDtl.getDiscountOnAmt();
-
 				clsBillDiscDtlModel objDiscModel = new clsBillDiscDtlModel();
 				objDiscModel.setStrPOSCode(posCode);
 				objDiscModel.setDblDiscAmt(discAmt);
@@ -1298,7 +1293,6 @@ public class clsPOSBillSettlementControllerForDirectBiller
 				listBillDiscDtlModel.add(objDiscModel);
 				totalDiscAmt += discAmt;
 			}
-
 			// if (_subTotal == 0.00)
 			// {
 			// }
@@ -1311,7 +1305,6 @@ public class clsPOSBillSettlementControllerForDirectBiller
 		}
 		catch (Exception e)
 		{
-
 			e.printStackTrace();
 		}
 		finally
@@ -1319,7 +1312,6 @@ public class clsPOSBillSettlementControllerForDirectBiller
 			return listBillDiscDtlModel;
 		}
 	}
-
 	private List funInsertBillSettlementDtlTable(List<clsPOSSettlementDtlsOnBill> listObjBillSettlementDtl, String userCode, String dtCurrentDate, String voucherNo) throws Exception
 	{
 		String sqlDelete = "delete from tblbillsettlementdtl where strBillNo='" + voucherNo + "'";
@@ -1347,19 +1339,15 @@ public class clsPOSBillSettlementControllerForDirectBiller
 			objSettleModel.setStrRoomNo("");
 			listBillSettlementDtlModel.add(objSettleModel);
 			// objBaseService.funSave(objSettleModel);
-
 		}
 		return listBillSettlementDtlModel;
 		// StringBuilder sb1 = new StringBuilder(sqlInsertBillSettlementDtl);
 		// int index1 = sb1.lastIndexOf(",");
 		// sqlInsertBillSettlementDtl = sb1.delete(index1,
 		// sb1.length()).toString();
-
 	}
-
 	public List funInsertIntoPromotion(String voucherNo, clsPOSBillSettlementBean objBean)
 	{
-
 		List<clsBillPromotionDtlModel> listBillPromotionDtlModel = new ArrayList<clsBillPromotionDtlModel>();
 		for (clsPOSItemsDtlsInBill objBillDtl : objBean.getListOfBillItemDtl())
 		{
@@ -1373,7 +1361,6 @@ public class clsPOSBillSettlementControllerForDirectBiller
 					{
 						freeQty = objPromoItemDtl.getFreeItemQty();
 						double freeAmt = freeQty * objBillDtl.getRate();
-
 						clsBillPromotionDtlModel objPromortion = new clsBillPromotionDtlModel();
 						objPromortion.setStrItemCode(objBillDtl.getItemCode());
 						objPromortion.setStrPromotionCode(objPromoItemDtl.getPromoCode());
@@ -1385,9 +1372,7 @@ public class clsPOSBillSettlementControllerForDirectBiller
 						objPromortion.setStrDataPostFlag("N");
 						objPromortion.setStrPromoType(objPromoItemDtl.getPromoType());
 						objPromortion.setStrPromotionCode(objPromoItemDtl.getPromoCode());
-
 						listBillPromotionDtlModel.add(objPromortion);
-
 						hmPromoItem.remove(objBillDtl.getItemCode());
 					}
 					else if (objPromoItemDtl.getPromoType().equals("Discount"))
@@ -1396,7 +1381,6 @@ public class clsPOSBillSettlementControllerForDirectBiller
 						{
 							double amount = freeQty * objBillDtl.getRate();
 							double discAmt = objPromoItemDtl.getDiscAmt();
-
 							clsBillPromotionDtlModel objPromortion = new clsBillPromotionDtlModel();
 							objPromortion.setStrItemCode(objBillDtl.getItemCode());
 							objPromortion.setStrPromotionCode("");
@@ -1408,16 +1392,13 @@ public class clsPOSBillSettlementControllerForDirectBiller
 							objPromortion.setStrDataPostFlag("N");
 							objPromortion.setStrPromoType(objPromoItemDtl.getPromoType());
 							objPromortion.setStrPromotionCode(objPromoItemDtl.getPromoCode());
-
 							listBillPromotionDtlModel.add(objPromortion);
-
 							hmPromoItem.remove(objBillDtl.getItemCode());
 						}
 						else
 						{
 							double totalAmt = objBillDtl.getQuantity() * objBillDtl.getRate();
 							double discAmt = totalAmt - (totalAmt * (objPromoItemDtl.getDiscPer() / 100));
-
 							clsBillPromotionDtlModel objPromortion = new clsBillPromotionDtlModel();
 							objPromortion.setStrItemCode(objBillDtl.getItemCode());
 							objPromortion.setStrPromotionCode("");
@@ -1429,22 +1410,17 @@ public class clsPOSBillSettlementControllerForDirectBiller
 							objPromortion.setStrDataPostFlag("N");
 							objPromortion.setStrPromoType(objPromoItemDtl.getPromoType());
 							objPromortion.setStrPromotionCode(objPromoItemDtl.getPromoCode());
-
 							listBillPromotionDtlModel.add(objPromortion);
-
 							hmPromoItem.remove(objBillDtl.getItemCode());
 						}
 					}
 				}
 			}
 		}
-
 		return listBillPromotionDtlModel;
 	}
-
 	public void funSaveHomeDelivery(String voucherNo, clsPOSBillSettlementBean objBean) throws Exception
 	{
-
 		Calendar c = Calendar.getInstance();
 		int hh = c.get(Calendar.HOUR);
 		int mm = c.get(Calendar.MINUTE);
@@ -1501,7 +1477,6 @@ public class clsPOSBillSettlementControllerForDirectBiller
 			// + clsGlobalVarClass.gPOSCode + "','" + custAddType + "','',''"
 			// + ",'','','" + clsGlobalVarClass.gClientCode + "'," +
 			// _deliveryCharge + ")";
-
 			clsHomeDeliveryHdModel objHomeDeliveryHdModel = new clsHomeDeliveryHdModel();
 			objHomeDeliveryHdModel.setStrBillNo(voucherNo);
 			objHomeDeliveryHdModel.setStrCustomerCode(objBean.getStrCustomerCode());
@@ -1517,11 +1492,9 @@ public class clsPOSBillSettlementControllerForDirectBiller
 			objHomeDeliveryHdModel.setStrClientCode(clientCode);
 			objHomeDeliveryHdModel.setDblHomeDeliCharge(objBean.getDblDeliveryCharges());
 			objHomeDeliveryHdModel.setDblLooseCashAmt(0);
-
 			objBaseServiceImpl.funSave(objHomeDeliveryHdModel);
 		}
 		// //Saving for home delivery Detail data
-
 		clsHomeDeliveryDtlModel objDtlModel = new clsHomeDeliveryDtlModel();
 		objDtlModel.setStrBillNo(voucherNo);
 		objDtlModel.setDblDBIncentives(0);
@@ -1531,7 +1504,6 @@ public class clsPOSBillSettlementControllerForDirectBiller
 		objDtlModel.setStrDPCode(objBean.getStrDeliveryBoyCode());
 		objDtlModel.setStrSettleYN("N");
 		objBaseServiceImpl.funSave(objDtlModel);
-
 	}
 */
 }
