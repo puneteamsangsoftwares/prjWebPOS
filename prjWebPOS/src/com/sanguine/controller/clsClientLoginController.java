@@ -2,6 +2,7 @@ package com.sanguine.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -28,6 +29,7 @@ import com.sanguine.model.clsCompanyMasterModel;
 import com.sanguine.service.clsGlobalFunctionsService;
 import com.sanguine.service.clsSetupMasterService;
 import com.sanguine.service.clsUserMasterService;
+import com.sanguine.webpos.model.clsUserHdModel;
 
 @Controller
 @SessionAttributes("userdetails")
@@ -39,7 +41,13 @@ public class clsClientLoginController
 
 	@Autowired
 	private clsSetupMasterService objSetupMasterService;
+	
+	@Autowired
+	private clsGlobalFunctionsService objGlobalService;
 
+	@Autowired
+	clsUserController objUserControlller;
+	
 	@Value("${applicationType}")
 	String applicationType;
 
@@ -58,20 +66,25 @@ public class clsClientLoginController
 			{
 				if (objClientBean != null)
 				{
+					String sql="select a.strRegistrationEmail,a.strRegistrationPassword,a.strClientCode,a.strClientName from tblsetup a where a.strRegistrationEmail='"+objClientBean.getStrClientCode()+"';";
+					
+					List list=objGlobalService.funGetList(sql,"sql");
+
+					if(list.size()>0 && list != null)
+					{
+
+						Object[] obj=(Object[])list.get(0);
+					
+
 					if (objClientBean.getStrClientCode() != null && objClientBean.getStrClientCode().trim().length() > 0 && objClientBean.getStrPassword() != null && objClientBean.getStrPassword().trim().length() > 0)
 					{
 
-						String clientCodeFromDB = objClientBean.getStrClientCode();
-						String clientPasswordFromDB = objClientBean.getStrPassword();
+						String EmailID = objClientBean.getStrClientCode();
+						String EmailPassword = objClientBean.getStrPassword();
 
-						String encryptedClientCodeFromDB = clsEncryptDecryptClientCode.funEncryptClientCode(clientCodeFromDB);
-						String encryptedClientPasswordFromDB = clsEncryptDecryptClientCode.funEncryptClientCode(clientPasswordFromDB);
+						String encryptedClientCodeFromDB = clsEncryptDecryptClientCode.funEncryptClientCode(obj[2].toString());
 
 						clsClientDetails.funAddClientCodeAndName();
-
-						String decryptedClientCodeFromHm = clsEncryptDecryptClientCode.funDecryptClientCode(clsClientDetails.hmClientDtl.get(encryptedClientCodeFromDB).getId());
-						String decryptedClientNameFromHm = clsEncryptDecryptClientCode.funDecryptClientCode(clsClientDetails.hmClientDtl.get(encryptedClientCodeFromDB).Client_Name);
-						String decryptedClientPasswordFromHm = clsEncryptDecryptClientCode.funDecryptClientCode(clsClientDetails.hmClientDtl.get(encryptedClientCodeFromDB).getStrClientPassword());
 
 						SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -87,10 +100,10 @@ public class clsClientLoginController
 						Date posExpiryDate = dFormat.parse(decryptedExpDate);
 						if (systemDate.compareTo(posExpiryDate) <= 0)
 						{
-							if (clientCodeFromDB.equalsIgnoreCase(decryptedClientCodeFromHm) && clientPasswordFromDB.equalsIgnoreCase(decryptedClientPasswordFromHm))
+							if (EmailID.equalsIgnoreCase(obj[0].toString()) && EmailPassword.equalsIgnoreCase(obj[1].toString()))
 							{
-								req.getSession().setAttribute("gClientCode",clientCodeFromDB);
-								req.getSession().setAttribute("gCompanyName",decryptedClientNameFromHm);								
+								req.getSession().setAttribute("gClientCode",obj[2].toString());
+								req.getSession().setAttribute("gCompanyName",obj[3].toString());								
 								//req.getSession().setAttribute("gStartDate", startDate);
 								
 								
@@ -99,8 +112,37 @@ public class clsClientLoginController
 
 								req.getSession().setAttribute("moduleNo", strModule);
 								req.getSession().setAttribute("moduleMap", moduleMap);
+								String sqlUser="Select COUNT(*) from tbluserhd;";
+								List listUser=objGlobalService.funGetList(sqlUser,"sql");
 
-								return new ModelAndView("frmLogin", "command", new clsUserHdBean());
+								if(listUser.size()>0 && listUser != null)
+								{
+									if(Integer.parseInt(listUser.get(0).toString())>0)
+									{
+										objMV= new ModelAndView("frmLogin", "command", new clsUserHdBean());			
+									}
+									else
+									{
+										clsUserHdModel user=new clsUserHdModel();
+								    	 user.setStrSuperType("YES");
+								    	 user.setStrUserName("SANGUINE");
+								    	 user.setStrUserCode("SANGUINE");
+								    	 objMV = objUserControlller.funSessionValue(user, req);
+								    
+									}
+								}
+								else
+								{
+									clsUserHdModel user=new clsUserHdModel();
+							    	 user.setStrSuperType("YES");
+							    	 user.setStrUserName("SANGUINE");
+							    	 user.setStrUserCode("SANGUINE");
+							    	 objMV = objUserControlller.funSessionValue(user, req);
+							    	
+									
+								}
+								 
+								
 							}
 							else
 							{
@@ -126,6 +168,12 @@ public class clsClientLoginController
 					map.put("invalid", "1");
 					objMV = new ModelAndView("frmClientLogin", "command", new clsClientBean());
 				}
+			}
+			else
+			{
+				map.put("invalid", "1");
+				objMV = new ModelAndView("frmClientLogin", "command", new clsClientBean());
+			}
 			}
 		}
 		catch (Exception e)
