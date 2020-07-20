@@ -1751,5 +1751,42 @@ public class clsPOSBillingAPIController
 		return listBillDiscDtlModel;
 
 	}
+	
+	public JSONObject funGetArea(String strPOSCode,String clientCode)
+	{
+		JSONObject jObjTableData = new JSONObject();
+		List list = null;
+		
+		try
+		{
+			StringBuilder sqlBuilder = new StringBuilder();
+			sqlBuilder.setLength(0);
+			sqlBuilder.append("select strAreaCode,strAreaName from tblareamaster  where strClientCode='"+clientCode+"'  and (strPOSCode='All' or strPOSCode='" + strPOSCode + "')");
+			list = objBaseService.funGetList(sqlBuilder, "sql");
+
+			
+            JSONArray jArr = new JSONArray();
+			if (list.size() > 0)
+			{
+				for (int i = 0; i < list.size(); i++)
+				{
+					Object[] obj = (Object[]) list.get(i);
+
+					JSONObject objSettle = new JSONObject();
+					String strAreaName = obj[1].toString();// .replace(" ", "&#x00A;");
+					objSettle.put("strAreaCode", obj[0].toString());
+					objSettle.put("strAreaName", strAreaName);
+					jArr.add(objSettle);
+				}
+			}
+			jObjTableData.put("Area", jArr);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return jObjTableData;
+	}
 
 }

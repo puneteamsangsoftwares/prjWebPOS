@@ -163,6 +163,10 @@ public class clsPOSBillSettlementControllerForDirectBiller
 			JSONArray jsonArrForWaiterDtl = objMakeKOT.funGetWaiterList(posCode,clientCode);
 			obBillSettlementBean.setJsonArrForWaiterDtl(jsonArrForWaiterDtl);
 
+			jObj =objBillingAPI.funGetArea(posCode, clientCode);
+			JSONArray jsonArrForArea = (JSONArray) jObj.get("Area");
+			obBillSettlementBean.setJsonArrForArea(jsonArrForArea);
+			
 		    List listArea=objMasterService.funLoadClientWiseArea(clientCode);
 		    //Area List
 		     Map areaList = new HashMap<>();

@@ -931,7 +931,7 @@ var itemChangeQtySelected, itemPrice;
 	    
 	    col1.innerHTML = "<input readonly=\"readonly\" size=\"32px\"  class=\"itemName\"    style=\"text-align: left; color:blue; width:220px;\"   name=\"listItemsDtlInBill["+(rowCount)+"].itemName\" id=\"itemName."+(rowCount)+"\" value='"+itmDtl[1]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
 	    col2.innerHTML = "<input readonly=\"readonly\" size=\"3.5px\"   class=\"itemQty\"      style=\"text-align: right; color:blue;\"  name=\"listItemsDtlInBill["+(rowCount)+"].quantity\" id=\"quantity."+(rowCount)+"\" value='"+parseFloat(itmDtl[2])+"' onclick=\"funChangeQty(this)\"/>";
-	    col3.innerHTML = "<input readonly=\"readonly\" size=\"8px\"   class=\"itemAmt\"      style=\"text-align: right; color:blue;\"  name=\"listItemsDtlInBill["+(rowCount)+"].amount\" id=\"amount."+(rowCount)+"\" value='"+itmDtl[3]+"'/>";
+	    col3.innerHTML = "<input readonly=\"readonly\" size=\"4px\"   class=\"itemAmt\"      style=\"text-align: right; color:blue;\"  name=\"listItemsDtlInBill["+(rowCount)+"].amount\" id=\"amount."+(rowCount)+"\" value='"+itmDtl[3]+"'/>";
 	    col4.innerHTML = "<input readonly=\"readonly\" size=\"10px\" class=\"itemCode\"     style=\"text-align: left; color:blue;\"   name=\"listItemsDtlInBill["+(rowCount)+"].itemCode\" id=\"itemCode."+(rowCount)+"\" value='"+itmDtl[0]+"' />";
 	    col5.innerHTML = "<input readonly=\"readonly\" size=\"9px\"   class=\"itemDiscAmt\"  style=\"text-align: right; color:blue;\"  name=\"listItemsDtlInBill["+(rowCount)+"].strSerialNo\" id=\"strSerialNo."+(rowCount-1)+"\" value='"+rowCount+"' />";
 	    	
@@ -2830,9 +2830,9 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 	    var col9=insertRow.insertCell(8);
 	    var amount=parseFloat(qty)*price;
 	    
-	    col1.innerHTML = "<input readonly=\"readonly\" size=\"43px\"  class=\"itemName\"    style=\"text-align: left; color:blue; background-color:lavenderblush; \"   name=\"listItemsDtlInBill["+(rowCount)+"].itemName\" id=\"itemName."+(rowCount)+"\" value='"+itemName+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
-	    col2.innerHTML = "<input readonly=\"readonly\" size=\"7px\"   class=\"itemQty\"      style=\"text-align: right; color:blue; background-color:lavenderblush; \"  name=\"listItemsDtlInBill["+(rowCount)+"].quantity\" id=\"quantity."+(rowCount)+"\" value='"+parseFloat(qty)+"' onclick=\"funChangeQty(this)\"/>";
-	    col3.innerHTML = "<input readonly=\"readonly\" size=\"11px\"   class=\"itemAmt\"      style=\"text-align: right; color:blue; background-color:lavenderblush; \" class=\"longTextBox jQKeyboard form-control\" name=\"listItemsDtlInBill["+(rowCount)+"].amount\" id=\"amount."+(rowCount)+"\" value='"+amount+"'/>";
+	    col1.innerHTML = "<input readonly=\"readonly\" size=\"32px\"  class=\"itemName\"    style=\"text-align: left; color:blue; background-color:lavenderblush; \"   name=\"listItemsDtlInBill["+(rowCount)+"].itemName\" id=\"itemName."+(rowCount)+"\" value='"+itemName+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+	    col2.innerHTML = "<input readonly=\"readonly\" size=\"3.5px\"   class=\"itemQty\"      style=\"text-align: right; color:blue; background-color:lavenderblush; \"  name=\"listItemsDtlInBill["+(rowCount)+"].quantity\" id=\"quantity."+(rowCount)+"\" value='"+parseFloat(qty)+"' onclick=\"funChangeQty(this)\"/>";
+	    col3.innerHTML = "<input readonly=\"readonly\" size=\"4px\"   class=\"itemAmt\"      style=\"text-align: right; color:blue; background-color:lavenderblush; \" class=\"longTextBox jQKeyboard form-control\" name=\"listItemsDtlInBill["+(rowCount)+"].amount\" id=\"amount."+(rowCount)+"\" value='"+amount+"'/>";
 	    col4.innerHTML = "<input readonly=\"readonly\" size=\"10px\" class=\"itemCode\"     style=\"text-align: left; color:blue; background-color:lavenderblush; \"   name=\"listItemsDtlInBill["+(rowCount)+"].itemCode\" id=\"itemCode."+(rowCount)+"\" value='"+objMenuItemPricingDtl.strItemCode+"' />";
 	    col5.innerHTML = "<input readonly=\"readonly\" size=\"9px\"   class=\"itemDiscAmt\"  style=\"text-align: right; color:blue; background-color:lavenderblush; \"  name=\"listItemsDtlInBill["+(rowCount)+"].strSerialNo\" id=\"strSerialNo."+(rowCount-1)+"\" value='"+rowCount+"' />";
 	    col6.innerHTML = "<input type=\"hidden\"  size=\"0px\"   class=\"groupcode\"  style=\"text-align: right; color:blue; background-color:lavenderblush; \"  name=\"listItemsDtlInBill["+(rowCount)+"].strGroupcode\" id=\"strGroupcode."+(rowCount-1)+"\" value='"+objMenuItemPricingDtl.strGroupcode+"' />";	    
@@ -4300,7 +4300,7 @@ function funFillGridData1(itemName)
 				<table >
 					<tr>
 						<td>
-						<div id="divOperationType" style="border: 1px solid rgb(204, 204, 204);height: 60px;width: 380px;display: block; margin-top:-500px;">
+						<div id="divOperationType" style="border: 1px solid rgb(204, 204, 204);height: 60px;width: 380px;display: block; margin-top:0px;">
 							<span>
 								<input type="button"  id="Dine In" value="Dine In"    style="width: 115px;height: 45px; white-space: normal;background-color: #2D9CE8;margin-left:08px;margin-top:1px;"   onclick="funFooterButtonClicked(this)" class="btn btn-success active"/>
 								<input type="button"  id="Home Delivery" value="Home Delivery"    style="width: 115px;height: 45px; white-space: normal;background-color: #2D9CE8;margin-top:1px;"   onclick="funFooterButtonClicked(this)" class="btn btn-success"/>
@@ -4333,9 +4333,9 @@ function funFillGridData1(itemName)
 								
 								<table id="tblBillItemDtl"   style="border-collapse: separate;" ><!-- class="transTablex" -->
 									<tr>
-										  <th><input type="button" value="Description" style="width: 240px;" class="tblBillItemDtlColBtnGrp btn "  ></input></th>
+										  <th><input type="button" value="Description" style="width: 258px;" class="tblBillItemDtlColBtnGrp btn "  ></input></th>
 										  <th><input type="button" value="Qty" style="width: 55px;" class="tblBillItemDtlColBtnGrp btn "  ></input></th>
-										  <th><input type="button" value="Amount" style="width: 65px;" class="tblBillItemDtlColBtnGrp btn "  ></input></th>
+										  <th><input type="button" value="Amount" style="width: 62px;" class="tblBillItemDtlColBtnGrp btn "  ></input></th>
 										  <th><input type="button" value="Item Code" style="width: 104px;" class="tblBillItemDtlColBtnGrp btn " ></input></th>
 										  <th><input type="button" value="Sequence No" class="tblBillItemDtlColBtnGrp btn " ></input></th>
 									</tr>																	
@@ -4384,6 +4384,7 @@ function funFillGridData1(itemName)
 								
 								</div>
 							</div>
+							
 							
 							<div id="divMenuHeadDtl" style="border: 1px solid rgb(204, 204, 204);height: 120px;overflow: auto;width: 680px;display: block; margin-top:0px;">									
 									<table id="tblMenuHeadDtl"    style="border-collapse: separate;"> <!-- class="table table-striped table-bordered table-hover" -->
@@ -4492,7 +4493,7 @@ function funFillGridData1(itemName)
 						</td>
 						<td>
 						
-						<div style="border: 0px solid rgb(204, 204, 204);height: 1100px;overflow: auto;width: 100px;display: block;">
+						<div style="border: 0px solid rgb(204, 204, 204);height: 690px;overflow: auto;width: 100px;display: block;">
 						
 							<table id="tblFooterButtons"   style="border-collapse: separate;" > <!-- class="table table-striped table-bordered table-hover" -->				 																																	
 							<tr><td style="padding: 2px;"><input type="button"  id="Home" 	    value="BACK"    		style="width: 70px;height: 45px; white-space: normal;" onclick="funFooterButtonClicked(this)" class="btn btn-outline-success"/></td></tr>
@@ -4526,3 +4527,5 @@ function funFillGridData1(itemName)
 	</s:form>
 </body>
 </html>
+
+ 

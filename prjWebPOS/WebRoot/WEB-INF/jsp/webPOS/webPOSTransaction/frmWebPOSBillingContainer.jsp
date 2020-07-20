@@ -9,7 +9,7 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<script type="text/javascript" src="<spring:url value="/resources/js/Transaction/WebPOSBillSettlement.js "/>"></script>
+<%-- <script type="text/javascript" src="<spring:url value="/resources/js/Transaction/WebPOSBillSettlement.js "/>"></script> --%>
 
 <link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/easy-numpad.css"/>"/>
 
@@ -26,10 +26,11 @@
 <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
  <link rel="stylesheet" href="/resources/demos/style.css">
  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
- -->  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+ -->  
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
  
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
  
 
 
@@ -439,7 +440,7 @@ function funFillSettleTable(strItemName,dblQuantity,dblAmount,dblDiscountPer1,db
     
     
     
-    col1.innerHTML = "<input readonly=\"readonly\" size=\"33px\"  class=\"itemName\" style=\"text-align: left; color:black; height:30px;width:260px;border:none; padding-left:5px;\"   name=\"listOfBillItemDtl["+(rowCount)+"].itemName\" id=\"strItemName."+(rowCount)+"\" value='"+strItemName+"' />";
+    col1.innerHTML = "<input readonly=\"readonly\" size=\"33px\"  class=\"itemName\" style=\"text-align: left; color:black; height:30px;width:275px;border:none; padding-left:5px;\"   name=\"listOfBillItemDtl["+(rowCount)+"].itemName\" id=\"strItemName."+(rowCount)+"\" value='"+strItemName+"' />";
     col2.innerHTML = "<input readonly=\"readonly\" size=\"6px\"   class=\"itemQty\" style=\"text-align: right; color:black; height:30px;width:55px;border:none;\"  name=\"listOfBillItemDtl["+(rowCount)+"].quantity\" id=\"dblQuantity."+(rowCount)+"\" value='"+dblQuantity+"' />";
     col3.innerHTML = "<input readonly=\"readonly\" size=\"20px\"   class=\"itemAmt\" style=\"text-align: right; color:black; height:30px;width:70px;border:none;padding-right:20px;\"  name=\"listOfBillItemDtl["+(rowCount)+"].amount\" id=\"dblAmount."+(rowCount)+"\" value='"+dblAmount+"'/>";
     col4.innerHTML = "<input type=\"hidden\" size=\"0px\" class=\"discountPer\"      name=\"listOfBillItemDtl["+(rowCount)+"].discountPer\" id=\"tblDiscountPer."+(rowCount)+"\" value='"+dblDiscountPer1+"' />";
@@ -691,9 +692,9 @@ function funFillModalTable(strItemName,dblQuantity,dblAmount,dblCompQty,strItemC
     var col5=insertRow.insertCell(4);
     var col6=insertRow.insertCell(5);
    	
-    col1.innerHTML = "<input readonly=\"readonly\" size=\"33px\" style=\"text-align: left; color:black; height:30px;border:none;\"   name=\"listOfBillItemDtl["+(rowCount)+"].itemName\" id=\"strItemName."+(rowCount)+"\" value='"+strItemName+"' />";
-    col2.innerHTML = "<input readonly=\"readonly\" size=\"6px\"    style=\"text-align: right; color:black; height:30px;border:none;\"  name=\"listOfBillItemDtl["+(rowCount)+"].dblCompQty\" id=\"dblCompQuantity."+(rowCount)+"\" onclick=\"funOpenCompNumDialog(this,"+(rowCount)+")\" value='"+dblCompQty+"' />";
-    col3.innerHTML = "<input readonly=\"readonly\" size=\"6px\"    style=\"text-align: right; color:black; height:30px;border:none;\"  name=\"listOfBillItemDtl["+(rowCount)+"].quantity\" id=\"dblQuantity."+(rowCount)+"\" value='"+dblQuantity+"' />";
+    col1.innerHTML = "<input readonly=\"readonly\" size=\"80px\" style=\"text-align: left; color:black; height:30px;border:none;\"   name=\"listOfBillItemDtl["+(rowCount)+"].itemName\" id=\"strItemName."+(rowCount)+"\" value='"+strItemName+"' />";
+    col2.innerHTML = "<input readonly=\"readonly\" size=\"20px\"    style=\"text-align: right; color:black; height:30px;border:none;\"  name=\"listOfBillItemDtl["+(rowCount)+"].dblCompQty\" id=\"dblCompQuantity."+(rowCount)+"\" onclick=\"funOpenCompNumDialog(this,"+(rowCount)+")\" value='"+dblCompQty+"' />";
+    col3.innerHTML = "<input readonly=\"readonly\" size=\"20px\"    style=\"text-align: right; color:black; height:30px;border:none;\"  name=\"listOfBillItemDtl["+(rowCount)+"].quantity\" id=\"dblQuantity."+(rowCount)+"\" value='"+dblQuantity+"' />";
     col4.innerHTML = "<input readonly=\"readonly\" size=\"20px\"    style=\"text-align: right; color:black; height:30px;border:none;padding-right:20px;\"  name=\"listOfBillItemDtl["+(rowCount)+"].amount\" id=\"dblAmount."+(rowCount)+"\" value='"+dblAmount+"'/>";
  	col5.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"itemCode\"  name=\"listOfBillItemDtl["+(rowCount)+"].itemCode\" id=\"itemCode."+(rowCount)+"\" value='"+strItemCode+"' />";
     col6.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"rate\"  name=\"listOfBillItemDtl["+(rowCount)+"].rate\" id=\"rate."+(rowCount)+"\" value='"+dblRate+"' />";
@@ -859,9 +860,9 @@ function funCalculationForCompItem()
 			    <h4>Make Items Complimentary</h4>
 			  </div>
 			  <div class="modal-body" >
-			    <table id="modalTable" class=" table" style="border:1px border #ccc; width:100%; height:100px;;">
+			    <table id="modalTable" class=" table" style="border:1px border #ccc;background:#40a6ee;color:white; width:100%; height:100px;;">
 			    	<thead>
-			    	<tr style="border:1px border #ccc;">
+			    	<tr style="border:1px border #ccc;" >
 			    		<th style="text-align: left;">Item Name</th>
 			    	    <th style="width:17.5%;">Comp Qty</th>
 			    		<th style="width:17.5%;">Qty</th>
@@ -875,7 +876,7 @@ function funCalculationForCompItem()
 			    </table>
 			  </div>
 			  <div class="modal-footer">
-             <button class="btn" id ="btnOKCompItems" class="close" data-dismiss="modal" aria-hidden="true" onclick="funCalculationForCompItem()" >OK</button>
+             <button class="btn" id ="btnOKCompItems" style="background:#40a6ee; color:white" class="close" data-dismiss="modal" aria-hidden="true" onclick="funCalculationForCompItem()" >OK</button>
   </div>
   
 		</div>
@@ -902,7 +903,7 @@ function funCalculationForCompItem()
 							<c:choose>
 							
 						      <c:when test="${formToBeOpen == 'Billing'}">
-						     	<jsp:include page="frmBilling.jsp" />
+						     	<jsp:include page="frmNewBilling.jsp" />
 						      </c:when>
 						      
 						      <c:when test="${formToBeOpen == 'Settle Bill'}">
@@ -934,8 +935,9 @@ function funCalculationForCompItem()
 			    <!-- This is a tab2  -->
 			    <!-- This tab is use to show only bill settlement window on second tab which is invisible by default -->
 			    <div id="tab2" class="tab_content" style="height: 700px; width:100%;">
-						<jsp:include page="frmPOSBillSettlement.jsp" /> 
-			   			<jsp:include page="frmPOSMakeBill.jsp" />
+					
+			   			<jsp:include page="frmPOSBillSettlement.jsp" /> 
+			   			<%-- <jsp:include page="frmPOSMakeBill.jsp" /> --%>
 			    </div>
 			    
 			    <!-- Modal -->
@@ -955,4 +957,4 @@ function funCalculationForCompItem()
 			    </s:form>
 			   
 </body>
-</html> 
+</html>

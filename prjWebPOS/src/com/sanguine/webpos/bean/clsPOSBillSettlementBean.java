@@ -59,6 +59,7 @@ public class clsPOSBillSettlementBean
 	private JSONArray jsonArrForDirectBillerBillItemDtl=new JSONArray();
 	private JSONArray jsonArrForDirectBillerFooterButtons=new JSONArray();
 	private JSONArray jsonArrForPopularItems;
+	private JSONArray jsonArrForArea=new JSONArray();
 
 	
     
@@ -671,6 +672,14 @@ public class clsPOSBillSettlementBean
 	public void setIsSettleBill(String isSettleBill)
 	{
 		this.isSettleBill = isSettleBill;
+	}
+	public JSONArray getJsonArrForArea()
+	{
+		return jsonArrForArea;
+	}
+	public void setJsonArrForArea(JSONArray jsonArrForArea)
+	{
+		this.jsonArrForArea = jsonArrForArea;
 	}
 		
 	
