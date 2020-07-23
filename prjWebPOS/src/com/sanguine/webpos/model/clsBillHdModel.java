@@ -42,8 +42,8 @@ public class clsBillHdModel  extends clsBaseModel implements Serializable{
     @JoinTable(name="tblbilldtl" , joinColumns={@JoinColumn(name="dtBillDate"),@JoinColumn(name="strBillNo"),@JoinColumn(name="strClientCode")})
 	@Id
 	@AttributeOverrides({
-		@AttributeOverride(name="strClientCode",column=@Column(name="strClientCode")),
 		@AttributeOverride(name="strBillNo",column=@Column(name="strBillNo")),
+		@AttributeOverride(name="strClientCode",column=@Column(name="strClientCode")),
 		@AttributeOverride(name="dtBillDate",column=@Column(name="dtBillDate"))
 	})
 	@Embedded

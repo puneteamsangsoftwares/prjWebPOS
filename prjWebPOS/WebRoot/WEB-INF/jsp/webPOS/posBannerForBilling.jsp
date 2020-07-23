@@ -123,7 +123,7 @@
 <!-- 		</table> -->
 <!-- 	</div> -->
 
-
+<%-- 
 	<div class="row" style="background-color: #fff;display: -webkit-box; margin-right: 0%; margin-left: 0%;">
 		
 		    <div class="element-input col-lg-6" style="width: 15%;margin-top: 5px;margin-left: 20px;">
@@ -157,7 +157,7 @@
 			
 	 </div>
 	
-<!-- 	<div id="header" style="border: 3px solid #2FABE9;"> -->
+ --%><!-- 	<div id="header" style="border: 3px solid #2FABE9;"> -->
 <!--         <div class="row" id="innerhdr" style="background-color: #fff;"> -->
 <!--             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> -->
 <!--                 <div id="div1"> -->
@@ -200,7 +200,7 @@
 <!--         </div> -->
 <!--     </div> -->
 	
-<hr style="border: 1px solid #ccc;margin-top: 15px;margin-bottom: 0px;">
+<hr style="border: 1px solid #ccc;margin-top: 0px;margin-bottom: 0px;">
 </body>
 </html>
 

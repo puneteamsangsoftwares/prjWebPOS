@@ -136,7 +136,7 @@
 				<value>com.sanguine.webpos.model.clsPOSSMSSetupModel</value>
 				<value>com.sanguine.webpos.model.clsFactoryMasterModel</value>
 				<value>com.sanguine.webpos.model.clsRecipeMasterModel</value>
-
+				<value>com.sanguine.webpos.model.clsOnlineOrderModelHd</value>
 
 
 

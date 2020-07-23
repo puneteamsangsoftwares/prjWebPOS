@@ -29,6 +29,7 @@ import com.sanguine.webpos.bean.clsPOSKOTItemDtl;
 import com.sanguine.webpos.bean.clsPOSPromotionItems;
 import com.sanguine.webpos.bean.clsPOSSettelementOptions;
 import com.sanguine.webpos.bean.clsPOSSettlementDtlsOnBill;
+import com.sanguine.webpos.bean.clsPOSTableMasterBean;
 import com.sanguine.webpos.bean.clsPOSTaxCalculationBean;
 import com.sanguine.webpos.model.clsBillComplementaryDtlModel;
 import com.sanguine.webpos.model.clsBillDiscDtlModel;
@@ -1752,10 +1753,10 @@ public class clsPOSBillingAPIController
 
 	}
 	
-	public JSONObject funGetArea(String strPOSCode,String clientCode)
+	public JSONArray funGetArea(String strPOSCode,String clientCode)
 	{
-		JSONObject jObjTableData = new JSONObject();
-		List list = null;
+		JSONArray jArr = new JSONArray();
+		List list = null,listTables = null;
 		
 		try
 		{
@@ -1763,30 +1764,51 @@ public class clsPOSBillingAPIController
 			sqlBuilder.setLength(0);
 			sqlBuilder.append("select strAreaCode,strAreaName from tblareamaster  where strClientCode='"+clientCode+"'  and (strPOSCode='All' or strPOSCode='" + strPOSCode + "')");
 			list = objBaseService.funGetList(sqlBuilder, "sql");
-
-			
-            JSONArray jArr = new JSONArray();
-			if (list.size() > 0)
+            
+			if (list !=null && list.size() > 0)
 			{
 				for (int i = 0; i < list.size(); i++)
 				{
 					Object[] obj = (Object[]) list.get(i);
 
-					JSONObject objSettle = new JSONObject();
-					String strAreaName = obj[1].toString();// .replace(" ", "&#x00A;");
-					objSettle.put("strAreaCode", obj[0].toString());
-					objSettle.put("strAreaName", strAreaName);
-					jArr.add(objSettle);
+					JSONObject objArea = new JSONObject();
+					//String strAreaName = obj[1].toString();// .replace(" ", "&#x00A;");
+					objArea.put("strAreaCode", obj[0].toString());
+					objArea.put("strAreaName", obj[1].toString());
+					
+					sqlBuilder.setLength(0);
+					sqlBuilder.append("select a.strTableNo,a.strTableName,a.strStatus from tbltablemaster a where a.strAreaCode='"+obj[0].toString()+"' \r\n" + 
+							"and a.strClientCode='"+clientCode+"' and a.strPOSCode='"+strPOSCode+"' and a.strOperational='Y';");
+					listTables = objBaseService.funGetList(sqlBuilder, "sql");
+		            if(listTables!=null && listTables.size()>0) {
+		            //	JSONArray jArrTable = new JSONArray();
+		            	List ArrTable=new ArrayList<clsPOSTableMasterBean>();
+		            	for(int j=0;j<listTables.size();j++) {
+		            	
+		            		Object[] obj1 = (Object[]) listTables.get(j);
+		            		clsPOSTableMasterBean ob=new clsPOSTableMasterBean();
+		            		ob.setStrTableNo(obj1[0].toString());
+		            		ob.setStrTableName(obj1[1].toString());
+		            		ob.setStrStatus(obj1[2].toString());
+		            		ArrTable.add(ob);
+		            		//jArrTable.add(obj1);
+		            	}
+		            	
+		            	objArea.put("tables", ArrTable);
+
+		            }
+					
+					jArr.add(objArea);
 				}
 			}
-			jObjTableData.put("Area", jArr);
+			//jObjTableData.put("Area", jArr);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
 
-		return jObjTableData;
+		return jArr;
 	}
 
 }

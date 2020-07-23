@@ -7291,7 +7291,175 @@ public class clsFillDatabaseTablesStructureUpdate
 		//sql="ALTER TABLE `tbltaxtemp` ADD COLUMN `strClientCode` VARCHAR(10) NOT NULL AFTER `strItemName`;";
 		//mapStructureUpdater.get("tblStructure").add(sql);
 		
+		sql="CREATE TABLE `tblonlineorderhd` (\r\n" + 
+				"				`strOrderId` VARCHAR(10) NOT NULL,\r\n" + 
+				"				`strbiz_id` VARCHAR(15) NOT NULL,\r\n" + 
+				"				`strClientCode` VARCHAR(10) NOT NULL,\r\n" + 
+				"				`dtOrderDate` DATETIME NOT NULL,\r\n" + 
+				"				`delivery_datetime` DATETIME NOT NULL,\r\n" + 
+				"				`channel` VARCHAR(10) NOT NULL DEFAULT '',\r\n" + 
+				"				`order_state` VARCHAR(10) NOT NULL DEFAULT '',\r\n" + 
+				"				`order_type` VARCHAR(10) NOT NULL DEFAULT '',\r\n" + 
+				"				`state` VARCHAR(10) NOT NULL DEFAULT '',\r\n" + 
+				"				`discount` DECIMAL(10,4) NOT NULL DEFAULT '0.0000',\r\n" + 
+				"				`order_subtotal` DECIMAL(10,4) NOT NULL DEFAULT '0.0000',\r\n" + 
+				"				`order_total` DECIMAL(10,4) NOT NULL DEFAULT '0.0000',\r\n" + 
+				"				`total_external_discount` DECIMAL(10,4) NOT NULL DEFAULT '0.0000',\r\n" + 
+				"				`item_level_total_charges` DECIMAL(10,4) NOT NULL DEFAULT '0.0000',\r\n" + 
+				"				`item_level_total_taxes` DECIMAL(10,4) NOT NULL DEFAULT '0.0000',\r\n" + 
+				"				`item_taxes` DECIMAL(10,4) NOT NULL DEFAULT '0.0000',\r\n" + 
+				"				`order_level_total_charges` DECIMAL(10,4) NOT NULL DEFAULT '0.0000',\r\n" + 
+				"				`order_level_total_taxes` DECIMAL(10,4) NOT NULL DEFAULT '0.0000',\r\n" + 
+				"				`total_charges` DECIMAL(10,4) NOT NULL DEFAULT '0.0000',\r\n" + 
+				"				`total_taxes` DECIMAL(10,4) NOT NULL DEFAULT '0.0000',\r\n" + 
+				"				`coupon` VARCHAR(10) NOT NULL DEFAULT '',\r\n" + 
+				"				`instructions` VARCHAR(50) NOT NULL DEFAULT '',\r\n" + 
+				"				`orderMerchant_ref_id` VARCHAR(15) NOT NULL DEFAULT '',\r\n" + 
+				"				`next_state` VARCHAR(10) NOT NULL DEFAULT '',\r\n" + 
+				"				`storeId` VARCHAR(10) NOT NULL DEFAULT '',\r\n" + 
+				"				`storeName` VARCHAR(50) NOT NULL DEFAULT '',\r\n" + 
+				"				`custName` VARCHAR(20) NOT NULL DEFAULT '',\r\n" + 
+				"				`custPhone` VARCHAR(13) NOT NULL DEFAULT '',\r\n" + 
+				"				`custEmail` VARCHAR(40) NOT NULL DEFAULT '',\r\n" + 
+				"				`custAddr1` VARCHAR(50) NOT NULL DEFAULT '',\r\n" + 
+				"				`custAddr2` VARCHAR(50) NOT NULL DEFAULT '',\r\n" + 
+				"				`custCity` VARCHAR(50) NOT NULL DEFAULT '',\r\n" + 
+				"				`strBillNo` VARCHAR(10) NULL DEFAULT '',\r\n" + 
+				"				PRIMARY KEY (`strOrderId`, `dtOrderDate`, `strClientCode`)\r\n" + 
+				"			)\r\n" + 
+				"			COLLATE='utf8_general_ci'\r\n" + 
+				"			ENGINE=InnoDB\r\n" + 
+				"			;\r\n";
 		
+		mapStructureUpdater.get("tblStructure").add(sql);
+
+
+			sql="CREATE TABLE `tblonlineorderdiscdtl` (\r\n" + 
+					"				`strOrderId` VARCHAR(10) NOT NULL,\r\n" + 
+					"				`isMerchantDiscount` VARCHAR(5) NOT NULL,\r\n" + 
+					"				`dblDiscAmt` DECIMAL(10,2) NOT NULL,\r\n" + 
+					"				`dblDiscPer` DECIMAL(10,2) NOT NULL,\r\n" + 
+					"				`code` VARCHAR(20) NOT NULL DEFAULT '',\r\n" + 
+					"				`title` VARCHAR(40) NOT NULL DEFAULT '',\r\n" + 
+					"				`strClientCode` VARCHAR(10) NOT NULL,\r\n" + 
+					"				`dtOrderDate` DATE NOT NULL,\r\n" + 
+					"				INDEX `strOrderId` (`strOrderId`)\r\n" + 
+					"			)\r\n" + 
+					"			COLLATE='utf8_general_ci'\r\n" + 
+					"			ENGINE=InnoDB\r\n" + 
+					"			;\r\n" ; 
+			mapStructureUpdater.get("tblStructure").add(sql);
+
+
+			sql="CREATE TABLE `tblonlineorderdtl` (\r\n" + 
+					"				`strOrderId` VARCHAR(10) NOT NULL,\r\n" + 
+					"				`itemId` VARCHAR(10) NOT NULL,\r\n" + 
+					"				`itemName` VARCHAR(50) NOT NULL DEFAULT '',\r\n" + 
+					"				`dtOrderDate` DATETIME NOT NULL,\r\n" + 
+					"				`merchant_id` VARCHAR(10) NOT NULL,\r\n" + 
+					"				`price` DECIMAL(10,2) NOT NULL DEFAULT '0.00',\r\n" + 
+					"				`quantity` DECIMAL(4,2) NOT NULL DEFAULT '0.00',\r\n" + 
+					"				`discount` DECIMAL(10,2) NOT NULL DEFAULT '0.00',\r\n" + 
+					"				`total` DECIMAL(10,2) NOT NULL DEFAULT '0.00',\r\n" + 
+					"				`total_with_tax` DECIMAL(10,2) NOT NULL DEFAULT '0.00',\r\n" + 
+					"				`dblExtracharges` DECIMAL(10,2) NOT NULL DEFAULT '0.00',\r\n" + 
+					"				`strClientCode` VARCHAR(10) NOT NULL,\r\n" + 
+					"				INDEX `strOrderId` (`strOrderId`)\r\n" + 
+					"			)\r\n" + 
+					"			COLLATE='utf8_general_ci'\r\n" + 
+					"			ENGINE=InnoDB\r\n" + 
+					"			;\r\n" ;
+			mapStructureUpdater.get("tblStructure").add(sql);
+
+
+			sql="CREATE TABLE `tblonlineordermodifierdtl` (\r\n" + 
+					"				`strOrderId` VARCHAR(15) NULL DEFAULT NULL,\r\n" + 
+					"				`strItemCode` VARCHAR(20) NOT NULL,\r\n" + 
+					"				`strItemId` VARCHAR(20) NOT NULL,\r\n" + 
+					"				`strModifierCode` VARCHAR(10) NOT NULL,\r\n" + 
+					"				`strModifierName` VARCHAR(200) NOT NULL,\r\n" + 
+					"				`dblQuantity` DECIMAL(18,4) NOT NULL,\r\n" + 
+					"				`dblAmount` DECIMAL(18,4) NOT NULL,\r\n" + 
+					"				`strClientCode` VARCHAR(10) NOT NULL,\r\n" + 
+					"				`dtOrderDate` DATE NOT NULL,\r\n" + 
+					"				INDEX `orderNo` (`strOrderId`)\r\n" + 
+					"			)\r\n" + 
+					"			COLLATE='utf8_general_ci'\r\n" + 
+					"			ENGINE=InnoDB\r\n" + 
+					"			;\r\n" + 
+					"";
+			mapStructureUpdater.get("tblStructure").add(sql);
+
+			sql="CREATE TABLE `tblonlineordersettlement` (\r\n" + 
+					"				`strOrderId` VARCHAR(15) NOT NULL DEFAULT '',\r\n" + 
+					"				`strSettlementName` VARCHAR(20) NOT NULL,\r\n" + 
+					"				`dblSettlementAmt` DECIMAL(18,4) NOT NULL,\r\n" + 
+					"				`strClientCode` VARCHAR(10) NOT NULL DEFAULT '0',\r\n" + 
+					"				`srvr_trx_id` VARCHAR(10) NULL DEFAULT '',\r\n" + 
+					"				`dtOrderDate` DATE NOT NULL,\r\n" + 
+					"				INDEX `strOrderId` (`strOrderId`)\r\n" + 
+					"			)\r\n" + 
+					"			COLLATE='utf8_general_ci'\r\n" + 
+					"			ENGINE=InnoDB\r\n" + 
+					"			;\r\n" + 
+					"";
+			mapStructureUpdater.get("tblStructure").add(sql);
+
+
+
+			sql="CREATE TABLE `tblonlineordertaxdtl` (\r\n" + 
+					"				`strOrderId` VARCHAR(15) NOT NULL DEFAULT '',\r\n" + 
+					"				`strTaxName` VARCHAR(10) NOT NULL,\r\n" + 
+					"				`dblTaxRate` DECIMAL(18,4) NOT NULL,\r\n" + 
+					"				`dblTaxAmount` DECIMAL(18,4) NOT NULL,\r\n" + 
+					"				`strClientCode` VARCHAR(10) NOT NULL,\r\n" + 
+					"				`dtOrderDate` DATE NOT NULL,\r\n" + 
+					"				INDEX `strBillNo` (`strOrderId`)\r\n" + 
+					"			)\r\n" + 
+					"			COLLATE='utf8_general_ci'\r\n" + 
+					"			ENGINE=InnoDB\r\n" + 
+					"			;\r\n" + 
+					"";
+			mapStructureUpdater.get("tblStructure").add(sql);
+
+
+			sql="CREATE TABLE `tblpaymentsetup` (\r\n" + 
+					"	`strChannelName` VARCHAR(20) NOT NULL,\r\n" + 
+					"	`strChannelID` VARCHAR(20) NOT NULL,\r\n" + 
+					"	`strClientCode` VARCHAR(10) NOT NULL,\r\n" + 
+					"	`strOperational` VARCHAR(1) NOT NULL,\r\n" + 
+					"	`strUserCreated` VARCHAR(10) NOT NULL DEFAULT '',\r\n" + 
+					"	`strUserEdited` VARCHAR(10) NOT NULL DEFAULT '',\r\n" + 
+					"	`dteDateCreated` DATETIME NOT NULL,\r\n" + 
+					"	`dteDateEdited` DATETIME NOT NULL,\r\n" + 
+					"	PRIMARY KEY (`strChannelID`, `strClientCode`)\r\n" + 
+					")\r\n" + 
+					"COLLATE='utf8_general_ci'\r\n" + 
+					"ENGINE=InnoDB\r\n" + 
+					";\r\n" + 
+					"";
+			mapStructureUpdater.get("tblStructure").add(sql);
+			
+			sql="CREATE TABLE `tblfeedbackmaster` (\r\n" + 
+					"	`strFBCode` VARCHAR(10) NOT NULL,\r\n" + 
+					"	`strQuestion` VARCHAR(100) NOT NULL,\r\n" + 
+					"	`strAnswer` VARCHAR(100) NOT NULL,\r\n" + 
+					"	`strOperational` VARCHAR(2) NOT NULL,\r\n" + 
+					"	`strType` VARCHAR(10) NOT NULL,\r\n" + 
+					"	`intRating` INT(11) NOT NULL,\r\n" + 
+					"	`strSuggestion` VARCHAR(2) NOT NULL,\r\n" + 
+					"	`strPOSCode` VARCHAR(2) NOT NULL,\r\n" + 
+					"	`strClientCode` VARCHAR(10) NOT NULL,\r\n" + 
+					"	`strUserCreated` VARCHAR(10) NOT NULL,\r\n" + 
+					"	`strUserEdited` VARCHAR(10) NOT NULL,\r\n" + 
+					"	`strDateCreated` DATETIME NOT NULL,\r\n" + 
+					"	`strDateEdited` DATETIME NOT NULL,\r\n" + 
+					"	PRIMARY KEY (`strFBCode`, `strClientCode`)\r\n" + 
+					")\r\n" + 
+					"ENGINE=InnoDB\r\n" + 
+					";\r\n" + 
+					"";
+			mapStructureUpdater.get("tblStructure").add(sql);
 	    }
 	    
 

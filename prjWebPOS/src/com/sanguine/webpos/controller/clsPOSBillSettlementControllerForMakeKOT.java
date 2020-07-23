@@ -154,19 +154,19 @@ public class clsPOSBillSettlementControllerForMakeKOT
 
 				if (gTreatMemberAsTable.equalsIgnoreCase("Y"))
 				{
-					sql.append("select strTableNo,strTableName,intSequence,strStatus,intPaxNo from tbltablemaster " + " where (strPOSCode='" + posCode + "' or strPOSCode='All') " + " and strOperational='Y' and strStatus!='Normal' " + " and strClientCode='"+clientCode+"' order by strTableName");
+					sql.append("select strTableNo,strTableName,intSequence,strStatus,intPaxNo,strAreaCode from tbltablemaster " + " where (strPOSCode='" + posCode + "' or strPOSCode='All') " + " and strOperational='Y' and strStatus!='Normal' " + " and strClientCode='"+clientCode+"' order by strTableName");
 				}
 				else
 				{
-					sql.append("select strTableNo,strTableName,intSequence,strStatus,intPaxNo from tbltablemaster " + " where (strPOSCode='" + posCode + "' or strPOSCode='All') " + " and strOperational='Y' " + " and strClientCode='"+clientCode+"' order by intSequence");
+					sql.append("select strTableNo,strTableName,intSequence,strStatus,intPaxNo,strAreaCode from tbltablemaster " + " where (strPOSCode='" + posCode + "' or strPOSCode='All') " + " and strOperational='Y' " + " and strClientCode='"+clientCode+"' order by intSequence");
 				}
 			}
 			else
 			{
 				if(areaCode.isEmpty() || areaCode.equalsIgnoreCase("All")){
-					sql.append("select strTableNo,strTableName,intSequence,strStatus,intPaxNo from tbltablemaster " + " where (strPOSCode='" + posCode + "' or strPOSCode='All') " + " and strOperational='Y' " + " and strClientCode='"+clientCode+"' order by intSequence");	
+					sql.append("select strTableNo,strTableName,intSequence,strStatus,intPaxNo,strAreaCode from tbltablemaster " + " where (strPOSCode='" + posCode + "' or strPOSCode='All') " + " and strOperational='Y' " + " and strClientCode='"+clientCode+"' order by intSequence");	
 				}else{
-					sql.append("select strTableNo,strTableName,intSequence,strStatus,intPaxNo from tbltablemaster " + " where (strPOSCode='" + posCode + "' or strPOSCode='All') " + " and strOperational='Y' " + " and strClientCode='"+clientCode+"' and strAreaCode='"+areaCode+"' order by intSequence");
+					sql.append("select strTableNo,strTableName,intSequence,strStatus,intPaxNo,strAreaCode from tbltablemaster " + " where (strPOSCode='" + posCode + "' or strPOSCode='All') " + " and strOperational='Y' " + " and strClientCode='"+clientCode+"' and strAreaCode='"+areaCode+"' order by intSequence");
 				}
 				
 			}
@@ -188,6 +188,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 					jobj.put("strTableNo", obj[0].toString());
 					jobj.put("strStatus", obj[3].toString());
 					jobj.put("intPaxNo", obj[4].toString());
+					jobj.put("strAreaCode", obj[5].toString());
 					jArrData.add(jobj);
 				}
 			}

@@ -55,10 +55,10 @@
 		<put-attribute name="body" value=""></put-attribute>
 	</definition>
 
+	<!-- <definition name="base.definition8" template="/WEB-INF/jsp/newTabTemplate.jsp">  newTabTemplet1.jsp-->
 	<definition name="base.definition8" template="/WEB-INF/jsp/newTabTemplate.jsp">
 		<put-attribute name="title" value=""></put-attribute>
-		<put-attribute name="banner"
-			value="/WEB-INF/jsp/webPOS/posBannerForBilling.jsp"></put-attribute>
+		 <put-attribute name="banner" value="/WEB-INF/jsp/webPOS/posBannerForBilling.jsp"></put-attribute>
 		<put-attribute name="body" value=""></put-attribute>
 	</definition>
 

@@ -47,7 +47,7 @@
 </head>
 
 <body bgcolor="#D8EDFF">
-	<div class="row" style=" height: 28px;">
+	<div class="row">
 		<tiles:insertAttribute name="banner"></tiles:insertAttribute>
 	</div>
 	<div style="background-color: inherit; top: 28px; bottom: 0;">

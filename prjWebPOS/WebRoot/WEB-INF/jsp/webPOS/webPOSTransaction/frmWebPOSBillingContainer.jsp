@@ -904,10 +904,12 @@ function funCalculationForCompItem()
 							
 						      <c:when test="${formToBeOpen == 'Billing'}">
 						     	<jsp:include page="frmNewBilling.jsp" />
+						     	<%-- <jsp:include page="frmBilling.jsp" /> --%>
 						      </c:when>
 						      
 						      <c:when test="${formToBeOpen == 'Settle Bill'}">
 						     	<jsp:include page="frmSettleBillFrontPage.jsp" />
+						     	<%-- <jsp:include page="frmBilling.jsp"/> --%>
 						      </c:when>
 						
 						  	  <c:when test="${formToBeOpen == 'Modify Bill'}">
