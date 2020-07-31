@@ -7432,7 +7432,7 @@ public class clsFillDatabaseTablesStructureUpdate
 					"	`strUserEdited` VARCHAR(10) NOT NULL DEFAULT '',\r\n" + 
 					"	`dteDateCreated` DATETIME NOT NULL,\r\n" + 
 					"	`dteDateEdited` DATETIME NOT NULL,\r\n" + 
-					"	PRIMARY KEY (`strChannelID`, `strClientCode`)\r\n" + 
+					"	PRIMARY KEY (`strChannelName`, `strClientCode`)\r\n" + 
 					")\r\n" + 
 					"COLLATE='utf8_general_ci'\r\n" + 
 					"ENGINE=InnoDB\r\n" + 
@@ -7448,7 +7448,7 @@ public class clsFillDatabaseTablesStructureUpdate
 					"	`strType` VARCHAR(10) NOT NULL,\r\n" + 
 					"	`intRating` INT(11) NOT NULL,\r\n" + 
 					"	`strSuggestion` VARCHAR(2) NOT NULL,\r\n" + 
-					"	`strPOSCode` VARCHAR(2) NOT NULL,\r\n" + 
+					"	`strPOSCode` VARCHAR(10) NOT NULL,\r\n" + 
 					"	`strClientCode` VARCHAR(10) NOT NULL,\r\n" + 
 					"	`strUserCreated` VARCHAR(10) NOT NULL,\r\n" + 
 					"	`strUserEdited` VARCHAR(10) NOT NULL,\r\n" + 

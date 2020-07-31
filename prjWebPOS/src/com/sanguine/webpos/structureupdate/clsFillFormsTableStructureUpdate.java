@@ -532,6 +532,11 @@ public class clsFillFormsTableStructureUpdate
 	    sql=sqlInsertSyntax +"('frmMultiChangeSettlement', 'Multi Change Settlement', 'T', 'imgMutliChangeSettlement', 121, 'imgMutliChangeSettlement1', 'frmMultiChangeSettlement.html', 'Multi Change Settlement');";
 	    mapStructureUpdater.get("frmStructure").add(sql);
 	
+	   sql=sqlInsertSyntax +"('frmPaymentSetup', 'Payment Setup', 'M', 'imgPaymentSetup', 10, 'imgPaymentSetup1', 'frmPaymentSetup.html', 'Payment Setup');" ;
+	   mapStructureUpdater.get("frmStructure").add(sql);
+	   
+	   sql=sqlInsertSyntax +"('frmFeedbackMaster', 'Feedback Master', 'M', 'imgFeedbackMaster', 10, 'imgFeedbackMaster1', 'frmFeedbackMaster.html', 'Feedback Master');";
+	   mapStructureUpdater.get("frmStructure").add(sql);
 	}
 	
 	catch (Exception e)

@@ -1354,6 +1354,17 @@
 	</definition>
 	
 
+	<definition name="frmPaymentSetup" extends="base.definition6">
+		<put-attribute name="title" value="Payment Setup"></put-attribute>
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/webPOS/frmPaymentSetup.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="frmFeedbackMaster" extends="base.definition6">
+		<put-attribute name="title" value="Feedback Master"></put-attribute>
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/webPOS/frmFeedbackMaster.jsp"></put-attribute>
+	</definition>
 	<!-- End Of WebPOS Tiles Entry -->
 
 
