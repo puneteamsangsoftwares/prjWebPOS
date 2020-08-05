@@ -1,5 +1,6 @@
 package com.sanguine.controller;
 
+import java.net.DatagramSocket;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,27 +17,33 @@ import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import com.POSLicence.controller.clsClientDetails;
 import com.POSLicence.controller.clsEncryptDecryptClientCode;
+import com.google.gson.JsonObject;
 import com.sanguine.bean.clsClientBean;
 import com.sanguine.bean.clsUserHdBean;
 import com.sanguine.model.clsCompanyMasterModel;
 import com.sanguine.service.clsGlobalFunctionsService;
 import com.sanguine.service.clsSetupMasterService;
 import com.sanguine.service.clsUserMasterService;
+import com.sanguine.util.clsSocketServer;
 import com.sanguine.util.clsUserDesktopUtil;
 import com.sanguine.webpos.bean.clsPOSSelectionBean;
 import com.sanguine.webpos.controller.clsPOSGlobalFunctionsController;
@@ -77,18 +84,37 @@ public class clsUserController
 	@Autowired
 	clsPOSToolsController objPOSTools;
 	
+	@Autowired
+	private clsOnlineOrderController objOnlineOrderController;
+	
 	private static int intcheckSturctureUpdate=0;
 	
 	@Value("${applicationType}")
 	String applicationType;
 
+	public static clsSocketServer objSocketServer ;
+	public static  DatagramSocket socket;
+	
 	
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public ModelAndView welcome(HttpServletRequest req) 	
 	{
+		
+		try {
+//			if(objSocketServer==null) {
+//				int port = 5001;
+//				clsUserController.socket=new DatagramSocket(port);
+//		        objSocketServer = new clsSocketServer();	
+//		        objSocketServer.start();
+//			}
+				
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+
 		PasswordEncoderGenerator();
 		ModelAndView mAndV=null;
-		
+				
 	//Direct Show Login Page or Client Login Page
 		try
 		{
@@ -173,15 +199,15 @@ public class clsUserController
                 	 
                 	 Date webPOSExpiryDate = dFormat.parse(decryptedExpDate);
 					 if (systemDate.compareTo(webPOSExpiryDate)<=0) 
-					 {
-						 if(userBean.getStrUserCode().equalsIgnoreCase("SANGUINE"))
+					 {						 
+						if(userBean.getStrUserCode().equalsIgnoreCase("SANGUINE"))
 						 {
 							 Date dt = new Date();
 						     int day = dt.getDate();
 						     int month = dt.getMonth() + 1;
 						     int year = dt.getYear() + 1900;
 						     int password = year + month + day + day;
-							
+							 
 						     String strpass=Integer.toString(password);
 						     char num1 =strpass.charAt(0);
 						     char num2 =strpass.charAt(1);
@@ -293,7 +319,6 @@ public class clsUserController
 
 	
 	
-	
 	@SuppressWarnings("rawtypes")
 	public ModelAndView funSessionValue(clsUserHdModel user,HttpServletRequest req)
 	{
@@ -303,11 +328,11 @@ public class clsUserController
 				+ " where  a.strClientCode='"+clientCode+"'  and a.strOperationalYN='Y' ";
 		
 		List list=objGlobalService.funGetList(sql,"sql");
-
+		String posCode="";
 		if(list.size()==1)
 		{
 			req.getSession().setAttribute("loginPOS",list.get(0).toString());
-
+			posCode=list.get(0).toString();
 		}
 		
 		Map<String, Object> model = new HashMap<String, Object>();
@@ -318,8 +343,41 @@ public class clsUserController
 		req.getSession().setAttribute("gUserName",user.getStrUserName().toUpperCase());
 		String dayEndDate=	objGlobalFun.funGetCurrentDate("yyyy-MM-dd");
 		req.getSession().setAttribute("dayEndDate",dayEndDate);
+		ModelAndView mv = new ModelAndView("frmWebPOSModuleSelection");
 		
-		return new ModelAndView("frmWebPOSModuleSelection");
+		clsSetupHdModel objSetupHdModel=null;
+		try
+		{
+			objSetupHdModel = objMasterService.funGetPOSWisePropertySetup(clientCode,posCode);
+		}
+		catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String webposEnable="Y";
+		if(null!=objSetupHdModel)
+		{
+			webposEnable=objSetupHdModel.getStrWebPOSEnable();
+			//Check Webpos module or QRMenu Admin Module
+			req.getSession().setAttribute("webPOSModuleSelect","M");
+			if(null!=req.getSession().getAttribute("loginPOS")){
+				//mv=new ModelAndView("frmWebPOSMainMenu");
+				try
+				{
+					mv=funWebPOSPOSSelection(req.getSession().getAttribute("loginPOS").toString(), req, model);
+				}
+				catch (Exception e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
+			
+		}
+		}
+		req.getSession().setAttribute("webposEnable",webposEnable);
+		return mv;
 		
 	}
 	
@@ -618,7 +676,51 @@ public class clsUserController
 			
 				
 			}
+			clsSetupHdModel objSetupHdModel=null;
+			try
+			{
+				objSetupHdModel = objMasterService.funGetPOSWisePropertySetup(clientCode,POSCode);
+			}
+			catch (Exception e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			String webposEnable="Y";
+			
+			if(null!=objSetupHdModel)
+			{
+				webposEnable=objSetupHdModel.getStrWebPOSEnable();
+				//Check Webpos module or QRMenu Admin Module
+				req.getSession().setAttribute("webPOSModuleSelect","M");
+			}
 
+			//if(req.getSession().getAttribute("webposEnable")!=null) {
+				if(webposEnable.equalsIgnoreCase("N")) {
+
+					List listMainMenuForms=objMainMenuService.funGetMainMenuFormsForQRAdmin("");
+			 		List<clsUserDesktopUtil> listMenu=new  ArrayList<clsUserDesktopUtil>();
+					
+					if(null!=listMainMenuForms)
+					{	
+						jArr=new JSONArray();
+					    for(int cnt=0;cnt<listMainMenuForms.size();cnt++)
+					    {
+					    	Object[] arrObjMainMenuList=(Object[])listMainMenuForms.get(cnt);
+					    	JSONObject jobj = new JSONObject();
+							jobj.put("formName", arrObjMainMenuList[2].toString());
+							jobj.put("strFormName",arrObjMainMenuList[2].toString());
+							jobj.put("strFormDesc", arrObjMainMenuList[0].toString());
+							jobj.put("strImgName",arrObjMainMenuList[1].toString()+".png");
+							jobj.put("strRequestMapping",arrObjMainMenuList[3].toString());
+							jobj.put("strShortName",arrObjMainMenuList[4].toString());
+							jArr.add(jobj);
+							
+					    }
+					}
+				    
+				}
+			
 			req.getSession().setAttribute("formSerachlist",jArr);
 			req.getSession().setAttribute("desktop",webPOSDesktop);
 			
@@ -1086,6 +1188,59 @@ public class clsUserController
 		hmPendingForms.put("frmRestaurantBill","frmRestaurantBill");
 		
 		return hmPendingForms;
+	}
+
+	@RequestMapping(value = "/onlineOrderNotification", method = RequestMethod.GET)
+	public @ResponseBody boolean funSetSearchFields(HttpServletRequest req)throws Exception
+	{
+		
+		System.out.println("onlineOrderNotification");
+		
+		return true;
+	}
+	 //JsonIgnore
+	@RequestMapping(value = "/onlineOrderPlaced", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	  public @ResponseBody String  funOnlineOrderPlaced(@RequestBody JSONObject jsonOb,HttpServletRequest req)throws Exception {
+	  
+	  System.out.println("onlineOrderNotification"  +jsonOb);
+	  
+	 
+		try
+		{
+			objOnlineOrderController.funSaveOnlineOrderData(jsonOb);
+
+			//if (objSocketServer != null)
+			{
+//				objSocketServer=new clsSocketServer();
+//				objSocketServer.start(jsonOb);
+			} 
+		  
+	  }catch(Exception e) {
+		  e.printStackTrace();
+	  }
+	 // objSocketServer.service(jsonOb);
+	 
+	  return "200";
+			  
+	}
+	
+	@RequestMapping(value = "/onlineOrderUpdated", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	  public @ResponseBody String  funOnlineOrderUpdated(@RequestBody JSONObject jsonOb,HttpServletRequest req)throws Exception {
+	  
+	  System.out.println("onlineOrderstatus changed"  +jsonOb);
+	 
+		try
+		{
+			
+			objOnlineOrderController.funUpdateOnlineOrderStatus(jsonOb);
+		  
+	  }catch(Exception e) {
+		  e.printStackTrace();
+	  }
+	  return "200";
+			  
 	}
 	
 }
