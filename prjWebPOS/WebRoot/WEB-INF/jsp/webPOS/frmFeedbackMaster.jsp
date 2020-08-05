@@ -49,10 +49,10 @@
 	
 
 	
-	function funSetData(strfbCode)
+	function funSetData(strQuestionCode)
 	{
-		 $("#txtFeedbackCode").val(strfbCode);
-		var searchurl=getContextPath()+"/loadFeedbackMaster.html?fbCode="+strfbCode;
+		 $("#txtQuestionCode").val(strQuestionCode);
+		var searchurl=getContextPath()+"/loadFeedbackMaster.html?queCode="+strQuestionCode;
 		 $.ajax({
 			        type: "GET",
 			        url: searchurl,
@@ -65,7 +65,7 @@
 			        	}
 			        	else
 			        	{
-				        	$("#txtFeedbackCode").val(response.strFBCode);
+				        	$("#txtQuestionCode").val(response.strQuestionCode);
 				        	$("#cmbPOSName").val(response.strPOSCode);
 				        	$("#txtQuestion").val(response.strQuestion);
 				        	$("#cmbType").val(response.strType);
@@ -139,10 +139,10 @@
 		 <div class="title" style="margin-left: 25%;">
 		 	<div class="row" style="background-color: #fff;margin-bottom:  10px;display: -webkit-box; ">
 				<div class="element-input col-lg-6" style="width: 20%; margin-left: 10%"> 
-	    			<label class="title">Feedback Code</label>
+	    			<label class="title">Question Code</label>
 	    		</div>
 	    		    <div class="element-input col-lg-6" style="margin-bottom:  10px;width: 30%;"> 
-					<s:input class="large" colspan="3" type="text" id="txtFeedbackCode" path="strFBCode"  ondblclick="funHelp('feedbackMaster')" readonly="true"/>
+					<s:input class="large" colspan="3" type="text" id="txtQuestionCode" path="strQuestionCode"  ondblclick="funHelp('feedbackMaster')" readonly="true"/>
 				</div>
 	    		
 			</div>

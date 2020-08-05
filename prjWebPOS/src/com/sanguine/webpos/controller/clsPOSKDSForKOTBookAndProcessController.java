@@ -26,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.sanguine.base.service.intfBaseService;
 import com.sanguine.controller.clsGlobalFunctions;
+import com.sanguine.webpos.bean.clsKDSBean;
 //import com.sanguine.webpos.bean.clsKDSBean;
 import com.sanguine.webpos.bean.clsPOSMoveKOTItemsToTableBean;
 
@@ -95,37 +96,72 @@ public class clsPOSKDSForKOTBookAndProcessController
 		}
 	}
 
-	/*
-	 * @SuppressWarnings("unchecked")
-	 * 
-	 * @RequestMapping(value = "/funGetKOTHdDtl", method = RequestMethod.GET)
-	 * public @ResponseBody List funGetBillHdDtl(HttpServletRequest req) {
-	 * 
-	 * List listRet = new ArrayList<>(); List listReturn = new
-	 * ArrayList<clsKDSBean>(); List listR = new ArrayList<>(); clsKDSBean objBean =
-	 * null; StringBuilder sbSql = new StringBuilder(); sbSql.
-	 * append("SELECT a.dblItemQuantity,a.strItemName,a.strKOTNo,TIME_FORMAT(a.tmeOrderProcessing,'%H:%i'),a.strTableNo "
-	 * + "FROM tblitemrtemp a"); List list; String strPrev = ""; try { list =
-	 * objBaseService.funGetList(sbSql, "sql"); if(list!=null && list.size()>0) {
-	 * for(int i =0 ;i<list.size();i++) { Object [] obj = (Object[]) list.get(i);
-	 * objBean = new clsKDSBean();
-	 * 
-	 * objBean.setStrKOTNo(obj[0].toString());
-	 * objBean.setStrTableNo(obj[1].toString());
-	 * objBean.setStrName(obj[3].toString()); objBean.setStrQty(obj[4].toString());
-	 * objBean.setStrTime(obj[5].toString());
-	 * 
-	 * if(i>0) {
-	 * 
-	 * 
-	 * if(!strPrev.equals(obj[2].toString())) { listRet.add(listR); strPrev="";
-	 * listR = new ArrayList<>(); listR.add(obj); strPrev = obj[2].toString(); }
-	 * else { listR.add(obj); } } else { listR.add(obj); } strPrev =
-	 * obj[2].toString(); } } listRet.add(listR); } catch (Exception e) { // TODO
-	 * Auto-generated catch block e.printStackTrace(); }
-	 * 
-	 * listReturn.add(listR); return listRet; }
-	 */
+	
+	  @SuppressWarnings("unchecked")
+	  
+	@RequestMapping(value = "/funGetKOTHdDtl", method = RequestMethod.GET)
+	public @ResponseBody List funGetBillHdDtl(HttpServletRequest req)
+	{
+
+		List listRet = new ArrayList<>();
+		List listReturn = new ArrayList<clsKDSBean>();
+		List listR = new ArrayList<>();
+		clsKDSBean objBean = null;
+		StringBuilder sbSql = new StringBuilder();
+		sbSql.append("SELECT a.dblItemQuantity,a.strItemName,a.strKOTNo,TIME_FORMAT(a.tmeOrderProcessing,'%H:%i'),a.strTableNo " + "FROM tblitemrtemp a");
+		List list;
+		String strPrev = "";
+		try
+		{
+			list = objBaseService.funGetList(sbSql, "sql");
+			if (list != null && list.size() > 0)
+			{
+				for (int i = 0; i < list.size(); i++)
+				{
+					Object[] obj = (Object[]) list.get(i);
+					objBean = new clsKDSBean();
+
+					objBean.setStrKOTNo(obj[0].toString());
+					objBean.setStrTableNo(obj[1].toString());
+					objBean.setStrName(obj[3].toString());
+					objBean.setStrQty(obj[4].toString());
+					objBean.setStrTime(obj[5].toString());
+
+					if (i > 0)
+					{
+
+						if (!strPrev.equals(obj[2].toString()))
+						{
+							listRet.add(listR);
+							strPrev = "";
+							listR = new ArrayList<>();
+							listR.add(obj);
+							strPrev = obj[2].toString();
+						}
+						else
+						{
+							listR.add(obj);
+						}
+					}
+					else
+					{
+						listR.add(obj);
+					}
+					strPrev = obj[2].toString();
+				}
+			}
+			listRet.add(listR);
+		}
+		catch (Exception e)
+		{
+			// TODO Auto-generated catch block e.printStackTrace(); }
+
+			listReturn.add(listR);
+			
+		}
+		return listRet;
+	}
+ 
 	@RequestMapping(value = "/funGetNewKOTSize", method = RequestMethod.GET)
 	public @ResponseBody List funGetNewBillSize(HttpServletRequest req)
 	{

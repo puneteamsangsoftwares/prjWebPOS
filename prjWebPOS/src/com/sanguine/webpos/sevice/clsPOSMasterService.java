@@ -33,6 +33,7 @@ import com.sanguine.webpos.model.clsPOSNotificationMasterModel;
 import com.sanguine.webpos.model.clsPOSOrderMasterModel;
 import com.sanguine.webpos.model.clsPOSPromationMasterHdModel;
 import com.sanguine.webpos.model.clsPOSZoneMasterModel;
+import com.sanguine.webpos.model.clsPaymentSetupModel;
 //import com.sanguine.webpos.model.clsPOSPromationMasterHdModel;
 import com.sanguine.webpos.model.clsPricingMasterHdModel;
 import com.sanguine.webpos.model.clsReasonMasterModel;
@@ -1172,5 +1173,16 @@ public class clsPOSMasterService
 		
 		return list;
 
+	}
+	
+	public clsPaymentSetupModel funSelectedPaymentData(String channelName, String clientCode) throws Exception
+	{
+		clsPaymentSetupModel objMasterModel = null;
+		Map<String, String> hmParameters = new HashMap<String, String>();
+		hmParameters.put("channelName", channelName);
+		hmParameters.put("clientCode", clientCode);
+		objMasterModel = (clsPaymentSetupModel) obBaseService.funGetAllMasterDataByDocCodeWise("getPaymentSetup", hmParameters);
+		System.out.println();
+		return objMasterModel;
 	}
 }

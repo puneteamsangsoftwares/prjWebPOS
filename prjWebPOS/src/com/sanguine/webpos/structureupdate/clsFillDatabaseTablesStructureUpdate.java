@@ -7426,13 +7426,14 @@ public class clsFillDatabaseTablesStructureUpdate
 			sql="CREATE TABLE `tblpaymentsetup` (\r\n" + 
 					"	`strChannelName` VARCHAR(20) NOT NULL,\r\n" + 
 					"	`strChannelID` VARCHAR(20) NOT NULL,\r\n" + 
+					"	`strSecretKey` VARCHAR(20) NOT NULL,\r\n" + 
 					"	`strClientCode` VARCHAR(10) NOT NULL,\r\n" + 
 					"	`strOperational` VARCHAR(1) NOT NULL,\r\n" + 
 					"	`strUserCreated` VARCHAR(10) NOT NULL DEFAULT '',\r\n" + 
 					"	`strUserEdited` VARCHAR(10) NOT NULL DEFAULT '',\r\n" + 
 					"	`dteDateCreated` DATETIME NOT NULL,\r\n" + 
 					"	`dteDateEdited` DATETIME NOT NULL,\r\n" + 
-					"	PRIMARY KEY (`strChannelName`, `strClientCode`)\r\n" + 
+					"	PRIMARY KEY (`strClientCode`, `strChannelName`)\r\n" + 
 					")\r\n" + 
 					"COLLATE='utf8_general_ci'\r\n" + 
 					"ENGINE=InnoDB\r\n" + 
@@ -7441,7 +7442,7 @@ public class clsFillDatabaseTablesStructureUpdate
 			mapStructureUpdater.get("tblStructure").add(sql);
 			
 			sql="CREATE TABLE `tblfeedbackmaster` (\r\n" + 
-					"	`strFBCode` VARCHAR(10) NOT NULL,\r\n" + 
+					"	`strQuestionCode` VARCHAR(10) NOT NULL,\r\n" + 
 					"	`strQuestion` VARCHAR(100) NOT NULL,\r\n" + 
 					"	`strAnswer` VARCHAR(100) NOT NULL,\r\n" + 
 					"	`strOperational` VARCHAR(2) NOT NULL,\r\n" + 
@@ -7454,7 +7455,7 @@ public class clsFillDatabaseTablesStructureUpdate
 					"	`strUserEdited` VARCHAR(10) NOT NULL,\r\n" + 
 					"	`strDateCreated` DATETIME NOT NULL,\r\n" + 
 					"	`strDateEdited` DATETIME NOT NULL,\r\n" + 
-					"	PRIMARY KEY (`strFBCode`, `strClientCode`)\r\n" + 
+					"	PRIMARY KEY (`strQuestionCode`, `strClientCode`)\r\n" + 
 					")\r\n" + 
 					"ENGINE=InnoDB\r\n" + 
 					";\r\n" + 

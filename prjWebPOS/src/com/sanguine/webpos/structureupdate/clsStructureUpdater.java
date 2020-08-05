@@ -381,7 +381,7 @@ public class clsStructureUpdater
 		funCheckMasterEntry("Table", strClientCode);
 		funCheckMasterEntry("Tax", strClientCode);
 		funCheckMasterEntry("Waiter", strClientCode);
-
+		funCheckMasterEntry("feedback", strClientCode);
 	}
 
 	private int funCheckMasterEntry(String masterName, String strClientCode)

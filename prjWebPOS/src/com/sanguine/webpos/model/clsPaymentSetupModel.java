@@ -43,6 +43,10 @@ public class clsPaymentSetupModel extends clsBaseModel  implements Serializable{
 	@Column(name="strChannelID")
 	private String strChannelID;
 
+	
+	@Column(name="strSecretKey")
+	private String strSecretKey;
+
 	@Column(name="strClientCode")
 	private String strClientCode;
 
@@ -61,6 +65,7 @@ public class clsPaymentSetupModel extends clsBaseModel  implements Serializable{
 	@Column(name="dteDateEdited")
 	private String dteDateEdited;
 
+	
 //Setter-Getter Methods
 	public String getStrChannelName(){
 		return strChannelName;
@@ -116,6 +121,16 @@ public class clsPaymentSetupModel extends clsBaseModel  implements Serializable{
 	}
 	public void setDteDateEdited(String dteDateEdited){
 		this.dteDateEdited=dteDateEdited;
+	}
+
+	public String getStrSecretKey()
+	{
+		return strSecretKey;
+	}
+
+	public void setStrSecretKey(String strSecretKey)
+	{
+		this.strSecretKey = strSecretKey;
 	}
 
 

@@ -670,6 +670,15 @@ public class clsSearchFormController
 			break;
 
 		}
+		
+		case "feedbackMaster":
+		{
+			listColumnNames = "Question Code,Question,POS,Operational";
+			searchFormTitle = "Feedback Master";
+			JSONObject jObjSearchData = funGetPOSSearchDetails(formName, clientCode);
+			jArrSearchList = (JSONArray) jObjSearchData.get(formName);
+			break;
+		}
 		//Pratiksha 20-05-2019
 		
 		}
@@ -1728,6 +1737,25 @@ public class clsSearchFormController
 				}
 				jObjSearchData.put(masterName, jArrData);
 				break;
+				
+			case "feedbackMaster":
+
+				list = objBaseService.funGetSerachList("getAllFeedbackMaster", clientCode);
+
+				for (int cnt = 0; cnt < list.size(); cnt++)
+				{
+					Object[] obj = (Object[]) list.get(cnt);
+
+					JSONArray jArrDataRow = new JSONArray();
+					jArrDataRow.add(obj[0]);
+					jArrDataRow.add(obj[1]);
+					jArrDataRow.add(obj[2]);
+					jArrDataRow.add(obj[3]);
+					jArrData.add(jArrDataRow);
+				}
+				jObjSearchData.put(masterName, jArrData);
+				break;
+				
 			case "BillForChangeSettlement":
 
 				String[] splitClientCode = clientCode.split("#");

@@ -86,15 +86,15 @@ public class clsPOSFeedbackMasterController
 		{
 			String clientCode = req.getSession().getAttribute("gClientCode").toString();
 			String webPOSUserCode = req.getSession().getAttribute("gUserCode").toString();
-			String feedbackCode = objBean.getStrFBCode();
-			if (feedbackCode.trim().isEmpty())
+			String strQuestionCode = objBean.getStrQuestionCode();
+			if (strQuestionCode.trim().isEmpty())
 			{
 				long intCode =objUtilityController.funGetDocumentCodeFromInternal("feedback",clientCode);
-				feedbackCode = "FB" + String.format("%03d", intCode);
+				strQuestionCode = "Q" + String.format("%03d", intCode);
 			}
 			
 			
-			clsFeedBackMasterModel objModel = new clsFeedBackMasterModel(new clsFeedBackMasterModel_ID(feedbackCode, clientCode));
+			clsFeedBackMasterModel objModel = new clsFeedBackMasterModel(new clsFeedBackMasterModel_ID(strQuestionCode, clientCode));
 			objModel.setStrQuestion(objBean.getStrQuestion());
 			objModel.setStrType(objBean.getStrType());
 			objModel.setStrDateCreated(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
@@ -111,7 +111,7 @@ public class clsPOSFeedbackMasterController
 			objModel.setStrPOSCode(objBean.getStrPOSCode());
 			objBaseServiceImpl.funSave(objModel);
 			req.getSession().setAttribute("success", true);
-			req.getSession().setAttribute("successMessage", " " + feedbackCode);
+			req.getSession().setAttribute("successMessage", " " + strQuestionCode);
 
 			
 		}
@@ -126,14 +126,14 @@ public class clsPOSFeedbackMasterController
 	// Assign filed function to set data onto form for edit transaction.
 
 	@RequestMapping(value = "/loadFeedbackMaster", method = RequestMethod.GET)
-	public @ResponseBody clsFeedBackMasterModel funSetSearchFields(@RequestParam("fbCode") String fbCode, HttpServletRequest req) throws Exception
+	public @ResponseBody clsFeedBackMasterModel funSetSearchFields(@RequestParam("queCode") String strQuestionCode, HttpServletRequest req) throws Exception
 	{
 		String clientCode = req.getSession().getAttribute("gClientCode").toString();
 		
-		StringBuilder hql=new StringBuilder(" from clsFeedBackMasterModel where strFBCode='"+fbCode+"' and strClientCode='"+clientCode+"'");
+		StringBuilder hql=new StringBuilder(" from clsFeedBackMasterModel where strQuestionCode='"+strQuestionCode+"' and strClientCode='"+clientCode+"'");
 		List list=objBaseServiceImpl.funGetList(hql, "hql");
 		clsFeedBackMasterModel objModel = new clsFeedBackMasterModel();
-		objModel.setStrFBCode("Invalid Code");
+		objModel.setStrQuestionCode("Invalid Code");
 		if(list!=null && list.size()>0) {
 			 objModel = (clsFeedBackMasterModel)list.get(0);	
 		}

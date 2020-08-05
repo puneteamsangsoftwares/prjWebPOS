@@ -6,6 +6,8 @@ public class clsPaymentSetupBean{
 
 	private String strChannelID;
 
+	private String strSecretKey;
+	
 	private String strClientCode;
 
 	private String strOperational;
@@ -73,6 +75,14 @@ public class clsPaymentSetupBean{
 	}
 	public void setDteDateEdited(String dteDateEdited){
 		this.dteDateEdited=dteDateEdited;
+	}
+	public String getStrSecretKey()
+	{
+		return strSecretKey;
+	}
+	public void setStrSecretKey(String strSecretKey)
+	{
+		this.strSecretKey = strSecretKey;
 	}
 
 

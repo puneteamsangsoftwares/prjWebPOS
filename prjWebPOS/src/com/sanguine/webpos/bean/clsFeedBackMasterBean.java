@@ -2,7 +2,7 @@ package com.sanguine.webpos.bean;
 
 public class clsFeedBackMasterBean{
 //Variable Declaration
-	private String strFBCode;
+	private String strQuestionCode;
 
 	private String strQuestion;
 
@@ -29,12 +29,6 @@ public class clsFeedBackMasterBean{
 	private String strDateEdited;
 
 //Setter-Getter Methods
-	public String getStrFBCode(){
-		return strFBCode;
-	}
-	public void setStrFBCode(String strFBCode){
-		this.strFBCode=strFBCode;
-	}
 
 	public String getStrQuestion(){
 		return strQuestion;
@@ -120,6 +114,14 @@ public class clsFeedBackMasterBean{
 	public void setIntSequence(int intSequence)
 	{
 		this.intSequence = intSequence;
+	}
+	public String getStrQuestionCode()
+	{
+		return strQuestionCode;
+	}
+	public void setStrQuestionCode(String strQuestionCode)
+	{
+		this.strQuestionCode = strQuestionCode;
 	}
 	
 

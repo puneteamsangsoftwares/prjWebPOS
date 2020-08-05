@@ -798,6 +798,8 @@ public class clsSetupHdModel extends clsBaseModel implements Serializable
 	@Column(name = "strWERAOnlineOrderIntegration")
 	private String strWERAOnlineOrderIntegration;
 
+	@Column(name="strWebPOSEnable")
+	private String strWebPOSEnable;
 	/*
 	 * public String getStrDayEndSMSYN() { return strDayEndSMSYN; }
 	 * 
@@ -3319,6 +3321,16 @@ public class clsSetupHdModel extends clsBaseModel implements Serializable
 	public void setStrTelephoneNo(String strTelephoneNo)
 	{
 		this.strTelephoneNo = strTelephoneNo;
+	}
+
+	public String getStrWebPOSEnable()
+	{
+		return strWebPOSEnable;
+	}
+
+	public void setStrWebPOSEnable(String strWebPOSEnable)
+	{
+		this.strWebPOSEnable = strWebPOSEnable;
 	}
 
 }

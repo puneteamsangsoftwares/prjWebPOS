@@ -21,7 +21,11 @@ public class clsRequestInterceptor implements HandlerInterceptor
 		 * System.out.println("request.getContextPath()="+request.getContextPath());
 		 * System.out.println("request.getRequestURI()="+request.getRequestURI());
 		 */
+		
 		String prjName = request.getContextPath().toString();
+		if(request.getRequestURI().contains("onlineOrder")) {
+			return true;
+		}
 		prjName = prjName.concat("/");
 		if (!request.getRequestURI().equals(prjName) && !request.getRequestURI().equals(prjName + "index.html")
 				&& !request.getRequestURI().equals(prjName + "validateUser.html")

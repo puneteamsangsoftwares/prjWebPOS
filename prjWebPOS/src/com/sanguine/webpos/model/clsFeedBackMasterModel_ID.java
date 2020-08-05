@@ -10,26 +10,20 @@ import javax.persistence.Embeddable;
 public class clsFeedBackMasterModel_ID implements Serializable{
 
 //Variable Declaration
-	@Column(name="strFBCode")
-	private String strFBCode;
+	@Column(name="strQuestionCode")
+	private String strQuestionCode;
 
 	@Column(name="strClientCode")
 	private String strClientCode;
 
 	public clsFeedBackMasterModel_ID(){}
-	public clsFeedBackMasterModel_ID(String strFBCode,String strClientCode){
-		this.strFBCode=strFBCode;
+	public clsFeedBackMasterModel_ID(String strQuestionCode,String strClientCode){
+		this.strQuestionCode=strQuestionCode;
 		this.strClientCode=strClientCode;
 	}
 
 //Setter-Getter Methods
-	public String getStrFBCode(){
-		return strFBCode;
-	}
-	public void setStrFBCode(String strFBCode){
-		this. strFBCode = strFBCode;
-	}
-
+	
 	public String getStrClientCode(){
 		return strClientCode;
 	}
@@ -42,7 +36,7 @@ public class clsFeedBackMasterModel_ID implements Serializable{
 	@Override
 	public boolean equals(Object obj) {
 		clsFeedBackMasterModel_ID objModelId = (clsFeedBackMasterModel_ID)obj;
-		if(this.strFBCode.equals(objModelId.getStrFBCode())&& this.strClientCode.equals(objModelId.getStrClientCode())){
+		if(this.strQuestionCode.equals(objModelId.getStrQuestionCode())&& this.strClientCode.equals(objModelId.getStrClientCode())){
 			return true;
 		}
 		else{
@@ -52,7 +46,15 @@ public class clsFeedBackMasterModel_ID implements Serializable{
 
 	@Override
 	public int hashCode() {
-		return this.strFBCode.hashCode()+this.strClientCode.hashCode();
+		return this.strQuestionCode.hashCode()+this.strClientCode.hashCode();
+	}
+	public String getStrQuestionCode()
+	{
+		return strQuestionCode;
+	}
+	public void setStrQuestionCode(String strQuestionCode)
+	{
+		this.strQuestionCode = strQuestionCode;
 	}
 
 }

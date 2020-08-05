@@ -19,30 +19,30 @@ import com.sanguine.base.model.clsBaseModel;
 @IdClass(clsFeedBackMasterModel_ID.class)
 
 @NamedQueries({ @NamedQuery(name = "getAllFeedbackMaster", 
-query = "select m.strFBCode,m.strQuestion,m.strPOSCode,m.strOperational " 
+query = "select m.strQuestionCode,m.strQuestion,m.strPOSCode,m.strOperational " 
 		+ "from clsFeedBackMasterModel m where m.strClientCode=:clientCode "),
 
 		@NamedQuery(name = "getFeedbackMaster", 
-		query = "from clsFeedBackMasterModel where strFBCode=:strFBCode and strClientCode=:clientCode")})
+		query = "from clsFeedBackMasterModel where strQuestionCode=:strQuestionCode and strClientCode=:clientCode")})
 
 public class clsFeedBackMasterModel extends clsBaseModel  implements Serializable{
 	private static final long serialVersionUID = 1L;
 	public clsFeedBackMasterModel(){}
 
 	public clsFeedBackMasterModel(clsFeedBackMasterModel_ID objModelID){
-		strFBCode = objModelID.getStrFBCode();
+		strQuestionCode = objModelID.getStrQuestionCode();
 		strClientCode = objModelID.getStrClientCode();
 	}
 
 	@Id
 	@AttributeOverrides({
-		@AttributeOverride(name="strFBCode",column=@Column(name="strFBCode")),
+		@AttributeOverride(name="strQuestionCode",column=@Column(name="strQuestionCode")),
 @AttributeOverride(name="strClientCode",column=@Column(name="strClientCode"))
 	})
 
 //Variable Declaration
-	@Column(name="strFBCode")
-	private String strFBCode;
+	@Column(name="strQuestionCode")
+	private String strQuestionCode;
 
 	@Column(name="strQuestion")
 	private String strQuestion;
@@ -79,12 +79,6 @@ public class clsFeedBackMasterModel extends clsBaseModel  implements Serializabl
 	private String strDateEdited;
 
 //Setter-Getter Methods
-	public String getStrFBCode(){
-		return strFBCode;
-	}
-	public void setStrFBCode(String strFBCode){
-		this. strFBCode = (String) setDefaultValue( strFBCode, "NA");
-	}
 
 	public String getStrQuestion(){
 		return strQuestion;
@@ -179,6 +173,17 @@ public class clsFeedBackMasterModel extends clsBaseModel  implements Serializabl
 	{
 		this.intSequence = intSequence;
 	}
+
+	public String getStrQuestionCode()
+	{
+		return strQuestionCode;
+	}
+
+	public void setStrQuestionCode(String strQuestionCode)
+	{
+		this.strQuestionCode = strQuestionCode;
+	}
+
 
 
 }

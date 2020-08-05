@@ -35,8 +35,8 @@
    	
     function funPOSHome()
    	{
-    	<%-- var posCode='<%=session.getAttribute("loginPOS").toString()%>'; --%>
-    	var posCode="Sumeet";
+    	var posCode='<%=session.getAttribute("loginPOS").toString()%>';
+    	/* var posCode="Sumeet"; */
     	window.location.href=getContextPath()+"/frmGetPOSSelection.html?strPosCode="+posCode;
    	}
    	

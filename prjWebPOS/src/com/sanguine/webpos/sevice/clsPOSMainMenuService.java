@@ -154,6 +154,23 @@ public class clsPOSMainMenuService {
 	}
 	
 	
+	public List funGetMainMenuFormsForQRAdmin(String searchFrom) throws Exception
+	{
+		StringBuilder sbSql=new StringBuilder();
+		sbSql.append("SELECT DISTINCT a.strModuleName,a.strImageName,a.strFormName,a.strRequestMapping, \r\n" + 
+				"a.strShortName\r\n" + 
+				"FROM tblforms a\r\n" + 
+				"WHERE  a.strModuleName in('Feedback Master','Item Modifier','Menu Head','Menu Item','ModifierGroupMaster','Group','Payment Setup','Price Menu','Sales Report','Settlement','SubGroup','Table Master','Tax Master','User Registration','Cost Center','CustomerTypeMaster','Home Delivery Person','Customer Area Master','Customer Master','Daily Collection Report','Item Wise Consumption','KDSBookAndProcess','KDS Flash','KDSForKOTBookAndProcess','Kitchen System','Kitchen Process System','Table Reservation');");
+		
+		List list=null;
+    	if(sbSql.length()>0)
+    	{
+    		list=objBaseService.funGetList(sbSql, "sql");
+    	}
+    	
+    	return list;
+		
+	}
 	
 	public Map<String,String> funGetPOSWiseDayEndData(String POSCode,String userCode, String clientCode)
 	{

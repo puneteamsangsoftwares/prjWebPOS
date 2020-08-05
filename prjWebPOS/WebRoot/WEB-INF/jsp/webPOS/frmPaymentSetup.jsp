@@ -61,6 +61,8 @@
 			        	{
 				        	$("#cmbChannelName").val(response.strChannelName);
 				        	$("#txtChannelID").val(response.strChannelID);
+				        	$("#txtSecretKey").val(response.strSecretKey);
+				        	
 				        	if(response.strOperational=='Y')
 			        		{
 				        		$("#chkOperational").prop('checked',true);
@@ -150,6 +152,15 @@
 				</div>
 				<div class="element-input col-lg-6"  style="width: 30%;">
 					<s:input class="large" type="text" id="txtChannelID" path="strChannelID"   style="width: 100%;"/>
+				</div> 
+			</div>
+			
+			<div class="row" style="background-color: #fff;margin-bottom:  10px;display: -webkit-box;">
+				<div class="element-input col-lg-6" style="width: 20%; margin-left: 10%" >
+					<label class="title">Secret Key</label>
+				</div>
+				<div class="element-input col-lg-6"  style="width: 30%;">
+					<s:input class="large" type="text" id="txtSecretKey" path="strSecretKey"   style="width: 100%;"/>
 				</div> 
 			</div>
 			
