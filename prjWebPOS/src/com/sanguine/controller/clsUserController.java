@@ -1243,4 +1243,67 @@ public class clsUserController
 			  
 	}
 	
+	@RequestMapping(value = "/onlineOrderStoreAddUpdate", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	  public @ResponseBody String  funOnlineOrderStoreAddUpdate(@RequestBody JSONObject jsonOb,HttpServletRequest req)throws Exception {
+	 System.out.println("onlineOrderStoreAddUpdate"  +jsonOb);
+	  try
+		{
+			
+			objOnlineOrderController.funAddUpdateStore(jsonOb);
+		  
+	  }catch(Exception e) {
+		  e.printStackTrace();
+	  }
+	  return "200";
+			  
+	}
+	
+	@RequestMapping(value = "/onlineOrderStoreAction", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	  public @ResponseBody String  funOnlineOrderStoreAction(@RequestBody JSONObject jsonOb,HttpServletRequest req)throws Exception {
+	  System.out.println("onlineOrderStoreAction"  +jsonOb);
+	  try
+		{
+			
+			objOnlineOrderController.funStoreAction(jsonOb);
+		  
+	  }catch(Exception e) {
+		  e.printStackTrace();
+	  }
+	  return "200";
+			  
+	}
+	
+	@RequestMapping(value = "/onlineOrderItemAction", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	  public @ResponseBody String  funOnlineOrderItemAction(@RequestBody JSONObject jsonOb,HttpServletRequest req)throws Exception {
+		System.out.println("onlineOrderStoreAddUpdate"  +jsonOb);
+	  try
+		{
+			
+			objOnlineOrderController.funItemAction(jsonOb);
+		  
+	  }catch(Exception e) {
+		  e.printStackTrace();
+	  }
+	  return "200";
+			  
+	}
+	
+	@RequestMapping(value = "/onlineRiderStatusChange", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	  public @ResponseBody String  funOnlineRiderStatusChange(@RequestBody JSONObject jsonOb,HttpServletRequest req)throws Exception {
+		System.out.println("onlineOrderRiderStatus"  +jsonOb);
+	  try
+		{
+			objOnlineOrderController.funRiderStatus(jsonOb);
+		  
+	     }catch(Exception e) {
+		  e.printStackTrace();
+	  }
+	  return "200";
+			  
+	}
+	
 }

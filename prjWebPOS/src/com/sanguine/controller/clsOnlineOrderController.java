@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.sanguine.base.service.clsBaseServiceImpl;
+import com.sanguine.webpos.model.clsItemActionModel;
+import com.sanguine.webpos.model.clsOnlineOrderAddUpdateStoreModel;
 import com.sanguine.webpos.model.clsOnlineOrderDiscDtlModel;
 import com.sanguine.webpos.model.clsOnlineOrderDtlModel;
 import com.sanguine.webpos.model.clsOnlineOrderModelHd;
@@ -17,6 +19,8 @@ import com.sanguine.webpos.model.clsOnlineOrderModel_ID;
 import com.sanguine.webpos.model.clsOnlineOrderModifierDtlModel;
 import com.sanguine.webpos.model.clsOnlineOrderSettlementDtlModel;
 import com.sanguine.webpos.model.clsOnlineOrderTaxDtl;
+import com.sanguine.webpos.model.clsRiderStatusModel;
+import com.sanguine.webpos.model.clsStoreActionModel;
 
 
 @Controller
@@ -288,4 +292,190 @@ public void funUpdateOnlineOrderStatus(JSONObject jobOnlineOrder) {
 			e.printStackTrace();
 		}
 	}
+
+  
+
+public void funAddUpdateStore(JSONObject jobOnlineOrder) 
+   {
+	    try
+		{
+	    
+	    HashMap<Object, Object> hmstats= (HashMap) jobOnlineOrder.get("stats");
+	    String updateStore=hmstats.get("updated").toString();
+	    String error=hmstats.get("errors").toString();
+	    String createdStore=hmstats.get("created").toString();
+	    
+		 
+	    clsOnlineOrderAddUpdateStoreModel objStoreAddUpdate=null;
+	    ArrayList alStore=(ArrayList) jobOnlineOrder.get("stores");
+		for(int i=0;i<alStore.size();i++) {
+			HashMap<Object, Object> hmstore=(HashMap)alStore.get(i);
+			objStoreAddUpdate=new clsOnlineOrderAddUpdateStoreModel();
+			HashMap<Object, Object> hmurpstatus=(HashMap)hmstore.get("upipr_status");
+			objStoreAddUpdate.setStrAction(hmurpstatus.get("action").toString());
+			objStoreAddUpdate.setStrId(hmurpstatus.get("id").toString());
+			objStoreAddUpdate.setError( hmurpstatus.get("error").toString());
+			
+			}
+	    
+	
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+
+	public void funStoreAction(JSONObject jobOnlineOrder) 
+	{
+		    try
+			{
+		    	String strClientCode="";
+		    	String locationRefId=(String) jobOnlineOrder.get("location_ref_id");
+		    	String[] clientCode=locationRefId.split(".");
+		    	strClientCode=clientCode[0];
+		    	
+		    	HashMap<Object, Object> hmstoreAction= (HashMap) jobOnlineOrder.get("location_ref_id");
+		    	clsStoreActionModel objStoreAction=new clsStoreActionModel();
+		    	objStoreAction.setStrAction(jobOnlineOrder.get("action").toString());
+		    	objStoreAction.setStrLocationRefId(locationRefId);
+		    	objStoreAction.setStrPlatform(jobOnlineOrder.get("platform").toString());
+		    	objStoreAction.setStrRefernceId(jobOnlineOrder.get("reference_id").toString());
+		    	objStoreAction.setStrStatus(jobOnlineOrder.get("status").toString());
+		    	objStoreAction.setTs_utc(Integer.parseInt(jobOnlineOrder.get("ts_utc").toString()));
+		    
+		    
+		    	
+			
+		    
+			}catch (Exception e) {
+		// TODO: handle exception
+		    e.printStackTrace();
+	        }
+    }
+	
+	public void funItemAction(JSONObject jobOnlineOrder) 
+	{
+		    try
+			{
+		    	String strClientCode="";
+		    	String locationRefId=(String) jobOnlineOrder.get("location_ref_id");
+		    	String[] clientCode=locationRefId.split(".");
+		    	strClientCode=clientCode[0];
+		    	
+		    	clsItemActionModel objItemAction=new clsItemActionModel();
+		    	objItemAction.setStrAction(jobOnlineOrder.get("action").toString());
+		    	
+		    	objItemAction.setStrPlatform(jobOnlineOrder.get("platform").toString());
+		    	objItemAction.setStrRefernceId(jobOnlineOrder.get("reference_id").toString());
+		    	
+		    	ArrayList alStatus=(ArrayList) jobOnlineOrder.get("status");
+				for(int i=0;i<alStatus.size();i++) 
+				{
+					HashMap<Object, Object> hmstatus=(HashMap)alStatus.get(i);
+					ArrayList alitem=(ArrayList) hmstatus.get("items");
+					
+					for(int k=0;k<alitem.size();k++) 
+					{
+						HashMap<Object, Object> hmitem=(HashMap)alitem.get(i);
+						objItemAction.setStrUpItemId(hmitem.get("id").toString());
+						objItemAction.setStrItemCode(hmitem.get("ref_id").toString());
+						objItemAction.setStrItemStatus(hmitem.get("status").toString());
+					}
+					HashMap<Object, Object> hmLocation=(HashMap)hmstatus.get("location");
+					objItemAction.setStrUpLocationId(hmLocation.get("id").toString());
+					objItemAction.setStrLocationCode(hmLocation.get("ref_id").toString());
+					
+				}
+		    	
+		    	
+		    	
+				objItemAction.setTs_utc(Integer.parseInt(jobOnlineOrder.get("ts_utc").toString()));
+		        
+		    
+		    	
+			
+		    
+			}catch (Exception e) {
+		// TODO: handle exception
+		    e.printStackTrace();
+	        }
+    }
+	
+	public void funRiderStatus(JSONObject jobOnlineOrder) 
+	{
+		    try
+			{
+		    	clsRiderStatusModel objRiderStatus=new clsRiderStatusModel();
+		    	
+		    	HashMap<Object, Object> hmaddInfo= (HashMap) jobOnlineOrder.get("additional_info");
+		    	HashMap<Object, Object> hmextchannel= (HashMap) hmaddInfo.get("external_channel");
+		    	objRiderStatus.setChannel(hmextchannel.get("name").toString());
+		    	objRiderStatus.setChannel_orderId(hmextchannel.get("order_id").toString());
+		    	
+		    	HashMap<Object, Object> hmdeliveryInfo= (HashMap) jobOnlineOrder.get("delivery_info");
+		    	objRiderStatus.setOrderState((String)hmdeliveryInfo.get("current_state"));
+		    	HashMap<Object, Object> hmdelPersonDtl= (HashMap) hmdeliveryInfo.get("delivery_person_details");
+		    	objRiderStatus.setDeliveryPersonAltNo(hmdelPersonDtl.get("alt_phone").toString());
+		    	objRiderStatus.setDeliveryPersonName(hmdelPersonDtl.get("name").toString());
+		    	objRiderStatus.setDeliveryPersonPhoneNo(hmdelPersonDtl.get("phone").toString());
+		    	objRiderStatus.setDeliveryUserId(hmdelPersonDtl.get("user_id").toString());
+		    	
+		    	objRiderStatus.setRiderMode((String)jobOnlineOrder.get("mode"));
+		    	
+		    	ArrayList alStatus=(ArrayList) jobOnlineOrder.get("status_updates");
+				for(int i=0;i<alStatus.size();i++) 
+				{
+					HashMap<Object, Object> hmstatus=(HashMap)alStatus.get(i);
+					String strOrderDate="";
+					long longDateCreated=Long.parseLong(hmstatus.get("created").toString());
+					String DateDelivery = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new java.util.Date (longDateCreated));
+					if(hmstatus.get("status").toString().equalsIgnoreCase("assigned"))
+					{
+						objRiderStatus.setAssignComments(hmstatus.get("comments").toString());
+						objRiderStatus.setAssignStatus(hmstatus.get("status").toString());
+						objRiderStatus.setDteAssign(DateDelivery);
+					}
+					else if(hmstatus.get("status").toString().equalsIgnoreCase("reassigned"))
+					{
+						objRiderStatus.setReassignComments(hmstatus.get("comments").toString());
+						objRiderStatus.setReAssignStatus(hmstatus.get("status").toString());
+						objRiderStatus.setDteReassign(DateDelivery);
+					}
+					else if(hmstatus.get("status").toString().equalsIgnoreCase("unassigned"))
+					{
+						objRiderStatus.setUnassignComments(hmstatus.get("comments").toString());
+						objRiderStatus.setUnassignStatus(hmstatus.get("status").toString());
+						objRiderStatus.setDteUnassign(DateDelivery);
+					}
+					else if(hmstatus.get("status").toString().equalsIgnoreCase("at-store"))
+					{
+						objRiderStatus.setAtStoreCommits(hmstatus.get("comments").toString());
+						objRiderStatus.setAtstoreStatus(hmstatus.get("status").toString());
+						objRiderStatus.setDteAtStore(DateDelivery);
+					}
+					else if(hmstatus.get("status").toString().equalsIgnoreCase("out-for-delivery"))
+					{
+						objRiderStatus.setOutForDelComments(hmstatus.get("comments").toString());
+						objRiderStatus.setOutForDelStatus(hmstatus.get("status").toString());
+						objRiderStatus.setDteOutForDel(DateDelivery);
+					}
+					else if(hmstatus.get("status").toString().equalsIgnoreCase("delivered"))
+					{
+						objRiderStatus.setDeliveredComments(hmstatus.get("comments").toString());
+						objRiderStatus.setDeliverdStatus(hmstatus.get("status").toString());
+						objRiderStatus.setDteDelivered(DateDelivery);
+					}
+					
+					objRiderStatus.setUpOrderId((String)jobOnlineOrder.get("order_id"));
+					HashMap<Object, Object> hmstore= (HashMap) jobOnlineOrder.get("store");
+					objRiderStatus.setStoreId(Integer.parseInt(hmstore.get("id").toString()));
+					objRiderStatus.setPosCode(hmstore.get("ref_id").toString());
+				}
+			
+		    
+			}catch (Exception e) {
+		// TODO: handle exception
+		    e.printStackTrace();
+	        }
+    }
 }
