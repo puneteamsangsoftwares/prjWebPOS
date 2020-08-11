@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.sanguine.base.service.clsBaseServiceImpl;
+import com.sanguine.webpos.model.clsCatalogueIngestionModel;
 import com.sanguine.webpos.model.clsItemActionModel;
 import com.sanguine.webpos.model.clsOnlineOrderAddUpdateStoreModel;
 import com.sanguine.webpos.model.clsOnlineOrderDiscDtlModel;
@@ -473,6 +474,76 @@ public void funAddUpdateStore(JSONObject jobOnlineOrder)
 				}
 			
 		    
+			}catch (Exception e) {
+		// TODO: handle exception
+		    e.printStackTrace();
+	        }
+    }
+	
+	public void funCatalogueIngestion(JSONObject jobOnlineOrder) 
+	{
+		    try
+			{
+		    clsCatalogueIngestionModel objCatalogue=new clsCatalogueIngestionModel();
+		    HashMap<Object,Object> hmStatus=(HashMap) jobOnlineOrder.get("stats");
+		    HashMap<Object,Object> hmCategories=(HashMap)hmStatus.get("categories");
+		    objCatalogue.setCatgUpdate(Integer.parseInt(hmCategories.get("updated").toString()));
+		    objCatalogue.setCatgError(Integer.parseInt(hmCategories.get("errors").toString()));
+		    objCatalogue.setCatgCreated(Integer.parseInt(hmCategories.get("created").toString()));
+		    objCatalogue.setCatgDeleted(Integer.parseInt(hmCategories.get("deleted").toString()));
+		    HashMap<Object,Object> hmItems=(HashMap)hmStatus.get("items");
+		    objCatalogue.setItemUpdate(Integer.parseInt(hmItems.get("updated").toString()));
+		    objCatalogue.setItemError(Integer.parseInt(hmItems.get("errors").toString()));
+		    objCatalogue.setItemCreated(Integer.parseInt(hmItems.get("created").toString()));
+		    objCatalogue.setItemDeleted(Integer.parseInt(hmItems.get("deleted").toString()));
+		    HashMap<Object,Object> hmOptionGrp=(HashMap)hmStatus.get("option_groups");
+		    objCatalogue.setOptionGrpUpdate(Integer.parseInt(hmOptionGrp.get("updated").toString()));
+		    objCatalogue.setOptionGrpError(Integer.parseInt(hmOptionGrp.get("errors").toString()));
+		    objCatalogue.setOptionGrpCreated(Integer.parseInt(hmOptionGrp.get("created").toString()));
+		    objCatalogue.setOptionGrpDeleted(Integer.parseInt(hmOptionGrp.get("deleted").toString()));
+		    HashMap<Object,Object> hmOption=(HashMap)hmStatus.get("options");
+		    objCatalogue.setOptionUpdate(Integer.parseInt(hmOption.get("updated").toString()));
+		    objCatalogue.setOptionError(Integer.parseInt(hmOption.get("errors").toString()));
+		    objCatalogue.setOptionCreated(Integer.parseInt(hmOption.get("created").toString()));
+		    objCatalogue.setOptionDeleted(Integer.parseInt(hmOption.get("deleted").toString()));
+		    
+		    ArrayList alCategories=(ArrayList) jobOnlineOrder.get("categories");
+			for(int i=0;i<alCategories.size();i++) 
+			{
+				HashMap<Object, Object> hmupCatgStatus=(HashMap)alCategories.get(i);
+				objCatalogue.setCategoriesAct(hmupCatgStatus.get("action").toString());
+				objCatalogue.setCategoriesId(hmupCatgStatus.get("id").toString());
+				objCatalogue.setCategoriesErr(hmupCatgStatus.get("error").toString());
+			}
+			
+			ArrayList alItems=(ArrayList) jobOnlineOrder.get("items");
+			for(int i=0;i<alItems.size();i++) 
+			{
+				HashMap<Object, Object> hmupItemStatus=(HashMap)alItems.get(i);
+				objCatalogue.setItemAct(hmupItemStatus.get("action").toString());
+				objCatalogue.setItemId(hmupItemStatus.get("id").toString());
+				objCatalogue.setItemErr(hmupItemStatus.get("error").toString());
+			}
+			
+			ArrayList alOptionGrp=(ArrayList) jobOnlineOrder.get("option_groups");
+			for(int i=0;i<alOptionGrp.size();i++) 
+			{
+				HashMap<Object, Object> hmupOptionGrpStatus=(HashMap)alOptionGrp.get(i);
+				objCatalogue.setItemAct(hmupOptionGrpStatus.get("action").toString());
+				objCatalogue.setItemId(hmupOptionGrpStatus.get("id").toString());
+				objCatalogue.setItemErr(hmupOptionGrpStatus.get("error").toString());
+			}
+			
+			ArrayList alOption=(ArrayList) jobOnlineOrder.get("options");
+			for(int i=0;i<alOption.size();i++) 
+			{
+				HashMap<Object, Object> hmupOptionStatus=(HashMap)alOption.get(i);
+				objCatalogue.setItemAct(hmupOptionStatus.get("action").toString());
+				objCatalogue.setItemId(hmupOptionStatus.get("id").toString());
+				objCatalogue.setItemErr(hmupOptionStatus.get("error").toString());
+			}
+		    	
+
 			}catch (Exception e) {
 		// TODO: handle exception
 		    e.printStackTrace();

@@ -7461,6 +7461,116 @@ public class clsFillDatabaseTablesStructureUpdate
 					";\r\n" + 
 					"";
 			mapStructureUpdater.get("tblStructure").add(sql);
+			
+		sql="CREATE TABLE `tblonlineorderstoreaction` ( " +
+					 " `strAction` VARCHAR(10) NOT NULL, " +
+					 " `strLocationRefId` VARCHAR(10) NOT NULL, " +
+					 " `strClientCode` VARCHAR(10) NOT NULL, " +
+					 " `strPlatform` VARCHAR(50) NOT NULL, " +
+					 " `strStatus` VARCHAR(10) NOT NULL, " +
+					 " `ts_utc` INT(11) NOT NULL, " +
+					 " `strRefernceId` VARCHAR(100) NOT NULL " +
+					 ")" +
+				     "ENGINE=InnoDB " +
+				     "";
+
+			mapStructureUpdater.get("tblStructure").add(sql);
+			
+			sql="CREATE TABLE `tblonlineorderstoreaddupdate` ( " +
+				" `strId` VARCHAR(50) NOT NULL, " +
+				" `strAction` VARCHAR(5) NOT NULL, " +
+				" `error` VARCHAR(10) NOT NULL " +
+				" ) " +
+				" ENGINE=InnoDB" +
+				"";
+
+				mapStructureUpdater.get("tblStructure").add(sql);
+				
+			sql="CREATE TABLE `tblonlineorderitemaction` ( " +
+					" `strReferenceId` VARCHAR(50) NOT NULL, " +
+					" `strAction` VARCHAR(10) NOT NULL, " +
+					" `strPlatform` VARCHAR(10) NOT NULL, " +
+					" `strUpItemId` INT(11) NOT NULL, " +
+					" `strItemCode` VARCHAR(10) NOT NULL, " +
+					" `strUpLocationId` VARCHAR(10) NOT NULL, " +
+					" `strLocationCode` VARCHAR(10) NOT NULL, " +
+					" `strItemStatus` VARCHAR(10) NOT NULL, " +
+					" `ts_utc` INT(11) NOT NULL " +
+					" ) " +
+					" ENGINE=InnoDB " +
+					"";
+                mapStructureUpdater.get("tblStructure").add(sql);
+			
+                sql="CREATE TABLE `tblonlinecatalogueingestion` ( " +
+                	" `catgUpdate` INT(11) NULL DEFAULT NULL, " +
+                	" `catgError` INT(11) NULL DEFAULT NULL, " +
+                	" `catgCreated` INT(11) NULL DEFAULT NULL, " +
+                	" `catgDeleted` INT(11) NULL DEFAULT NULL, " +
+                	" `itemUpdate` INT(11) NULL DEFAULT NULL, " +
+                	" `itemError` INT(11) NULL DEFAULT NULL, " +
+                	" `itemCreated` INT(11) NULL DEFAULT NULL, " +
+                	" `itemDeleted` INT(11) NULL DEFAULT NULL, " +
+					" `optionGrpUpdate` INT(11) NULL DEFAULT NULL, " +
+					" `optionGrpError` INT(11) NULL DEFAULT NULL, " +
+					" `optionGrpDeleted` INT(11) NULL DEFAULT NULL, " +
+					" `optionGrpCreated` INT(11) NULL DEFAULT NULL, " +
+					" `optionUpdate` INT(11) NULL DEFAULT NULL, " +
+					" `optionError` INT(11) NULL DEFAULT NULL, " +
+					" `optionCreated` INT(11) NULL DEFAULT NULL, " +
+					" `optionDeleted` INT(11) NULL DEFAULT NULL, " +
+					" `categoriesAct` VARCHAR(20) NOT NULL, " +
+					" `categoriesId` VARCHAR(20) NOT NULL, " +
+					" `categoriesErr` VARCHAR(20) NOT NULL, " +
+					" `ItemAct` VARCHAR(20) NOT NULL, " +
+					" `ItemErr` VARCHAR(20) NOT NULL, " +
+					" `ItemId` VARCHAR(20) NOT NULL, " +
+					" `optionGrpAct` VARCHAR(20) NOT NULL, " +
+					" `optionGrpErr` VARCHAR(20) NOT NULL, " +
+					" `optionGrpId` VARCHAR(20) NOT NULL, " +
+					" `optionAct` VARCHAR(20) NOT NULL," +
+					"  `optionErr` VARCHAR(20) NOT NULL, " +
+					" `optionId` VARCHAR(20) NOT NULL ) " +
+				
+				" ENGINE=InnoDB " +
+			    "";
+                mapStructureUpdater.get("tblStructure").add(sql);
+                
+                sql=" CREATE TABLE `tbonlinelriderstatus` (  " +
+                		" `channel` VARCHAR(10) NOT NULL, " +
+                		" `channel_orderId` VARCHAR(20) NOT NULL, " +
+                		" `orderState` VARCHAR(20) NOT NULL, " +
+                		" `deliveryPersonPhoneNo` VARCHAR(20) NOT NULL, " +
+                		" `deliveryPersonAltNo` VARCHAR(20) NOT NULL, " +
+                		" `deliveryPersonName` VARCHAR(20) NOT NULL, " +
+                		" `deliveryUserId` VARCHAR(20) NOT NULL, " +
+                		" `riderMode` VARCHAR(20) NOT NULL, " +
+                		" `upOrderId` VARCHAR(20) NOT NULL, " +
+                		" `storeId` INT(11) NOT NULL, " +
+                		" `posCode` VARCHAR(20) NOT NULL, " +
+                		" `assignComments` VARCHAR(20) NULL DEFAULT NULL, " +
+                		" `assignStatus` VARCHAR(20) NOT NULL, " +
+                		" `dteAssign` DATETIME NOT NULL, " +
+                		" `unassignComments` VARCHAR(20) NULL DEFAULT NULL, " +
+                		" `dteUnassign` DATETIME NOT NULL, " +
+                		" `unassignStatus` VARCHAR(20) NOT NULL, " +
+                		" `reassignComments` VARCHAR(20) NULL DEFAULT NULL, " +
+                		" `dteReassign` DATETIME NOT NULL, " +
+                		" `reAssignStatus` VARCHAR(20) NOT NULL, " +
+                		" `atStoreCommits` VARCHAR(20) NULL DEFAULT NULL, " +
+                		" `dteAtStore` DATETIME NOT NULL, " +
+                		" `atstoreStatus` VARCHAR(20) NOT NULL, " +
+                		" `outForDelComments` VARCHAR(20) NULL DEFAULT NULL, " +
+                		" `dteOutForDel` DATETIME NOT NULL, " +
+                		" `outForDelStatus` VARCHAR(20) NOT NULL, " +
+                		" `deliveredComments` VARCHAR(20) NULL DEFAULT NULL, " +
+                		" `dteDelivered` DATETIME NOT NULL, " +
+                		" `deliverdStatus` VARCHAR(20) NOT NULL ) " +
+                	    " ENGINE=InnoDB " +
+                	    "";
+                    mapStructureUpdater.get("tblStructure").add(sql);
+    			
+			
+			
 	    }
 	    
 

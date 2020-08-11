@@ -1306,4 +1306,19 @@ public class clsUserController
 			  
 	}
 	
+	@RequestMapping(value = "/onlineCatalogueIngestion", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	  public @ResponseBody String  funOnlineCatalogueIngestion(@RequestBody JSONObject jsonOb,HttpServletRequest req)throws Exception {
+		System.out.println("onlineCatalogueIngestion"  +jsonOb);
+	  try
+		{
+			objOnlineOrderController.funCatalogueIngestion(jsonOb);
+		  
+	     }catch(Exception e) {
+		  e.printStackTrace();
+	  }
+	  return "200";
+			  
+	}
+	
 }
