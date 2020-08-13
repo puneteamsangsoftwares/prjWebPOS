@@ -26,6 +26,9 @@ public class clsRequestInterceptor implements HandlerInterceptor
 		if(request.getRequestURI().contains("onlineOrder")) {
 			return true;
 		}
+		else if(request.getRequestURI().contains("onlinePayment")) {
+			return true;
+		}
 		prjName = prjName.concat("/");
 		if (!request.getRequestURI().equals(prjName) && !request.getRequestURI().equals(prjName + "index.html")
 				&& !request.getRequestURI().equals(prjName + "validateUser.html")

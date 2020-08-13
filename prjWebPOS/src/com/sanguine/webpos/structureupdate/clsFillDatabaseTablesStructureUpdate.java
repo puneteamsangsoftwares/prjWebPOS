@@ -7535,39 +7535,43 @@ public class clsFillDatabaseTablesStructureUpdate
 			    "";
                 mapStructureUpdater.get("tblStructure").add(sql);
                 
-                sql=" CREATE TABLE `tbonlinelriderstatus` (  " +
-                		" `channel` VARCHAR(10) NOT NULL, " +
-                		" `channel_orderId` VARCHAR(20) NOT NULL, " +
-                		" `orderState` VARCHAR(20) NOT NULL, " +
-                		" `deliveryPersonPhoneNo` VARCHAR(20) NOT NULL, " +
-                		" `deliveryPersonAltNo` VARCHAR(20) NOT NULL, " +
-                		" `deliveryPersonName` VARCHAR(20) NOT NULL, " +
-                		" `deliveryUserId` VARCHAR(20) NOT NULL, " +
-                		" `riderMode` VARCHAR(20) NOT NULL, " +
-                		" `upOrderId` VARCHAR(20) NOT NULL, " +
-                		" `storeId` INT(11) NOT NULL, " +
-                		" `posCode` VARCHAR(20) NOT NULL, " +
-                		" `assignComments` VARCHAR(20) NULL DEFAULT NULL, " +
-                		" `assignStatus` VARCHAR(20) NOT NULL, " +
-                		" `dteAssign` DATETIME NOT NULL, " +
-                		" `unassignComments` VARCHAR(20) NULL DEFAULT NULL, " +
-                		" `dteUnassign` DATETIME NOT NULL, " +
-                		" `unassignStatus` VARCHAR(20) NOT NULL, " +
-                		" `reassignComments` VARCHAR(20) NULL DEFAULT NULL, " +
-                		" `dteReassign` DATETIME NOT NULL, " +
-                		" `reAssignStatus` VARCHAR(20) NOT NULL, " +
-                		" `atStoreCommits` VARCHAR(20) NULL DEFAULT NULL, " +
-                		" `dteAtStore` DATETIME NOT NULL, " +
-                		" `atstoreStatus` VARCHAR(20) NOT NULL, " +
-                		" `outForDelComments` VARCHAR(20) NULL DEFAULT NULL, " +
-                		" `dteOutForDel` DATETIME NOT NULL, " +
-                		" `outForDelStatus` VARCHAR(20) NOT NULL, " +
-                		" `deliveredComments` VARCHAR(20) NULL DEFAULT NULL, " +
-                		" `dteDelivered` DATETIME NOT NULL, " +
-                		" `deliverdStatus` VARCHAR(20) NOT NULL ) " +
-                	    " ENGINE=InnoDB " +
-                	    "";
-                    mapStructureUpdater.get("tblStructure").add(sql);
+                sql="CREATE TABLE `tbonlinelriderstatus` (\r\n" + 
+                		"	`channel` VARCHAR(10) NOT NULL,\r\n" + 
+                		"	`channel_orderId` VARCHAR(20) NOT NULL,\r\n" + 
+                		"	`orderState` VARCHAR(20) NOT NULL,\r\n" + 
+                		"	`deliveryPersonPhoneNo` VARCHAR(20) NOT NULL,\r\n" + 
+                		"	`deliveryPersonAltNo` VARCHAR(20) NOT NULL,\r\n" + 
+                		"	`deliveryPersonName` VARCHAR(20) NOT NULL,\r\n" + 
+                		"	`deliveryUserId` VARCHAR(20) NOT NULL,\r\n" + 
+                		"	`riderMode` VARCHAR(20) NOT NULL,\r\n" + 
+                		"	`upOrderId` VARCHAR(20) NOT NULL,\r\n" + 
+                		"	`storeId` VARCHAR(50) NOT NULL,\r\n" + 
+                		"	`posCode` VARCHAR(20) NOT NULL,\r\n" + 
+                		"	`assignComments` VARCHAR(20) NULL DEFAULT NULL,\r\n" + 
+                		"	`assignStatus` VARCHAR(20) NOT NULL,\r\n" + 
+                		"	`dteAssign` DATETIME NOT NULL,\r\n" + 
+                		"	`unassignComments` VARCHAR(20) NULL DEFAULT NULL,\r\n" + 
+                		"	`dteUnassign` DATETIME NOT NULL,\r\n" + 
+                		"	`unassignStatus` VARCHAR(20) NOT NULL,\r\n" + 
+                		"	`reassignComments` VARCHAR(20) NULL DEFAULT NULL,\r\n" + 
+                		"	`dteReassign` DATETIME NOT NULL,\r\n" + 
+                		"	`reAssignStatus` VARCHAR(20) NOT NULL,\r\n" + 
+                		"	`atStoreCommits` VARCHAR(20) NULL DEFAULT NULL,\r\n" + 
+                		"	`dteAtStore` DATETIME NOT NULL,\r\n" + 
+                		"	`atstoreStatus` VARCHAR(20) NOT NULL,\r\n" + 
+                		"	`outForDelComments` VARCHAR(20) NULL DEFAULT NULL,\r\n" + 
+                		"	`dteOutForDel` DATETIME NOT NULL,\r\n" + 
+                		"	`outForDelStatus` VARCHAR(20) NOT NULL,\r\n" + 
+                		"	`deliveredComments` VARCHAR(20) NULL DEFAULT NULL,\r\n" + 
+                		"	`dteDelivered` DATETIME NOT NULL,\r\n" + 
+                		"	`deliverdStatus` VARCHAR(20) NOT NULL,\r\n" + 
+                		"	PRIMARY KEY (`storeId`, `channel_orderId`, `upOrderId`)\r\n" + 
+                		")\r\n" + 
+                		"COLLATE='utf8_general_ci'\r\n" + 
+                		"ENGINE=InnoDB\r\n" + 
+                		";\r\n" + 
+                		"";
+                mapStructureUpdater.get("tblStructure").add(sql);
     			
 			
 			
