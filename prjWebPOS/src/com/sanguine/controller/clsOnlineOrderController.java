@@ -302,16 +302,17 @@ public void funAddUpdateStore(JSONObject jobOnlineOrder)
 		{
 	    
 	    HashMap<Object, Object> hmstats= (HashMap) jobOnlineOrder.get("stats");
-	    String updateStore=hmstats.get("updated").toString();
-	    String error=hmstats.get("errors").toString();
-	    String createdStore=hmstats.get("created").toString();
+	    clsOnlineOrderAddUpdateStoreModel objStoreAddUpdate=new clsOnlineOrderAddUpdateStoreModel();
+	    objStoreAddUpdate.setUpdatedStore(Integer.parseInt(hmstats.get("updated").toString()));
+	    objStoreAddUpdate.setErrorsStore(Integer.parseInt(hmstats.get("errors").toString()));
+	    objStoreAddUpdate.setCreatedStore(Integer.parseInt(hmstats.get("created").toString())); 
 	    
 		 
-	    clsOnlineOrderAddUpdateStoreModel objStoreAddUpdate=null;
+	    
 	    ArrayList alStore=(ArrayList) jobOnlineOrder.get("stores");
 		for(int i=0;i<alStore.size();i++) {
 			HashMap<Object, Object> hmstore=(HashMap)alStore.get(i);
-			objStoreAddUpdate=new clsOnlineOrderAddUpdateStoreModel();
+			
 			HashMap<Object, Object> hmurpstatus=(HashMap)hmstore.get("upipr_status");
 			objStoreAddUpdate.setStrAction(hmurpstatus.get("action").toString());
 			objStoreAddUpdate.setStrId(hmurpstatus.get("id").toString());
@@ -367,7 +368,7 @@ public void funAddUpdateStore(JSONObject jobOnlineOrder)
 		    	objItemAction.setStrAction(jobOnlineOrder.get("action").toString());
 		    	
 		    	objItemAction.setStrPlatform(jobOnlineOrder.get("platform").toString());
-		    	objItemAction.setStrRefernceId(jobOnlineOrder.get("reference_id").toString());
+		    	objItemAction.setStrReferenceId(jobOnlineOrder.get("reference_id").toString());
 		    	
 		    	ArrayList alStatus=(ArrayList) jobOnlineOrder.get("status");
 				for(int i=0;i<alStatus.size();i++) 
@@ -469,7 +470,7 @@ public void funAddUpdateStore(JSONObject jobOnlineOrder)
 					
 					objRiderStatus.setUpOrderId((String)jobOnlineOrder.get("order_id"));
 					HashMap<Object, Object> hmstore= (HashMap) jobOnlineOrder.get("store");
-					objRiderStatus.setStoreId(Integer.parseInt(hmstore.get("id").toString()));
+					objRiderStatus.setStoreId(hmstore.get("id").toString());
 					objRiderStatus.setPosCode(hmstore.get("ref_id").toString());
 				}
 			

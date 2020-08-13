@@ -7462,77 +7462,91 @@ public class clsFillDatabaseTablesStructureUpdate
 					"";
 			mapStructureUpdater.get("tblStructure").add(sql);
 			
-		sql="CREATE TABLE `tblonlineorderstoreaction` ( " +
-					 " `strAction` VARCHAR(10) NOT NULL, " +
-					 " `strLocationRefId` VARCHAR(10) NOT NULL, " +
-					 " `strClientCode` VARCHAR(10) NOT NULL, " +
-					 " `strPlatform` VARCHAR(50) NOT NULL, " +
-					 " `strStatus` VARCHAR(10) NOT NULL, " +
-					 " `ts_utc` INT(11) NOT NULL, " +
-					 " `strRefernceId` VARCHAR(100) NOT NULL " +
-					 ")" +
-				     "ENGINE=InnoDB " +
-				     "";
+		sql="CREATE TABLE `tblonlineorderstoreaction` (  \r\n " + 
+			" `strAction` VARCHAR(10) NOT NULL, \r\n " + 
+			" `strLocationRefId` VARCHAR(10) NOT NULL, \r\n " + 
+			" `strClientCode` VARCHAR(10) NOT NULL, \r\n " + 
+			" `strPlatform` VARCHAR(50) NOT NULL, \r\n " + 
+			" `strStatus` VARCHAR(10) NOT NULL, \r\n " + 
+			" `ts_utc` INT(11) NOT NULL, \r\n " + 
+			" `strRefernceId` VARCHAR(100) NOT NULL, \r\n " + 
+			" PRIMARY KEY (`strLocationRefId`, `strClientCode`) \r\n " + 
+			" ) \r\n " + 
+		" COLLATE='utf8_general_ci' \r\n " + 
+		" ENGINE=InnoDB \r\n " + 
+		"";
+
 
 			mapStructureUpdater.get("tblStructure").add(sql);
 			
-			sql="CREATE TABLE `tblonlineorderstoreaddupdate` ( " +
-				" `strId` VARCHAR(50) NOT NULL, " +
-				" `strAction` VARCHAR(5) NOT NULL, " +
-				" `error` VARCHAR(10) NOT NULL " +
-				" ) " +
-				" ENGINE=InnoDB" +
-				"";
+			sql=" CREATE TABLE `tblonlineorderstoreaddupdate` (\r\n " + 
+				" `strId` VARCHAR(50) NOT NULL,\r\n " + 
+				" `strAction` VARCHAR(5) NOT NULL,\r\n " + 
+				" `error` VARCHAR(10) NOT NULL,\r\n " + 
+				" `updatedStore` INT(11) NOT NULL,\r\n " +
+				" `errorsStore` INT(11) NOT NULL,\r\n " +
+				" `createdStore` INT(11) NOT NULL,\r\n " +
+				" PRIMARY KEY (`strId`)\r\n " + 
+				" )\r\n " + 
+			" COLLATE='utf8_general_ci'\r\n " + 
+			" ENGINE=InnoDB\r\n " + 
+            "";
 
 				mapStructureUpdater.get("tblStructure").add(sql);
 				
-			sql="CREATE TABLE `tblonlineorderitemaction` ( " +
-					" `strReferenceId` VARCHAR(50) NOT NULL, " +
-					" `strAction` VARCHAR(10) NOT NULL, " +
-					" `strPlatform` VARCHAR(10) NOT NULL, " +
-					" `strUpItemId` INT(11) NOT NULL, " +
-					" `strItemCode` VARCHAR(10) NOT NULL, " +
-					" `strUpLocationId` VARCHAR(10) NOT NULL, " +
-					" `strLocationCode` VARCHAR(10) NOT NULL, " +
-					" `strItemStatus` VARCHAR(10) NOT NULL, " +
-					" `ts_utc` INT(11) NOT NULL " +
-					" ) " +
-					" ENGINE=InnoDB " +
-					"";
+			sql="CREATE TABLE `tblonlineorderitemaction` ( \r\n " + 
+					" `strReferenceId` VARCHAR(50) NOT NULL, \r\n " + 
+					" `strAction` VARCHAR(10) NOT NULL,\r\n " + 
+					" `strPlatform` VARCHAR(10) NOT NULL,\r\n " + 
+					" `strUpItemId` INT(11) NOT NULL,\r\n " + 
+					" `strItemCode` VARCHAR(10) NOT NULL,\r\n " + 
+					" `strUpLocationId` VARCHAR(10) NOT NULL,\r\n " + 
+					" `strLocationCode` VARCHAR(10) NOT NULL,\r\n " + 
+					" `strItemStatus` VARCHAR(10) NOT NULL,\r\n " + 
+					" `ts_utc` INT(11) NOT NULL,\r\n " + 
+					" PRIMARY KEY (`strUpItemId`, `strUpLocationId`)\r\n " + 
+					" )\r\n " + 
+					" COLLATE='utf8_general_ci'\r\n " + 
+					" ENGINE=InnoDB\r\n " + 
+					" ";
+
                 mapStructureUpdater.get("tblStructure").add(sql);
 			
-                sql="CREATE TABLE `tblonlinecatalogueingestion` ( " +
-                	" `catgUpdate` INT(11) NULL DEFAULT NULL, " +
-                	" `catgError` INT(11) NULL DEFAULT NULL, " +
-                	" `catgCreated` INT(11) NULL DEFAULT NULL, " +
-                	" `catgDeleted` INT(11) NULL DEFAULT NULL, " +
-                	" `itemUpdate` INT(11) NULL DEFAULT NULL, " +
-                	" `itemError` INT(11) NULL DEFAULT NULL, " +
-                	" `itemCreated` INT(11) NULL DEFAULT NULL, " +
-                	" `itemDeleted` INT(11) NULL DEFAULT NULL, " +
-					" `optionGrpUpdate` INT(11) NULL DEFAULT NULL, " +
-					" `optionGrpError` INT(11) NULL DEFAULT NULL, " +
-					" `optionGrpDeleted` INT(11) NULL DEFAULT NULL, " +
-					" `optionGrpCreated` INT(11) NULL DEFAULT NULL, " +
-					" `optionUpdate` INT(11) NULL DEFAULT NULL, " +
-					" `optionError` INT(11) NULL DEFAULT NULL, " +
-					" `optionCreated` INT(11) NULL DEFAULT NULL, " +
-					" `optionDeleted` INT(11) NULL DEFAULT NULL, " +
-					" `categoriesAct` VARCHAR(20) NOT NULL, " +
-					" `categoriesId` VARCHAR(20) NOT NULL, " +
-					" `categoriesErr` VARCHAR(20) NOT NULL, " +
-					" `ItemAct` VARCHAR(20) NOT NULL, " +
-					" `ItemErr` VARCHAR(20) NOT NULL, " +
-					" `ItemId` VARCHAR(20) NOT NULL, " +
-					" `optionGrpAct` VARCHAR(20) NOT NULL, " +
-					" `optionGrpErr` VARCHAR(20) NOT NULL, " +
-					" `optionGrpId` VARCHAR(20) NOT NULL, " +
-					" `optionAct` VARCHAR(20) NOT NULL," +
-					"  `optionErr` VARCHAR(20) NOT NULL, " +
-					" `optionId` VARCHAR(20) NOT NULL ) " +
-				
-				" ENGINE=InnoDB " +
-			    "";
+                sql=" CREATE TABLE `tblonlinecatalogueingestion`  (\r\n " + 
+                		" `catgUpdate` INT(11) NULL DEFAULT NULL, \r\n" +
+                		" `catgError` INT(11) NULL DEFAULT NULL, \r\n" + 
+                		" `catgCreated` INT(11) NULL DEFAULT NULL, \r\n" + 
+                		" `catgDeleted` INT(11) NULL DEFAULT NULL, \r\n" + 
+                		" `itemUpdate` INT(11) NULL DEFAULT NULL, \r\n" + 
+                		" `itemError` INT(11) NULL DEFAULT NULL, \r\n" + 
+                		" `itemCreated` INT(11) NULL DEFAULT NULL, \r\n" + 
+                		" `itemDeleted` INT(11) NULL DEFAULT NULL, \r\n" + 
+                		" `optionGrpUpdate` INT(11) NULL DEFAULT NULL, \r\n" + 
+                		" `optionGrpError` INT(11) NULL DEFAULT NULL, \r\n" + 
+                		" `optionGrpDeleted` INT(11) NULL DEFAULT NULL, \r\n" + 
+                		" `optionGrpCreated` INT(11) NULL DEFAULT NULL, \r\n" + 
+                		" `optionUpdate` INT(11) NULL DEFAULT NULL, \r\n" + 
+                		" `optionError` INT(11) NULL DEFAULT NULL, \r\n" + 
+                		" `optionCreated` INT(11) NULL DEFAULT NULL, \r\n" + 
+                		" `optionDeleted` INT(11) NULL DEFAULT NULL,\r \n" + 
+                		" `categoriesAct` VARCHAR(20) NOT NULL, \r\n" + 
+                		" `categoriesId` VARCHAR(20) NOT NULL, \r\n" + 
+                		" `categoriesErr` VARCHAR(20) NOT NULL, \r\n" + 
+                		" `ItemAct` VARCHAR(20) NOT NULL, \r\n" + 
+                		" `ItemErr` VARCHAR(20) NOT NULL, \r\n" + 
+                		" `ItemId` VARCHAR(20) NOT NULL, \r\n" + 
+                		" `optionGrpAct` VARCHAR(20) NOT NULL,\r\n" + 
+                		" `optionGrpErr` VARCHAR(20) NOT NULL,\r\n" + 
+                		" `optionGrpId` VARCHAR(20) NOT NULL,\r\n" + 
+                		" `optionAct` VARCHAR(20) NOT NULL,\r\n" + 
+                		" `optionErr` VARCHAR(20) NOT NULL,\r\n" + 
+                		" `optionId` VARCHAR(20) NOT NULL,\r\n" + 
+                		" PRIMARY KEY (`categoriesId`, `ItemId`, `optionGrpId`, `optionId`)\r\n" + 
+                		" )\r\n" + 
+                	" COLLATE='utf8_general_ci'\r\n" + 
+                	" ENGINE=InnoDB\r\n" + 
+                	"	;\r\n" + 
+
                 mapStructureUpdater.get("tblStructure").add(sql);
                 
                 sql="CREATE TABLE `tbonlinelriderstatus` (\r\n" + 
