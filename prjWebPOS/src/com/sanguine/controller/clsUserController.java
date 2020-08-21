@@ -360,21 +360,24 @@ public class clsUserController
 		{
 			webposEnable=objSetupHdModel.getStrWebPOSEnable();
 			//Check Webpos module or QRMenu Admin Module
-			req.getSession().setAttribute("webPOSModuleSelect","M");
-			if(null!=req.getSession().getAttribute("loginPOS")){
-				//mv=new ModelAndView("frmWebPOSMainMenu");
-				try
-				{
-					mv=funWebPOSPOSSelection(req.getSession().getAttribute("loginPOS").toString(), req, model);
+			if(webposEnable.equalsIgnoreCase("N")) {
+				req.getSession().setAttribute("webPOSModuleSelect","M");
+				if(null!=req.getSession().getAttribute("loginPOS")){
+					//mv=new ModelAndView("frmWebPOSMainMenu");
+					try
+					{
+						mv=funWebPOSPOSSelection(req.getSession().getAttribute("loginPOS").toString(), req, model);
+					}
+					catch (Exception e)
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
+				
 				}
-				catch (Exception e)
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			}
 			
-			
-		}
 		}
 		req.getSession().setAttribute("webposEnable",webposEnable);
 		return mv;
@@ -1320,5 +1323,51 @@ public class clsUserController
 	  return "200";
 			  
 	}
-	
+
+	@RequestMapping(value = "/onlinePaymentValidation", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	  public @ResponseBody JSONObject  funPaymentValidation(@RequestBody JSONObject jsonOb,HttpServletRequest req)throws Exception {
+	  
+	  System.out.println("payment Validation :"  +jsonOb);
+	  JSONObject jobresult=new JSONObject();
+		try
+		{
+			String clientCode="";
+			if(req.getParameter("clientCode")!=null) {
+				clientCode=req.getParameter("clientCode").toString();
+				System.out.println("clientCode "+clientCode);
+			}
+			//objOnlineOrderController.funUpdateOnlineOrderStatus(jsonOb);
+		  
+			
+			/*
+			 * { "ResultCode": 0, "ResultDesc": "Accepted" }
+			 *//*
+			 * { "ResultCode": 0, "ResultDesc": "Accepted" }
+			 * "ResultCode": 1,"ResultDesc": "Rejected"
+			 */
+	  }catch(Exception e) {
+		  e.printStackTrace();
+	  }
+	  return jobresult;
+			  
+	}
+
+	@RequestMapping(value = "/onlinePaymentConfirmation", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	  public @ResponseBody String  funPaymentConfirmation(@RequestBody JSONObject jsonOb,HttpServletRequest req)throws Exception {
+	  
+	  System.out.println("payment Confirmation :"  +jsonOb);
+	 
+		try
+		{
+			
+			//objOnlineOrderController.funUpdateOnlineOrderStatus(jsonOb);
+		  
+	  }catch(Exception e) {
+		  e.printStackTrace();
+	  }
+	  return "200";
+			  
+	}
 }
