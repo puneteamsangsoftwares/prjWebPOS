@@ -929,8 +929,12 @@ public class clsUserController
 	 System.out.println("onlineOrderStoreAddUpdate"  +jsonOb);
 	  try
 		{
-			
-			objOnlineOrderController.funAddUpdateStore(jsonOb);
+		  String clientCode="";
+			if(req.getParameter("strClientCode")!=null) {
+				clientCode=req.getParameter("strClientCode").toString();
+				System.out.println("clientCode "+clientCode);
+			}     	
+			objOnlineOrderController.funAddUpdateStore(jsonOb,clientCode);
 		  
 	  }catch(Exception e) {
 		  e.printStackTrace();
@@ -961,8 +965,12 @@ public class clsUserController
 		System.out.println("onlineOrderStoreAddUpdate"  +jsonOb);
 	  try
 		{
-			
-			objOnlineOrderController.funItemAction(jsonOb);
+		  String clientCode="";
+			if(req.getParameter("strClientCode")!=null) {
+				clientCode=req.getParameter("strClientCode").toString();
+				System.out.println("clientCode "+clientCode);
+			}
+			objOnlineOrderController.funItemAction(jsonOb,clientCode);
 		  
 	  }catch(Exception e) {
 		  e.printStackTrace();
@@ -971,14 +979,18 @@ public class clsUserController
 			  
 	}
 	
-	@RequestMapping(value = "/onlineRiderStatusChange", method = RequestMethod.POST)
+	@RequestMapping(value = "/onlineOrderRiderStatusChange", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
 	  public @ResponseBody String  funOnlineRiderStatusChange(@RequestBody JSONObject jsonOb,HttpServletRequest req)throws Exception {
 		System.out.println("onlineOrderRiderStatus"  +jsonOb);
 	  try
 		{
-			objOnlineOrderController.funRiderStatus(jsonOb);
-		  
+		  String clientCode="";
+			if(req.getParameter("strClientCode")!=null) {
+				clientCode=req.getParameter("strClientCode").toString();
+				System.out.println("clientCode "+clientCode);
+			}	  
+			objOnlineOrderController.funRiderStatus(jsonOb,clientCode);		  
 	     }catch(Exception e) {
 		  e.printStackTrace();
 	  }
@@ -986,13 +998,20 @@ public class clsUserController
 			  
 	}
 	
-	@RequestMapping(value = "/onlineCatalogueIngestion", method = RequestMethod.POST)
+	@RequestMapping(value = "/onlineOrderCatalogueIngestion", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
 	  public @ResponseBody String  funOnlineCatalogueIngestion(@RequestBody JSONObject jsonOb,HttpServletRequest req)throws Exception {
 		System.out.println("onlineCatalogueIngestion"  +jsonOb);
 	  try
 		{
-			objOnlineOrderController.funCatalogueIngestion(jsonOb);
+		  String clientCode="";
+			if(req.getParameter("strClientCode")!=null) {
+				clientCode=req.getParameter("strClientCode").toString();
+				System.out.println("clientCode "+clientCode);
+			}
+			  
+				objOnlineOrderController.funCatalogueIngestion(jsonOb,clientCode);
+			
 		  
 	     }catch(Exception e) {
 		  e.printStackTrace();

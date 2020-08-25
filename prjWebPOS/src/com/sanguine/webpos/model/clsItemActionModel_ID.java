@@ -15,11 +15,15 @@ public class clsItemActionModel_ID implements Serializable{
 
 	@Column(name="strUpLocationId")
 	private String strUpLocationId;
+	
+	@Column(name="strClientCode")
+	private String strClientCode;
 
 	public clsItemActionModel_ID(){}
-	public clsItemActionModel_ID(String strUpItemId,String strUpLocationId){
+	public clsItemActionModel_ID(String strUpItemId,String strUpLocationId,String strClientCode){
 		this.strUpItemId=strUpItemId;
 		this.strUpLocationId=strUpLocationId;
+		this.strClientCode=strClientCode;
 	}
 
 //Setter-Getter Methods
@@ -37,8 +41,15 @@ public class clsItemActionModel_ID implements Serializable{
 		this. strUpLocationId = strUpLocationId;
 	}
 
-
-//HashCode and Equals Funtions
+    public String getStrClientCode()
+	{
+		return strClientCode;
+	}
+	public void setStrClientCode(String strClientCode)
+	{
+		this.strClientCode = strClientCode;
+	}
+	//HashCode and Equals Funtions
 	@Override
 	public boolean equals(Object obj) {
 		clsItemActionModel_ID objModelId = (clsItemActionModel_ID)obj;

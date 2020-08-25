@@ -48,10 +48,9 @@ public class clsStoreActionModel extends clsBaseModel implements Serializable{
 	private String strStatus;
 
 	@Column(name="ts_utc")
-	private int ts_utc;
+	private String ts_utc;
 
-	@Column(name="strRefernceId")
-	private String strRefernceId;
+	
 
 //Setter-Getter Methods
 	public String getStrAction(){
@@ -89,19 +88,15 @@ public class clsStoreActionModel extends clsBaseModel implements Serializable{
 		this. strStatus = (String) setDefaultValue( strStatus, "NA");
 	}
 
-	public String getStrRefernceId(){
-		return strRefernceId;
-	}
-	public void setStrRefernceId(String strRefernceId){
-		this. strRefernceId = (String) setDefaultValue( strRefernceId, "NA");
-	}
+	
+	
 
-	public int getTs_utc()
+	public String getTs_utc()
 	{
 		return ts_utc;
 	}
 
-	public void setTs_utc(int ts_utc)
+	public void setTs_utc(String ts_utc)
 	{
 		this.ts_utc = ts_utc;
 	}

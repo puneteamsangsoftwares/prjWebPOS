@@ -10,32 +10,36 @@ import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Id;
 
+import com.sanguine.base.model.clsBaseModel;
+
 @Entity
 @Table(name="tblonlineorderstoreaddupdate")
 @IdClass(clsOnlineOrderAddUpdateStoreModel_ID.class)
 
-public class clsOnlineOrderAddUpdateStoreModel implements Serializable{
+public class clsOnlineOrderAddUpdateStoreModel extends clsBaseModel implements Serializable{
 	private static final long serialVersionUID = 1L;
 	public clsOnlineOrderAddUpdateStoreModel(){}
 
 	public clsOnlineOrderAddUpdateStoreModel(clsOnlineOrderAddUpdateStoreModel_ID objModelID){
-		strId = objModelID.getStrId();
+		//strId = objModelID.getStrId();
+		strClientCode = objModelID.getStrClientCode();
 	}
 
 	@Id
 	@AttributeOverrides({
-		@AttributeOverride(name="strId",column=@Column(name="strId"))
+		//@AttributeOverride(name="strId",column=@Column(name="strId")),
+		@AttributeOverride(name="strClientCode",column=@Column(name="strClientCode"))
 	})
 
 //Variable Declaration
-	@Column(name="strId")
+	/*@Column(name="strId")
 	private String strId;
 
 	@Column(name="strAction")
 	private String strAction;
 
 	@Column(name="error")
-	private String error;
+	private String error;*/
 
 	@Column(name="updatedStore")
 	private int updatedStore;
@@ -45,9 +49,15 @@ public class clsOnlineOrderAddUpdateStoreModel implements Serializable{
 
 	@Column(name="createdStore")
 	private int createdStore;
+	
+	@Column(name="strClientCode")
+	private String strClientCode;
+	
+	@Column(name="dteCurrentDate")
+	private String dteCurrentDate;
 
 //Setter-Getter Methods
-	public String getStrId(){
+	/*public String getStrId(){
 		return strId;
 	}
 	public void setStrId(String strId){
@@ -69,7 +79,7 @@ public class clsOnlineOrderAddUpdateStoreModel implements Serializable{
 	public void setError(String error)
 	{
 		this.error = error;
-	}
+	}*/
 
 	public int getUpdatedStore()
 	{
@@ -101,6 +111,26 @@ public class clsOnlineOrderAddUpdateStoreModel implements Serializable{
 		this.createdStore = createdStore;
 	}
 
+	public String getStrClientCode()
+	{
+		return strClientCode;
+	}
+
+	public void setStrClientCode(String strClientCode)
+	{
+		this.strClientCode = strClientCode;
+	}
+
+	public String getDteCurrentDate()
+	{
+		return dteCurrentDate;
+	}
+
+	public void setDteCurrentDate(String dteCurrentDate)
+	{
+		this.dteCurrentDate = dteCurrentDate;
+	}
+
 	public static long getSerialversionuid()
 	{
 		return serialVersionUID;
@@ -108,7 +138,7 @@ public class clsOnlineOrderAddUpdateStoreModel implements Serializable{
 
 
 //Function to Set Default Values
-	private Object setDefaultValue(Object value, Object defaultValue){
+	/*private Object setDefaultValue(Object value, Object defaultValue){
 		if(value !=null && (value instanceof String && value.toString().length()>0)){
 			return value;
 		}
@@ -125,7 +155,7 @@ public class clsOnlineOrderAddUpdateStoreModel implements Serializable{
 			return defaultValue;
 		}
 	}
-
+*/
 
 
 }

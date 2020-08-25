@@ -10,7 +10,7 @@ import javax.persistence.Embeddable;
 public class clsCatalogueIngestionModel_ID implements Serializable{
 
 //Variable Declaration
-	@Column(name="categoriesId")
+	/*@Column(name="categoriesId")
 	private String categoriesId;
 	
 	@Column(name="ItemId")
@@ -21,22 +21,33 @@ public class clsCatalogueIngestionModel_ID implements Serializable{
 	
 	@Column(name="optionId")
 	private String optionId;
-
+*/
+	@Column(name="strClientCode")
+	private String strClientCode;
+	
+	@Column(name="dteCurrentDate")
+	private String dteCurrentDate;
 	
 	public clsCatalogueIngestionModel_ID()
 	{
 		
 	}
 	
-	public clsCatalogueIngestionModel_ID(String categoriesId,String ItemId,String optionGrpId ,String optionId){
+	/*public clsCatalogueIngestionModel_ID(String categoriesId,String ItemId,String optionGrpId ,String optionId){
 		this.categoriesId=categoriesId;
 		this.ItemId=ItemId;
 		this.optionGrpId=optionGrpId;
 		this.optionId=optionId;
+	}*/
+	
+	public clsCatalogueIngestionModel_ID(String strClientCode,String dteCurrentDate){
+		this.strClientCode=strClientCode;
+		this.dteCurrentDate=dteCurrentDate;
 	}
 
+
 //Setter-Getter Methods
-	public String getCategoriesId()
+	/*public String getCategoriesId()
 	{
 		return categoriesId;
 	}
@@ -67,10 +78,30 @@ public class clsCatalogueIngestionModel_ID implements Serializable{
 	public void setOptionId(String optionId)
 	{
 		this.optionId = optionId;
+	}*/
+public String getStrClientCode()
+	{
+		return strClientCode;
 	}
-//HashCode and Equals Funtions
-	@Override
-	public boolean equals(Object obj) {
+
+	public void setStrClientCode(String strClientCode)
+	{
+		this.strClientCode = strClientCode;
+	}
+
+	public String getDteCurrentDate()
+	{
+		return dteCurrentDate;
+	}
+
+	public void setDteCurrentDate(String dteCurrentDate)
+	{
+		this.dteCurrentDate = dteCurrentDate;
+	}
+
+	//HashCode and Equals Funtions
+	//@Override
+	/*public boolean equals(Object obj) {
 		clsCatalogueIngestionModel_ID objModelId = (clsCatalogueIngestionModel_ID)obj;
 		if(this.categoriesId.equals(objModelId.getCategoriesId())&& this.ItemId.equals(objModelId.getItemId())&& this.optionGrpId.equals(objModelId.getOptionGrpId())&& this.optionId.equals(objModelId.getOptionId())){
 			return true;
@@ -83,6 +114,6 @@ public class clsCatalogueIngestionModel_ID implements Serializable{
 	@Override
 	public int hashCode() {
 		return this.categoriesId.hashCode()+this.ItemId.hashCode()+this.optionGrpId.hashCode()+this.optionId.hashCode();
-	}
+	}*/
 
 }

@@ -12,25 +12,42 @@ import com.sanguine.base.model.clsBaseModel;
 public class clsOnlineOrderAddUpdateStoreModel_ID extends clsBaseModel implements Serializable{
 
 //Variable Declaration
-	@Column(name="strId")
+/*	@Column(name="strId")
 	private String strId;
+	*/
+	@Column(name="strClientCode")
+	private String strClientCode;
 
+	@Column(name="dteCurrentDate")
+	private String dteCurrentDate;
+
+	
 	public clsOnlineOrderAddUpdateStoreModel_ID(){}
-	public clsOnlineOrderAddUpdateStoreModel_ID(String strId){
-		this.strId=strId;
+	public clsOnlineOrderAddUpdateStoreModel_ID(String strClientCode,String dteCurrentDate){
+		//this.strId=strId;
+		this.strClientCode=strClientCode;
+		this.dteCurrentDate=dteCurrentDate;
 	}
 
 //Setter-Getter Methods
-	public String getStrId(){
+	/*public String getStrId(){
 		return strId;
 	}
 	public void setStrId(String strId){
 		this. strId = strId;
+	}*/
+
+
+public String getStrClientCode()
+	{
+		return strClientCode;
 	}
-
-
-//HashCode and Equals Funtions
-	@Override
+	public void setStrClientCode(String strClientCode)
+	{
+		this.strClientCode = strClientCode;
+	}
+	//HashCode and Equals Funtions
+	/*@Override
 	public boolean equals(Object obj) {
 		clsOnlineOrderAddUpdateStoreModel_ID objModelId = (clsOnlineOrderAddUpdateStoreModel_ID)obj;
 		if(this.strId.equals(objModelId.getStrId())){
@@ -45,5 +62,13 @@ public class clsOnlineOrderAddUpdateStoreModel_ID extends clsBaseModel implement
 	public int hashCode() {
 		return this.strId.hashCode();
 	}
-
+*/
+	public String getDteCurrentDate()
+	{
+		return dteCurrentDate;
+	}
+	public void setDteCurrentDate(String dteCurrentDate)
+	{
+		this.dteCurrentDate = dteCurrentDate;
+	}
 }

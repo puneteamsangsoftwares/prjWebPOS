@@ -35,6 +35,7 @@ public class clsOnlineOrderController
 	
 	public void funSaveOnlineOrderData(JSONObject jobOnlineOrder) {
 		
+		
 
 		try
 		{
@@ -294,22 +295,21 @@ public void funUpdateOnlineOrderStatus(JSONObject jobOnlineOrder) {
 		}
 	}
 
-  
-
-public void funAddUpdateStore(JSONObject jobOnlineOrder) 
-   {
+public void funAddUpdateStore(JSONObject jobOnlineOrder,String strClientCode) 
+{
 	    try
 		{
 	    
 	    HashMap<Object, Object> hmstats= (HashMap) jobOnlineOrder.get("stats");
 	    clsOnlineOrderAddUpdateStoreModel objStoreAddUpdate=new clsOnlineOrderAddUpdateStoreModel();
+	    objStoreAddUpdate.setStrClientCode(strClientCode);
 	    objStoreAddUpdate.setUpdatedStore(Integer.parseInt(hmstats.get("updated").toString()));
 	    objStoreAddUpdate.setErrorsStore(Integer.parseInt(hmstats.get("errors").toString()));
 	    objStoreAddUpdate.setCreatedStore(Integer.parseInt(hmstats.get("created").toString())); 
-	    
+	    objStoreAddUpdate.setDteCurrentDate(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
 		 
 	    
-	    ArrayList alStore=(ArrayList) jobOnlineOrder.get("stores");
+	   /* ArrayList alStore=(ArrayList) jobOnlineOrder.get("stores");
 		for(int i=0;i<alStore.size();i++) {
 			HashMap<Object, Object> hmstore=(HashMap)alStore.get(i);
 			
@@ -318,8 +318,8 @@ public void funAddUpdateStore(JSONObject jobOnlineOrder)
 			objStoreAddUpdate.setStrId(hmurpstatus.get("id").toString());
 			objStoreAddUpdate.setError( hmurpstatus.get("error").toString());
 			
-			}
-	    
+			}*/
+	    objBaseServiceImpl.funSave(objStoreAddUpdate);
 	
 		}catch (Exception e) {
 			// TODO: handle exception
@@ -331,44 +331,40 @@ public void funAddUpdateStore(JSONObject jobOnlineOrder)
 	{
 		    try
 			{
-		    	String strClientCode="";
-		    	String locationRefId=(String) jobOnlineOrder.get("location_ref_id");
-		    	String[] clientCode=locationRefId.split(".");
-		    	strClientCode=clientCode[0];
-		    	
-		    	HashMap<Object, Object> hmstoreAction= (HashMap) jobOnlineOrder.get("location_ref_id");
+		    	String locId=(String)jobOnlineOrder.get("location_ref_id");
+		    	String strClientCode=locId.substring(0, 7);
 		    	clsStoreActionModel objStoreAction=new clsStoreActionModel();
 		    	objStoreAction.setStrAction(jobOnlineOrder.get("action").toString());
-		    	objStoreAction.setStrLocationRefId(locationRefId);
+		    	objStoreAction.setStrLocationRefId((String)jobOnlineOrder.get("location_ref_id"));
 		    	objStoreAction.setStrPlatform(jobOnlineOrder.get("platform").toString());
-		    	objStoreAction.setStrRefernceId(jobOnlineOrder.get("reference_id").toString());
+		    	objStoreAction.setStrClientCode(strClientCode);
 		    	objStoreAction.setStrStatus(jobOnlineOrder.get("status").toString());
-		    	objStoreAction.setTs_utc(Integer.parseInt(jobOnlineOrder.get("ts_utc").toString()));
+		    	long longDateCreated=Long.parseLong(jobOnlineOrder.get("ts_utc").toString());
+				String strOrderDate = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new java.util.Date (longDateCreated)); 
+				
+				
+		    	objStoreAction.setTs_utc(strOrderDate);
 		    
 		    
-		    	
+		    	objBaseServiceImpl.funSave(objStoreAction);
 			
 		    
 			}catch (Exception e) {
 		// TODO: handle exception
 		    e.printStackTrace();
 	        }
-    }
+ }
 	
-	public void funItemAction(JSONObject jobOnlineOrder) 
+	public void funItemAction(JSONObject jobOnlineOrder,String strClientCode) 
 	{
 		    try
 			{
-		    	String strClientCode="";
-		    	String locationRefId=(String) jobOnlineOrder.get("location_ref_id");
-		    	String[] clientCode=locationRefId.split(".");
-		    	strClientCode=clientCode[0];
 		    	
 		    	clsItemActionModel objItemAction=new clsItemActionModel();
 		    	objItemAction.setStrAction(jobOnlineOrder.get("action").toString());
 		    	
 		    	objItemAction.setStrPlatform(jobOnlineOrder.get("platform").toString());
-		    	objItemAction.setStrReferenceId(jobOnlineOrder.get("reference_id").toString());
+		    	objItemAction.setStrClientCode(strClientCode);
 		    	
 		    	ArrayList alStatus=(ArrayList) jobOnlineOrder.get("status");
 				for(int i=0;i<alStatus.size();i++) 
@@ -390,10 +386,14 @@ public void funAddUpdateStore(JSONObject jobOnlineOrder)
 				}
 		    	
 		    	
-		    	
-				objItemAction.setTs_utc(Integer.parseInt(jobOnlineOrder.get("ts_utc").toString()));
+				long longDateCreated=Long.parseLong(jobOnlineOrder.get("ts_utc").toString());
+				String strOrderDate = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new java.util.Date (longDateCreated)); 
+				
+				
+				objItemAction.setTs_utc(strOrderDate);
+				
 		        
-		    
+		        objBaseServiceImpl.funSave(objItemAction);
 		    	
 			
 		    
@@ -401,9 +401,9 @@ public void funAddUpdateStore(JSONObject jobOnlineOrder)
 		// TODO: handle exception
 		    e.printStackTrace();
 	        }
-    }
+ }
 	
-	public void funRiderStatus(JSONObject jobOnlineOrder) 
+	public void funRiderStatus(JSONObject jobOnlineOrder,String strClientCode) 
 	{
 		    try
 			{
@@ -422,9 +422,17 @@ public void funAddUpdateStore(JSONObject jobOnlineOrder)
 		    	objRiderStatus.setDeliveryPersonPhoneNo(hmdelPersonDtl.get("phone").toString());
 		    	objRiderStatus.setDeliveryUserId(hmdelPersonDtl.get("user_id").toString());
 		    	
-		    	objRiderStatus.setRiderMode((String)jobOnlineOrder.get("mode"));
+		    	objRiderStatus.setRiderMode(hmdeliveryInfo.get("mode").toString());
+		    	objRiderStatus.setStrClientCode(strClientCode);
+             objRiderStatus.setUpOrderId((Integer)jobOnlineOrder.get("order_id"));
 		    	
-		    	ArrayList alStatus=(ArrayList) jobOnlineOrder.get("status_updates");
+		    	HashMap<Object, Object> hmstore= (HashMap) jobOnlineOrder.get("store");
+				objRiderStatus.setStoreId(hmstore.get("id").toString());
+				objRiderStatus.setStoreRefId(hmstore.get("ref_id").toString());
+		    	
+				//objBaseServiceImpl.funSave(objRiderStatus);
+				
+		    	ArrayList alStatus=(ArrayList) hmdeliveryInfo.get("status_updates");
 				for(int i=0;i<alStatus.size();i++) 
 				{
 					HashMap<Object, Object> hmstatus=(HashMap)alStatus.get(i);
@@ -433,56 +441,89 @@ public void funAddUpdateStore(JSONObject jobOnlineOrder)
 					String DateDelivery = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new java.util.Date (longDateCreated));
 					if(hmstatus.get("status").toString().equalsIgnoreCase("assigned"))
 					{
-						objRiderStatus.setAssignComments(hmstatus.get("comments").toString());
+						if(hmstatus.get("comments")!=null){
+							objRiderStatus.setAssignComments(hmstatus.get("comments").toString());	
+							
+						}
 						objRiderStatus.setAssignStatus(hmstatus.get("status").toString());
 						objRiderStatus.setDteAssign(DateDelivery);
+						
+						
 					}
 					else if(hmstatus.get("status").toString().equalsIgnoreCase("reassigned"))
 					{
-						objRiderStatus.setReassignComments(hmstatus.get("comments").toString());
+						if(hmstatus.get("comments")!=null){
+							objRiderStatus.setReassignComments(hmstatus.get("comments").toString());	
+							
+						}
 						objRiderStatus.setReAssignStatus(hmstatus.get("status").toString());
-						objRiderStatus.setDteReassign(DateDelivery);
+						objRiderStatus.setDteReassign(objGlobal.funIfNull(DateDelivery, "", DateDelivery));
+						
+						
 					}
 					else if(hmstatus.get("status").toString().equalsIgnoreCase("unassigned"))
 					{
-						objRiderStatus.setUnassignComments(hmstatus.get("comments").toString());
+						if(hmstatus.get("comments")!=null){
+							objRiderStatus.setUnassignComments(hmstatus.get("comments").toString());	
+							
+						}
 						objRiderStatus.setUnassignStatus(hmstatus.get("status").toString());
 						objRiderStatus.setDteUnassign(DateDelivery);
+						
 					}
 					else if(hmstatus.get("status").toString().equalsIgnoreCase("at-store"))
 					{
-						objRiderStatus.setAtStoreCommits(hmstatus.get("comments").toString());
+						if(hmstatus.get("comments")!=null){
+							objRiderStatus.setAtStoreCommits(hmstatus.get("comments").toString());	
+							
+						}
 						objRiderStatus.setAtstoreStatus(hmstatus.get("status").toString());
 						objRiderStatus.setDteAtStore(DateDelivery);
 					}
+						
+						
 					else if(hmstatus.get("status").toString().equalsIgnoreCase("out-for-delivery"))
 					{
-						objRiderStatus.setOutForDelComments(hmstatus.get("comments").toString());
+						if(hmstatus.get("comments")!=null){
+							objRiderStatus.setOutForDelComments(hmstatus.get("comments").toString());	
+					  }
 						objRiderStatus.setOutForDelStatus(hmstatus.get("status").toString());
 						objRiderStatus.setDteOutForDel(DateDelivery);
+
+						
+						
 					}
 					else if(hmstatus.get("status").toString().equalsIgnoreCase("delivered"))
 					{
-						objRiderStatus.setDeliveredComments(hmstatus.get("comments").toString());
+						if(hmstatus.get("comments")!=null){
+							objRiderStatus.setDeliveredComments(hmstatus.get("comments").toString());
+							
+						}
 						objRiderStatus.setDeliverdStatus(hmstatus.get("status").toString());
-						objRiderStatus.setDteDelivered(DateDelivery);
+						objRiderStatus.setDteDelivered(DateDelivery); 
+						
 					}
 					
-					objRiderStatus.setUpOrderId((String)jobOnlineOrder.get("order_id"));
-					HashMap<Object, Object> hmstore= (HashMap) jobOnlineOrder.get("store");
-					objRiderStatus.setStoreId(hmstore.get("id").toString());
-					objRiderStatus.setPosCode(hmstore.get("ref_id").toString());
+					//objBaseServiceImpl.funSave(objRiderStatus);
 				}
+				objBaseServiceImpl.funSave(objRiderStatus);
+				
+				
+				
+		    	
+				
+				
 			
 		    
 			}catch (Exception e) {
 		// TODO: handle exception
 		    e.printStackTrace();
 	        }
-    }
+ }
 	
-	public void funCatalogueIngestion(JSONObject jobOnlineOrder) 
+	public void funCatalogueIngestion(JSONObject jobOnlineOrder,String strClientCode) 
 	{
+	
 		    try
 			{
 		    clsCatalogueIngestionModel objCatalogue=new clsCatalogueIngestionModel();
@@ -508,46 +549,59 @@ public void funAddUpdateStore(JSONObject jobOnlineOrder)
 		    objCatalogue.setOptionCreated(Integer.parseInt(hmOption.get("created").toString()));
 		    objCatalogue.setOptionDeleted(Integer.parseInt(hmOption.get("deleted").toString()));
 		    
-		    ArrayList alCategories=(ArrayList) jobOnlineOrder.get("categories");
+		    objCatalogue.setDteCurrentDate(objGlobal.funGetCurrentDateTime("yyyy-MM-dd"));
+		    objCatalogue.setStrClientCode(strClientCode);
+		    /*ArrayList alCategories=(ArrayList) jobOnlineOrder.get("categories");
 			for(int i=0;i<alCategories.size();i++) 
 			{
+				
 				HashMap<Object, Object> hmupCatgStatus=(HashMap)alCategories.get(i);
-				objCatalogue.setCategoriesAct(hmupCatgStatus.get("action").toString());
-				objCatalogue.setCategoriesId(hmupCatgStatus.get("id").toString());
-				objCatalogue.setCategoriesErr(hmupCatgStatus.get("error").toString());
+				HashMap<Object, Object> hmCatagegory=(HashMap)hmupCatgStatus.get("upipr_status");
+				objCatalogue.setCategoriesAct(hmCatagegory.get("action").toString());
+				objCatalogue.setCategoriesId(hmCatagegory.get("id").toString());
+				objCatalogue.setCategoriesErr(hmCatagegory.get("error").toString());
 			}
 			
 			ArrayList alItems=(ArrayList) jobOnlineOrder.get("items");
 			for(int i=0;i<alItems.size();i++) 
 			{
+				
 				HashMap<Object, Object> hmupItemStatus=(HashMap)alItems.get(i);
-				objCatalogue.setItemAct(hmupItemStatus.get("action").toString());
-				objCatalogue.setItemId(hmupItemStatus.get("id").toString());
-				objCatalogue.setItemErr(hmupItemStatus.get("error").toString());
+				HashMap<Object, Object> hmItem=(HashMap)hmupItemStatus.get("upipr_status");
+				objCatalogue.setItemAct(hmItem.get("action").toString());
+				objCatalogue.setItemId(hmItem.get("id").toString());
+				objCatalogue.setItemErr(hmItem.get("error").toString());
 			}
 			
 			ArrayList alOptionGrp=(ArrayList) jobOnlineOrder.get("option_groups");
 			for(int i=0;i<alOptionGrp.size();i++) 
 			{
+				
 				HashMap<Object, Object> hmupOptionGrpStatus=(HashMap)alOptionGrp.get(i);
-				objCatalogue.setItemAct(hmupOptionGrpStatus.get("action").toString());
-				objCatalogue.setItemId(hmupOptionGrpStatus.get("id").toString());
-				objCatalogue.setItemErr(hmupOptionGrpStatus.get("error").toString());
+				HashMap<Object, Object> hmOptionGroup=(HashMap)hmupOptionGrpStatus.get("upipr_status");
+				objCatalogue.setItemAct(hmOptionGroup.get("action").toString());
+				objCatalogue.setItemId(hmOptionGroup.get("id").toString());
+				objCatalogue.setItemErr(hmOptionGroup.get("error").toString());
 			}
 			
 			ArrayList alOption=(ArrayList) jobOnlineOrder.get("options");
 			for(int i=0;i<alOption.size();i++) 
 			{
+				
 				HashMap<Object, Object> hmupOptionStatus=(HashMap)alOption.get(i);
-				objCatalogue.setItemAct(hmupOptionStatus.get("action").toString());
-				objCatalogue.setItemId(hmupOptionStatus.get("id").toString());
-				objCatalogue.setItemErr(hmupOptionStatus.get("error").toString());
-			}
-		    	
-
+				HashMap<Object, Object> hmOption1=(HashMap)hmupOptionStatus.get("upipr_status");
+				objCatalogue.setItemAct(hmOption1.get("action").toString());
+				objCatalogue.setItemId(hmOption1.get("id").toString());
+				objCatalogue.setItemErr(hmOption1.get("error").toString());
+			}*/
+		   
+			objBaseServiceImpl.funSave(objCatalogue);
+        
 			}catch (Exception e) {
 		// TODO: handle exception
 		    e.printStackTrace();
 	        }
-    }
+ }
+
+
 }

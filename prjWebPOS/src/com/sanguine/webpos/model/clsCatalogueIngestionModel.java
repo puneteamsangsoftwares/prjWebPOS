@@ -21,21 +21,28 @@ public class clsCatalogueIngestionModel extends clsBaseModel implements Serializ
 	public clsCatalogueIngestionModel(){}
 
 	public clsCatalogueIngestionModel(clsCatalogueIngestionModel_ID objModelID){
-		categoriesId = objModelID.getCategoriesId();
-		ItemId = objModelID.getItemId();
-		optionGrpId = objModelID.getOptionGrpId();
-		optionId = objModelID.getOptionId();
+		//categoriesId = objModelID.getCategoriesId();
+		//ItemId = objModelID.getItemId();
+		//optionGrpId = objModelID.getOptionGrpId();
+		//optionId = objModelID.getOptionId();
+		strClientCode = objModelID.getStrClientCode();
+		dteCurrentDate=objModelID.getDteCurrentDate();
 	}
 
 	@Id
 	@AttributeOverrides({
-		@AttributeOverride(name="categoriesId",column=@Column(name="categoriesId")),
-@AttributeOverride(name="ItemId",column=@Column(name="ItemId")),
-@AttributeOverride(name="optionGrpId",column=@Column(name="optionGrpId")),
-@AttributeOverride(name="optionId",column=@Column(name="optionId"))
+		//@AttributeOverride(name="categoriesId",column=@Column(name="categoriesId")),
+//@AttributeOverride(name="ItemId",column=@Column(name="ItemId")),
+//@AttributeOverride(name="optionGrpId",column=@Column(name="optionGrpId")),
+//@AttributeOverride(name="optionId",column=@Column(name="optionId")),
+@AttributeOverride(name="strClientCode",column=@Column(name="strClientCode")),
+@AttributeOverride(name="dteCurrentDate",column=@Column(name="dteCurrentDate"))
 	})
 
 //Variable Declaration
+	@Column(name="dteCurrentDate")
+	private String dteCurrentDate;
+	
 	@Column(name="catgUpdate")
 	private int catgUpdate;
 
@@ -84,7 +91,7 @@ public class clsCatalogueIngestionModel extends clsBaseModel implements Serializ
 	@Column(name="optionDeleted")
 	private int optionDeleted;
 
-	@Column(name="categoriesAct")
+	/*@Column(name="categoriesAct")
 	private String categoriesAct;
 
 	@Column(name="categoriesId")
@@ -119,14 +126,28 @@ public class clsCatalogueIngestionModel extends clsBaseModel implements Serializ
 
 	@Column(name="optionId")
 	private String optionId;
-	
-//Setter-Getter Methods
+*/	
+	@Column(name="strClientCode")
+	private String strClientCode;
 
+//Setter-Getter Methods
+	public String getDteCurrentDate()
+	{
+		return dteCurrentDate;
+	}
+
+	public void setDteCurrentDate(String dteCurrentDate)
+	{
+		this.dteCurrentDate = dteCurrentDate;
+	}
+
+	
 	public int getCatgUpdate()
 	{
 		return catgUpdate;
 	}
 
+	
 	public void setCatgUpdate(int catgUpdate)
 	{
 		this.catgUpdate = catgUpdate;
@@ -282,7 +303,7 @@ public class clsCatalogueIngestionModel extends clsBaseModel implements Serializ
 		this.optionDeleted = optionDeleted;
 	}
 
-	public String getCategoriesAct()
+	/*public String getCategoriesAct()
 	{
 		return categoriesAct;
 	}
@@ -400,6 +421,16 @@ public class clsCatalogueIngestionModel extends clsBaseModel implements Serializ
 	public void setOptionId(String optionId)
 	{
 		this.optionId = optionId;
+	}*/
+
+	public String getStrClientCode()
+	{
+		return strClientCode;
+	}
+
+	public void setStrClientCode(String strClientCode)
+	{
+		this.strClientCode = strClientCode;
 	}
 
 	public static long getSerialversionuid()

@@ -13,7 +13,7 @@ import javax.persistence.Id;
 import com.sanguine.base.model.clsBaseModel;
 
 @Entity
-@Table(name="tbonlinelriderstatus")
+@Table(name="tblonlineriderstatus")
 @IdClass(clsRiderStatusModel_ID.class)
 
 public class clsRiderStatusModel extends clsBaseModel implements Serializable{
@@ -24,13 +24,15 @@ public class clsRiderStatusModel extends clsBaseModel implements Serializable{
 		channel_orderId = objModelID.getChannel_orderId();
 		upOrderId = objModelID.getUpOrderId();
 		storeId = objModelID.getStoreId();
+		strClientCode = objModelID.getStrClientCode();
 	}
 
 	@Id
 	@AttributeOverrides({
 		@AttributeOverride(name="channel_orderId",column=@Column(name="channel_orderId")),
 @AttributeOverride(name="upOrderId",column=@Column(name="upOrderId")),
-@AttributeOverride(name="storeId",column=@Column(name="storeId"))
+@AttributeOverride(name="storeId",column=@Column(name="storeId")),
+@AttributeOverride(name="strClientCode",column=@Column(name="strClientCode"))		
 	})
 
 //Variable Declaration
@@ -59,13 +61,13 @@ public class clsRiderStatusModel extends clsBaseModel implements Serializable{
 	private String riderMode;
 
 	@Column(name="upOrderId")
-	private String upOrderId;
+	private int upOrderId;
 
 	@Column(name="storeId")
 	private String storeId;
 
-	@Column(name="posCode")
-	private String posCode;
+	@Column(name="storeRefId")
+	private String storeRefId;
 
 	@Column(name="assignComments")
 	private String assignComments;
@@ -120,6 +122,10 @@ public class clsRiderStatusModel extends clsBaseModel implements Serializable{
 
 	@Column(name="deliverdStatus")
 	private String deliverdStatus;
+	
+	@Column(name="strClientCode")
+	private String strClientCode;
+
 	
 //Setter-Getter Methods
 	public String getChannel()
@@ -202,12 +208,14 @@ public class clsRiderStatusModel extends clsBaseModel implements Serializable{
 		this.riderMode = riderMode;
 	}
 
-	public String getUpOrderId()
+	
+
+	public int getUpOrderId()
 	{
 		return upOrderId;
 	}
 
-	public void setUpOrderId(String upOrderId)
+	public void setUpOrderId(int upOrderId)
 	{
 		this.upOrderId = upOrderId;
 	}
@@ -222,14 +230,16 @@ public class clsRiderStatusModel extends clsBaseModel implements Serializable{
 		this.storeId = storeId;
 	}
 
-	public String getPosCode()
+	
+
+	public String getStoreRefId()
 	{
-		return posCode;
+		return storeRefId;
 	}
 
-	public void setPosCode(String posCode)
+	public void setStoreRefId(String storeRefId)
 	{
-		this.posCode = posCode;
+		this.storeRefId = storeRefId;
 	}
 
 	public String getAssignComments()
@@ -410,6 +420,16 @@ public class clsRiderStatusModel extends clsBaseModel implements Serializable{
 	public void setDeliverdStatus(String deliverdStatus)
 	{
 		this.deliverdStatus = deliverdStatus;
+	}
+
+	public String getStrClientCode()
+	{
+		return strClientCode;
+	}
+
+	public void setStrClientCode(String strClientCode)
+	{
+		this.strClientCode = strClientCode;
 	}
 
 	public static long getSerialversionuid()

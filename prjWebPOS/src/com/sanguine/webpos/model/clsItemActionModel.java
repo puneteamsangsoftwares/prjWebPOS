@@ -23,17 +23,18 @@ public class clsItemActionModel extends clsBaseModel implements Serializable{
 	public clsItemActionModel(clsItemActionModel_ID objModelID){
 		strUpItemId = objModelID.getStrUpItemId();
 		strUpLocationId = objModelID.getStrUpLocationId();
+		strClientCode = objModelID.getStrClientCode();
 	}
 
 	@Id
 	@AttributeOverrides({
 		@AttributeOverride(name="strUpItemId",column=@Column(name="strUpItemId")),
-@AttributeOverride(name="strUpLocationId",column=@Column(name="strUpLocationId"))
+@AttributeOverride(name="strUpLocationId",column=@Column(name="strUpLocationId")),
+@AttributeOverride(name="strClientCode",column=@Column(name="strClientCode"))
 	})
 
 //Variable Declaration
-	@Column(name="strReferenceId")
-	private String strReferenceId;
+	
 
 	@Column(name="strAction")
 	private String strAction;
@@ -57,16 +58,13 @@ public class clsItemActionModel extends clsBaseModel implements Serializable{
 	private String strItemStatus;
 
 	@Column(name="ts_utc")
-	private int ts_utc;
+	private String ts_utc;
+	
+	@Column(name="strClientCode")
+	private String strClientCode;
 
 //Setter-Getter Methods
-	public String getStrReferenceId(){
-		return strReferenceId;
-	}
-	public void setStrReferenceId(String strReferenceId){
-		this. strReferenceId = (String) setDefaultValue( strReferenceId, "NA");
-	}
-
+	
 	public String getStrAction(){
 		return strAction;
 	}
@@ -116,12 +114,24 @@ public class clsItemActionModel extends clsBaseModel implements Serializable{
 		this. strItemStatus = (String) setDefaultValue( strItemStatus, "NA");
 	}
 
-	public int getTs_utc()
+	
+
+	public String getStrClientCode()
+	{
+		return strClientCode;
+	}
+
+	public void setStrClientCode(String strClientCode)
+	{
+		this.strClientCode = strClientCode;
+	}
+
+	public String getTs_utc()
 	{
 		return ts_utc;
 	}
 
-	public void setTs_utc(int ts_utc)
+	public void setTs_utc(String ts_utc)
 	{
 		this.ts_utc = ts_utc;
 	}
