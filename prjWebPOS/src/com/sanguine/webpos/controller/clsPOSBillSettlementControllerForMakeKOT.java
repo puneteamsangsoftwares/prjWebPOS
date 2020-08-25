@@ -1527,7 +1527,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 	// arrListHomeDelDetails)
 	// {
 	@RequestMapping(value = "/saveKOT", method = RequestMethod.POST, headers = { "Content-type=application/json" })
-	private @ResponseBody String funSaveKOT(@RequestBody List listItmeDtl, HttpServletRequest req,HttpServletResponse response, @RequestParam("ncKot") String strNCKotYN, @RequestParam("takeAway") String strTakeAwayYesNo, @RequestParam("globalDebitCardNo") String globalDebitCardNo, @RequestParam("cmsMemCode") String cmsMemCode, @RequestParam("cmsMemName") String cmsMemName, @RequestParam("reasonCode") String reasonCode, @RequestParam("homeDeliveryForTax") String homeDeliveryForTax, @RequestParam("total") double total, @RequestParam("arrListHomeDelDetails") List<String> arrListHomeDelDetails, @RequestParam("custcode") String custcode, @RequestParam("custName") String custName,@RequestParam("dblTaxAmt") double dblTaxAmt) throws Exception
+	private @ResponseBody String funSaveKOT(@RequestBody List listItmeDtl, HttpServletRequest req,HttpServletResponse response, @RequestParam("ncKot") String strNCKotYN, @RequestParam("takeAway") String strTakeAwayYesNo, @RequestParam("globalDebitCardNo") String globalDebitCardNo, @RequestParam("cmsMemCode") String cmsMemCode, @RequestParam("cmsMemName") String cmsMemName, @RequestParam("reasonCode") String reasonCode, @RequestParam("homeDeliveryForTax") String homeDeliveryForTax, @RequestParam("total") double total, @RequestParam("arrListHomeDelDetails") List<String> arrListHomeDelDetails, @RequestParam("custCode") String custCode, @RequestParam("custName") String custName,@RequestParam("dblTaxAmt") double dblTaxAmt) throws Exception
 	{
 		String result = "true";
 		try
@@ -1587,7 +1587,7 @@ public class clsPOSBillSettlementControllerForMakeKOT
 				objModel.setStrCardNo("");
 				objModel.setStrCardType(" ");
 				objModel.setStrCounterCode(strCounterCode);
-				objModel.setStrCustomerCode(custcode);
+				objModel.setStrCustomerCode(custCode);
 				objModel.setStrCustomerName(custName);
 
 				if (homeDeliveryForTax.equalsIgnoreCase("Y"))
@@ -1653,6 +1653,10 @@ public class clsPOSBillSettlementControllerForMakeKOT
 
 				}
 			}
+			
+			if(cmsMemCode==null || cmsMemCode.isEmpty())
+				cmsMemCode=custCode;
+			
 			funUpdateKOT(dateTime, strKOTNo, strTableNo, cmsMemCode, homeDelivery, strNCKotYN, strPaxNo, total,clientCode,dblTaxAmt);
 			funInsertIntoTblItemRTempBck(strTableNo, strKOTNo,clientCode);
 			//printPDFResource1(response,req);//strTableNo,strKOTNo, costCenterCode, costCenterName,areaCode

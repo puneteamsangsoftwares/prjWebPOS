@@ -178,17 +178,9 @@ $(document).ready(function()
 			{
 				if (funCheckKOTSave())
 	        	{
-//	             	if (gEnableBillSeries=="Y")
-//	             	{
-			              //  clsTextFileGeneratorForPrinting ob = new clsTextFileGeneratorForPrinting();
-			              // ob.fun_CkeckKot_TextFile(globalTableNo, txtWaiterNo.getText().trim());
-			               
-			              $("#hidTakeAway").val(gTakeAway);
-			              
-			               funMakeBillBtnKOT(ncKot,gTakeAway,globalDebitCardNo,cmsMemCode,cmsMemName,reasonCode,homeDeliveryForTax,arrListHomeDelDetails);
-
-//	             	}
-	        	}
+			    	$("#hidTakeAway").val(gTakeAway);
+			        funMakeBillBtnKOT(ncKot,gTakeAway,globalDebitCardNo,cmsMemCode,cmsMemName,reasonCode,homeDeliveryForTax,arrListHomeDelDetails);
+			    }
 	        	else
 	        	{
 	            	alert("Please Save KOt First");
@@ -199,7 +191,6 @@ $(document).ready(function()
 		
 		function funMakeBillBtnKOT(ncKot,gTakeAway,globalDebitCardNo,cmsMemCode,cmsMemName,reasonCode,homeDeliveryForTax,arrListHomeDelDetails)
 		{
-
 			document.getElementById("tab2").style.display='block';		
 		    document.getElementById("tab1").style.display='none';	
 		    
@@ -216,13 +207,11 @@ $(document).ready(function()
 		    
 		    var listItmeDtl=[];
 		    var mergeduplicateItm = new Map();
-		   /*  var hmItempMap=new Map(); */
-		    
 		    
 			var tblBillItemDtl=document.getElementById('tblOldKOTItemDtl');
 			var rowCount = tblBillItemDtl.rows.length;
 			
-			var tableNo=gTableNo;							
+			var tableNo=gTableNo;
 			var paxNo=$("#txtPaxNo").text();
 			var waiterNo=gWaiterNo;
 			
@@ -244,11 +233,8 @@ $(document).ready(function()
 				var itemDiscAmt=0;
 				var isModifier=false;
 				
-				
 			    if(!(itemQty==" "))
-			    {		    	
-			    	/* hmItempMap.set(itemCode,itemName); */
-		         
+			    {
 			    	if(itemName.startsWith("-->"))
 					{
 			    		isModifier=true;
@@ -259,7 +245,6 @@ $(document).ready(function()
 			        	  var prevAddedObj=mergeduplicateItm.get(itemCode);
 			        	  var prevQty=prevAddedObj["quantity"];
 			        	  var prevAmt=prevAddedObj["amount"];
-			        	  	
 			        	  
 				    	  itemQty=parseFloat(itemQty)+parseFloat(prevQty);
 				    	  itemAmt=parseFloat(itemAmt)+parseFloat(prevAmt);
@@ -271,16 +256,11 @@ $(document).ready(function()
 					    			  oldListObj["quantity"]=itemQty;
 					    			  oldListObj['amount'] = itemAmt;
 					    			  oldListObj['rate'] =itemAmt/itemQty;
-						    		    
-						    		    
 					    			  prevAddedObj["quantity"]=itemQty;
 					    			  prevAddedObj['amount'] = itemAmt;
 					    			  prevAddedObj['rate'] =itemAmt/itemQty;  
 							    }
 						  });
-				    	  
-				    	  
-				    	  
 				      }
 			          else
 			          {
@@ -303,8 +283,6 @@ $(document).ready(function()
 							hmGroupMap.set(strGroupCode, strGroupName); 
 							hmSubGroupMap.set(strSubGroupCode, strSGName);
 							hmItempMap.set(itemCode,itemName);
-							
-								
 								
 							var singleObj = {}
 							
@@ -326,12 +304,8 @@ $(document).ready(function()
 						    singleObj['dblCompQty'] =0.0;
 
 						    listItmeDtl.push(singleObj);
-																	
-							
 							mergeduplicateItm.set(itemCode,singleObj);
 				      }
-			    	
-		          	
 				}	
 			}
 			
@@ -503,49 +477,7 @@ $(document).ready(function()
 			}
 		}
 		
-		function funFillOldKOTTimeDtl(objMenuItemPricingDtl)
-		{		
-			var tblBillItemDtl=document.getElementById('tblOldKOTItemDtl');
-			
-			var rowCount = tblBillItemDtl.rows.length;
-			var insertRow = tblBillItemDtl.insertRow(rowCount);
-			var kotNo= $('#txtKOTNo').text();
-			var PaxNo= $('#txtPaxNo').text();
-			var tableNo = $('#txtTableNo').text();
-			var WaiterNo = $('#txtWaiterNo').text();
-		    var col1=insertRow.insertCell(0);
-		    var col2=insertRow.insertCell(1);
-		    var col3=insertRow.insertCell(2);
-		    var col4=insertRow.insertCell(3);
-		    var col5=insertRow.insertCell(4);
-		    var col6=insertRow.insertCell(5);
-		    var col7=insertRow.insertCell(6);
-		    var col8=insertRow.insertCell(7);
-		    var col9=insertRow.insertCell(8);
-		    var col10=insertRow.insertCell(9);
-		    var col11=insertRow.insertCell(10);
-		    var col12=insertRow.insertCell(11);
-		    var col13=insertRow.insertCell(12);
-		    
-		    col1.innerHTML = "<input readonly=\"readonly\" size=\"32px\"   class=\"itemName\"   style=\"text-align: left; \"    id=\"strItemName."+(rowCount)+"\" value='"+objMenuItemPricingDtl.kotNo+"           "+objMenuItemPricingDtl.kotTime+"' />";
-		    col2.innerHTML = "<input readonly=\"readonly\" size=\"3.5px\"   class=\"itemQty\"      style=\"text-align: right;\"  id=\"dblQuantity."+(rowCount)+"\" value=' '/>";
-		    col3.innerHTML = "<input readonly=\"readonly\" size=\"4px\"   class=\"itemAmt\"      style=\"text-align: right;\" id=\"dblAmount."+(rowCount)+"\" value='' />";
-		    col4.innerHTML = "<input type=\"hidden\"  size=\"0px\" class=\"itemCode\"     style=\"text-align: left;\" id=\"strItemCode."+(rowCount)+"\" value='' />";
-		    col5.innerHTML = "<input type=\"hidden\"  size=\"0px\"   class=\"itemDiscAmt\"  style=\"text-align: right;\"  id=\"strSerialNo."+(rowCount)+"\" value='' />";
-		    col6.innerHTML = "<input type=\"hidden\"  size=\"0px\"   class=\"groupcode\"  style=\"text-align: right; color:blue;\"  name=\"listItemsDtlInBill["+(rowCount)+"].strGroupcode\" id=\"strGroupcode."+(rowCount-1)+"\" value='' />";	    
-		    col7.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"subgroupcode\"  name=\"listItemsDtlInBill["+(rowCount)+"].strSubGroupCode\" id=\"strSubGroupCode."+(rowCount)+"\" value='' />";
-		    col8.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"subGroupName\"  name=\"listItemsDtlInBill["+(rowCount)+"].strSubGroupName\" id=\"strSubGroupName."+(rowCount)+"\" value='' />";
-		    col9.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"groupName\"  name=\"listItemsDtlInBill["+(rowCount)+"].strGroupName\" id=\"strGroupName."+(rowCount)+"\" value='' />";	    
-		    col10.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"tableNo\"  name=\"listItemsDtlInBill["+(rowCount)+"].tableNo\" id=\"tableNo."+(rowCount)+"\" value='"+tableNo+"' />";
-		    col11.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"paxNo\"  name=\"listItemsDtlInBill["+(rowCount)+"].paxNo\" id=\"paxNo."+(rowCount)+"\" value='' />";
-		    col12.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"KOTNo\"  name=\"listItemsDtlInBill["+(rowCount)+"].KOTNo\" id=\"KOTNo."+(rowCount)+"\" value='' />";
-		    col13.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"waiterNo\"  name=\"listItemsDtlInBill["+(rowCount)+"].waiterNo\" id=\"waiterNo."+(rowCount)+"\" value='' />";
-		      
-			
-			
-		      
-		    
-		}
+		
 		
 		
 		
@@ -554,11 +486,8 @@ $(document).ready(function()
 			$("#txtItemSearch").val('');
 			var $rows = $('#tblMenuItemDtl').empty();
 			var tblMenuItemDtl=document.getElementById('tblMenuItemDtl');
-		
 			var selctedWaiterCode=objWaiterButton.id;
-			
-			var jsonArrForWaiterDtl=${command.jsonArrForWaiterDtl};	
-			
+			var jsonArrForWaiterDtl=${command.jsonArrForWaiterDtl};
 			
 			$.each(jsonArrForWaiterDtl, function(i, obj) 
 			{									
@@ -569,123 +498,21 @@ $(document).ready(function()
 					gWaiterName=obj.strWShortName;
 				}
 			});
-				if(gSkipPax=="Y")
-				{
-					funShowMenuHead();
-				}
-				else
-				{
-					
-					var pax=document.getElementById("txtPaxNo");
-					
-					funChangePAX(pax);
-					
-					funShowMenuHead();
-					
-					
-					
-					
-				}
 			
+			if(gSkipPax=="Y")
+			{
+				funShowMenuHead();
+			}
+			else
+			{
+				var pax=document.getElementById("txtPaxNo");
+				funChangePAX(pax);
+				funShowMenuHead();
+			}
 		}
 		
 		
-		function funFillOldKOTItemDtl(objMenuItemPricingDtl)
-		{		
-			var tblBillItemDtl=document.getElementById('tblOldKOTItemDtl');
-			
-			var rowCount = tblBillItemDtl.rows.length;
-			var insertRow = tblBillItemDtl.insertRow(rowCount);
-			
-		    var kotNo= $('#txtKOTNo').text();
-			var PaxNo= $('#txtPaxNo').text();
-			var tableNo = $('#txtTableNo').text();
-			var WaiterNo = $('#txtWaiterNo').text();	
-			
-		    var col1=insertRow.insertCell(0);
-		    var col2=insertRow.insertCell(1);
-		    var col3=insertRow.insertCell(2);
-		    var col4=insertRow.insertCell(3);
-		    var col5=insertRow.insertCell(4);
-		    var col6=insertRow.insertCell(5);
-		    var col7=insertRow.insertCell(6);
-		    var col8=insertRow.insertCell(7);
-		    var col9=insertRow.insertCell(8);
-		    var col10=insertRow.insertCell(9);
-		    var col11=insertRow.insertCell(10);
-		    var col12=insertRow.insertCell(11);
-		    var col13=insertRow.insertCell(12);
-		    
-		    col1.innerHTML = "<input readonly=\"readonly\" size=\"32px\"   class=\"itemName\"   style=\"text-align: left;\"    id=\"strItemName."+(rowCount)+"\" value='"+objMenuItemPricingDtl.strItemName+"' />";
-		    col2.innerHTML = "<input readonly=\"readonly\" size=\"3.5px\"   class=\"itemQty\"      style=\"text-align: right;\"   id=\"dblQuantity."+(rowCount)+"\" value='"+objMenuItemPricingDtl.dblItemQuantity+"'/>";
-		    col3.innerHTML = "<input readonly=\"readonly\" size=\"4px\"   class=\"itemAmt\"      style=\"text-align: right;\"  id=\"dblAmount."+(rowCount)+"\" value='"+objMenuItemPricingDtl.dblAmount+"' />";
-		    col4.innerHTML = "<input type=\"hidden\"  size=\"0px\" class=\"itemCode\"     style=\"text-align: left;\"  id=\"strItemCode."+(rowCount)+"\" value='"+objMenuItemPricingDtl.strItemCode+"' />";
-		    col5.innerHTML = "<input type=\"hidden\"  size=\"0px\"   class=\"itemDiscAmt\"  style=\"text-align: right;\"  id=\"strSerialNo."+(rowCount)+"\" value='"+objMenuItemPricingDtl.strSerialNo+"'/>";
-		    col6.innerHTML = "<input type=\"hidden\"  size=\"0px\"   class=\"groupcode\"  style=\"text-align: right; color:blue;\"  name=\"listItemsDtlInBill["+(rowCount)+"].strGroupcode\" id=\"strGroupcode."+(rowCount-1)+"\" value='"+objMenuItemPricingDtl.strGroupcode+"' />";	    
-		    col7.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"subgroupcode\"  name=\"listItemsDtlInBill["+(rowCount)+"].strSubGroupCode\" id=\"strSubGroupCode."+(rowCount)+"\" value='"+objMenuItemPricingDtl.strSubGroupCode+"' />";
-		    col8.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"subGroupName\"  name=\"listItemsDtlInBill["+(rowCount)+"].strSubGroupName\" id=\"strSubGroupName."+(rowCount)+"\" value='"+objMenuItemPricingDtl.strSubGroupName+"' />";
-		    col9.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"groupName\"  name=\"listItemsDtlInBill["+(rowCount)+"].strGroupName\" id=\"strGroupName."+(rowCount)+"\" value='"+objMenuItemPricingDtl.strGroupName+"' />";
-		    col10.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"tableNo\"  name=\"listItemsDtlInBill["+(rowCount)+"].tableNo\" id=\"tableNo."+(rowCount)+"\" value='"+tableNo+"' />";
-		    col11.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"paxNo\"  name=\"listItemsDtlInBill["+(rowCount)+"].paxNo\" id=\"paxNo."+(rowCount)+"\" value='"+PaxNo+"' />";
-		    col12.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"KOTNo\"  name=\"listItemsDtlInBill["+(rowCount)+"].KOTNo\" id=\"KOTNo."+(rowCount)+"\" value='"+kotNo+"' />";
-		    col13.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"waiterNo\"  name=\"listItemsDtlInBill["+(rowCount)+"].waiterNo\" id=\"waiterNo."+(rowCount)+"\" value='"+WaiterNo+"' />";
-		       	    
-			
-		    
-			
-		}
 		
-		
-		function funFillOldKOTItems(tableNo)
-		{		
-			if(arrKOTItemDtlList.length==0)
-				funRemoveTableRows("tblBillItemDtl");
-			var searchurl=getContextPath()+"/funFillOldKOTItems.html?strTableNo="+tableNo;
-			 $.ajax({
-				        type: "GET",
-				        url: searchurl,
-				        dataType: "json",
-				        success: function(response)
-				        {
-				        	if(response.flag)
-				        	{
-				        			$.each(response.OldKOTTimeDtl, function(j, item) 
-				        			{
-				        				funFillOldKOTTimeDtl(item);
-				        			
-				        	 			$.each(response.OldKOTItems, function(i, obj) 
-				        				{									
-				        					if(item.kotNo==obj.strKOTNo)
-				        						funFillOldKOTItemDtl(obj);
-				        		
-				        				});
-				        			});
-				        		$("#txtTotal").val(response.Total);
-				        	
-				        		funDisplayMakeBillButton(true);
-				        	}			        	
-				        	
-				        	
-						},
-						error: function(jqXHR, exception) {
-				            if (jqXHR.status === 0) {
-				                alert('Not connect.n Verify Network.');
-				            } else if (jqXHR.status == 404) {
-				                alert('Requested page not found. [404]');
-				            } else if (jqXHR.status == 500) {
-				                alert('Internal Server Error [500].');
-				            } else if (exception === 'parsererror') {
-				                alert('Requested JSON parse failed.');
-				            } else if (exception === 'timeout') {
-				                alert('Time out error.');
-				            } else if (exception === 'abort') {
-				                alert('Ajax request aborted.');
-				            } else {
-				                alert('Uncaught Error.n' + jqXHR.responseText);
-				            }		            
-				        }
-			      });
-		}
 		
 		
 		
@@ -771,239 +598,168 @@ $(document).ready(function()
 			    }
 			  });
 			});
+		
 		function funAddCustomerHistory(arr,total)
 		{
 			$("#txtTotal").val(total);		
 			for(var j=0;j<arr.length;j++)
 			{
-			var itmDtl=arr[j].split("#");
-			
-			var tblBillItemDtl=document.getElementById('tblBillItemDtl');
-			
-			var rowCount = tblBillItemDtl.rows.length;
-			var insertRow = tblBillItemDtl.insertRow(rowCount);
-					
-		    var col1=insertRow.insertCell(0);
-		    var col2=insertRow.insertCell(1);
-		    var col3=insertRow.insertCell(2);
-		    var col4=insertRow.insertCell(3);
-		    var col5=insertRow.insertCell(4);
-		   
-		    
-		    col1.innerHTML = "<input readonly=\"readonly\" size=\"32px\"  class=\"itemName\"    style=\"text-align: left; color:blue; width:220px;\"   name=\"listItemsDtlInBill["+(rowCount)+"].itemName\" id=\"itemName."+(rowCount)+"\" value='"+itmDtl[1]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
-		    col2.innerHTML = "<input readonly=\"readonly\" size=\"3.5px\"   class=\"itemQty\"      style=\"text-align: right; color:blue;\"  name=\"listItemsDtlInBill["+(rowCount)+"].quantity\" id=\"quantity."+(rowCount)+"\" value='"+parseFloat(itmDtl[2])+"' onclick=\"funChangeQty(this)\"/>";
-		    col3.innerHTML = "<input readonly=\"readonly\" size=\"4px\"   class=\"itemAmt\"      style=\"text-align: right; color:blue;\"  name=\"listItemsDtlInBill["+(rowCount)+"].amount\" id=\"amount."+(rowCount)+"\" value='"+itmDtl[3]+"'/>";
-		    col4.innerHTML = "<input readonly=\"readonly\" size=\"10px\" class=\"itemCode\"     style=\"text-align: left; color:blue;\"   name=\"listItemsDtlInBill["+(rowCount)+"].itemCode\" id=\"itemCode."+(rowCount)+"\" value='"+itmDtl[0]+"' />";
-		    col5.innerHTML = "<input readonly=\"readonly\" size=\"9px\"   class=\"itemDiscAmt\"  style=\"text-align: right; color:blue;\"  name=\"listItemsDtlInBill["+(rowCount)+"].strSerialNo\" id=\"strSerialNo."+(rowCount-1)+"\" value='"+rowCount+"' />";
-		    	
+				var itmDtl=arr[j].split("#");
+				
+				var tblBillItemDtl=document.getElementById('tblBillItemDtl');
+				
+				var rowCount = tblBillItemDtl.rows.length;
+				var insertRow = tblBillItemDtl.insertRow(rowCount);
+						
+			    var col1=insertRow.insertCell(0);
+			    var col2=insertRow.insertCell(1);
+			    var col3=insertRow.insertCell(2);
+			    var col4=insertRow.insertCell(3);
+			    var col5=insertRow.insertCell(4);
+			   
+			    col1.innerHTML = "<input readonly=\"readonly\" size=\"32px\"  class=\"itemName\"    style=\"text-align: left; color:blue; width:220px;\"   name=\"listItemsDtlInBill["+(rowCount)+"].itemName\" id=\"itemName."+(rowCount)+"\" value='"+itmDtl[1]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+			    col2.innerHTML = "<input readonly=\"readonly\" size=\"3.5px\"   class=\"itemQty\"      style=\"text-align: right; color:blue;\"  name=\"listItemsDtlInBill["+(rowCount)+"].quantity\" id=\"quantity."+(rowCount)+"\" value='"+parseFloat(itmDtl[2])+"' onclick=\"funChangeQty(this)\"/>";
+			    col3.innerHTML = "<input readonly=\"readonly\" size=\"4px\"   class=\"itemAmt\"      style=\"text-align: right; color:blue;\"  name=\"listItemsDtlInBill["+(rowCount)+"].amount\" id=\"amount."+(rowCount)+"\" value='"+itmDtl[3]+"'/>";
+			    col4.innerHTML = "<input readonly=\"readonly\" size=\"10px\" class=\"itemCode\"     style=\"text-align: left; color:blue;\"   name=\"listItemsDtlInBill["+(rowCount)+"].itemCode\" id=\"itemCode."+(rowCount)+"\" value='"+itmDtl[0]+"' />";
+			    col5.innerHTML = "<input readonly=\"readonly\" size=\"9px\"   class=\"itemDiscAmt\"  style=\"text-align: right; color:blue;\"  name=\"listItemsDtlInBill["+(rowCount)+"].strSerialNo\" id=\"strSerialNo."+(rowCount-1)+"\" value='"+rowCount+"' />";
+			    	
 			}
 		}
+		
+		
 		function funValidateForDoneButton()
 		{
-			
 			gAreaCode=$("#txtAreaName").val();
-			 if (gDebitCardPayment=="Yes")
+			if (gDebitCardPayment=="Yes")
+		    {
+		    	if (gCheckDebitCardBalanceOnTrans=="Y")
 		        {
-		            if (gCheckDebitCardBalanceOnTrans=="Y")
+		        	if (!isNCKOT)
 		            {
-		                if (!isNCKOT)
+		            	if ($("#txtCardBalance").text().length==0)
 		                {
-		                    if ($("#txtCardBalance").text().length==0)
+		                	var debitCardBalance = parseFloat($("#txtCardBalance").text());
+		                    if (parseFloat($("#txtTotal").val()) > debitCardBalance)
 		                    {
-		                        var debitCardBalance = parseFloat($("#txtCardBalance").text());
-		                        if (parseFloat($("#txtTotal").val()) > debitCardBalance)
-		                        {
-		                            alert("Insufficient Balance on Card!!!");
-		                            return;
-		                        }
+		                    	alert("Insufficient Balance on Card!!!");
+		                        return;
 		                    }
-		                }
-		            }
-		        }
-			 if (homeDeliveryForTax=="Y")
-	         {
-	             if (gCustomerCode.trim().length==0)
-	             {
-	            	 alert("Select Customer for Home Delivery!!!");
-	                 return;
-	             }
-	         }
-			 if (gCMSIntegrationYN=="Y")
+						}
+					}
+				}
+		    }
+			if (homeDeliveryForTax=="Y")
+	        {
+	        	if (gCustomerCode.trim().length==0)
+	            {
+	            	alert("Select Customer for Home Delivery!!!");
+	                return;
+	            }
+	        }
+			if (gCMSIntegrationYN=="Y")
+		    {
+		    	if (gClientCode!="074.001")
 		        {
-		            if (gClientCode!="074.001")
+		        	if (cmsMemberCode.trim().length == 0)
 		            {
-		                if (cmsMemberCode.trim().length == 0)
-		                {
-	                        alert("Please Select Member!!!");
-	                        return;
-		                }
-		            }
-		        }
-			 else if (!((gCustomerCode.trim().length==0) && homeDeliveryForTax=="Y"))
-	         {
-	            // hidTransactionType = "Home Delivery";
+	                	alert("Please Select Member!!!");
+	                    return;
+					}
+				}
+			}
+			else if (!(gCustomerCode.trim().length==0 && homeDeliveryForTax=="Y"))
+	        {
 	            var totalBillAmount = 0.00;
-			 	 if ($("#txtTotal").val().trim().length > 0)
-	       		 {
-				 	 totalBillAmount = parseFloat($("#txtTotal").val());
-	     		 }
-	             if (!gNewCustomerForHomeDel)
-	             {
-	            	 delCharges=funGetDeliveryCharges(gBuildingCodeForHD, totalBillAmount, gCustomerCode);
-	             }
-	             if (gDelBoyCompulsoryOnDirectBiller=="Y")
-	             {
-	                 if (gDeliveryBoyCode == "")
-	                 {
-	                     alert( "Please Assign Delivery Boy");
-	                     return;
-	                 }
-	             }
-	         }
-			 else if (gRemarksOnTakeAway=="Y")
-	         {
-	             if (gTakeAway=="Yes" && gCustomerCode.trim().length==0 )
-	             {
-	                 alert("Select Customer For Take Away!!!");
-	                 return;
-	             }
-	         }
+			 	if ($("#txtTotal").val().trim().length > 0)
+	       		{
+				 	totalBillAmount = parseFloat($("#txtTotal").val());
+	     		}
+	            if (!gNewCustomerForHomeDel)
+	            {
+	            	delCharges=funGetDeliveryCharges(gBuildingCodeForHD, totalBillAmount, gCustomerCode);
+	            }
+	            if (gDelBoyCompulsoryOnDirectBiller=="Y")
+	            {
+	                if (gDeliveryBoyCode == "")
+	                {
+	                    alert( "Please Assign Delivery Boy");
+	                    return;
+	                }
+	            }
+	        }
+			else if (gRemarksOnTakeAway=="Y")
+	        {
+	            if (gTakeAway=="Yes" && gCustomerCode.trim().length==0 )
+	            {
+	                alert("Select Customer For Take Away!!!");
+	                return;
+	            }
+	        }
 			 
-				var tblBillItemDtl=document.getElementById('tblBillItemDtl');				
-				var rowCount = tblBillItemDtl.rows.length;
-				
-				
-				
-				
-	        	
-	        	
+			var tblBillItemDtl=document.getElementById('tblBillItemDtl');				
+			var rowCount = tblBillItemDtl.rows.length;
 				 
-				 
-				if(operationType=="DineIn")
+			if(operationType=="DineIn")
+			{
+				if(rowCount <= 2)
 				{
-					if(rowCount <= 2)
-					{
-						alert("No item to save.");
-						return;
-					}
-					
-					
-					ncKot = "N";
-					if (isNCKOT) //NC KOT
-		       		 {
-		        	    ncKot = "Y";
-		          	    globalDebitCardNo = "";
-		       		 }
-					 var total=$("#txtTotal").val();
-	//Make KOT -- done button 					  
-		        	funDoneBtnKOT(ncKot,gTakeAway,globalDebitCardNo,cmsMemCode,cmsMemName,reasonCode,homeDeliveryForTax,arrListHomeDelDetails,total);
+					alert("No item to save.");
+					return;
 				}
-				else if(operationType=="HomeDelivery")
+				ncKot = "N";
+				if (isNCKOT) //NC KOT
+		    	{
+		        	ncKot = "Y";
+		          	globalDebitCardNo = "";
+		       	}
+				var total=$("#txtTotal").val();
+				
+		        funDoneBtnKOT(ncKot,gTakeAway,globalDebitCardNo,cmsMemCode,cmsMemCode,reasonCode,homeDeliveryForTax,arrListHomeDelDetails,total);
+			}
+			else if(operationType=="HomeDelivery")
+			{
+				if(rowCount <= 1)
 				{
-					if(rowCount <= 1)
-					{
-						alert("No item to save.");
-						return;
-					}
-					
-					if (arrDirectBilleritems.length > 0)
-					{ 
-						if (gCustomerCode.trim().length == 0)
-				        {
-
-				           alert("Please select the customer");
-				        
-				           return;
-				        }
-						
-						
-						funCheckHomeDelStatus();
-	//Direct Biller -- done button					
-						/**
-						*This methis is in frmBilling.jsp								
-						*/
-						funDoneBtnDirectBiller();
-					}
-					else
-					{
-						 alert("Please select items");
-		                 return;
-					}
+					alert("No item to save.");
+					return;
 				}
-				else if(operationType=="TakeAway")
+				
+				if (arrDirectBilleritems.length > 0)
+				{ 
+					if (gCustomerCode.trim().length == 0)
+			        {
+			           alert("Please select the customer");
+			           return;
+			        }
+					funCheckHomeDelStatus();
+					
+					funDoneBtnDirectBiller();
+				}
+				else
 				{
-					
-					if(rowCount <= 1)
-					{
-						alert("No item to save.");
-						return;
-					}
-					
-					if (arrDirectBilleritems.length > 0)
-					{ 
-	//take away -- done button										
-						/**
-						*This methis is in frmBilling.jsp								
-						*/
-						funDoneBtnDirectBiller();
-					}
-					else
-					{
-						 alert("Please select items");
-		                 return;
-					}
+					 alert("Please select items");
+		        	return;
 				}
+			}
+			else if(operationType=="TakeAway")
+			{
+				if(rowCount <= 1)
+				{
+					alert("No item to save.");
+					return;
+				}
+				if (arrDirectBilleritems.length > 0)
+				{
+					funDoneBtnDirectBiller();
+				}
+				else
+				{
+					 alert("Please select items");
+		        	return;
+				}
+			}
 		}
 		
-		
-		/* function funGetCostCenterListForKOT(tableNo,kotNo)
-		{
-			
-			var searchurl=getContextPath()+"/funGetCostCenterListForKOT.html?tableNo="+tableNo+"&kotNo="+kotNo  ;
-			$.ajax({
-				 type: "GET",
-			        url: searchurl,
-			        contentType: 'application/json',
-			        async: true,
-			    success: function (response)
-			    {
-			    	 	
-			    	for(var j=0;j<response.length;j++)
-			    	{
-			    		funPrintKOT(response[j].strItemCode,response[j].strItemName,response[j].strArea,tableNo,kotNo)
-			    	}
-			    },
-			    error: function(jqXHR, exception)
-			    {
-			        if (jqXHR.status === 0) {
-			            alert('Not connect.n Verify Network.');
-			        } else if (jqXHR.status == 404) {
-			            alert('Requested page not found. [404]');
-			        } else if (jqXHR.status == 500) {
-			            alert('Internal Server Error [500].');
-			        } else if (exception === 'parsererror') {
-			            alert('Requested JSON parse failed.');
-			        } else if (exception === 'timeout') {
-			            alert('Time out error.');
-			        } else if (exception === 'abort') {
-			            alert('Ajax request aborted.');
-			        } else {
-			            alert('Uncaught Error.n' + jqXHR.responseText);
-			        }		            
-			    }
-
-	       });
-			
-	   } */
-
-
-
-	/* function funPrintKOT(costCenterCode,costCenterName,areaCode,tableNo,kotNo)
-		{
-			 funOpenKOTPrint(costCenterCode,costCenterName,areaCode,tableNo,kotNo);
-		} */
-		
-
 	function funOpenKOTPrint(areaCode,tableNo,kotNo){
 		
 		 funDineInButtonClicked();
@@ -1035,102 +791,76 @@ $(document).ready(function()
 		 
 		 $("#dialog").dialog('open');
 		}
+	
+	
+	
 		//Done button for Make KOT
 		function funDoneBtnKOT(ncKot,gTakeAway,globalDebitCardNo,cmsMemCode,cmsMemName,reasonCode,homeDeliveryForTax,arrListHomeDelDetails,total)
 	    {
-			    var listItmeDtl=[];
-				var tblBillItemDtl=document.getElementById('tblBillItemDtl');
-				var rowCount = tblBillItemDtl.rows.length;
-				for(var i=2;i<rowCount;i++)
-				{
-					var itemName=tblBillItemDtl.rows[i].cells[0].children[0].value;
-					var itemQty=tblBillItemDtl.rows[i].cells[1].children[0].value;
-					
-					if(itemQty!="0" )
-					{
-						var itemAmt=tblBillItemDtl.rows[i].cells[2].children[0].value;
-						var itemCode=tblBillItemDtl.rows[i].cells[3].children[0].value;
-						var itemDiscAmt=tblBillItemDtl.rows[i].cells[4].children[0].value;
-				 		var groupcode=tblBillItemDtl.rows[i].cells[5].innerHTML;
-				 		var subgroupcode=tblBillItemDtl.rows[i].cells[6].innerHTML;
-				 		var subgroupName=tblBillItemDtl.rows[i].cells[7].innerHTML;
-				 		var groupName=tblBillItemDtl.rows[i].cells[8].innerHTML;
-						
-				 		var gCode = groupcode.split('value=');
-						var strGroupCode=gCode[1].substring(1, (gCode[1].length-2));
-						
-						var sgCode= subgroupcode.split('value=');
-						var strSubGroupCode=sgCode[1].substring(1, (sgCode[1].length-2));
-						
-						var gName= groupName.split('value=');
-						var strGroupName=gName[1].substring(1, (gName[1].length-2));
-						
-						var sgName= subgroupName.split('value=');
-						var strSGName=sgName[1].substring(1, (sgName[1].length-2));
-						hmGroupMap.set(strGroupCode, strGroupName); 
-						hmSubGroupMap.set(strSubGroupCode, strSGName);
-						hmItempMap.set(itemCode,itemName);
-						
-						/* var tableNo=tblBillItemDtl.rows[i].cells[9].innerHTML; 				
-						var bckDtl= tableNo.split('value=');
-						tableNo=bckDtl[1].substring(1, (bckDtl[1].length-2));*/
-						var tableNo=gTableNo;
-						
-						/* var PaxNo=tblBillItemDtl.rows[i].cells[10].innerHTML;
-						var bckDtl= PaxNo.split('value=');
-						PaxNo=bckDtl[1].substring(1, (bckDtl[1].length-2)); */
-						var PaxNo=$("#txtPaxNo").text();
-						
-		
-						/* var kotNo=tblBillItemDtl.rows[i].cells[11].innerHTML;
-						var bckDtl= kotNo.split('value=');
-						kotNo=bckDtl[1].substring(1, (bckDtl[1].length-2)); */
-						
-						var kotNo=$("#txtKOTNo").text();
-						
-						
-						
-						/* var WaiterNo=tblBillItemDtl.rows[i].cells[12].innerHTML;
-						var bckDtl= WaiterNo.split('value=');
-						WaiterNo=bckDtl[1].substring(1, (bckDtl[1].length-2)); */
-						var WaiterNo=gWaiterNo;
-																	
-						
-		
-						var singleObj = {}
-					    singleObj['itemName'] =itemName;
-					    singleObj['quantity'] =itemQty;
-					    singleObj['amount'] = itemAmt;
-					    singleObj['discountPer'] = 0.0;
-					    singleObj['discountAmt'] =0.0;
-					    singleObj['strSubGroupCode'] =strSubGroupCode;
-					    singleObj['strGroupcode'] =strGroupCode;
-					    singleObj['itemCode'] =itemCode;
-					    singleObj['rate'] =itemAmt/itemQty;
-					    
-					    singleObj['tableNo'] =tableNo;
-					    if(PaxNo==''){
-					    	PaxNo=0;
-					    }
-					    singleObj['PaxNo'] =PaxNo;
-					    singleObj['kotNo'] =kotNo;
-					    singleObj['WaiterNo'] =WaiterNo;
-					    listItmeDtl.push(singleObj);
-						
-						
-						finalSubTotal=finalSubTotal+parseFloat(itemAmt);
-						finalDiscountAmt=finalDiscountAmt+parseFloat(0);//(itemDiscAmt);				
-					}				
-				}
-			 
-			 
-			 
-			 
-			 
+			var listItmeDtl=[];
+			var tblBillItemDtl=document.getElementById('tblBillItemDtl');
+			var rowCount = tblBillItemDtl.rows.length;
+			for(var i=2;i<rowCount;i++)
+			{
+				var itemName=tblBillItemDtl.rows[i].cells[0].children[0].value;
+				var itemQty=tblBillItemDtl.rows[i].cells[1].children[0].value;
 				
+				if(itemQty!="0" )
+				{
+					var itemAmt=tblBillItemDtl.rows[i].cells[2].children[0].value;
+					var itemCode=tblBillItemDtl.rows[i].cells[3].children[0].value;
+					var itemDiscAmt=tblBillItemDtl.rows[i].cells[4].children[0].value;
+			 		var groupcode=tblBillItemDtl.rows[i].cells[5].innerHTML;
+			 		var subgroupcode=tblBillItemDtl.rows[i].cells[6].innerHTML;
+			 		var subgroupName=tblBillItemDtl.rows[i].cells[7].innerHTML;
+			 		var groupName=tblBillItemDtl.rows[i].cells[8].innerHTML;
 					
-			 var custcode=$("#hidCustomerCode").val();
-	   		var custName=$("#hidCustomerName").val();	 
+			 		var gCode = groupcode.split('value=');
+					var strGroupCode=gCode[1].substring(1, (gCode[1].length-2));
+					
+					var sgCode= subgroupcode.split('value=');
+					var strSubGroupCode=sgCode[1].substring(1, (sgCode[1].length-2));
+					
+					var gName= groupName.split('value=');
+					var strGroupName=gName[1].substring(1, (gName[1].length-2));
+					
+					var sgName= subgroupName.split('value=');
+					var strSGName=sgName[1].substring(1, (sgName[1].length-2));
+					hmGroupMap.set(strGroupCode, strGroupName); 
+					hmSubGroupMap.set(strSubGroupCode, strSGName);
+					hmItempMap.set(itemCode,itemName);
+					
+					var tableNo=gTableNo;
+					var PaxNo=$("#txtPaxNo").text();
+					var kotNo=$("#txtKOTNo").text();
+					var WaiterNo=gWaiterNo;
+					var singleObj = {}
+				    singleObj['itemName'] =itemName;
+				    singleObj['quantity'] =itemQty;
+				    singleObj['amount'] = itemAmt;
+				    singleObj['discountPer'] = 0.0;
+				    singleObj['discountAmt'] =0.0;
+				    singleObj['strSubGroupCode'] =strSubGroupCode;
+				    singleObj['strGroupcode'] =strGroupCode;
+				    singleObj['itemCode'] =itemCode;
+				    singleObj['rate'] =itemAmt/itemQty;
+				    
+				    singleObj['tableNo'] =tableNo;
+				    if(PaxNo==''){
+				    	PaxNo=0;
+				    }
+				    singleObj['PaxNo'] =PaxNo;
+				    singleObj['kotNo'] =kotNo;
+				    singleObj['WaiterNo'] =WaiterNo;
+				    listItmeDtl.push(singleObj);
+					finalSubTotal=finalSubTotal+parseFloat(itemAmt);
+					finalDiscountAmt=finalDiscountAmt+parseFloat(0);//(itemDiscAmt);				
+				}				
+			}
+			
+			var custcode=$("#customerCode").val();
+			var custName=$("#customerName").val();
+	   		/* var custName=$("#customerName").text(); */
 	   		//Error while on click done button  
 	   		if(custcode==null || custName==null){
 	   			custcode="";
@@ -1138,30 +868,18 @@ $(document).ready(function()
 	   		}
 	   		var dblTaxAmt = $("#txtTotal").val();
 			var searchurl=getContextPath()+"/saveKOT.html?ncKot="+ncKot+"&takeAway="+gTakeAway+"&globalDebitCardNo="+globalDebitCardNo+"&cmsMemCode="+cmsMemCode+"&cmsMemName="+cmsMemName+"&reasonCode="+reasonCode+"&homeDeliveryForTax="+homeDeliveryForTax+
-					"&arrListHomeDelDetails="+arrListHomeDelDetails+"&total="+total+"&custcode="+custcode+"&custName="+custName+"&dblTaxAmt="+dblTaxAmt;
+					"&arrListHomeDelDetails="+arrListHomeDelDetails+"&total="+total+"&custCode="+custcode+"&custName="+custName+"&dblTaxAmt="+dblTaxAmt;
 			$.ajax({
-				 type: "POST",
-			        url: searchurl,
-			        data : JSON.stringify(listItmeDtl),
-			        contentType: 'application/json',
-			        async: false,
+				type: "POST",
+			    url: searchurl,
+			    data : JSON.stringify(listItmeDtl),
+			    contentType: 'application/json',
+			    async: false,
 		        success: function (response)
 		        {
-		        	
 		        	if(response=="true")
 		        	{
-			            
-			        	 /*  window.location ="frmPOSRestaurantBill.html"; */
-			        	// location.reload(false); //loads from browser's cache 
-			        	 /* location.reload(true); //loads from server */
-			        	 alert("KOT Save Successfully. KOT NO: "+ $("#txtKOTNo").text());
-			        	 
-			        	
-			        	/* Disable while in development */ 
-			        	//funGetCostCenterListForKOT(gTableNo,);
-			        	
-			        	 
-			        	
+		        		alert("KOT Save Successfully. KOT NO: "+ $("#txtKOTNo").text());
 			        	if(gMultiWaiterSelOnMakeKOT=="")
 			    		{
 			    			gMultiWaiterSelOnMakeKOT="N";
@@ -1180,13 +898,10 @@ $(document).ready(function()
 			    		 document.getElementById("divTopButtonDtl").style.display='block';
 			    		 document.getElementById("divMenuHeadDtl").style.display='block'; */
 			    		 
-			    		 funRemoveTableRows("tblBillItemDtl");
-			    		 
-						 $('#tblOldKOTItemDtl').empty();
-						 
-						 funOpenKOTPrint(gAreaCode,gTableNo,$('#txtKOTNo').text());
-						 
-						 location.reload();
+			    		funRemoveTableRows("tblBillItemDtl");
+						$('#tblOldKOTItemDtl').empty();
+						funOpenKOTPrint(gAreaCode,gTableNo,$('#txtKOTNo').text());
+						location.reload();
 		        	}
 		        	else
 		        	{	        		
@@ -1211,17 +926,13 @@ $(document).ready(function()
 		                alert('Uncaught Error.n' + jqXHR.responseText);
 		            }		            
 		        }
-			
 			});
-			
 		}
 		
 		
 		function funGetDeliveryCharges(buildingCode, totalBillAmount, gCustomerCode)
 		{
-		
 			var searchurl=getContextPath()+"/funCalculateDeliveryChages.html?buildingCode="+buildingCode+"&totalBillAmount="+totalBillAmount+"&gCustomerCode="+gCustomerCode;
-
 			var delCharges=0;  
 			$.ajax({
 				 type: "POST",
@@ -1273,11 +984,6 @@ $(document).ready(function()
 			gAreaCode=$("#txtAreaName").val();
 			
 			
-			/**
-			*Free Table
-			*Busy/Occupied Table border: 5px solid #a94442;
-			*Billed Table border: 5px solid #2ba5cc;
-			*/
 			var searchurl=getContextPath()+"/funLoadTablesForMakeKOT.html?clientCode="+gClientCode+"&posCode="+gPOSCode+"&areaCode="+areaCode;
 
 			var delCharges=0;  
@@ -1322,7 +1028,6 @@ $(document).ready(function()
 				    				var col=insertTR.insertCell(insertCol);
 				    				col.innerHTML = "<td><input type=\"button\" id="+obj.strTableNo+" value='"+obj.strTableName+"'    style='"+style+"'  onclick=\"funTableNoClicked(this,"+i+")\" class='"+cssClass+"' /></td>";
 				    				col.style.padding = "1px";
-
 				    				insertCol++;
 				    			}
 				    			else
@@ -1332,9 +1037,6 @@ $(document).ready(function()
 				    				var col=insertTR.insertCell(insertCol);
 				    				col.innerHTML = "<td><input type=\"button\" id="+obj.strTableNo+" value='"+obj.strTableName+"'   style='"+style+"'   onclick=\"funTableNoClicked(this,"+i+")\" class='"+cssClass+"' /></td>";
 				    				col.style.padding = "1px";
-				    				
-				    				
-				    				
 				    				insertCol++;
 				    			}
 				        	});
@@ -1570,27 +1272,31 @@ $(document).ready(function()
 		{		
 			if(arrKOTItemDtlList.length==0)
 				funRemoveTableRows("tblBillItemDtl");
+			
 			var searchurl=getContextPath()+"/funCheckHomeDelivery.html?strTableNo="+tableNo;
-			 $.ajax({
-				        type: "GET",
+			$.ajax({
+						type: "GET",
 				        url: searchurl,
 				        dataType: "json",
 				        success: function(response)
 				        {
 				        	if(response.flag)
-				        		{
-				        		$("#Customer").val(response.strCustomerName);
-				        		 homeDeliveryForTax = "Y";
-			        			 arrListHomeDelDetails[0]=response.strCustomerCode;
-			        			 arrListHomeDelDetails[1]=response.strCustomerName;
-			        			 arrListHomeDelDetails[2]=response.strBuldingCode;
-			        			 arrListHomeDelDetails[3]="Home Delivery";
-			        			 arrListHomeDelDetails[4]=response.strDelBoyCode;
-			        			 arrListHomeDelDetails[5]=response.strDPName;
-				        		
-				        		}
+				        	{
+				        		//$("#customerName").text(response.strCustomerName);
+				        		$("#customerName").val(response.strCustomerName);
+				        		homeDeliveryForTax = "Y";
+			        			arrListHomeDelDetails[0]=response.strCustomerCode;
+			        			arrListHomeDelDetails[1]=response.strCustomerName;
+			        			arrListHomeDelDetails[2]=response.strBuldingCode;
+			        			arrListHomeDelDetails[3]="Home Delivery";
+			        			arrListHomeDelDetails[4]=response.strDelBoyCode;
+			        			arrListHomeDelDetails[5]=response.strDPName;
+				        	}
 				        	else
-				        		$("#Customer").val("");
+				        	{
+				        		//$("#customerName").text("");
+				        		//$("#customerName").val("");
+				        	}	
 						},
 						error: function(jqXHR, exception) {
 				            if (jqXHR.status === 0) {
@@ -1627,14 +1333,20 @@ $(document).ready(function()
 				        {
 				        	if(response.flag)
 				        	{
-				        		
 				        		$("#txtPaxNo").text(response.intPaxNo);
 				        		
 				        		if(response.strCustomerCode!=null)
 				        		{
 				        			gCustomerCode=response.strCustomerCode;
 				        			gCustomerName=response.strCustomerName;
-				        			$("#Customer").val(response.strCustomerName);
+				        			
+				        			//$("#customerName").text(gCustomerName);
+				        			$("#customerName").val(gCustomerName);
+					        		$("#customerCode").val(gCustomerCode);
+					    			
+				        			funSetCustomerDataForHD(response.strCustomerCode);
+				        			
+				        			//alert("funChekTableDtl Cust Code = "+gCustomerCode+" Cust Name = "+gCustomerName+" Flag= "+gCMSIntegrationYN);
 				        		}
 				        		if(response.strHomeDelivery=="Yes")
 			        			{
@@ -1644,7 +1356,6 @@ $(document).ready(function()
 				        			 arrListHomeDelDetails[2]="Home Delivery";
 				        			 arrListHomeDelDetails[3]="";
 				        			 arrListHomeDelDetails[4]="";
-						        			 
 			        			}
 				        		else
 				        			homeDeliveryForTax = "N";
@@ -1653,7 +1364,6 @@ $(document).ready(function()
 				        		funFillOldKOTItems(tableNo);
 				        		if(gMultiWaiterSelOnMakeKOT=="Y")
 			        			{
-				        			
 				        			if(gSelectWaiterFromCardSwipe=="Y" && response.posConfigSelectWaiterFromCardSwipe=="true")
 				        			{
 					        			 var card = prompt("please Swipe The Card", "");
@@ -1677,8 +1387,6 @@ $(document).ready(function()
 				        							
 				        							gWaiterNo=obj.strWaiterNo;
 				        							gWaiterName=obj.strWShortName;
-				        							
-				        							
 				        						}
 				        					});	
 				        				}
@@ -1697,12 +1405,7 @@ $(document).ready(function()
 		        							gWaiterNo=obj.strWaiterNo;
 		        							gWaiterName=obj.strWShortName;
 		        						}
-		        					});	 
-		        					
-		        					//var $rows = $('#tblMenuItemDtl').empty();
-		        					//var $rows = $('#tblMenuHeadDtl').empty();
-		        					//var $rows = $('#tblTopButtonDtl').empty();
-		        						        					
+		        					});
 		        					funShowMenuHead();
 		        					funCheckHomeDelivery(tableNo);
 	        					}
@@ -1717,22 +1420,11 @@ $(document).ready(function()
 				        	}
 				        	else
 				        	{
-				        		/* document.all[ 'tblPaxNo' ].style.display = 'block'; */
 				        		funAddWaiterDtl();
-				        		
 				        	}
 				        	
 				        	gAreaCode=response.AreaCode;
 				        	$("#txtAreaName").val(response.AreaCode);
-				        	
-				         	if(gCMSIntegrationYN=="Y")
-				        	{
-				        		cmsMemCode=response.CustomerCode;
-				        	 	cmsMemName=response.CustomerName;			        	 
-				        	 	$("#Customer").val(response.CustomerName);
-				        	}
-				         	else 
-				        		$("#Customer").val("");
 						},
 						error: function(jqXHR, exception) {
 				            if (jqXHR.status === 0) {
@@ -1756,6 +1448,57 @@ $(document).ready(function()
 		
 		
 		
+		function funCustomerMaster(strMobNo)
+		{
+			fieldName="NewCustomer";
+			<%session.setAttribute("frmName", "frmPOSRestaurantBill");%>
+			window.open("frmPOSCustomerMaster.html?intlongMobileNo="+strMobNo,"","dialogHeight:600px;dialogWidth:600px;dialogLeft:400px;");
+		}
+		
+		function funSetCustomerDataForHD(code)
+		{
+			code=code.trim();
+			var searchurl=getContextPath()+"/loadPOSCustomerMasterData.html?POSCustomerCode="+code;
+			$.ajax({
+					type: "GET",
+					url: searchurl,
+					dataType: "json",
+					success: function(response)
+					{
+						gCustomerCode=response.strCustomerCode;
+					    gCustomerName=response.strCustomerName;
+					        	
+					    //$("#customerName").text(gCustomerName);
+					    $("#customerName").val(gCustomerName);
+					    $("#customerCode").val(gCustomerCode);
+					    $("#custMobileNo").val(response.intlongMobileNo);
+					        					        	
+					    //alert("funSetCustomerDataForHD Cust Code = "+gCustomerCode+" Cust Name = "+gCustomerName);
+					    
+					    funSetHomeDeliveryData(response.strCustomerCode,response.strCustomerName,response.strBuldingCode,"","");
+					},
+					error: function(jqXHR, exception) {
+						if (jqXHR.status === 0) {
+					    	alert('Not connect.n Verify Network.');
+					    } else if (jqXHR.status == 404) {
+					    	alert('Requested page not found. [404]');
+					    } else if (jqXHR.status == 500) {
+					    	alert('Internal Server Error [500].');
+					    } else if (exception === 'parsererror') {
+					    	alert('Requested JSON parse failed.');
+					    } else if (exception === 'timeout') {
+					    	alert('Time out error.');
+					    } else if (exception === 'abort') {
+					    	alert('Ajax request aborted.');
+					    } else {
+					    	alert('Uncaught Error.n' + jqXHR.responseText);
+					    }		            
+					}
+				});
+			}
+		
+		
+		
 		function funChekReservation(tableNo)
 		{		
 			var searchurl=getContextPath()+"/funChekReservation.html?strTableNo="+tableNo;
@@ -1766,7 +1509,10 @@ $(document).ready(function()
 				        success: function(response)
 				        {
 				        	if(response.flag)
-				        		$("#Customer").val(response.strCustomerName);
+				        	{
+				        		$("#customerName").val(response.strCustomerName);
+				        		//$("#customerName").text(response.strCustomerName);
+				        	}	
 						},
 						error: function(jqXHR, exception) {
 				            if (jqXHR.status === 0) {
@@ -1845,28 +1591,12 @@ $(document).ready(function()
 			
 			homeDeliveryForTax="N";
 			
-			//var $rows = $('#tblMenuHeadDtl').empty();
-			//var $rows = $('#tblTopButtonDtl').empty();
-		//	document.getElementById("divPLU").style.display='none';
-			
-			 //funDisplayPLUButton(false);
 			 funDisplayDoneButton(false);
 			 funDisplayMakeBillButton(false);
-			 //funDisplayPLUButton(false);
-			// funDisplayNCKOTButton(false);
-			 
 			 var ncKOTButton=document.getElementById('NC KOT');
 			 isNCKOT=false;
 			 $(ncKOTButton).removeClass("active");
-		
-						
-			 
-		}
-		
-		
-		
-		
-		
+		}		
 		
 		
 		function funTakeAwayBtnClicked()
@@ -1887,21 +1617,17 @@ $(document).ready(function()
 				{
 					funRemoveTableRows("tblBillItemDtl");
 					$('#tblOldKOTItemDtl').empty();
-					//var $rows = $('#tblMenuHeadDtl').empty();
 				}
 			}
 			else
 			{
 				funRemoveTableRows("tblBillItemDtl");
 				$('#tblOldKOTItemDtl').empty();
-				//var $rows = $('#tblMenuHeadDtl').empty();
-			}		
-			
+			}
 			
 			var objDnieInButton=document.getElementById("Dine In");
 			var objHomeDeliveryButton=document.getElementById("Home Delivery");
 			var objTakeAwayButton=document.getElementById("Take Away");
-			
 			
 			var isActive=$(objTakeAwayButton).hasClass("active");
 			
@@ -1911,7 +1637,6 @@ $(document).ready(function()
 			
 			operationType="TakeAway";
 			transactionType="Direct Biller";
-			
 			
 			 homeDeliveryForTax = "N";		 		
 			 gTakeAway="Yes";
@@ -1932,13 +1657,8 @@ $(document).ready(function()
 
 		
 		function funDineInButtonClicked()
-		{
-			
+		{	
 			funOnCloseBtnClick();
-			//document.getElementById("divMenuHeadDtl").style.display='none';
-			//document.getElementById("divBillItemDtl").style.height = "655px";
-		//	document.getElementById("divDineInDetail").style.display='block';
-			
 			var tblBillItemDtl = document.getElementById("tblBillItemDtl");
 			var tblOldKOTItemDtl=document.getElementById('tblOldKOTItemDtl');
 			
@@ -1984,15 +1704,6 @@ $(document).ready(function()
 		//	funShowTables();
 			
 		}
-		
-		
-
-		
-		
-		
-		
-		
-		
 		
 		function funHomeBtnclicked()
 		{
@@ -2107,8 +1818,9 @@ $(document).ready(function()
 		
 		function funCustomerBtnClicked()
 		{
-		
-		
+			var custMbNo = prompt("Enter Mobile No", "");
+			$("#custMobileNo").val(custMbNo);
+			
 			if(gCMSIntegrationYN=="Y")
 			{
 				funChekCMSCustomerDtl();
@@ -2122,47 +1834,46 @@ $(document).ready(function()
 		
 		function funNewCustomerButtonPressed()
 		{
-			var strMobNo = $("#Customer").val();
-			 if(strMobNo.length >0 )
-			 {
-				 if (gCRMInterface=="SQY")
-			        {
-						funCallWebService(strMobNo);
-			        }
-					else if (gCRMInterface=="PMAM")
-			        {
-						 if(strMobNo.length>0)
-							 funSetCustMobileNo(strMobNo);
-						 $("#hidCustMobileNo").val(strMobNo);
-						
-			       	}
-					else
-			        {			
-						 if(strMobNo.length>0)
-						 {
-							 funSetCustMobileNo(strMobNo);
-						 }
-			       	} 
+			var strMobNo = $("#custMobileNo").val();
+			if(strMobNo.length >0 )
+			{
+				if (gCRMInterface=="SQY")
+			    {
+					funCallWebService(strMobNo);
+			    }
+				else if (gCRMInterface=="PMAM")
+			    {
+					funSetCustMobileNo(strMobNo);
+					$("#hidCustMobileNo").val(strMobNo);
+				}
+				else
+			    {			
+					if(strMobNo.length>0)
+					{
+						funSetCustMobileNo(strMobNo);
+					}
+				} 
 			 }
 			 else
 			 {
-				 $("#Customer").val("");
-				 $("#cstomerName").text("");
-			 }		 			
+				 $("#custMobileNo").val("");
+				 //$("#customerName").text("");
+				 $("#customerName").val("");
+			 }
 		}
 
 		function  funSetCustMobileNo(strMobNo)
 		{
 			gMobileNo=strMobNo;
 		
-			 if (strMobNo.length == 0)
-	         {
-				 funHelp1('POSCustomerMaster');
-	         }
-			 else
-			 {
-				 funCheckCustomer(strMobNo);
-			 }
+			if (strMobNo.length == 0)
+	        {
+				funHelp1('POSCustomerMaster');
+	        }
+			else
+			{
+				funCheckCustomer(strMobNo);
+			}
 		}
 		
 		
@@ -2170,19 +1881,20 @@ $(document).ready(function()
 		function funCheckCustomer(strMobNo)
 		{
 			var totalBillAmount = 0.00;
-			  if ($("#txtTotal").val().trim().length > 0)
+			if ($("#txtTotal").val().trim().length > 0)
 	        {
-				  totalBillAmount = parseFloat($("#txtTotal").val());
+				totalBillAmount = parseFloat($("#txtTotal").val());
 	        }	
 			var searchurl=getContextPath()+"/funCheckCustomer.html?strMobNo="+strMobNo;
-			 $.ajax({
-				        type: "GET",
+			$.ajax({
+						type: "GET",
 				        url: searchurl,
 				        dataType: "json",
 				        success: function(response)
 				        {
-				        	$("#customerName").text("");
-				        	$("#Customer").val("");
+				        	//$("#customerName").text("");
+				        	$("#customerName").val("");
+				        	$("#custMobileNo").val("");
 				        	
 				        	 if (response.flag)
 				             {
@@ -2190,11 +1902,12 @@ $(document).ready(function()
 				        		 gCustomerName=response.strCustomerName;			        		 
 				        		 gBuildingCodeForHD= response.strBuldingCode;
 				        		 
-				        		 $("#customerName").text(gCustomerName);
-				        		 $("#hidCustomerName").val(gCustomerName);
-				        		 $("#Customer").val(response.longMobileNo);
-				        		  
+				        		 //$("#customerName").text(gCustomerName);
+				        		 $("#customerName").val(gCustomerName);
+				        		 $("#customerCode").val(gCustomerCode);
+				        		 $("#custMobileNo").val(response.longMobileNo);
 				        		 
+				        		 //alert("funCheckCustomer Cust Code = "+gCustomerCode+" Cust Name = "+gCustomerName);
 				             }	
 				        	 else
 				        	 {
@@ -2224,8 +1937,10 @@ $(document).ready(function()
 				        }
 			      });
 		}
+		
+		
 		function funCallWebService(strMobNo)
-		{		
+		{
 			var searchurl=getContextPath()+"/funCallWebService.html?strMobNo="+strMobNo;
 			 $.ajax({
 				        type: "GET",
@@ -2261,6 +1976,8 @@ $(document).ready(function()
 				        }
 			      });
 		}
+
+		
 		function funChekCMSCustomerDtl()
 		{		
 			var searchurl=getContextPath()+"/funChekCMSCustomerDtl.html?strTableNo="+globalTableNo;
@@ -2273,14 +1990,13 @@ $(document).ready(function()
 				        {
 				        	if(response.flag)
 				        	{
-				        	if(response.dblAmount<1)
-				        		funGetCMSMemberCode();
-				        	else
-				        	{
-				        		cmsMemCode=response.strCustomerCode;
-				        		cmsMemName=response.strCustomerName;
-				        	}
-				        	
+					        	if(response.dblAmount<1)
+					        		funGetCMSMemberCode();
+					        	else
+					        	{
+					        		cmsMemCode=response.strCustomerCode;
+					        		cmsMemName=response.strCustomerName;
+					        	}
 				        	}	
 						},
 						error: function(jqXHR, exception) {
@@ -2302,6 +2018,7 @@ $(document).ready(function()
 				        }
 			      });
 		}
+		
 		
 		function funGetCMSMemberCode()
 		{
@@ -2327,7 +2044,8 @@ $(document).ready(function()
 					                     cmsMemCode = response.memberInfo.split("#")[0];
 					                     cmsMemName = response.memberInfo.split("#")[1];
 					                     
-					                     $("#Customer").text(cmsMemName);
+					                     //$("#customerName").text(cmsMemName);
+					                     $("#customerName").val(cmsMemName);
 								         gCustomerCode=cmsMemCode;
 								         gCustomerName=cmsMemName;
 					                     
@@ -2365,7 +2083,6 @@ $(document).ready(function()
 					        }
 				      });
 				 }
-				
 		}
 		
 		
@@ -2469,55 +2186,8 @@ $(document).ready(function()
 			fieldName=transactionName;
 			window.open("searchform.html?formname="+transactionName+"&searchText=","","dialogHeight:600px;dialogWidth:600px;dialogLeft:400px;");
 		}
-		 function funCustomerMaster(strMobNo)
-		{
-			 fieldName="NewCustomer";
-			 <%session.setAttribute("frmName", "frmPOSRestaurantBill");%>
-
-			
-			window.open("frmPOSCustomerMaster.html?intlongMobileNo="+strMobNo,"","dialogHeight:600px;dialogWidth:600px;dialogLeft:400px;");
-		}
-		 function funSetCustomerDataForHD(code)
-			{
-			 code=code.trim();
-				var searchurl=getContextPath()+"/loadPOSCustomerMasterData.html?POSCustomerCode="+code;
-				 $.ajax({
-					        type: "GET",
-					        url: searchurl,
-					        dataType: "json",
-					        success: function(response)
-					        {
-					        	
-					        					        	
-					        	gCustomerCode=response.strCustomerCode;
-					        	gCustomerName=response.strCustomerName;
-					        	
-					        	 $("#customerName").text(gCustomerName);
-					        	 $("#hidCustomerName").val(gCustomerName);
-					        	 $("#Customer").val(response.intlongMobileNo);
-					        	
-					        	
-					        	funSetHomeDeliveryData(response.strCustomerCode,response.strCustomerName,response.strBuldingCode,"","");
-							},
-							error: function(jqXHR, exception) {
-					            if (jqXHR.status === 0) {
-					                alert('Not connect.n Verify Network.');
-					            } else if (jqXHR.status == 404) {
-					                alert('Requested page not found. [404]');
-					            } else if (jqXHR.status == 500) {
-					                alert('Internal Server Error [500].');
-					            } else if (exception === 'parsererror') {
-					                alert('Requested JSON parse failed.');
-					            } else if (exception === 'timeout') {
-					                alert('Time out error.');
-					            } else if (exception === 'abort') {
-					                alert('Ajax request aborted.');
-					            } else {
-					                alert('Uncaught Error.n' + jqXHR.responseText);
-					            }		            
-					        }
-				      });
-			}
+		
+		
 
 			function funSetDeliveryBoy(code)
 			{
@@ -2529,8 +2199,6 @@ $(document).ready(function()
 					        dataType: "json",
 					        success: function(response)
 					        {
-					        
-					        
 					        	arrListHomeDelDetails[4]=code;//4 del person code
 					            arrListHomeDelDetails[5]=response.strDPName;//5 del person name
 					            gDeliveryBoyCode=code;
@@ -2538,7 +2206,6 @@ $(document).ready(function()
 					        	$("#dpName").text(response.strDPName);
 					        	$("#hidDeliveryBoyCode").val(response.strDPCode);
 					        	$("#hidDeliveryBoyName").val(response.strDPName);
-					       
 							},
 							error: function(jqXHR, exception) {
 					            if (jqXHR.status === 0) {
@@ -2570,6 +2237,7 @@ $(document).ready(function()
 		        arrListHomeDelDetails[4]=delPersonCode;//4 del person code
 		        arrListHomeDelDetails[5]=delPersonName;//5 del person name
 		    }
+			
 			function funFillMapWithHappyHourItems()
 			{		
 				var searchurl=getContextPath()+"/funFillMapWithHappyHourItems.html";
@@ -2582,7 +2250,6 @@ $(document).ready(function()
 					        {
 					        	for(var i=0;i<response.ItemPriceDtl.length;i++)
 				        		{
-//		 			        		hmHappyHourItems.put(response.ItemCode[i],response.ItemPriceDtl[i]);
 					        		hmHappyHourItems[response.ItemCode[i]] = response.ItemPriceDtl[i];
 				        		}
 					        	gDebitCardPayment=response.gDebitCardPayment;
@@ -2646,21 +2313,15 @@ $(document).ready(function()
 			    col11.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"paxNo\"  name=\"listItemsDtlInBill["+(rowCount)+"].paxNo\" id=\"paxNo."+(rowCount)+"\" value='' />";
 			    col12.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"KOTNo\"  name=\"listItemsDtlInBill["+(rowCount)+"].KOTNo\" id=\"KOTNo."+(rowCount)+"\" value='' />";
 			    col13.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"waiterNo\"  name=\"listItemsDtlInBill["+(rowCount)+"].waiterNo\" id=\"waiterNo."+(rowCount)+"\" value='' />";
-			      
-				
-				
+			     
 			}
 		
-		
-		
-		
-		//function to add items to bill item table
+			
 		
 		function funFillTableBillItemDtl(objMenuItemPricingDtl,price,qty)
 		{	
 			var itemName=objMenuItemPricingDtl.strItemName.replace(/&#x00A;/g," ");
 			var tblBillItemDtl=document.getElementById('tblBillItemDtl');
-			
 			var rowCount = tblBillItemDtl.rows.length;
 			
 			if(operationType=="DineIn")
@@ -2677,18 +2338,11 @@ $(document).ready(function()
 				}
 			    else
 			    {
-					
-					
 					var currentTime = new Date();
 					var kotTime=currentTime.getHours()+":"+currentTime.getMinutes()+":"+currentTime.getSeconds();
 					var i=1;
-//		 			document.getElementById("itemName."+(i)).value=kotNo+"           "+kotTime;
-					
 				}
 			}
-			
-		    
-			
 			
 			var insertRow = tblBillItemDtl.insertRow(rowCount);
 					
@@ -2713,16 +2367,9 @@ $(document).ready(function()
 		    col8.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"subGroupName\"  name=\"listItemsDtlInBill["+(rowCount)+"].strSubGroupName\" id=\"strSubGroupName."+(rowCount)+"\" value='"+objMenuItemPricingDtl.strSubGroupName+"' />";
 		    col9.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"groupName\"  name=\"listItemsDtlInBill["+(rowCount)+"].strGroupName\" id=\"strGroupName."+(rowCount)+"\" value='"+objMenuItemPricingDtl.strGroupName+"' />";
 		      
-		   /*<tr class="trcolor">            
-                      <td width="65%" colspan="2">
-                        <h5 class="tablehead" nowrap>Item 1</h5> 
-                      </td>
-                      <td width="15%">
-                        <h5 class="tablehead" nowrap align="right">2364</h5>
-                      </td>
-                    </tr>
-                      */
 		}
+		
+		
 		function funAddModifierTableBillItemDtl(objMenuItemPricingDtl,itemCode)
 		{	
 			funFillKOTList();
@@ -2740,51 +2387,188 @@ $(document).ready(function()
 		    var col7=insertRow.insertCell(6);
 		    var col8=insertRow.insertCell(7);
 		    var col9=insertRow.insertCell(8);
-		    /* .listModifierDtl["+(rowCount)+"]. */
+		    
 		    col1.innerHTML = "<input readonly=\"readonly\" size=\"32px\"  class=\"itemName\"    style=\"text-align: left; color:blue;\"   name=\"listItemsDtlInBill["+(rowCount)+"].listModifierDtl["+(rowCount)+"].modifierDescription\" id=\"strItemName."+(rowCount)+"\" value='"+objMenuItemPricingDtl.strModifierName+"' />";
 		    col2.innerHTML = "<input readonly=\"readonly\" size=\"3.5px\"   class=\"itemQty\"      style=\"text-align: right; color:blue;\"  name=\"listItemsDtlInBill["+(rowCount)+"].listModifierDtl["+(rowCount)+"].quantity\" id=\"dblQuantity."+(rowCount)+"\" value='"+objMenuItemPricingDtl.dblQty+"' />";
 		    col3.innerHTML = "<input readonly=\"readonly\" size=\"4px\"   class=\"itemAmt\"      style=\"text-align: right; color:blue;\"  name=\"listItemsDtlInBill["+(rowCount)+"].listModifierDtl["+(rowCount)+"].amount\" id=\"dblAmount."+(rowCount)+"\" value='"+objMenuItemPricingDtl.dblRate+"' />";
-		    col4.innerHTML = "<input readonly=\"readonly\" size=\"10px\" class=\"itemCode\"     style=\"text-align: left; color:blue;\"   name=\"listItemsDtlInBill["+(rowCount)+"].listModifierDtl["+(rowCount)+"].modifierCode\" id=\"strItemCode."+(rowCount)+"\" value='"+code+"' />";
-		    col5.innerHTML = "<input readonly=\"readonly\" size=\"9px\"   class=\"itemDiscAmt\"  style=\"text-align: right; color:blue;\"  name=\"listItemsDtlInBill["+(rowCount)+"].listModifierDtl["+(rowCount)+"].strSerialNo\" id=\"strSerialNo."+(rowCount-1)+"\" value='"+rowCount+"' />";
+		    col4.innerHTML = "<input type=\"hidden\" size=\"10px\" class=\"itemCode\"     style=\"text-align: left; color:blue;\"   name=\"listItemsDtlInBill["+(rowCount)+"].listModifierDtl["+(rowCount)+"].modifierCode\" id=\"strItemCode."+(rowCount)+"\" value='"+code+"' />";
+		    col5.innerHTML = "<input type=\"hidden\" size=\"9px\"   class=\"itemDiscAmt\"  style=\"text-align: right; color:blue;\"  name=\"listItemsDtlInBill["+(rowCount)+"].listModifierDtl["+(rowCount)+"].strSerialNo\" id=\"strSerialNo."+(rowCount-1)+"\" value='"+rowCount+"' />";
 		    col6.innerHTML = "<input type=\"hidden\"  size=\"0px\"   class=\"groupcode\"  style=\"text-align: right; color:blue;\"  name=\"listItemsDtlInBill["+(rowCount)+"].strGroupcode\" id=\"strGroupcode."+(rowCount-1)+"\" value='"+objMenuItemPricingDtl.strGroupcode+"' />";	    
 		    col7.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"subGroupCode\"  name=\"listItemsDtlInBill["+(rowCount)+"].strSubGroupCode\" id=\"strSubGroupCode."+(rowCount-1)+"\" value='"+objMenuItemPricingDtl.strSubGroupCode+"' />";
 		    col8.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"subGroupName\"  name=\"listItemsDtlInBill["+(rowCount)+"].strSubGroupName\" id=\"strSubGroupName."+(rowCount)+"\" value='"+objMenuItemPricingDtl.strSubGroupName+"' />";
 		    col9.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"groupName\"  name=\"listItemsDtlInBill["+(rowCount)+"].strGroupName\" id=\"strGroupName."+(rowCount)+"\" value='"+objMenuItemPricingDtl.strGroupName+"' />";
 		    
 			for(var i=selectedRowIndex+1;i<kotListForModifier.length;i++)
-				{
-				
-					var rowCount = tblBillItemDtl.rows.length;
-					var insertRow = tblBillItemDtl.insertRow(rowCount);
-					var data=kotListForModifier[i];
+			{
+				var rowCount = tblBillItemDtl.rows.length;
+				var insertRow = tblBillItemDtl.insertRow(rowCount);
+				var data=kotListForModifier[i];
 					
-				    var col1=insertRow.insertCell(0);
-				    var col2=insertRow.insertCell(1);
-				    var col3=insertRow.insertCell(2);
-				    var col4=insertRow.insertCell(3);
-				    var col5=insertRow.insertCell(4);
-				    var col6=insertRow.insertCell(5);
-				    var col7=insertRow.insertCell(6);
-				    var col8=insertRow.insertCell(7);
-				    var col9=insertRow.insertCell(8);
+				var col1=insertRow.insertCell(0);
+				var col2=insertRow.insertCell(1);
+				var col3=insertRow.insertCell(2);
+				var col4=insertRow.insertCell(3);
+				var col5=insertRow.insertCell(4);
+				var col6=insertRow.insertCell(5);
+				var col7=insertRow.insertCell(6);
+				var col8=insertRow.insertCell(7);
+				var col9=insertRow.insertCell(8);
 				    
-				    col1.innerHTML = "<input readonly=\"readonly\" size=\"32px\"  class=\"itemName\"    style=\"text-align: left; color:blue;background-color:lavenderblush;\"   name=\"listItemsDtlInBill["+(rowCount)+"].listModifierDtl["+(rowCount)+"].modifierDescription\" id=\"strItemName."+(rowCount)+"\" value='"+data[0]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
-				    col2.innerHTML = "<input readonly=\"readonly\" size=\"3.5px\"   class=\"itemQty\"      style=\"text-align: right; color:blue;background-color:lavenderblush;\"  name=\"listItemsDtlInBill["+(rowCount)+"].listModifierDtl["+(rowCount)+"].quantity\" id=\"dblQuantity."+(rowCount)+"\" value='"+data[1]+"' onclick=\"funChangeQty(this)\"/>";
-				    col3.innerHTML = "<input readonly=\"readonly\" size=\"4px\"   class=\"itemAmt\"      style=\"text-align: right; color:blue;background-color:lavenderblush;\"  name=\"listItemsDtlInBill["+(rowCount)+"].listModifierDtl["+(rowCount)+"].amount\" id=\"dblAmount."+(rowCount)+"\" value='"+data[2]+"' />";
-				    col4.innerHTML = "<input readonly=\"readonly\" size=\"10px\" class=\"itemCode\"     style=\"text-align: left; color:blue;background-color:lavenderblush;\"   name=\"listItemsDtlInBill["+(rowCount)+"].listModifierDtl["+(rowCount)+"].modifierCode\" id=\"strItemCode."+(rowCount)+"\" value='"+data[3]+"' />";
-				    col5.innerHTML = "<input readonly=\"readonly\" size=\"9px\"   class=\"itemDiscAmt\"  style=\"text-align: right; color:blue;background-color:lavenderblush;\"  name=\"listItemsDtlInBill["+(rowCount)+"].listModifierDtl["+(rowCount)+"].strSerialNo\" id=\"strSerialNo."+(rowCount-1)+"\" value='"+rowCount+"' />";
-				    col6.innerHTML = "<input type=\"hidden\"  size=\"0px\"   class=\"groupcode\"  style=\"text-align: right; color:blue;background-color:lavenderblush;\"  name=\"listItemsDtlInBill["+(rowCount)+"].strGroupcode\" id=\"strGroupcode."+(rowCount-1)+"\" value='"+data[5]+"' />";	    
-				    col7.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"subGroupCode\"  name=\"listItemsDtlInBill["+(rowCount)+"].strSubGroupCode\" id=\"strSubGroupCode."+(rowCount-1)+"\" value='"+data[6]+"' />";
-				    col8.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"subGroupName\"  name=\"listItemsDtlInBill["+(rowCount)+"].strSubGroupName\" id=\"strSubGroupName."+(rowCount)+"\" value='"+data[7]+"' />";
-				    col9.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"groupName\"  name=\"listItemsDtlInBill["+(rowCount)+"].strGroupName\" id=\"strGroupName."+(rowCount)+"\" value='"+data[8]+"' />";	    
-				}
-			
-			
+				col1.innerHTML = "<input readonly=\"readonly\" size=\"32px\"  class=\"itemName\"    style=\"text-align: left; color:blue;background-color:lavenderblush;\"   name=\"listItemsDtlInBill["+(rowCount)+"].listModifierDtl["+(rowCount)+"].modifierDescription\" id=\"strItemName."+(rowCount)+"\" value='"+data[0]+"' onclick=\"funGetSelectedRowIndex(this)\"/>";
+				col2.innerHTML = "<input readonly=\"readonly\" size=\"3.5px\"   class=\"itemQty\"      style=\"text-align: right; color:blue;background-color:lavenderblush;\"  name=\"listItemsDtlInBill["+(rowCount)+"].listModifierDtl["+(rowCount)+"].quantity\" id=\"dblQuantity."+(rowCount)+"\" value='"+data[1]+"' onclick=\"funChangeQty(this)\"/>";
+				col3.innerHTML = "<input readonly=\"readonly\" size=\"4px\"   class=\"itemAmt\"      style=\"text-align: right; color:blue;background-color:lavenderblush;\"  name=\"listItemsDtlInBill["+(rowCount)+"].listModifierDtl["+(rowCount)+"].amount\" id=\"dblAmount."+(rowCount)+"\" value='"+data[2]+"' />";
+				col4.innerHTML = "<input type=\"hidden\" size=\"10px\" class=\"itemCode\"     style=\"text-align: left; color:blue;background-color:lavenderblush;\"   name=\"listItemsDtlInBill["+(rowCount)+"].listModifierDtl["+(rowCount)+"].modifierCode\" id=\"strItemCode."+(rowCount)+"\" value='"+data[3]+"' />";
+				col5.innerHTML = "<input type=\"hidden\" size=\"9px\"   class=\"itemDiscAmt\"  style=\"text-align: right; color:blue;background-color:lavenderblush;\"  name=\"listItemsDtlInBill["+(rowCount)+"].listModifierDtl["+(rowCount)+"].strSerialNo\" id=\"strSerialNo."+(rowCount-1)+"\" value='"+rowCount+"' />";
+				col6.innerHTML = "<input type=\"hidden\"  size=\"0px\"   class=\"groupcode\"  style=\"text-align: right; color:blue;background-color:lavenderblush;\"  name=\"listItemsDtlInBill["+(rowCount)+"].strGroupcode\" id=\"strGroupcode."+(rowCount-1)+"\" value='"+data[5]+"' />";	    
+				col7.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"subGroupCode\"  name=\"listItemsDtlInBill["+(rowCount)+"].strSubGroupCode\" id=\"strSubGroupCode."+(rowCount-1)+"\" value='"+data[6]+"' />";
+				col8.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"subGroupName\"  name=\"listItemsDtlInBill["+(rowCount)+"].strSubGroupName\" id=\"strSubGroupName."+(rowCount)+"\" value='"+data[7]+"' />";
+				col9.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"groupName\"  name=\"listItemsDtlInBill["+(rowCount)+"].strGroupName\" id=\"strGroupName."+(rowCount)+"\" value='"+data[8]+"' />";	    
+			}
 		}
 		
-		function funGenerateKOTNo()
+		
+		function funFillOldKOTItemDtl(objMenuItemPricingDtl)
 		{		
+			var tblBillItemDtl=document.getElementById('tblOldKOTItemDtl');
 			
+			var rowCount = tblBillItemDtl.rows.length;
+			var insertRow = tblBillItemDtl.insertRow(rowCount);
+			
+		    var kotNo= $('#txtKOTNo').text();
+			var PaxNo= $('#txtPaxNo').text();
+			var tableNo = $('#txtTableNo').text();
+			var WaiterNo = $('#txtWaiterNo').text();	
+			
+		    var col1=insertRow.insertCell(0);
+		    var col2=insertRow.insertCell(1);
+		    var col3=insertRow.insertCell(2);
+		    var col4=insertRow.insertCell(3);
+		    var col5=insertRow.insertCell(4);
+		    var col6=insertRow.insertCell(5);
+		    var col7=insertRow.insertCell(6);
+		    var col8=insertRow.insertCell(7);
+		    var col9=insertRow.insertCell(8);
+		    var col10=insertRow.insertCell(9);
+		    var col11=insertRow.insertCell(10);
+		    var col12=insertRow.insertCell(11);
+		    var col13=insertRow.insertCell(12);
+		    
+		    col1.innerHTML = "<input readonly=\"readonly\" size=\"32px\"   class=\"itemName\"   style=\"text-align: left;\"    id=\"strItemName."+(rowCount)+"\" value='"+objMenuItemPricingDtl.strItemName+"' />";
+		    col2.innerHTML = "<input readonly=\"readonly\" size=\"3.5px\"   class=\"itemQty\"      style=\"text-align: right;\"   id=\"dblQuantity."+(rowCount)+"\" value='"+objMenuItemPricingDtl.dblItemQuantity+"'/>";
+		    col3.innerHTML = "<input readonly=\"readonly\" size=\"4px\"   class=\"itemAmt\"      style=\"text-align: right;\"  id=\"dblAmount."+(rowCount)+"\" value='"+objMenuItemPricingDtl.dblAmount+"' />";
+		    col4.innerHTML = "<input type=\"hidden\"  size=\"0px\" class=\"itemCode\"     style=\"text-align: left;\"  id=\"strItemCode."+(rowCount)+"\" value='"+objMenuItemPricingDtl.strItemCode+"' />";
+		    col5.innerHTML = "<input type=\"hidden\"  size=\"0px\"   class=\"itemDiscAmt\"  style=\"text-align: right;\"  id=\"strSerialNo."+(rowCount)+"\" value='"+objMenuItemPricingDtl.strSerialNo+"'/>";
+		    col6.innerHTML = "<input type=\"hidden\"  size=\"0px\"   class=\"groupcode\"  style=\"text-align: right; color:blue;\"  name=\"listItemsDtlInBill["+(rowCount)+"].strGroupcode\" id=\"strGroupcode."+(rowCount-1)+"\" value='"+objMenuItemPricingDtl.strGroupcode+"' />";	    
+		    col7.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"subgroupcode\"  name=\"listItemsDtlInBill["+(rowCount)+"].strSubGroupCode\" id=\"strSubGroupCode."+(rowCount)+"\" value='"+objMenuItemPricingDtl.strSubGroupCode+"' />";
+		    col8.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"subGroupName\"  name=\"listItemsDtlInBill["+(rowCount)+"].strSubGroupName\" id=\"strSubGroupName."+(rowCount)+"\" value='"+objMenuItemPricingDtl.strSubGroupName+"' />";
+		    col9.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"groupName\"  name=\"listItemsDtlInBill["+(rowCount)+"].strGroupName\" id=\"strGroupName."+(rowCount)+"\" value='"+objMenuItemPricingDtl.strGroupName+"' />";
+		    col10.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"tableNo\"  name=\"listItemsDtlInBill["+(rowCount)+"].tableNo\" id=\"tableNo."+(rowCount)+"\" value='"+tableNo+"' />";
+		    col11.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"paxNo\"  name=\"listItemsDtlInBill["+(rowCount)+"].paxNo\" id=\"paxNo."+(rowCount)+"\" value='"+PaxNo+"' />";
+		    col12.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"KOTNo\"  name=\"listItemsDtlInBill["+(rowCount)+"].KOTNo\" id=\"KOTNo."+(rowCount)+"\" value='"+kotNo+"' />";
+		    col13.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"waiterNo\"  name=\"listItemsDtlInBill["+(rowCount)+"].waiterNo\" id=\"waiterNo."+(rowCount)+"\" value='"+WaiterNo+"' />";
+		       
+		}
+		
+		
+		function funFillOldKOTTimeDtl(objMenuItemPricingDtl)
+		{		
+			var tblBillItemDtl=document.getElementById('tblOldKOTItemDtl');
+			
+			var rowCount = tblBillItemDtl.rows.length;
+			var insertRow = tblBillItemDtl.insertRow(rowCount);
+			var kotNo= $('#txtKOTNo').text();
+			var PaxNo= $('#txtPaxNo').text();
+			var tableNo = $('#txtTableNo').text();
+			var WaiterNo = $('#txtWaiterNo').text();
+		    var col1=insertRow.insertCell(0);
+		    var col2=insertRow.insertCell(1);
+		    var col3=insertRow.insertCell(2);
+		    var col4=insertRow.insertCell(3);
+		    var col5=insertRow.insertCell(4);
+		    var col6=insertRow.insertCell(5);
+		    var col7=insertRow.insertCell(6);
+		    var col8=insertRow.insertCell(7);
+		    var col9=insertRow.insertCell(8);
+		    var col10=insertRow.insertCell(9);
+		    var col11=insertRow.insertCell(10);
+		    var col12=insertRow.insertCell(11);
+		    var col13=insertRow.insertCell(12);
+		    
+		    col1.innerHTML = "<input readonly=\"readonly\" size=\"32px\"   class=\"itemName\"   style=\"text-align: left; \"    id=\"strItemName."+(rowCount)+"\" value='"+objMenuItemPricingDtl.kotNo+"           "+objMenuItemPricingDtl.kotTime+"' />";
+		    col2.innerHTML = "<input readonly=\"readonly\" size=\"3.5px\"   class=\"itemQty\"      style=\"text-align: right;\"  id=\"dblQuantity."+(rowCount)+"\" value=' '/>";
+		    col3.innerHTML = "<input readonly=\"readonly\" size=\"4px\"   class=\"itemAmt\"      style=\"text-align: right;\" id=\"dblAmount."+(rowCount)+"\" value='' />";
+		    col4.innerHTML = "<input type=\"hidden\"  size=\"0px\" class=\"itemCode\"     style=\"text-align: left;\" id=\"strItemCode."+(rowCount)+"\" value='' />";
+		    col5.innerHTML = "<input type=\"hidden\"  size=\"0px\"   class=\"itemDiscAmt\"  style=\"text-align: right;\"  id=\"strSerialNo."+(rowCount)+"\" value='' />";
+		    col6.innerHTML = "<input type=\"hidden\"  size=\"0px\"   class=\"groupcode\"  style=\"text-align: right; color:blue;\"  name=\"listItemsDtlInBill["+(rowCount)+"].strGroupcode\" id=\"strGroupcode."+(rowCount-1)+"\" value='' />";	    
+		    col7.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"subgroupcode\"  name=\"listItemsDtlInBill["+(rowCount)+"].strSubGroupCode\" id=\"strSubGroupCode."+(rowCount)+"\" value='' />";
+		    col8.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"subGroupName\"  name=\"listItemsDtlInBill["+(rowCount)+"].strSubGroupName\" id=\"strSubGroupName."+(rowCount)+"\" value='' />";
+		    col9.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"groupName\"  name=\"listItemsDtlInBill["+(rowCount)+"].strGroupName\" id=\"strGroupName."+(rowCount)+"\" value='' />";	    
+		    col10.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"tableNo\"  name=\"listItemsDtlInBill["+(rowCount)+"].tableNo\" id=\"tableNo."+(rowCount)+"\" value='"+tableNo+"' />";
+		    col11.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"paxNo\"  name=\"listItemsDtlInBill["+(rowCount)+"].paxNo\" id=\"paxNo."+(rowCount)+"\" value='' />";
+		    col12.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"KOTNo\"  name=\"listItemsDtlInBill["+(rowCount)+"].KOTNo\" id=\"KOTNo."+(rowCount)+"\" value='' />";
+		    col13.innerHTML = "<input type=\"hidden\" size=\"0px\"   class=\"waiterNo\"  name=\"listItemsDtlInBill["+(rowCount)+"].waiterNo\" id=\"waiterNo."+(rowCount)+"\" value='' />";
+		      
+		}
+		
+		
+		
+		function funFillOldKOTItems(tableNo)
+		{		
+			if(arrKOTItemDtlList.length==0)
+				funRemoveTableRows("tblBillItemDtl");
+			
+			var searchurl=getContextPath()+"/funFillOldKOTItems.html?strTableNo="+tableNo;
+			 $.ajax({
+				        type: "GET",
+				        url: searchurl,
+				        dataType: "json",
+				        success: function(response)
+				        {
+				        	if(response.flag)
+				        	{
+				        			$.each(response.OldKOTTimeDtl, function(j, item) 
+				        			{
+				        				funFillOldKOTTimeDtl(item);
+				        			
+				        	 			$.each(response.OldKOTItems, function(i, obj) 
+				        				{									
+				        					if(item.kotNo==obj.strKOTNo)
+				        						funFillOldKOTItemDtl(obj);
+				        		
+				        				});
+				        			});
+				        		$("#txtTotal").val(response.Total);
+				        	
+				        		funDisplayMakeBillButton(true);
+				        	}			        	
+				        	
+				        	
+						},
+						error: function(jqXHR, exception) {
+				            if (jqXHR.status === 0) {
+				                alert('Not connect.n Verify Network.');
+				            } else if (jqXHR.status == 404) {
+				                alert('Requested page not found. [404]');
+				            } else if (jqXHR.status == 500) {
+				                alert('Internal Server Error [500].');
+				            } else if (exception === 'parsererror') {
+				                alert('Requested JSON parse failed.');
+				            } else if (exception === 'timeout') {
+				                alert('Time out error.');
+				            } else if (exception === 'abort') {
+				                alert('Ajax request aborted.');
+				            } else {
+				                alert('Uncaught Error.n' + jqXHR.responseText);
+				            }		            
+				        }
+			      });
+		}
+		
+		
+		
+		
+		function funGenerateKOTNo()
+		{
 			var searchurl=getContextPath()+"/funGenerateKOTNo.html";
 			 $.ajax({
 				        type: "GET",
@@ -2815,8 +2599,8 @@ $(document).ready(function()
 			      });
 		}
 		
+		
 		function funGetQuantity(dblQty){
-			
 			
 			var qty=prompt("Enter Quantity",dblQty );
 			if(qty!=null){
@@ -2824,14 +2608,13 @@ $(document).ready(function()
 					qty=funGetQuantity(1);
 				}else if(qty<1 ){
 					qty=funGetQuantity(1);
-				}	
-			} 
+				}
+			}
 			
 			return qty;
 		}
 		
 		function funOpenNumPadDialog(){
-			
 			document.getElementById("numpadValue").click();
 		}
 
@@ -2862,17 +2645,11 @@ $(document).ready(function()
 						funChangePAX1(objIndex,numpadValue);
 					}
 					else
-					{
-						
-					}	
-					
-						
+					{}
 				}else{
 					return false;
-				}
-					
+				}	
 			}
-			
 		}
 
 		function funOpenNumPadDialogForItemPrice(numpadValue){
@@ -3343,11 +3120,10 @@ $(document).ready(function()
 				    	
 				if(i > 0)
 			    {
-					    	arrKOTItemDtlList[i-1]=code;
-					    	arrDirectBilleritems[i-1]=code;//itemDetail
+					arrKOTItemDtlList[i-1]=code;
+					arrDirectBilleritems[i-1]=code;
 			    }
 				i++;
-				   
 			});
 		} 
 		
@@ -4059,13 +3835,16 @@ $(document).ready(function()
 			{
 				switch(objFooterButton.id)
 				{
-				
 					case "Dine In":
 						funDineInButtonClicked();
 						break;
 					
+					case "FIRE_KOT":
+			 			funValidateForDoneButton();
+						break;
+						
 					case "Done":
-			 			funValidateForDoneButton();			
+			 			funValidateForDoneButton();
 						break;
 						
 					case "Home Delivery":
@@ -4089,7 +3868,7 @@ $(document).ready(function()
 						break;
 						
 					case "Customer History" :
-						funCustomerHistoryBtnClicked();
+						funCustomerHistoryBtnClicked();	
 						break;
 						
 					case "PLU" :
@@ -4193,6 +3972,15 @@ $(document).ready(function()
               </button>             
             <span class="mdc-top-app-bar__title"><img src="../${pageContext.request.contextPath}/resources/newdesign/assets/images/90degrees.jpg" style="height: 58px;"></span>
           </div>
+          
+          <div class="menu-button-container menu-profile d-none d-md-block">
+              <!-- <label id="customerName">Cust Name</label> -->
+              <input readonly="readonly" id="customerName"></input>
+              <input readonly="readonly" id="custMobileNo"></input>
+              <input type="hidden" id="customerCode"></input>
+              
+          </div>
+          
           <div class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end mdc-top-app-bar__section-right">
             <div class="menu-button-container menu-profile d-none d-md-block">
               <button class="mdc-button mdc-menu-button">
@@ -4201,6 +3989,8 @@ $(document).ready(function()
                 </span>
               </button>
             </div>
+            
+            
               <div class="menu-button-container menu-profile d-none d-md-block">
                 <button class="mdc-button mdc-menu-button">
                   <span class="d-flex align-items-center">
@@ -4223,6 +4013,26 @@ $(document).ready(function()
 		    <table width="100%" border="0">
 			   <tr width="100%">
               <td width="18%" style="vertical-align: top;padding-top: 5px;">
+                
+                
+                <table width="100%" class="mdc-card info-card3">
+                  <tr>        
+                    <td align="center" class="img">
+                       <img src="../${pageContext.request.contextPath}/resources/newdesign/assets/images/icon-dinein.png" border="0"> 
+                       <h5 class="tablehead" nowrap>Dine in</h5> 
+                    </td>   
+                    <td align="center" class="img">
+                       <img src="../${pageContext.request.contextPath}/resources/newdesign/assets/images/icon-homedelivery.png" border="0"> 
+                       <h5 class="tablehead" nowrap>Home</h5>
+                    </td>
+                    <td align="center" class="img">
+                       <img src="../${pageContext.request.contextPath}/resources/newdesign/assets/images/icons8.png" border="0"> 
+                       <h5 class="tablehead" nowrap>Take Away</h5> 
+                    </td>             
+                    </tr>
+                  </table>
+                
+                
                 <table width="100%">
                   <tr>  
                     <td width="70%">
@@ -4251,22 +4061,7 @@ $(document).ready(function()
                       </td>
                   </tr>
                 </table>
-                <table width="100%" class="mdc-card info-card3">
-                  <tr>        
-                    <td align="center" class="img">
-                       <img src="../${pageContext.request.contextPath}/resources/newdesign/assets/images/icon-dinein.png" border="0"> 
-                       <h5 class="tablehead" nowrap>Dine in</h5> 
-                    </td>   
-                    <td align="center" class="img">
-                       <img src="../${pageContext.request.contextPath}/resources/newdesign/assets/images/icon-homedelivery.png" border="0"> 
-                       <h5 class="tablehead" nowrap>Home</h5>
-                    </td>
-                    <td align="center" class="img">
-                       <img src="../${pageContext.request.contextPath}/resources/newdesign/assets/images/icons8.png" border="0"> 
-                       <h5 class="tablehead" nowrap>Take Away</h5> 
-                    </td>             
-                    </tr>
-                  </table>  
+                  
                   
                   <%-- <div id="divArea" style="border: 1px solid rgb(204, 204, 204);height: 35px;overflow: hidden;width: 680px;display: block; margin-top:0px;" >																	
 								<div class="row" style="background-color: #fff; display: -webkit-box;">
@@ -4355,8 +4150,8 @@ $(document).ready(function()
               <td width="40%" style="vertical-align: top;">
                 <table width="100%" class="mdc-card info-card">
                     <tr>
-                      <td width="50%">
-                         <h5 class="tablehead" nowrap>Categorys</h5>
+                      <td width="10%">
+                         <h5 class="tablehead" nowrap>Categories</h5>
                       </td>
                       <td width="50%">
                         <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none d-md-flex" style="background: #fff;border-radius: 6px;">
@@ -4399,10 +4194,10 @@ $(document).ready(function()
 							
                  <table width="100%" class="mdc-card info-card">
                     <tr>
-                      <td width="30%">
+                      <td width="10%">
                           <h5 class="tablehead" nowrap style="color: #fff;">Items</h5>
                       </td>
-                      <td width="20%">
+                      <td width="30%">
                         <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none   d-md-flex" style="background: #fff;width:90%;border-radius: 6px;">
                           <%-- <s:input type="text"  id="txtItemSearch" path="" cssStyle="mdc-text-field__input"  onclick="funFillGridData('')" /> --%>
                           <input class="mdc-text-field__input" id="txtItemSearch" >   <!-- onclick="funFillGridData('') -->
@@ -4425,41 +4220,33 @@ $(document).ready(function()
                 </table>
                 
                 
-                <div id="divItemDtl" style="height: 465px;overflow: auto;width: 680px;display: block;" >
-               <table width="100%" class="mdc-card info-card3">
-               
-               <!-- command.jsonArrForDirectBillerMenuItemPricing -->
-               
-               			<c:set var="sizeOfItem" value="${fn:length(command.jsonArrForDirectBillerMenuItemPricing)}"></c:set>
-						 <c:set var="itemCount" value="${0}"></c:set>
-						 
-						  <c:forEach var="objItemDtl" items="${command.jsonArrForDirectBillerMenuItemPricing}"  varStatus="varMenuHeadStatus">																																		
-									<tr>
-									<% 
-									for(int k=0;k<5;k++) 
-									{
-									%>	
-									
-									<c:if test="${itemCount lt sizeOfItem}">
-										<td class="mdc-card info-card4" style="height:80px;"  >
-										<h5 class="tablehead2" nowrap>
-<%-- 										${command.jsonArrForDirectBillerMenuItemPricing[itemCount].strItemName} onclick="funMenuItemClicked("${command.jsonArrForDirectBillerMenuItemPricing[itemCount]}","${itemCount}" ) --%>
-										 <input type="button"  id="${command.jsonArrForDirectBillerMenuItemPricing[itemCount].strItemCode}" value="${command.jsonArrForDirectBillerMenuItemPricing[itemCount].strItemName}"    style="white-space: normal;background: transparent;border-style:none;" onclick="funMenuItemClicked(this,${itemCount}) "/> 
-										</h5>
-										<span class="price">
-										<fmt:formatNumber type = "number" maxFractionDigits = "2" value = "${command.jsonArrForDirectBillerMenuItemPricing[itemCount].strPriceMonday}" />
-										 /-
-										 </span>
-										
-										</td>
+			<div id="divItemDtl" style="height: 465px;overflow: auto;width: 680px;display: block;" >
+				<table width="100%" class="mdc-card info-card3">
+            		<c:set var="sizeOfItem" value="${fn:length(command.jsonArrForDirectBillerMenuItemPricing)}"></c:set>
+					<c:set var="itemCount" value="${0}"></c:set>
+						<c:forEach var="objItemDtl" items="${command.jsonArrForDirectBillerMenuItemPricing}"  varStatus="varMenuHeadStatus">																																		
+						<tr>
+							<% 
+							for(int k=0;k<5;k++) 
+							{
+							%>
+							<c:if test="${itemCount lt sizeOfItem}">
+								<td class="mdc-card info-card4" style="height:80px;"  >
+								<h5 class="tablehead2" nowrap>
+									<input type="button"  id="${command.jsonArrForDirectBillerMenuItemPricing[itemCount].strItemCode}" value="${command.jsonArrForDirectBillerMenuItemPricing[itemCount].strItemName}"    style="white-space: normal;background: transparent;border-style:none;" onclick="funMenuItemClicked(this,${itemCount}) "/> 
+								</h5>
+								<span class="price">
+								<fmt:formatNumber type = "number" maxFractionDigits = "2" value = "${command.jsonArrForDirectBillerMenuItemPricing[itemCount].strPriceMonday}" />
+									/-
+								</span>
+								</td>
 									<c:set var="itemCount" value="${itemCount +1}"></c:set>
-									</c:if>																						 													
-										
-									<%
-									}
-									%>										
-								   </tr>																																
-							</c:forEach>	       
+							</c:if>	
+							<%
+							}
+							%>										
+						</tr>																																
+						</c:forEach>	       
                   </table> 
              
              </div>
@@ -4473,7 +4260,7 @@ $(document).ready(function()
                          </h5>
                       </td>
                       <td width="33%">
-                        <h5 class="tablehead" nowrap style="color: #399be2;font-weight: 600;">00:00</h5>
+                        <h5 class="tablehead" nowrap style="color: #399be2;font-weight:600;">00:00</h5>
                       </td>
                       <td width="33%">
                         <h5 class="tablehead" nowrap style="color: #399be2;font-weight: 600;">Total:    
@@ -4482,6 +4269,7 @@ $(document).ready(function()
                       </td>
                    </tr>
                  </table>
+                 
                   <table width="100%" class="mdc-card info-card3">
                   <tr><td style="display: none;">
 	                 
@@ -4492,11 +4280,11 @@ $(document).ready(function()
 				</td>
 				</tr>
 				</table>
+				
                  <table width="100%" class="mdc-card info-card3">
                     <tr>
                       <td width="20%">
-                        <h5 class="tablehead" nowrap style="font-weight: 600;">KOT:5263</h5>
-                        <label id="txtKOTNo" style="width: 100%;text-align: center;" class="btn-link"></label>
+                        <h5 class="tablehead" nowrap style="font-weight: 600;">KOT:<label id="txtKOTNo" style="width: 100%;text-align: center;" class="btn-link"></label></h5>
                       </td>
                       <td width="30%">
                         <h5 class="tablehead" nowrap style="font-weight: 600;">Time:00:00</h5>
@@ -4508,9 +4296,10 @@ $(document).ready(function()
                       </td>
 					</tr>
 					</table>
-					<table width="100%" class="mdc-card info-card3" id="tblBillItemDtl">
-<!-- Item Table -->
-                     <tr class="trcolor">            
+
+<!-- Item Table -->					
+				<table width="100%" class="mdc-card info-card3" id="tblBillItemDtl">
+                     <tr class="trcolor">
                       <td width="55%" colspan="1">
                         <h5 class="tablehead" nowrap>Item Name</h5> 
                       </td>
@@ -4522,12 +4311,12 @@ $(document).ready(function()
                       </td>
                     </tr>
                     
-                   </table>
-                   <table id="tblOldKOTItemDtl" >
-								
-					</table>
+                </table>
+                
+                <table id="tblOldKOTItemDtl" >
+				</table>
                    
-                   <table>
+                <table>
                     <tr>            
                       <td width="65%" height="100">
                         
@@ -4540,75 +4329,12 @@ $(document).ready(function()
                       </td>
                     </tr> 
                     
-               <!--      <tr class="trcolor">            
-                      <td width="65%" colspan="2">
-                        <h5 class="tablehead" nowrap>Asahi</h5> 
-                      </td>
-                      
-                      <td width="15%">
-                        <h5 class="tablehead" nowrap align="right">2364</h5>
-                      </td>
-                    </tr>
-                    <tr class="trcolorred">           
-                      <td width="65%" colspan="2">
-                        <h5 class="tablehead" nowrap>Discount</h5> 
-                      </td>
-                      
-                      <td width="15%">
-                        <h5 class="tablehead" nowrap align="right">100</h5>
-                      </td>
-                    </tr>
-                    <tr class="trcolor">            
-                      <td width="65%" colspan="2">
-                        <h5 class="tablehead" nowrap>Net Total</h5> 
-                      </td>
-                      
-                      <td width="15%">
-                        <h5 class="tablehead" nowrap align="right">2343</h5>
-                      </td>
-                    </tr>
-                    <tr class="trcolor">            
-                      <td width="65%" colspan="2">
-                        <h5 class="tablehead" nowrap>Asahi</h5> 
-                      </td>
-                      
-                      <td width="15%">
-                        <h5 class="tablehead" nowrap align="right">2364</h5>
-                      </td>
-                    </tr>
-                    <tr class="trcolor">            
-                      <td width="65%" colspan="2">
-                        <h5 class="tablehead" nowrap>VAT @ 5% (LIQUOR)</h5> 
-                      </td>
-                      
-                      <td width="15%">
-                        <h5 class="tablehead" nowrap align="right">8773</h5>
-                      </td>
-                    </tr>
-                    <tr class="trcolor">            
-                      <td width="65%" colspan="2">
-                        <h5 class="tablehead" nowrap>GRAND TOTAL</h5> 
-                      </td>
-                      
-                      <td width="15%">
-                        <h5 class="tablehead" nowrap align="right">9837</h5>
-                      </td>
-                    </tr>
-                    <tr class="trcolor">            
-                      <td width="65%" colspan="2">
-                        <h5 class="tablehead" nowrap>PAYMENT MODE</h5> 
-                      </td>
-                      
-                      <td width="15%">
-                        <h5 class="tablehead" nowrap align="right">CASH</h5>
-                      </td>
-                    </tr> --> 
-                 </table>          
+              </table>          
               </td>
               <td width="10%" style="vertical-align: top;">
                  <table width="100%" class="mdc-card info-card3">
                     <tr width="100%">
-                       <td align="center" class="img" id="Done" onclick="funFooterButtonClicked(this)">
+                       <td align="center" class="img" id="FIRE_KOT" onclick="funFooterButtonClicked(this)">
                           <img src="../${pageContext.request.contextPath}/resources/newdesign/assets/images/icon-kot.png" border="0" height="50px" width="50px"> 
                           <h5 class="tablehead" nowrap>KOT</h5> 
                       </td>
@@ -4620,31 +4346,31 @@ $(document).ready(function()
                       </td>
                     </tr>
                      <tr width="100%">
-                       <td align="center" class="img" id="Done1" onclick="funFooterButtonClicked(this)">
+                       <td align="center" class="img" id="Settle" onclick="funFooterButtonClicked(this)">
                           <img src="../${pageContext.request.contextPath}/resources/newdesign/assets/images/icon-settle.png" border="0" height="50px" width="50px"> 
                           <h5 class="tablehead" nowrap>SETTLE</h5> 
                       </td>
                     </tr>
                      <tr width="100%">
-                       <td align="center" class="img" id="Done23" onclick="funFooterButtonClicked(this)">
+                       <td align="center" class="img" id="Waiter" onclick="funFooterButtonClicked(this)">
                           <img src="../${pageContext.request.contextPath}/resources/newdesign/assets/images/icon-waiter.png" border="0" height="50px" width="50px"> 
                           <h5 class="tablehead" nowrap>WAITER</h5> 
                       </td>
                     </tr>
                      <tr width="100%">
-                       <td align="center" class="img" id="Done3" onclick="funFooterButtonClicked(this)">
+                       <td align="center" class="img" id="HO" onclick="funFooterButtonClicked(this)">
                           <img src="../${pageContext.request.contextPath}/resources/newdesign/assets/images/icon-HO.png" border="0" height="50px" width="50px"> 
                           <h5 class="tablehead" nowrap>HO</h5> 
                       </td>
                     </tr>                    
                     <tr width="100%">
-                       <td align="center" class="img" id="Done4" onclick="funFooterButtonClicked(this)">
+                       <td align="center" class="img" id="Customer" onclick="funFooterButtonClicked(this)">
                           <img src="../${pageContext.request.contextPath}/resources/newdesign/assets/images/icon-customer.png" border="0" height="50px" width="50px"> 
-                          <h5 class="tablehead" nowrap>CUST</h5> 
+                          <h5 class="tablehead" nowrap>CUSTOMER</h5> 
                       </td>
                     </tr>
                      <tr width="100%">
-                       <td align="center" class="img" id="Done5" onclick="funFooterButtonClicked(this)">
+                       <td align="center" class="img" id="Done" onclick="funFooterButtonClicked(this)">
                           <img src="../${pageContext.request.contextPath}/resources/newdesign/assets/images/icons-done.png" border="0" height="50px" width="50px"> 
                           <h5 class="tablehead" nowrap>DONE</h5> 
                       </td>

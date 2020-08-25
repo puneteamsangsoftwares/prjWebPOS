@@ -39,7 +39,6 @@ import com.sanguine.webpos.bean.clsPOSItemDtlForTax;
 import com.sanguine.webpos.bean.clsPOSItemsDtlsInBill;
 import com.sanguine.webpos.bean.clsPOSKOTItemDtl;
 import com.sanguine.webpos.bean.clsPOSPromotionItems;
-import com.sanguine.webpos.bean.clsPOSSettelementOptions;
 import com.sanguine.webpos.bean.clsPOSSettlementDtlsOnBill;
 import com.sanguine.webpos.bean.clsPOSTaxCalculation;
 import com.sanguine.webpos.bean.clsPOSTaxCalculationBean;
@@ -57,18 +56,12 @@ import com.sanguine.webpos.util.clsPOSUtilityController;
 @Controller
 public class clsPOSBillSettlementControllerForDirectBiller
 {
-
-	/*private List listItemCode;
-	String clientCode = "",
-			posCode = "", posDate = "",
-			userCode = "",
-			posClientCode = "";*/
-
 	@Autowired
 	private clsGlobalFunctions objGlobalFunctions;
 
 	@Autowired
 	clsBaseServiceImpl objBaseServiceImpl;
+	
 	@Autowired
 	clsPOSUtilityController objUtility;
 
@@ -93,9 +86,6 @@ public class clsPOSBillSettlementControllerForDirectBiller
 	@Autowired
 	clsPOSMasterService objMasterService;
 
-//	JSONArray listReasonCode,
-//			listReasonName;
-
 	private Map<String, clsPOSPromotionItems> hmPromoItem = new HashMap<String, clsPOSPromotionItems>();
 
 	// for Direct Biller
@@ -105,35 +95,27 @@ public class clsPOSBillSettlementControllerForDirectBiller
 		String urlHits = "1",voucherNo="";
 		clsPOSBillSettlementBean obBillSettlementBean = new clsPOSBillSettlementBean();
 		clsSetupHdModel objSetupHdModel=null;
-		String clientCode = "",posCode = "", posDate = "",
-				userCode = "",posClientCode = "";
-		JSONArray listReasonCode,listReasonName;
+		String clientCode = "",posCode = "", posDate = "",userCode = "";
 		try
 		{
 			urlHits="1";
 			if(request.getParameter("saddr")!=null)
-			{
 				urlHits = request.getParameter("saddr").toString();
-
-			}
-			request.getSession().setAttribute("customerMobile", ""); // mobile no
+			
+			request.getSession().setAttribute("customerMobile", "");
 			model.put("voucherNo", voucherNo);
 			voucherNo=request.getParameter("voucherNo");
-			if(voucherNo!=null&&!voucherNo.isEmpty()){
-				model.put("voucherNo", voucherNo);
-			}
 			
+			if(voucherNo!=null&&!voucherNo.isEmpty())
+				model.put("voucherNo", voucherNo);
 			
 			clientCode = request.getSession().getAttribute("gClientCode").toString();
-			posClientCode = request.getSession().getAttribute("gPOSCode").toString();
 			posCode = request.getSession().getAttribute("gPOSCode").toString();
 			posDate = request.getSession().getAttribute("gPOSDate").toString().split(" ")[0];
 			userCode = request.getSession().getAttribute("gUserCode").toString();
 
 			objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCode,posCode);
 			
-			// //////////////// Direct biller Tab Data
-
 			String gAreaWisePricing=objSetupHdModel.getStrAreaWisePricing();
 			String gDirectAreaCode=objSetupHdModel.getStrDirectAreaCode();
 			
@@ -167,17 +149,17 @@ public class clsPOSBillSettlementControllerForDirectBiller
 			obBillSettlementBean.setJsonArrForArea(jsonArrForArea);
 			
 		    List listArea=objMasterService.funLoadClientWiseArea(clientCode);
+		    
 		    //Area List
-		     Map areaList = new HashMap<>();
-		 //    areaList.put("All", "All");
-		     if(null!=listArea)
-		     {
-				for (int cnt = 0; cnt < listArea.size(); cnt++)
+		    Map<String, String> areaList = new HashMap<>();
+		    if(null!=listArea)
+		    {
+		    	for (int cnt = 0; cnt < listArea.size(); cnt++)
 				{
 					clsAreaMasterModel obModel = (clsAreaMasterModel) listArea.get(cnt);
 					areaList.put(obModel.getStrAreaCode(), obModel.getStrAreaName());
 				}
-		     }
+		    }
 			     
 			model.put("gPOSCode", posCode);
 			model.put("gClientCode", clientCode);
@@ -191,36 +173,18 @@ public class clsPOSBillSettlementControllerForDirectBiller
 			model.put("gCRMInterface", objSetupHdModel.getStrCRMInterface());			
 			model.put("gItemQtyNumpad", false);
 			model.put("roundoff",objSetupHdModel.getDblRoundOff());
-			if(objSetupHdModel.getStrItemQtyNumpad().equalsIgnoreCase("Y")){
-				model.put("gItemQtyNumpad", true);	
-			}
 			
+			if(objSetupHdModel.getStrItemQtyNumpad().equalsIgnoreCase("Y"))
+				model.put("gItemQtyNumpad", true);
+		
+			String usertype = request.getSession().getAttribute("gUserType").toString();
+			boolean isSuperUser = false;
+			if (usertype.equalsIgnoreCase("yes"))
+				isSuperUser = true;
+			else
+				isSuperUser = false;
 			
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			urlHits = "1";
-		}
-		
-		// ///////////Bill Settlement tab ////////////////////////////////////
-
-		String usertype = request.getSession().getAttribute("gUserType").toString();
-		boolean isSuperUser = false;
-		if (usertype.equalsIgnoreCase("yes"))
-		{
-			isSuperUser = true;
-		}
-		else
-		{
-			isSuperUser = false;
-		}
-
-		List listSettlementObject = new ArrayList<clsPOSSettelementOptions>();
-		
-		try
-		{
-			Map reason =new HashMap<>();
+			Map<String, String> reason =new HashMap<>();
 			StringBuilder sqlBuilder = new StringBuilder();
 			String sqlModifyBill = "select strReasonCode,strReasonName from tblreasonmaster where strDiscount='Y' and strClientCode='" + clientCode + "'";
 			sqlBuilder.setLength(0);
@@ -228,85 +192,57 @@ public class clsPOSBillSettlementControllerForDirectBiller
 			List list = objBaseService.funGetList(sqlBuilder, "sql");
 			if (list.size() > 0)
 			{
-
 				for (int i = 0; i < list.size(); i++)
 				{
 					Object[] ob = (Object[]) list.get(i);
 					reason.put(ob[0].toString(),ob[1].toString());
-					
 				}
 			}
 			model.put("reason", reason);
 			String gPickSettlementsFromPOSMaster=objSetupHdModel.getStrSettlementsFromPOSMaster();
 			String gEnablePMSIntegrationYN=objSetupHdModel.getStrEnablePMSIntegrationYN();
-
 			JSONObject jObj1 = objBillingAPI.funSettlementMode(clientCode, posCode, isSuperUser, gPickSettlementsFromPOSMaster, gEnablePMSIntegrationYN);
-
-			//JSONArray jArr = new JSONArray();// (JSONArray)jObj.get("SettleDesc");
-			//JSONObject jsSettelementOptionsDtl = (JSONObject) jObj1.get("SettleObj");
-
 			JSONArray jArr = (JSONArray) jObj1.get("listSettleObj");
-			
-/*			JSONObject jsSettle = new JSONObject();
-			for (int j = 0; j < listSettlementObject.size(); j++)
-			{
-				jArr.add(listSettlementObject.get(j));
-			}
-*/			
 			obBillSettlementBean.setJsonArrForSettleButtons(jArr);
-			// objDirectBillerBean.setListOfBillItemDtl(listOfPunchedItemsDtl);
 			obBillSettlementBean.setDteExpiryDate(posDate);
-
+	
+			String operationFrom = "directBiller";
+			model.put("operationFrom", operationFrom);
+			
+			String formToBeOpen="Billing";
+			model.put("formToBeOpen", formToBeOpen);
+			model.put("billDate", posDate);
+			model.put("gCMSIntegrationYN", objSetupHdModel.getStrCMSIntegrationYN());
+			model.put("gCRMInterface", objSetupHdModel.getStrCRMInterface());
+			model.put("gPopUpToApplyPromotionsOnBill", objSetupHdModel.getStrPopUpToApplyPromotionsOnBill());
+			model.put("gCreditCardSlipNo",objSetupHdModel.getStrCreditCardSlipNoCompulsoryYN());
+			model.put("gCreditCardExpiryDate", objSetupHdModel.getStrCreditCardExpiryDateCompulsoryYN());
+			model.put("gSkipPax",objSetupHdModel.getStrSkipPax());
+			model.put("gSkipWaiter",objSetupHdModel.getStrSkipWaiter());
+	        model.put("gEnableSettleBtnForDirectBiller",objSetupHdModel.getStrSettleBtnForDirectBillerBill());
+			funLoadAllReasonMasterData(request);
+			
+			List listDiscountCombo = new ArrayList<List>();
+			List listSubGroupName = new ArrayList<>();
+			List listSubGroupCode = new ArrayList<>();
+			List listGroupName = new ArrayList<>();
+			List listGroupCode = new ArrayList<>();
+			listDiscountCombo = funLoadItemsGroupSubGroupData();
+			if (listDiscountCombo.size() > 0)
+			{
+				listSubGroupName = (List) listDiscountCombo.get(0);
+				listSubGroupCode = (List) listDiscountCombo.get(1);
+				listGroupName = (List) listDiscountCombo.get(2);
+				listGroupCode = (List) listDiscountCombo.get(3);
+	
+			}
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
+			urlHits = "1";
 		}
-		String operationFrom = "directBiller";
-		model.put("operationFrom", operationFrom);
-		
-		String formToBeOpen="Billing";
-		model.put("formToBeOpen", formToBeOpen);
-		
-		
-		model.put("billDate", posDate);
-
-
-		model.put("gCMSIntegrationYN", objSetupHdModel.getStrCMSIntegrationYN());
-		model.put("gCRMInterface", objSetupHdModel.getStrCRMInterface());// clsPOSGlobalFunctionsController.hmPOSSetupValues.get("CRMInterface"));
-		//String gPopUpToApplyPromotionsOnBill = objPOSSetupUtility.funGetParameterValuePOSWise(clientCode, posCode, "gPopUpToApplyPromotionsOnBill");
-		model.put("gPopUpToApplyPromotionsOnBill", objSetupHdModel.getStrPopUpToApplyPromotionsOnBill()); //gPopUpToApplyPromotionsOnBill);
-		model.put("gCreditCardSlipNo",objSetupHdModel.getStrCreditCardSlipNoCompulsoryYN());//.getStr clsPOSGlobalFunctionsController.hmPOSSetupValues.get("CreditCardSlipNoCompulsoryYN"));
-		model.put("gCreditCardExpiryDate", objSetupHdModel.getStrCreditCardExpiryDateCompulsoryYN());// clsPOSGlobalFunctionsController.hmPOSSetupValues.get("CreditCardExpiryDateCompulsoryYN"));
-		
-		model.put("gSkipPax",objSetupHdModel.getStrSkipPax());// clsPOSGlobalFunctionsController.hmPOSSetupValues.get("SkipPax"));
-		model.put("gSkipWaiter",objSetupHdModel.getStrSkipWaiter());//CreditCard clsPOSGlobalFunctionsController.hmPOSSetupValues.get("SkipWaiter"));
-        model.put("gEnableSettleBtnForDirectBiller",objSetupHdModel.getStrSettleBtnForDirectBillerBill());
-		funLoadAllReasonMasterData(request);
-		
-		
-		List listDiscountCombo = new ArrayList<List>();
-		List listSubGroupName = new ArrayList<>();
-		List listSubGroupCode = new ArrayList<>();
-		List listGroupName = new ArrayList<>();
-		List listGroupCode = new ArrayList<>();
-		listDiscountCombo = funLoadItemsGroupSubGroupData();
-		if (listDiscountCombo.size() > 0)
-		{
-			listSubGroupName = (List) listDiscountCombo.get(0);
-			listSubGroupCode = (List) listDiscountCombo.get(1);
-			listGroupName = (List) listDiscountCombo.get(2);
-			listGroupCode = (List) listDiscountCombo.get(3);
-
-		}
-
-		/*model.put("listReasonCode", listReasonCode);
-		model.put("listReasonName", listReasonName);
-*/
-		double gMaxDiscount = objSetupHdModel.getDblMaxDiscount();
-		String gApplyDiscountOn = objSetupHdModel.getStrApplyDiscountOn();
 		return new ModelAndView("frmWebPOSBilling", "command", obBillSettlementBean);
-
 	}
 
 	public void funLoadAllReasonMasterData(HttpServletRequest request)

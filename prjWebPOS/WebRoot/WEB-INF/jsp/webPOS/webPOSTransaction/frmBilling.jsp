@@ -190,36 +190,7 @@ var itemChangeQtySelected, itemPrice;
 		  {
 			  funCustomerBtnClicked();
 		  }
-		}); 
-		
-		
-	
-		/* var styles = document.styleSheets;
-		var href = "";
-	    for (var i = 0; i < styles.length; i++) 
-	    {
-	    	href=styles[i].href;
-	    	if(href!=null)
-	    	{
-	    		href = styles[i].href.split("/");
-		        href = href[href.length - 1];
-		        
-		        alert(href);
-		        if(href==="formoid-default-skyblue.css")
-		        {
-		        	styles[i].disabled = disabled;
-		            break;
-		        }
-	    	}	        	 	       
-	    }
-		
-		
-		$('link[rel=stylesheet][href="/resources/newdesign/itemform_files/formoid1/formoid-default-skyblue.css"]').remove(); 
-
-		$('link[href="/resources/newdesign/itemform_files/formoid1/formoid-default-skyblue.css"]').prop('disabled', true); 
-
-		$('link[href="/resources/newdesign/itemform_files/formoid1/formoid-default-skyblue.css"]').remove(); */
-		
+		});
 		
 		if(gMultiWaiterSelOnMakeKOT=="")
 		{
@@ -243,7 +214,7 @@ var itemChangeQtySelected, itemPrice;
 		 document.getElementById("divItemDtl").style.display='block';
 		// document.getElementById("divPLU").style.display='none';
 		 
-		 document.getElementById("divBillItemDtl").style.display='block';
+		 document.getElementById("divBillItemDtl").style.display='';
 		 document.getElementById("divTotalDtl").style.display='block';
 		 
 		 document.getElementById("divTopButtonDtl").style.display='block';
@@ -317,16 +288,8 @@ var itemChangeQtySelected, itemPrice;
 		{
 			if (funCheckKOTSave())
         	{
-//             	if (gEnableBillSeries=="Y")
-//             	{
-		              //  clsTextFileGeneratorForPrinting ob = new clsTextFileGeneratorForPrinting();
-		              // ob.fun_CkeckKot_TextFile(globalTableNo, txtWaiterNo.getText().trim());
-		               
-		              $("#hidTakeAway").val(gTakeAway);
-		              
-		               funMakeBillBtnKOT(ncKot,gTakeAway,globalDebitCardNo,cmsMemCode,cmsMemName,reasonCode,homeDeliveryForTax,arrListHomeDelDetails);
-
-//             	}
+				$("#hidTakeAway").val(gTakeAway);
+		        funMakeBillBtnKOT(ncKot,gTakeAway,globalDebitCardNo,cmsMemCode,cmsMemName,reasonCode,homeDeliveryForTax,arrListHomeDelDetails);
         	}
         	else
         	{
@@ -338,7 +301,6 @@ var itemChangeQtySelected, itemPrice;
 	
 	function funMakeBillBtnKOT(ncKot,gTakeAway,globalDebitCardNo,cmsMemCode,cmsMemName,reasonCode,homeDeliveryForTax,arrListHomeDelDetails)
 	{
-
 		document.getElementById("tab2").style.display='block';		
 	    document.getElementById("tab1").style.display='none';	
 	    
@@ -489,44 +451,6 @@ var itemChangeQtySelected, itemPrice;
 	
 	function funCheckKOTSave()
 	{
-// 		var kotNo=$("#txtKOTNo").val();
-// 		var flg = false;
-// 		var searchurl=getContextPath()+"/funCheckKOTSave.html?strKOTNo="+kotNo;
-// 		 $.ajax({
-// 			        type: "GET",
-// 			        url: searchurl,
-// 			        dataType: "json",
-// 			        async: false,
-// 			        success: function(response)
-// 			        {
-			        	
-// 			        	if(response.flag)
-// 			        		return true;
-// 			        	if(!response.savedKOT)
-// 			        		return false;
-// 			        	else
-// 			        		return true;
-			        	
-// 					},
-// 					error: function(jqXHR, exception) {
-// 			            if (jqXHR.status === 0) {
-// 			                alert('Not connect.n Verify Network.');
-// 			            } else if (jqXHR.status == 404) {
-// 			                alert('Requested page not found. [404]');
-// 			            } else if (jqXHR.status == 500) {
-// 			                alert('Internal Server Error [500].');
-// 			            } else if (exception === 'parsererror') {
-// 			                alert('Requested JSON parse failed.');
-// 			            } else if (exception === 'timeout') {
-// 			                alert('Time out error.');
-// 			            } else if (exception === 'abort') {
-// 			                alert('Ajax request aborted.');
-// 			            } else {
-// 			                alert('Uncaught Error.n' + jqXHR.responseText);
-// 			            }		            
-// 			        }
-// 		      });
-
 		return true;
 	}
 	
@@ -937,6 +861,8 @@ var itemChangeQtySelected, itemPrice;
 	    	
 		}
 	}
+	
+	
 	function funValidateForDoneButton()
 	{
 		
@@ -1011,13 +937,6 @@ var itemChangeQtySelected, itemPrice;
 			var tblBillItemDtl=document.getElementById('tblBillItemDtl');				
 			var rowCount = tblBillItemDtl.rows.length;
 			
-			
-			
-			
-        	
-        	
-			 
-			 
 			if(operationType=="DineIn")
 			{
 				if(rowCount <= 2)
@@ -1094,54 +1013,6 @@ var itemChangeQtySelected, itemPrice;
 			}
 	}
 	
-	
-	/* function funGetCostCenterListForKOT(tableNo,kotNo)
-	{
-		
-		var searchurl=getContextPath()+"/funGetCostCenterListForKOT.html?tableNo="+tableNo+"&kotNo="+kotNo  ;
-		$.ajax({
-			 type: "GET",
-		        url: searchurl,
-		        contentType: 'application/json',
-		        async: true,
-		    success: function (response)
-		    {
-		    	 	
-		    	for(var j=0;j<response.length;j++)
-		    	{
-		    		funPrintKOT(response[j].strItemCode,response[j].strItemName,response[j].strArea,tableNo,kotNo)
-		    	}
-		    },
-		    error: function(jqXHR, exception)
-		    {
-		        if (jqXHR.status === 0) {
-		            alert('Not connect.n Verify Network.');
-		        } else if (jqXHR.status == 404) {
-		            alert('Requested page not found. [404]');
-		        } else if (jqXHR.status == 500) {
-		            alert('Internal Server Error [500].');
-		        } else if (exception === 'parsererror') {
-		            alert('Requested JSON parse failed.');
-		        } else if (exception === 'timeout') {
-		            alert('Time out error.');
-		        } else if (exception === 'abort') {
-		            alert('Ajax request aborted.');
-		        } else {
-		            alert('Uncaught Error.n' + jqXHR.responseText);
-		        }		            
-		    }
-
-       });
-		
-   } */
-
-
-
-/* function funPrintKOT(costCenterCode,costCenterName,areaCode,tableNo,kotNo)
-	{
-		 funOpenKOTPrint(costCenterCode,costCenterName,areaCode,tableNo,kotNo);
-	} */
-	
 
 function funOpenKOTPrint(areaCode,tableNo,kotNo){
 	
@@ -1210,32 +1081,11 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 					hmSubGroupMap.set(strSubGroupCode, strSGName);
 					hmItempMap.set(itemCode,itemName);
 					
-					/* var tableNo=tblBillItemDtl.rows[i].cells[9].innerHTML; 				
-					var bckDtl= tableNo.split('value=');
-					tableNo=bckDtl[1].substring(1, (bckDtl[1].length-2));*/
 					var tableNo=gTableNo;
-					
-					/* var PaxNo=tblBillItemDtl.rows[i].cells[10].innerHTML;
-					var bckDtl= PaxNo.split('value=');
-					PaxNo=bckDtl[1].substring(1, (bckDtl[1].length-2)); */
-					var PaxNo=$("#txtPaxNo").text();
-					
-	
-					/* var kotNo=tblBillItemDtl.rows[i].cells[11].innerHTML;
-					var bckDtl= kotNo.split('value=');
-					kotNo=bckDtl[1].substring(1, (bckDtl[1].length-2)); */
-					
+					var PaxNo=$("#txtPaxNo").text();										
 					var kotNo=$("#txtKOTNo").text();
-					
-					
-					
-					/* var WaiterNo=tblBillItemDtl.rows[i].cells[12].innerHTML;
-					var bckDtl= WaiterNo.split('value=');
-					WaiterNo=bckDtl[1].substring(1, (bckDtl[1].length-2)); */
 					var WaiterNo=gWaiterNo;
-																
 					
-	
 					var singleObj = {}
 				    singleObj['itemName'] =itemName;
 				    singleObj['quantity'] =itemQty;
@@ -1256,17 +1106,10 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 				    singleObj['WaiterNo'] =WaiterNo;
 				    listItmeDtl.push(singleObj);
 					
-					
 					finalSubTotal=finalSubTotal+parseFloat(itemAmt);
 					finalDiscountAmt=finalDiscountAmt+parseFloat(0);//(itemDiscAmt);				
 				}				
-			}
-		 
-		 
-		 
-		 
-		 
-			
+			}			
 				
 		 var custcode=$("#hidCustomerCode").val();
    		var custName=$("#hidCustomerName").val();	 
@@ -1286,32 +1129,15 @@ function funOpenKOTPrint(areaCode,tableNo,kotNo){
 		        async: false,
 	        success: function (response)
 	        {
-	        	
 	        	if(response=="true")
 	        	{
-		            
-		        	 /*  window.location ="frmPOSRestaurantBill.html"; */
-		        	// location.reload(false); //loads from browser's cache 
-		        	 /* location.reload(true); //loads from server */
 		        	 alert("KOT Save Successfully. KOT NO: "+ $("#txtKOTNo").text());
 		        	 
-		        	
-		        	/* Disable while in development */ 
-		        	//funGetCostCenterListForKOT(gTableNo,);
-		        	
-		        	 
-		        	
 		        	if(gMultiWaiterSelOnMakeKOT=="")
 		    		{
 		    			gMultiWaiterSelOnMakeKOT="N";
 		    		}
-		    		
-		    		/* $("#txtItemSearch").keyup(function()
-		    		{
-    					searchTable($(this).val());
-		    		}); */
 		    		 document.getElementById("divItemDtl").style.display='block';
-		    		// document.getElementById("divPLU").style.display='none';
 		    		 
 		    		 document.getElementById("divBillItemDtl").style.display='block';
 		    		 document.getElementById("divTotalDtl").style.display='block';
@@ -4358,7 +4184,8 @@ function funFillGridData1(itemName)
 										</tr>
 								</table>
 							</div>
-						</td>					
+						</td>
+											
 						<td>
 							<div id="divArea" style="border: 1px solid rgb(204, 204, 204);height: 35px;overflow: hidden;width: 680px;display: block; margin-top:0px;" >																	
 								
@@ -4371,20 +4198,14 @@ function funFillGridData1(itemName)
 				    					<label id="customerName"> <!-- vinayak padalkar --></label>
 				    				</div>
 			    				
-								
-								
 									<div class="element-input col-lg-6" style="width: 20%;"> 
 				    					<label>Area :</label> <!-- <label id="txtAreaName"> All</label> -->
 				    				</div>
 			    					<div class="element-input col-lg-6" style="width: 25%;"> 
 										<s:select id="txtAreaName" items="${areaList}" path="" onchange="funShowTables()"  ></s:select>
 									</div>
-			    				
-								
-								
 								</div>
 							</div>
-							
 							
 							<div id="divMenuHeadDtl" style="border: 1px solid rgb(204, 204, 204);height: 120px;overflow: auto;width: 680px;display: block; margin-top:0px;">									
 									<table id="tblMenuHeadDtl"    style="border-collapse: separate;"> <!-- class="table table-striped table-bordered table-hover" -->
@@ -4399,16 +4220,13 @@ function funFillGridData1(itemName)
 												<% 
 												for(int k=0;k<5;k++) 
 												{
-												%>	
-												
+												%>
 												<c:if test="${menuCount lt sizeOfmenu}">
 													<td style="padding: 3px;" >
 														<input type="button"  id="${command.jsonArrForDirectBillerMenuHeads[menuCount].strMenuCode}" value="${command.jsonArrForDirectBillerMenuHeads[menuCount].strMenuName}"    style="width: 135px;height: 35px; white-space: normal;"       onclick="funMenuHeadButtonClicked(this)" class="btn btn-info" />
 													</td>
 												<c:set var="menuCount" value="${menuCount +1}"></c:set>
-												</c:if>																						 													
-																
-													
+												</c:if>
 												<%
 												}
 												%>										
@@ -4416,7 +4234,6 @@ function funFillGridData1(itemName)
 										</c:forEach>									   				   									   									   							
 									</table>
 							</div>
-							
 							
 							<div id="divTopButtonDtl" style="border: 1px solid rgb(204, 204, 204);height: 62px;overflow: auto;width: 680px;display: block; margin-left:2px;" >									
 								
@@ -4483,9 +4300,7 @@ function funFillGridData1(itemName)
 											<td><label id="dpName"></label></td>
 										</tr>
 									</table>
-								</div> 	
-								
-							
+								</div>
 						</td>
 						
 						<td>								
