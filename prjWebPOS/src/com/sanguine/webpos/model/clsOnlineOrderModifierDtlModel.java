@@ -26,6 +26,7 @@ public class clsOnlineOrderModifierDtlModel  implements Serializable
 
 	private double dblAmount;
 
+	private String strSequenceNo;
 	//private String strClientCode;
 
 	//private String dtOrderDate;
@@ -95,6 +96,17 @@ public class clsOnlineOrderModifierDtlModel  implements Serializable
 	{
 		this.dblAmount = dblAmount;
 	}
+
+	public String getStrSequenceNo()
+	{
+		return strSequenceNo;
+	}
+
+	public void setStrSequenceNo(String strSequenceNo)
+	{
+		this.strSequenceNo = strSequenceNo;
+	}
+
 
 	/*
 	 * public String getStrClientCode() { return strClientCode; }

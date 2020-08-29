@@ -31,7 +31,8 @@ public class clsOnlineOrderDtlModel  implements Serializable
 
 	private double total_with_tax;
 	private double dblExtracharges;
-	
+
+	private String strSequenceNo;
 	//private String strClientCode;
 
 	public String getItemId()
@@ -124,6 +125,17 @@ public class clsOnlineOrderDtlModel  implements Serializable
 	{
 		this.dblExtracharges = dblExtracharges;
 	}
+
+	public String getStrSequenceNo()
+	{
+		return strSequenceNo;
+	}
+
+	public void setStrSequenceNo(String strSequenceNo)
+	{
+		this.strSequenceNo = strSequenceNo;
+	}
+
 
 
 }

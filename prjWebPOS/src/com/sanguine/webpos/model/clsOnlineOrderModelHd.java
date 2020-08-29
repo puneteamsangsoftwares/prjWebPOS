@@ -197,6 +197,8 @@ public class clsOnlineOrderModelHd extends clsBaseModel implements Serializable{
 	
 	@Column(name="storeName")
 	private String storeName;
+	
+	
 	/*
 	 * @Column(name="storeMerchant_ref_id") private String storeMerchant_ref_id;
 	 */
@@ -217,6 +219,9 @@ public class clsOnlineOrderModelHd extends clsBaseModel implements Serializable{
 	
 	@Column(name="custCity")
 	private String custCity;
+	
+	@Column(name="delivery_type")
+	private String delivery_type;
 	
 	
 	
@@ -594,6 +599,16 @@ public String getDtOrderDate()
 	public void setListOnlineOrderDiscDtlModel(List<clsOnlineOrderDiscDtlModel> listOnlineOrderDiscDtlModel)
 	{
 		this.listOnlineOrderDiscDtlModel = listOnlineOrderDiscDtlModel;
+	}
+
+	public String getDelivery_type()
+	{
+		return delivery_type;
+	}
+
+	public void setDelivery_type(String delivery_type)
+	{
+		this.delivery_type = delivery_type;
 	}
 
 }

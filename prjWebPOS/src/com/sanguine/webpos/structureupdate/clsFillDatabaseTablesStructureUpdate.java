@@ -7578,6 +7578,17 @@ public class clsFillDatabaseTablesStructureUpdate
 	                mapStructureUpdater.get("tblStructure").add(sql);
 			
 			
+	                sql="ALTER TABLE `tblonlineorderhd`\r\n" + 
+	                		"	ADD COLUMN `delivery_type` VARCHAR(10) NOT NULL DEFAULT '' AFTER `strBillNo`;";
+	                mapStructureUpdater.get("tblStructure").add(sql);
+	                
+	                sql="ALTER TABLE `tblonlineorderdtl`\r\n" + 
+	                		"	ADD COLUMN `strSequenceNo` VARCHAR(10) NOT NULL DEFAULT '' AFTER `strClientCode`;";
+	                mapStructureUpdater.get("tblStructure").add(sql);
+	                
+	                sql="ALTER TABLE `tblonlineordermodifierdtl`\r\n" + 
+	                		"	ADD COLUMN `strSequenceNo` VARCHAR(10) NOT NULL DEFAULT '' AFTER `dtOrderDate`;\r\n";
+	                mapStructureUpdater.get("tblStructure").add(sql);
 	    }
 	    
 

@@ -892,7 +892,7 @@ public class clsUserController
 	@RequestMapping(value = "/onlineOrderPlaced", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
 	  public @ResponseBody String  funOnlineOrderPlaced(@RequestBody JSONObject jsonOb,HttpServletRequest req)throws Exception {
-	  
+		System.out.println("onlineOrder Placed "  +jsonOb);
 	  try
 	  {
 		  objOnlineOrderController.funSaveOnlineOrderData(jsonOb);

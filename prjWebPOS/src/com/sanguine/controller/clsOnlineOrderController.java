@@ -65,11 +65,11 @@ public class clsOnlineOrderController
 		long longDateCreated=Long.parseLong(hmOrderDetail.get("created").toString());
 		long longDateDelivery=Long.parseLong(hmOrderDetail.get("delivery_datetime").toString());
 		
-		strOrderDate = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new java.util.Date (longDateCreated)); 
-		String DateDelivery = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new java.util.Date (longDateDelivery));
+		strOrderDate = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date (longDateCreated)); 
+		String DateDelivery = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date (longDateDelivery));
 		
 		clsOnlineOrderModelHd objOrderHD=new clsOnlineOrderModelHd(new clsOnlineOrderModel_ID(strOrderId, strClientCode, strOrderDate));
-		
+		funDeleteOrderDataFromDtlTables(strOrderId, strClientCode, strOrderDate);
 		objOrderHD.setStrbiz_id(hmOrderDetail.get("biz_id").toString());
 		objOrderHD.setDelivery_datetime(DateDelivery);
 		objOrderHD.setChannel(objGlobal.funIfNull(hmOrderDetail.get("channel").toString(),"",hmOrderDetail.get("channel").toString()));
@@ -145,13 +145,13 @@ public class clsOnlineOrderController
 			objOrderDtlModel.setItemName(hmItem.get("title").toString());
 			String itemCode=hmItem.get("merchant_id").toString();
 			objOrderDtlModel.setMerchant_id(itemCode);
-			
+			double itemQty=Double.parseDouble(hmItem.get("quantity").toString());
 			objOrderDtlModel.setPrice(Double.parseDouble(hmItem.get("price").toString()));
-			objOrderDtlModel.setQuantity(Double.parseDouble(hmItem.get("quantity").toString()));
+			objOrderDtlModel.setQuantity(itemQty);
 			objOrderDtlModel.setDiscount(Double.parseDouble(hmItem.get("discount").toString()));
 			objOrderDtlModel.setTotal(Double.parseDouble(hmItem.get("total").toString()));
 			objOrderDtlModel.setTotal_with_tax(Double.parseDouble(hmItem.get("total_with_tax").toString()));
-			
+			objOrderDtlModel.setStrSequenceNo(String.valueOf(i));
 			double dblExtraCharges=0;
 			ArrayList<Object> alExtraCharges =(ArrayList<Object>)hmItem.get("charges");
 			for(int m=0;m<alExtraCharges.size();m++) {
@@ -171,9 +171,10 @@ public class clsOnlineOrderController
 				objOrderModifierDtlModel.setStrModifierCode(hmItemMod.get("merchant_id").toString());
 				objOrderModifierDtlModel.setStrItemCode(itemCode);
 				objOrderModifierDtlModel.setStrModifierName(hmItemMod.get("title").toString());
-				objOrderModifierDtlModel.setDblQuantity(1);
+				objOrderModifierDtlModel.setDblQuantity(itemQty);//Mod quantity same as item quantity 
 				objOrderModifierDtlModel.setDblAmount(Double.parseDouble(hmItemMod.get("price").toString()));
-					
+				objOrderModifierDtlModel.setStrSequenceNo(String.valueOf(i)+"."+String.valueOf(k+1));
+				
 				listOrderModDtl.add(objOrderModifierDtlModel);
 			}
 			
@@ -216,9 +217,20 @@ public class clsOnlineOrderController
 					objOrderDiscDtlModel=new clsOnlineOrderDiscDtlModel();
 					objOrderDiscDtlModel.setIsMerchantDiscount(hmDisc.get("is_merchant_discount").toString());
 					objOrderDiscDtlModel.setDblDiscAmt(Double.parseDouble(hmDisc.get("value").toString()));
-					objOrderDiscDtlModel.setDblDiscPer(Double.parseDouble(hmDisc.get("rate").toString()));
-					objOrderDiscDtlModel.setCode(hmDisc.get("code").toString());
-					objOrderDiscDtlModel.setTitle(hmDisc.get("title").toString());
+					if(hmDisc.containsKey("rate")) {
+						objOrderDiscDtlModel.setDblDiscPer(Double.parseDouble(hmDisc.get("rate").toString()));	
+					}
+					if(hmDisc.containsKey("code")) {
+						objOrderDiscDtlModel.setCode(hmDisc.get("code").toString());	
+					}else {
+						objOrderDiscDtlModel.setCode("");
+					}
+					if(hmDisc.containsKey("title")) {
+						objOrderDiscDtlModel.setTitle(hmDisc.get("title").toString());	
+					}else {
+						objOrderDiscDtlModel.setTitle("");
+					}
+					
 					
 					listOrderDiscDtl.add(objOrderDiscDtlModel);
 				}
@@ -226,9 +238,10 @@ public class clsOnlineOrderController
 			if(hmExtra.containsKey("id")) {
 				if(objOrderHD.getOrderMerchant_ref_id().equals("")) {
 					objOrderHD.setOrderMerchant_ref_id(hmExtra.get("id").toString());
-						
 				}
-				
+			}
+			if(hmExtra.containsKey("delivery_type")) {
+				objOrderHD.setDelivery_type(hmExtra.get("delivery_type").toString());
 			}
 		}
 		
@@ -267,6 +280,25 @@ public class clsOnlineOrderController
 	}
 	
 	
+	private void funDeleteOrderDataFromDtlTables(String strOrderId,String  strClientCode,String  strOrderDate) {
+		try {
+			strOrderDate=strOrderDate.split(" ")[0];
+			String sbSql="delete from tblonlineorderdtl  where strOrderId='"+strOrderId+"' and strClientCode='"+strClientCode+"' and date(dtOrderDate)='"+strOrderDate+"';";
+			objBaseServiceImpl.funExecuteUpdate(sbSql, "sql");
+			
+			sbSql="delete  from tblonlineordermodifierdtl  where strOrderId='"+strOrderId+"' and strClientCode='"+strClientCode+"' and date(dtOrderDate)='"+strOrderDate+"';";
+			objBaseServiceImpl.funExecuteUpdate(sbSql, "sql");
+			
+			sbSql="delete  from tblonlineorderdiscdtl  where strOrderId='"+strOrderId+"' and strClientCode='"+strClientCode+"' and date(dtOrderDate)='"+strOrderDate+"';";
+			objBaseServiceImpl.funExecuteUpdate(sbSql, "sql");
+			
+			sbSql="delete  from tblonlineordertaxdtl  where strOrderId='"+strOrderId+"' and strClientCode='"+strClientCode+"' and date(dtOrderDate)='"+strOrderDate+"';";
+			objBaseServiceImpl.funExecuteUpdate(sbSql, "sql");
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 public void funUpdateOnlineOrderStatus(JSONObject jobOnlineOrder) {
 		
