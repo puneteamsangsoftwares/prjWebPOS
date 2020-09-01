@@ -484,6 +484,19 @@ public class clsPOSPropertySetupBean
 	private String strCashManagementCompulsary;
 	private String strPrintFullVoidBill;
 	
+	private String strRegistrationEmail;
+    private String strRegistrationPassword;
+    private String strShowSubGroupShortName;
+	private String strImmediateSettlement;
+	private String strTakeFFModifierAmt;
+	private String strPaxOnBilling;
+	private String strPrintOrderNoOnMakeKot;
+	private String strDirectSettleOnSelection;
+	private String strShowItemCodeOnPLU;
+	private String strWebPOSEnable;
+    
+
+	
 	public String getStrSkipWaiterAndPax()
 	{
 		return strSkipWaiterAndPax;
@@ -3143,6 +3156,106 @@ public class clsPOSPropertySetupBean
 	public void setStrTelephone(String strTelephone)
 	{
 		this.strTelephone = strTelephone;
+	}
+
+	public String getStrRegistrationEmail()
+	{
+		return strRegistrationEmail;
+	}
+
+	public void setStrRegistrationEmail(String strRegistrationEmail)
+	{
+		this.strRegistrationEmail = strRegistrationEmail;
+	}
+
+	public String getStrRegistrationPassword()
+	{
+		return strRegistrationPassword;
+	}
+
+	public void setStrRegistrationPassword(String strRegistrationPassword)
+	{
+		this.strRegistrationPassword = strRegistrationPassword;
+	}
+
+	public String getStrShowSubGroupShortName()
+	{
+		return strShowSubGroupShortName;
+	}
+
+	public void setStrShowSubGroupShortName(String strShowSubGroupShortName)
+	{
+		this.strShowSubGroupShortName = strShowSubGroupShortName;
+	}
+
+	public String getStrImmediateSettlement()
+	{
+		return strImmediateSettlement;
+	}
+
+	public void setStrImmediateSettlement(String strImmediateSettlement)
+	{
+		this.strImmediateSettlement = strImmediateSettlement;
+	}
+
+	public String getStrTakeFFModifierAmt()
+	{
+		return strTakeFFModifierAmt;
+	}
+
+	public void setStrTakeFFModifierAmt(String strTakeFFModifierAmt)
+	{
+		this.strTakeFFModifierAmt = strTakeFFModifierAmt;
+	}
+
+	public String getStrPaxOnBilling()
+	{
+		return strPaxOnBilling;
+	}
+
+	public void setStrPaxOnBilling(String strPaxOnBilling)
+	{
+		this.strPaxOnBilling = strPaxOnBilling;
+	}
+
+	public String getStrPrintOrderNoOnMakeKot()
+	{
+		return strPrintOrderNoOnMakeKot;
+	}
+
+	public void setStrPrintOrderNoOnMakeKot(String strPrintOrderNoOnMakeKot)
+	{
+		this.strPrintOrderNoOnMakeKot = strPrintOrderNoOnMakeKot;
+	}
+
+	public String getStrDirectSettleOnSelection()
+	{
+		return strDirectSettleOnSelection;
+	}
+
+	public void setStrDirectSettleOnSelection(String strDirectSettleOnSelection)
+	{
+		this.strDirectSettleOnSelection = strDirectSettleOnSelection;
+	}
+
+	public String getStrShowItemCodeOnPLU()
+	{
+		return strShowItemCodeOnPLU;
+	}
+
+	public void setStrShowItemCodeOnPLU(String strShowItemCodeOnPLU)
+	{
+		this.strShowItemCodeOnPLU = strShowItemCodeOnPLU;
+	}
+
+	public String getStrWebPOSEnable()
+	{
+		return strWebPOSEnable;
+	}
+
+	public void setStrWebPOSEnable(String strWebPOSEnable)
+	{
+		this.strWebPOSEnable = strWebPOSEnable;
 	}
 
 	

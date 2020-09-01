@@ -1098,7 +1098,64 @@ ul.tab li.a:FOCUS {
 						$("#txtEmailSmtpPort").val(response.strEmailSmtpPort);
 						$("#txtEmailSmtpHost").val(response.strEmailSmtpHost);
 
-						
+						if(response.strShowSubGroupShortName == 'Y'){
+							$("#strShowSubGroupShortName").prop('checked',
+									true);
+						} else {
+							$("#strShowSubGroupShortName").prop('checked',
+									false);
+						}
+						if(response.strImmediateSettlement == 'Y'){
+							$("#strImmediateSettlement").prop('checked',
+									true);
+						} else {
+							$("#strImmediateSettlement").prop('checked',
+									false);
+						}
+						if(response.strTakeFFModifierAmt == 'Y'){
+							$("#strTakeFFModifierAmt").prop('checked',
+									true);
+						} else {
+							$("#strTakeFFModifierAmt").prop('checked',
+									false);
+						}
+						if(response.strPaxOnBilling == 'Y'){
+							$("#strPaxOnBilling").prop('checked',
+									true);
+						} else {
+							$("#strPaxOnBilling").prop('checked',
+									false);
+						}
+						if(response.strPrintOrderNoOnMakeKot == 'Y'){
+							$("#strPrintOrderNoOnMakeKot").prop('checked',
+									true);
+						} else {
+							$("#strPrintOrderNoOnMakeKot").prop('checked',
+									false);
+						}
+						if(response.strDirectSettleOnSelection == 'Y'){
+							$("#strDirectSettleOnSelection").prop('checked',
+									true);
+						} else {
+							$("#strDirectSettleOnSelection").prop('checked',
+									false);
+						}
+						if(response.strShowItemCodeOnPLU == 'Y'){
+							$("#strShowItemCodeOnPLU").prop('checked',
+									true);
+						} else {
+							$("#strShowItemCodeOnPLU").prop('checked',
+									false);
+						}
+						if(response.strWebPOSEnable == 'Y'){
+							$("#strWebPOSEnable").prop('checked',
+									true);
+						} else {
+							$("#strWebPOSEnable").prop('checked',
+									false);
+						}
+						$("#txtRegistrationEmailId").val(response.strRegistrationEmail);
+						$("#txtRegistrationPassword").val(response.strRegistrationPassword);
 
 						funLoadPrinterDtl();
 						//funSetSelectedBillSeries();
@@ -2055,6 +2112,69 @@ ul.tab li.a:FOCUS {
 							$("#strPrintFullVoidBill").prop('checked',
 									false);
 						}
+						
+						
+						
+						if(response.strShowSubGroupShortName == 'Y'){
+							$("#strShowSubGroupShortName").prop('checked',
+									true);
+						} else {
+							$("#strShowSubGroupShortName").prop('checked',
+									false);
+						}
+						if(response.strImmediateSettlement == 'Y'){
+							$("#strImmediateSettlement").prop('checked',
+									true);
+						} else {
+							$("#strImmediateSettlement").prop('checked',
+									false);
+						}
+						if(response.strTakeFFModifierAmt == 'Y'){
+							$("#strTakeFFModifierAmt").prop('checked',
+									true);
+						} else {
+							$("#strTakeFFModifierAmt").prop('checked',
+									false);
+						}
+						if(response.strPaxOnBilling == 'Y'){
+							$("#strPaxOnBilling").prop('checked',
+									true);
+						} else {
+							$("#strPaxOnBilling").prop('checked',
+									false);
+						}
+						if(response.strPrintOrderNoOnMakeKot == 'Y'){
+							$("#strPrintOrderNoOnMakeKot").prop('checked',
+									true);
+						} else {
+							$("#strPrintOrderNoOnMakeKot").prop('checked',
+									false);
+						}
+						if(response.strDirectSettleOnSelection == 'Y'){
+							$("#strDirectSettleOnSelection").prop('checked',
+									true);
+						} else {
+							$("#strDirectSettleOnSelection").prop('checked',
+									false);
+						}
+						if(response.strShowItemCodeOnPLU == 'Y'){
+							$("#strShowItemCodeOnPLU").prop('checked',
+									true);
+						} else {
+							$("#strShowItemCodeOnPLU").prop('checked',
+									false);
+						}
+						if(response.strWebPOSEnable == 'Y'){
+							$("#strWebPOSEnable").prop('checked',
+									true);
+						} else {
+							$("#strWebPOSEnable").prop('checked',
+									false);
+						}
+						$("#txtRegistrationEmailId").val(response.strRegistrationEmail);
+						$("#txtRegistrationPassword").val(response.strRegistrationPassword);
+
+						
 
 						funLoadPrinterDtl();
 
@@ -4966,16 +5086,106 @@ ul.tab li.a:FOCUS {
 							</div>
 							<div class="row"
 								style="background-color: #fff; display: -webkit-box; margin-bottom: 10px;">
-								<div class="element-input col-lg-6" style="width: 28%;">
+								<div class="element-input col-lg-6" style="width: 30%;">
 									<label class="title">Item Short Name on Direct Biller &
 										Bill</label>
 								</div>
 
 								<div class="element-input col-lg-6"
-									style="margin-bottom: 10px; width: 40%; margin-left: -3%">
+									style="margin-bottom: 10px; width: 33%; margin-left: -5%">
 									<s:checkbox element="li" id="strShortNameOnDirectBillerAndBill"
 										path="strShortNameOnDirectBillerAndBill" value="Yes" />
 								</div>
+								
+								<div class="element-input col-lg-6" style="width: 25%; margin-left:-25%">
+									<label class="title">Show SubGroup Short Name</label>
+								</div>
+
+								<div class="element-input col-lg-6"
+									style="margin-bottom: 10px; width: 25%; margin-left: 0%">
+									<s:checkbox element="li" id="strShowSubGroupShortName"
+										path="strShowSubGroupShortName" value="Yes" />
+								</div>
+								
+								<div class="element-input col-lg-6" style="width:30%; margin-left: -20%">
+									<label class="title">Immediate Settlement</label>
+								</div>
+
+								<div class="element-input col-lg-6"
+									style="margin-bottom: 10px; width: 40%; margin-left: -5%">
+									<s:checkbox element="li" id="strImmediateSettlement"
+										path="strImmediateSettlement" value="Yes" />
+								</div>
+
+							</div>
+							
+								<div class="row"
+								style="background-color: #fff; display: -webkit-box; margin-bottom: 10px;">
+								<div class="element-input col-lg-6" style="width: 30%;">
+									<label class="title">Take FF Modifier Amount</label>
+								</div>
+
+								<div class="element-input col-lg-6"
+									style="margin-bottom: 10px; width: 33%; margin-left: -5%">
+									<s:checkbox element="li" id="strTakeFFModifierAmt"
+										path="strTakeFFModifierAmt" value="Yes" />
+								</div>
+								
+								<div class="element-input col-lg-6" style="width: 25%; margin-left:-25%">
+									<label class="title">Print Pax on Billing</label>
+								</div>
+
+								<div class="element-input col-lg-6"
+									style="margin-bottom: 10px; width: 25%; margin-left: 0%">
+									<s:checkbox element="li" id="strPaxOnBilling"
+										path="strPaxOnBilling" value="Yes" />
+								</div>
+								
+								<div class="element-input col-lg-6" style="width:30%; margin-left: -20%">
+									<label class="title">Print Order No on Make KOT</label>
+								</div>
+
+								<div class="element-input col-lg-6"
+									style="margin-bottom: 10px; width: 40%; margin-left: -5%">
+									<s:checkbox element="li" id="strPrintOrderNoOnMakeKot"
+										path="strPrintOrderNoOnMakeKot" value="Yes" />
+								</div>
+
+							</div>
+							
+							<div class="row"
+								style="background-color: #fff; display: -webkit-box; margin-bottom: 10px;">
+								<div class="element-input col-lg-6" style="width: 30%;">
+									<label class="title">Direct Settle on Selection</label>
+								</div>
+
+								<div class="element-input col-lg-6"
+									style="margin-bottom: 10px; width: 33%; margin-left: -5%">
+									<s:checkbox element="li" id="strDirectSettleOnSelection"
+										path="strDirectSettleOnSelection" value="Yes" />
+								</div>
+								
+								<div class="element-input col-lg-6" style="width: 25%; margin-left:-25%">
+									<label class="title">Show Item Code On PLU</label>
+								</div>
+
+								<div class="element-input col-lg-6"
+									style="margin-bottom: 10px; width: 25%; margin-left: 0%">
+									<s:checkbox element="li" id="strShowItemCodeOnPLU"
+										path="strShowItemCodeOnPLU" value="Yes" />
+								</div>
+								
+								<div class="element-input col-lg-6" style="width:30%; margin-left: -20%">
+									<label class="title">Enable WebPOS</label>
+								</div>
+
+								<div class="element-input col-lg-6"
+									style="margin-bottom: 10px; width: 40%; margin-left: -5%">
+									<s:checkbox element="li" id="strWebPOSEnable"
+										path="strWebPOSEnable" value="Yes" />
+								</div>
+								
+								
 
 							</div>
 
@@ -5107,6 +5317,31 @@ ul.tab li.a:FOCUS {
 										onclick="funCheckEmailSendingStatus();"></input>
 								</div>
 
+							</div>
+							<div class="row"
+								style="background-color: #fff; display: -webkit-box;">
+
+								<div class="element-input col-lg-6" style="width: 60%;">
+									<label class="title">Registration Email Id</label>
+								</div>
+								<div class="element-input col-lg-6"
+									style="margin-bottom: 10px; width: 60%;">
+									<s:input class="large" type="text" id="txtRegistrationEmailId"
+										path="strRegistrationEmail" />
+								</div>
+							</div>
+
+							<div class="row"
+								style="background-color: #fff; display: -webkit-box;">
+
+								<div class="element-input col-lg-6" style="width: 60%;">
+									<label class="title">Registration Password</label>
+								</div>
+								<div class="element-input col-lg-6"
+									style="margin-bottom: 10px; width: 60%;">
+									<s:input class="large" type="password" id="txtRegistrationPassword"
+										path="strRegistrationPassword" />
+								</div>
 							</div>
 
 						</div>

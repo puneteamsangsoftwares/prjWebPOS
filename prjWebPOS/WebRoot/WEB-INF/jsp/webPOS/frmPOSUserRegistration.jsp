@@ -11,6 +11,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>USER MASTER</title>
 <link rel="stylesheet" type="text/css" href="<spring:url value="/resources/css/jquery-confirm.min.css"/>"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script type="text/javascript" src="<spring:url value="/resources/js/jquery-confirm.min.js"/>"></script>
 <script type="text/javascript" src="<spring:url value="/resources/js/confirm-prompt.js"/>"></script>
 		
@@ -29,6 +30,17 @@
 * html .ui-autocomplete {
 	height: 200px;
 }
+.right-inner-addon i {
+    position: absolute;
+    right: 21px;
+    top: 4px;
+    pointer-events: none;
+    font-size: 1.8em;
+}
+.right-inner-addon {
+    position: relative;
+}
+
 </style>
 <script type="text/javascript">
 
@@ -59,7 +71,7 @@ $(document).ready(function()
 			function() {
 
 				$("#txtValidTill").datepicker({
-					dateFormat : 'yy-mm-dd'
+					dateFormat : 'dd-mm-yy'
 				});
 				$("#txtValidTill").datepicker('setDate', 'today');
 				$("#txtValidTill").datepicker();
@@ -648,7 +660,7 @@ $(document).ready(function()
 
 <body onload="funLoadData()">
 	<div id="formHeading">
-		<label>User Master</label>
+		<label>User Registration</label>
 	</div>
 	<s:form name="UserRegistrationForm" method="POST"
 		action="savePOSUserRegistrationMaster.html?saddr=${urlHits}"
@@ -679,7 +691,7 @@ $(document).ready(function()
 						path="strUserName" />
 				</div>
 				<div class="element-input col-lg-6" style="width: 20%;">
-					<label class="title">Super Type</label>
+					<label class="title">Super User</label>
 				</div>
 				<div class="element-input col-lg-6"
 					style="margin-bottom: 10px; width: 30%; margin-left: -5%">
@@ -688,7 +700,7 @@ $(document).ready(function()
 				</div>
 			</div>
 
-			<div class="row"
+			<div class="row right-inner-addon" 
 				style="background-color: #fff; display: -webkit-box;">
 				<div class="element-input col-lg-6" style="width: 30%;">
 					<label class="title">Valid Till</label>
@@ -696,7 +708,7 @@ $(document).ready(function()
 				<div class="element-input col-lg-6"
 					style="margin-bottom: 10px; width: 40%;">
 					<s:input class="large" colspan="3" type="text" id="txtValidTill"
-						path="dteValidTill" />
+						path="dteValidTill" /><i class="fa fa-calendar"></i>
 				</div>
 			</div>
 

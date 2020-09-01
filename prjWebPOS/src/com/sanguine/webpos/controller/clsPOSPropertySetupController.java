@@ -476,6 +476,17 @@ public class clsPOSPropertySetupController
 					objBean.setStrEmailSmtpPort(objSetupHdModel.getStrEmailSmtpPort());
 					objBean.setStrEmailSmtpHost(objSetupHdModel.getStrEmailSmtpHost());
 				
+					objBean.setStrShowSubGroupShortName(objSetupHdModel.getStrShowSubGroupShortName());
+					objBean.setStrImmediateSettlement(objSetupHdModel.getStrImmediateSettlement());
+					objBean.setStrTakeFFModifierAmt(objSetupHdModel.getStrTakeFFModifierAmt());
+					objBean.setStrPaxOnBilling(objSetupHdModel.getStrPaxOnBilling());
+					objBean.setStrPrintOrderNoOnMakeKot(objSetupHdModel.getStrPrintOrderNoOnMakeKot());
+					objBean.setStrDirectSettleOnSelection(objSetupHdModel.getStrDirectSettleOnSelection());
+					objBean.setStrShowItemCodeOnPLU(objSetupHdModel.getStrShowItemCodeOnPLU());
+					objBean.setStrWebPOSEnable(objSetupHdModel.getStrWebPOSEnable());
+					objBean.setStrRegistrationEmail(objSetupHdModel.getStrRegistrationEmail());
+					objBean.setStrRegistrationPassword(objSetupHdModel.getStrRegistrationPassword());
+					
 					dteEndDate = objSetupHdModel.getDteEndDate();
 					
 					StringBuilder hql = new StringBuilder();
@@ -932,6 +943,16 @@ public class clsPOSPropertySetupController
 			objBean.setStrPrintFullVoidBill(objSetupHdModel.getStrPrintFullVoidBill());
 			objBean.setStrDBBackupReceiverEmailId(objSetupHdModel.getStrDBBackupMailReceiver());
 			
+			objBean.setStrShowSubGroupShortName(objSetupHdModel.getStrShowSubGroupShortName());
+			objBean.setStrImmediateSettlement(objSetupHdModel.getStrImmediateSettlement());
+			objBean.setStrTakeFFModifierAmt(objSetupHdModel.getStrTakeFFModifierAmt());
+			objBean.setStrPaxOnBilling(objSetupHdModel.getStrPaxOnBilling());
+			objBean.setStrPrintOrderNoOnMakeKot(objSetupHdModel.getStrPrintOrderNoOnMakeKot());
+			objBean.setStrDirectSettleOnSelection(objSetupHdModel.getStrDirectSettleOnSelection());
+			objBean.setStrShowItemCodeOnPLU(objSetupHdModel.getStrShowItemCodeOnPLU());
+			objBean.setStrWebPOSEnable(objSetupHdModel.getStrWebPOSEnable());
+			objBean.setStrRegistrationEmail(objSetupHdModel.getStrRegistrationEmail());
+			objBean.setStrRegistrationPassword(objSetupHdModel.getStrRegistrationPassword());
 			
 			// Setting Mobile Number in SMS
 			List listsms = funFillSMSSetupData(posCode, clientCode);
@@ -1499,6 +1520,17 @@ public class clsPOSPropertySetupController
 			objModel.setStrPrintFullVoidBill(objGlobal.funIfNull(objBean.getStrPrintFullVoidBill(), "N", "Y"));
 			objModel.setStrDBBackupMailReceiver(objGlobal.funIfNull(objBean.getStrDBBackupReceiverEmailId(), " ", objBean.getStrDBBackupReceiverEmailId()));
 			
+
+			objModel.setStrShowSubGroupShortName(objGlobal.funIfNull(objBean.getStrShowSubGroupShortName(), "N", "Y"));
+			objModel.setStrImmediateSettlement(objGlobal.funIfNull(objBean.getStrImmediateSettlement(), "N", "Y"));
+			objModel.setStrTakeFFModifierAmt(objGlobal.funIfNull(objBean.getStrTakeFFModifierAmt(), "N", "Y"));
+			objModel.setStrPaxOnBilling(objGlobal.funIfNull(objBean.getStrPaxOnBilling(), "N", "Y"));
+			objModel.setStrPrintOrderNoOnMakeKot(objGlobal.funIfNull(objBean.getStrPrintOrderNoOnMakeKot(), "N", "Y"));
+			objModel.setStrDirectSettleOnSelection(objGlobal.funIfNull(objBean.getStrDirectSettleOnSelection(), "N", "Y"));
+			objModel.setStrShowItemCodeOnPLU(objGlobal.funIfNull(objBean.getStrShowItemCodeOnPLU(), "N", "Y"));
+			objModel.setStrWebPOSEnable(objGlobal.funIfNull(objBean.getStrWebPOSEnable(), "Y", "N"));
+			objModel.setStrRegistrationEmail(objBean.getStrRegistrationEmail());
+			objModel.setStrRegistrationPassword(objBean.getStrRegistrationPassword());
 			//funSaveUpdatePropertySetup(objModel);
 			objBaseService.funSave(objModel);
 			

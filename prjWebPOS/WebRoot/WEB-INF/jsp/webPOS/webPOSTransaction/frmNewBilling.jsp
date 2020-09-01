@@ -3882,6 +3882,10 @@ $(document).ready(function()
 					case "Make Bill":
 						funMakeBillClicked();
 						break;
+						
+				    case "Waiter":
+					   funWaiterHelp('POSWaiterMaster');
+					   break;
 					
 				}
 			}
@@ -3949,7 +3953,24 @@ $(document).ready(function()
 
 }
 
+	function funPOSHome()
+   	{
+    	var posCode='<%=session.getAttribute("loginPOS").toString()%>';
+    	window.location.href=getContextPath()+"/frmGetPOSSelection.html?strPosCode="+posCode;
+   	}
+	
 
+	function funWaiterHelp(transactionName)
+	{
+		fieldName=transactionName;
+		window.open("searchform.html?formname="+transactionName+"&searchText=","","dialogHeight:600px;dialogWidth:600px;dialogLeft:400px;");
+	}
+	
+	function funTableHelp(transactionName)
+	{
+		fieldName=transactionName;
+		window.open("searchform.html?formname="+transactionName+"&searchText=","","dialogHeight:600px;dialogWidth:600px;dialogLeft:400px;");
+	}
 </script>
   
 </head>
@@ -4000,7 +4021,7 @@ $(document).ready(function()
               </div>
               <div class="divider d-none d-md-block"></div>
               <div class="menu-button-container">
-			           <button class="mdc-button mdc-menu-button">
+			           <button class="mdc-button mdc-menu-button" onclick="funPOSHome()">
                    <i class="mdi mdi-home"></i>
                  </button>
               </div>
@@ -4041,7 +4062,7 @@ $(document).ready(function()
                           <div class="mdc-notched-outline">
                            <div class="mdc-notched-outline__leading"></div>
                             <div class="mdc-notched-outline__notch">
-                              <label for="text-field-hero-input" class="mdc-floating-label">Search Tables</label>
+                              <label for="text-field-hero-input" class="mdc-floating-label"  ondblclick="funTableHelp('POSTableMaster')">Search Tables</label>
                             </div>
                             <div class="mdc-notched-outline__trailing"></div>
                           </div>

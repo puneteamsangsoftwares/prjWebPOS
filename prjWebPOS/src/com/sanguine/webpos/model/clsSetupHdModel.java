@@ -797,6 +797,33 @@ public class clsSetupHdModel extends clsBaseModel implements Serializable
 
 	@Column(name = "strWERAOnlineOrderIntegration")
 	private String strWERAOnlineOrderIntegration;
+	
+	@Column(name = "strRegistrationEmail")
+	private String strRegistrationEmail;
+	
+	@Column(name = "strRegistrationPassword")
+    private String strRegistrationPassword;
+	
+	@Column(name = "strShowSubGroupShortName")
+    private String strShowSubGroupShortName;
+	
+	@Column(name = "strImmediateSettlement")
+	private String strImmediateSettlement;
+	
+	@Column(name = "strTakeFFModifierAmt")
+	private String strTakeFFModifierAmt;
+	
+	@Column(name = "strPaxOnBilling")
+	private String strPaxOnBilling;
+	
+	@Column(name = "strPrintOrderNoOnMakeKot")
+	private String strPrintOrderNoOnMakeKot;
+	
+	@Column(name = "strDirectSettleOnSelection")
+	private String strDirectSettleOnSelection;
+	
+	@Column(name = "strShowItemCodeOnPLU")
+	private String strShowItemCodeOnPLU;
 
 	@Column(name="strWebPOSEnable")
 	private String strWebPOSEnable;
@@ -3321,6 +3348,96 @@ public class clsSetupHdModel extends clsBaseModel implements Serializable
 	public void setStrTelephoneNo(String strTelephoneNo)
 	{
 		this.strTelephoneNo = strTelephoneNo;
+	}
+
+	public String getStrRegistrationEmail()
+	{
+		return strRegistrationEmail;
+	}
+
+	public void setStrRegistrationEmail(String strRegistrationEmail)
+	{
+		this.strRegistrationEmail = strRegistrationEmail;
+	}
+
+	public String getStrRegistrationPassword()
+	{
+		return strRegistrationPassword;
+	}
+
+	public void setStrRegistrationPassword(String strRegistrationPassword)
+	{
+		this.strRegistrationPassword = strRegistrationPassword;
+	}
+
+	public String getStrShowSubGroupShortName()
+	{
+		return strShowSubGroupShortName;
+	}
+
+	public void setStrShowSubGroupShortName(String strShowSubGroupShortName)
+	{
+		this.strShowSubGroupShortName = strShowSubGroupShortName;
+	}
+
+	public String getStrImmediateSettlement()
+	{
+		return strImmediateSettlement;
+	}
+
+	public void setStrImmediateSettlement(String strImmediateSettlement)
+	{
+		this.strImmediateSettlement = strImmediateSettlement;
+	}
+
+	public String getStrTakeFFModifierAmt()
+	{
+		return strTakeFFModifierAmt;
+	}
+
+	public void setStrTakeFFModifierAmt(String strTakeFFModifierAmt)
+	{
+		this.strTakeFFModifierAmt = strTakeFFModifierAmt;
+	}
+
+	public String getStrPaxOnBilling()
+	{
+		return strPaxOnBilling;
+	}
+
+	public void setStrPaxOnBilling(String strPaxOnBilling)
+	{
+		this.strPaxOnBilling = strPaxOnBilling;
+	}
+
+	public String getStrPrintOrderNoOnMakeKot()
+	{
+		return strPrintOrderNoOnMakeKot;
+	}
+
+	public void setStrPrintOrderNoOnMakeKot(String strPrintOrderNoOnMakeKot)
+	{
+		this.strPrintOrderNoOnMakeKot = strPrintOrderNoOnMakeKot;
+	}
+
+	public String getStrDirectSettleOnSelection()
+	{
+		return strDirectSettleOnSelection;
+	}
+
+	public void setStrDirectSettleOnSelection(String strDirectSettleOnSelection)
+	{
+		this.strDirectSettleOnSelection = strDirectSettleOnSelection;
+	}
+
+	public String getStrShowItemCodeOnPLU()
+	{
+		return strShowItemCodeOnPLU;
+	}
+
+	public void setStrShowItemCodeOnPLU(String strShowItemCodeOnPLU)
+	{
+		this.strShowItemCodeOnPLU = strShowItemCodeOnPLU;
 	}
 
 	public String getStrWebPOSEnable()
