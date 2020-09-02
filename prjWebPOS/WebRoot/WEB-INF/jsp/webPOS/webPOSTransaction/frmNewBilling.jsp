@@ -64,7 +64,9 @@ var itemChangeQtySelected, itemPrice;
 //start PLU Search funactionality
 $(document).ready(function()
 {
-	
+	funloadClientPhoto();
+	var posDate="${gPOSDate}";
+		$("#lblPOSDate").text(posDate);
 	 // Get the input field
 /* 	var input = document.getElementById("Customer");
 
@@ -160,14 +162,14 @@ $(document).ready(function()
 	            return;
 	        }
 			
-			if(gSkipWaiter!="Y")
+			/* if(gSkipWaiter!="Y")
 			{
 				if ($("#txtWaiterName").text().trim().length==0)
 		        {
 					alert("Please select Waiter");
 		            return;
 		        }
-			}
+			} */
 			
 			if (rowCount == 1)
 	        {
@@ -1566,6 +1568,14 @@ $(document).ready(function()
 			gAreaCode=$("#txtAreaName").val();
 			
 			//$("#txtPaxNo").text(objselectedTableDtl.intPaxNo);
+			 if(gSkipWaiter!="Y")
+			{
+				if ($("#txtWaiterName").text().trim().length==0)
+		        {
+					alert("Please select Waiter");
+		            return;
+		        }
+			}
 			
 			
 			funChekTableDtl(tableNo);
@@ -3971,6 +3981,20 @@ $(document).ready(function()
 		fieldName=transactionName;
 		window.open("searchform.html?formname="+transactionName+"&searchText=","","dialogHeight:600px;dialogWidth:600px;dialogLeft:400px;");
 	}
+	
+	
+	function funloadClientPhoto()
+	{
+		var code = $("#cmbPosCode").val();			
+		var searchUrl1=getContextPath()+"/loadPropertyImage.html?";
+		 $.ajax({
+		        type: "GET",
+		        url: searchUrl1,
+		        cache: false
+		 });
+		$("#memImage").attr('src', searchUrl1);
+	}  
+
 </script>
   
 </head>
@@ -3991,7 +4015,7 @@ $(document).ready(function()
                   <span class="clent-name">Ninety degrees</span>
                 </span>
               </button>             
-            <span class="mdc-top-app-bar__title"><img src="../${pageContext.request.contextPath}/resources/newdesign/assets/images/90degrees.jpg" style="height: 58px;"></span>
+            <span class="mdc-top-app-bar__title"><img src="" id="memImage" Style="width: 184px;height:54px;margin-top: 8px;"></span>
           </div>
           
           <div class="menu-button-container menu-profile d-none d-md-block">
@@ -4006,23 +4030,24 @@ $(document).ready(function()
             <div class="menu-button-container menu-profile d-none d-md-block">
               <button class="mdc-button mdc-menu-button">
                 <span class="d-flex align-items-center">
-                  <span class="user-name">Sumit1</span>
+                 <%--  <span class="user-name">Sumit1</span> --%>
+                 <label style="margin-top:18px;color:rgba(31 35 38);text-transform: uppercase;font-size: 16px;">${gUserName}<!-- &nbsp;&nbsp; --></label>
                 </span>
               </button>
             </div>
-            
-            
+        
               <div class="menu-button-container menu-profile d-none d-md-block">
                 <button class="mdc-button mdc-menu-button">
                   <span class="d-flex align-items-center">
-                  <span class="date">12-02-2020</span>
+                 <%--  <span class="date">12-02-2020</span> --%>
+                  <label id="lblPOSDate" style="margin-top:18px;color:rgba(83,159,225,1);font-family: trebuchet ms, Helvetica, sans-serif;font-weight: 100;font-size: 16px;"> &nbsp;&nbsp;</label>
                   </span>
                 </button>
               </div>
               <div class="divider d-none d-md-block"></div>
               <div class="menu-button-container">
 			           <button class="mdc-button mdc-menu-button" onclick="funPOSHome()">
-                   <i class="mdi mdi-home"></i>
+                    <i class="mdi mdi-home"></i>                    
                  </button>
               </div>
           </div>
@@ -4037,16 +4062,16 @@ $(document).ready(function()
                 
                 
                 <table width="100%" class="mdc-card info-card3">
-                  <tr>        
-                    <td align="center" class="img">
+                  <tr>   
+                    <td align="center" class="img" id="Dine In" onclick="funFooterButtonClicked(this)">
                        <img src="../${pageContext.request.contextPath}/resources/newdesign/assets/images/icon-dinein.png" border="0"> 
                        <h5 class="tablehead" nowrap>Dine in</h5> 
                     </td>   
-                    <td align="center" class="img">
+                    <td align="center" class="img" id="Home Delivery" onclick="funFooterButtonClicked(this)">
                        <img src="../${pageContext.request.contextPath}/resources/newdesign/assets/images/icon-homedelivery.png" border="0"> 
                        <h5 class="tablehead" nowrap>Home</h5>
                     </td>
-                    <td align="center" class="img">
+                    <td align="center" class="img" id="Take Away" onclick="funFooterButtonClicked(this)">
                        <img src="../${pageContext.request.contextPath}/resources/newdesign/assets/images/icons8.png" border="0"> 
                        <h5 class="tablehead" nowrap>Take Away</h5> 
                     </td>             
