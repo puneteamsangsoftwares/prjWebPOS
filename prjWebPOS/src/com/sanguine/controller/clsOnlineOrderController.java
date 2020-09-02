@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,7 +35,7 @@ public class clsOnlineOrderController
 	@Autowired
 	clsGlobalFunctions objGlobal;
 	
-	public void funSaveOnlineOrderData(JSONObject jobOnlineOrder) {
+	public void funSaveOnlineOrderData(JSONObject jobOnlineOrder,HttpServletResponse resp) {
 		
 		
 
@@ -271,10 +273,13 @@ public class clsOnlineOrderController
 		
 		
 			objBaseServiceImpl.funSave(objOrderHD);
+			 resp.setStatus(200);
+			// resp.setStatus(500," Server Error");
 		}
 		catch (Exception e)
 		{
-			// TODO Auto-generated catch block
+			 resp.setStatus(500," Server Error");
+			  // TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -300,7 +305,7 @@ public class clsOnlineOrderController
 		}
 	}
 	
-public void funUpdateOnlineOrderStatus(JSONObject jobOnlineOrder) {
+public void funUpdateOnlineOrderStatus(JSONObject jobOnlineOrder,HttpServletResponse resp) {
 		
 
 		try
@@ -316,13 +321,14 @@ public void funUpdateOnlineOrderStatus(JSONObject jobOnlineOrder) {
 		String sqlStatus="update tblonlineorderhd a set a.order_state='"+new_state+"' where a.strOrderId='"+strOrderId+"' and a.strClientCode='"+strClientCode+"'; ";
 		
 		objBaseServiceImpl.funExecuteUpdate(sqlStatus, "sql");
-		
+		resp.setStatus(200);
 		
 //		HashMap<Object, Object> hmOrder= (HashMap) jobOnlineOrder.get("order");
 //		HashMap<Object, Object> hmCust= (HashMap) jobOnlineOrder.get("customer");
 //		
 		}catch (Exception e) {
 			// TODO: handle exception
+			resp.setStatus(500," Server Error");
 			e.printStackTrace();
 		}
 	}
@@ -456,7 +462,7 @@ public void funAddUpdateStore(JSONObject jobOnlineOrder,String strClientCode)
 		    	
 		    	objRiderStatus.setRiderMode(hmdeliveryInfo.get("mode").toString());
 		    	objRiderStatus.setStrClientCode(strClientCode);
-             objRiderStatus.setUpOrderId((Integer)jobOnlineOrder.get("order_id"));
+		    	objRiderStatus.setUpOrderId((Integer)jobOnlineOrder.get("order_id"));
 		    	
 		    	HashMap<Object, Object> hmstore= (HashMap) jobOnlineOrder.get("store");
 				objRiderStatus.setStoreId(hmstore.get("id").toString());

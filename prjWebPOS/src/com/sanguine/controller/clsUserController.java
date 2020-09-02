@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -890,36 +891,38 @@ public class clsUserController
 	}
 	 //JsonIgnore
 	@RequestMapping(value = "/onlineOrderPlaced", method = RequestMethod.POST)
-	@ResponseStatus(HttpStatus.OK)
-	  public @ResponseBody String  funOnlineOrderPlaced(@RequestBody JSONObject jsonOb,HttpServletRequest req)throws Exception {
+	//@ResponseStatus(HttpStatus.OK)
+	  public @ResponseBody void  funOnlineOrderPlaced(@RequestBody JSONObject jsonOb,HttpServletRequest req,HttpServletResponse resp)throws Exception {
 		System.out.println("onlineOrder Placed "  +jsonOb);
 	  try
 	  {
-		  objOnlineOrderController.funSaveOnlineOrderData(jsonOb);
+		  objOnlineOrderController.funSaveOnlineOrderData(jsonOb,resp);
+		 
 	  }catch(Exception e) {
 		  e.printStackTrace();
+		  resp.setStatus(500," Server Error	");
 	  }
 	 // objSocketServer.service(jsonOb);
 	 
-	  return "200";
+	 // return "200";
 			  
 	}
 	
 	@RequestMapping(value = "/onlineOrderUpdated", method = RequestMethod.POST)
-	@ResponseStatus(HttpStatus.OK)
-	  public @ResponseBody String  funOnlineOrderUpdated(@RequestBody JSONObject jsonOb,HttpServletRequest req)throws Exception {
+	//@ResponseStatus(HttpStatus.OK)
+	  public @ResponseBody void  funOnlineOrderUpdated(@RequestBody JSONObject jsonOb,HttpServletRequest req,HttpServletResponse resp)throws Exception {
 	  
 	  System.out.println("onlineOrderstatus changed"  +jsonOb);
 	 
 		try
 		{
 			
-			objOnlineOrderController.funUpdateOnlineOrderStatus(jsonOb);
+			objOnlineOrderController.funUpdateOnlineOrderStatus(jsonOb,resp);
 		  
 	  }catch(Exception e) {
 		  e.printStackTrace();
 	  }
-	  return "200";
+	 // return "200";
 			  
 	}
 	

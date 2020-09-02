@@ -7589,6 +7589,15 @@ public class clsFillDatabaseTablesStructureUpdate
 	                sql="ALTER TABLE `tblonlineordermodifierdtl`\r\n" + 
 	                		"	ADD COLUMN `strSequenceNo` VARCHAR(10) NOT NULL DEFAULT '' AFTER `dtOrderDate`;\r\n";
 	                mapStructureUpdater.get("tblStructure").add(sql);
+	                
+	                sql="ALTER TABLE `tblonlineorderhd`\r\n" + 
+	                		"	CHANGE COLUMN `instructions` `instructions` VARCHAR(250) NOT NULL DEFAULT '' AFTER `coupon`;";
+	                mapStructureUpdater.get("tblStructure").add(sql);
+	                
+	                sql="ALTER TABLE `tblonlineriderstatus`\r\n" + 
+	                		"	CHANGE COLUMN `atstoreStatus` `atstoreStatus` VARCHAR(20) NULL DEFAULT NULL AFTER `dteAtStore`;\r\n" ;
+	                mapStructureUpdater.get("tblStructure").add(sql);
+	                		
 	    }
 	    
 
