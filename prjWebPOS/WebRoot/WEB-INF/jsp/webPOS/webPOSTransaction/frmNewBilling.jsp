@@ -1248,7 +1248,7 @@ $(document).ready(function()
 					{
 						index=rowCount*4+insertCol;
 						var col=insertTR.insertCell(insertCol);
-						col.innerHTML = "<td><input type=\"button\" id="+obj.strItemCode+" value='"+obj.strItemName+"'    style=\"width: 110px;height: 60px; white-space:normal;font-size: 11px;\"  onclick=\"funMenuItemClicked(this,"+index+")\" class=\"btn btn-primary\" /></td>";
+						col.innerHTML = "<td><input type=\"button\" id="+obj.strItemCode+" value='"+obj.strItemName+"'    style=\"width: 110px;height: 60px; white-space:normal;font-size: 11px;\"  onclick=\"funMenuItemClicked(this,"+index+")\" class=\"mdc-card info-card4\" /></td>";
 						col.style.padding = "1px";
 						
 						insertCol++;
@@ -1260,7 +1260,7 @@ $(document).ready(function()
 						insertCol=0;
 						index=rowCount*4+insertCol;				
 						var col=insertTR.insertCell(insertCol);
-						col.innerHTML = "<td><input type=\"button\" id="+obj.strItemCode+" value='"+obj.strItemName+"'    style=\"width: 110px;height: 60px; white-space: normal;font-size: 11px;\"  onclick=\"funMenuItemClicked(this,"+index+")\" class=\"btn btn-primary\" /></td>";
+						col.innerHTML = "<td><input type=\"button\" id="+obj.strItemCode+" value='"+obj.strItemName+"'    style=\"width: 110px;height: 60px; white-space: normal;font-size: 11px;\"  onclick=\"funMenuItemClicked(this,"+index+")\" class=\"mdc-card info-card4\" /></td>";
 						col.style.padding = "1px";
 						
 						insertCol++;
@@ -1611,8 +1611,8 @@ $(document).ready(function()
 		
 		function funTakeAwayBtnClicked()
 		{
-			document.getElementById("divBillItemDtl").style.height = "710px";
-			document.getElementById("divDineInDetail").style.display='none';
+			//document.getElementById("divBillItemDtl").style.height = "710px";
+			//document.getElementById("divDineInDetail").style.display='none';
 			var tblBillItemDtl = document.getElementById("tblBillItemDtl");
 			var tblOldKOTItemDtl=document.getElementById('tblOldKOTItemDtl');
 			
@@ -2917,7 +2917,7 @@ $(document).ready(function()
 						index=rowCount*tblMenuItemDtl_MAX_COL_SIZE+insertCol;
 						var col=insertTR.insertCell(insertCol);
 						var tmpprice=Math.round(obj.strPriceMonday);
-						col.innerHTML = "<td><input type=\"button\" id='"+obj.strItemCode+"' value='"+obj.strItemName+"'  data-toggle=\"tooltip\" data-placement=\"top\" title='"+tmpprice+"'  style=\"width: 110px;height: 60px; white-space:normal;font-size: 11px; \"  onclick=\"funMenuItemClicked(this,"+index+")\" class=\"btn btn-primary \" /></td>";
+						col.innerHTML = "<td><input type=\"button\" id='"+obj.strItemCode+"' value='"+obj.strItemName+"'  data-toggle=\"tooltip\" data-placement=\"top\" title='"+tmpprice+"'  style=\"width: 110px;height: 60px; white-space:normal;font-size: 11px; \"  onclick=\"funMenuItemClicked(this,"+index+")\" class=\"mdc-card info-card4 \" /></td>";
 						 //readonly=\"readonly\"
 						
 						//col.innerHTML = "<td><div><input readonly=\"readonly\" id='"+obj.strItemCode+"' value='"+obj.strItemName+"'    style=\"width: 110px;height: 60px; white-space:normal;font-size: 11px; \"  onclick=\"funMenuItemClicked(this,"+index+")\" /><font style=\"color: #000000e0; font-size: 13px;\" class=\"dont-break-out\">"+tmpprice+"</font></div></td>";
@@ -2933,7 +2933,7 @@ $(document).ready(function()
 						var tmpprice=Math.round(obj.strPriceMonday);
 						
 						var col=insertTR.insertCell(insertCol);
-						col.innerHTML = "<td><input type=\"button\" id='"+obj.strItemCode+"' value='"+obj.strItemName+"'  data-toggle=\"tooltip\" data-placement=\"top\" title='"+tmpprice+"'    style=\"width: 110px;height: 60px; white-space: normal;font-size: 11px;\"  onclick=\"funMenuItemClicked(this,"+index+")\" class=\"btn btn-primary\" /></td>";
+						col.innerHTML = "<td><input type=\"button\" id='"+obj.strItemCode+"' value='"+obj.strItemName+"'  data-toggle=\"tooltip\" data-placement=\"top\" title='"+tmpprice+"'    style=\"width: 110px;height: 60px; white-space: normal;font-size: 11px;\"  onclick=\"funMenuItemClicked(this,"+index+")\" class=\"mdc-card info-card4\" /></td>";
 						col.style.padding = "1px";
 						insertCol++;
 					}	
@@ -4143,7 +4143,8 @@ $(document).ready(function()
                                 
                             </div>
                             <div id="collapseOne${areaCount}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-                            <table id="tblMenuItemDtl">
+                           <!--   <table id="tblMenuItemDtl"> --> 
+                             <table >
                             <c:set var= "arrtable" value="${command.jsonArrForArea[areaCount].tables}"></c:set>
                             <c:set var="sizeOfTables" value="${fn:length(arrtable)}"></c:set>									   
 							<c:set var="itemCounter" value="${0}"></c:set>							
@@ -4246,8 +4247,9 @@ $(document).ready(function()
                       <td width="30%">
                         <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none   d-md-flex" style="background: #fff;width:90%;border-radius: 6px;">
                           <%-- <s:input type="text"  id="txtItemSearch" path="" cssStyle="mdc-text-field__input"  onclick="funFillGridData('')" /> --%>
-                          <input class="mdc-text-field__input" id="txtItemSearch" >   <!-- onclick="funFillGridData('') -->
+                          <input type="text" id="txtItemSearch" path=""  class="mdc-text-field__input"  cssClass="searchTextBox jQKeyboard form-control" onclick="funFillGridData('') >   <!-- onclick="funFillGridData('') -->
                           <label for="txtItemSearch" class="mdc-floating-label">Search Items</label>
+                           
                         </div> 
                       </td>
                       <td width="10%">
@@ -4267,7 +4269,8 @@ $(document).ready(function()
                 
                 
 			<div id="divItemDtl" style="height: 465px;overflow: auto;width: 680px;display: block;" >
-				<table width="100%" class="mdc-card info-card3">
+				
+				<table width="100%" class="mdc-card info-card3" id="tblMenuItemDtl">
             		<c:set var="sizeOfItem" value="${fn:length(command.jsonArrForDirectBillerMenuItemPricing)}"></c:set>
 					<c:set var="itemCount" value="${0}"></c:set>
 						<c:forEach var="objItemDtl" items="${command.jsonArrForDirectBillerMenuItemPricing}"  varStatus="varMenuHeadStatus">																																		
