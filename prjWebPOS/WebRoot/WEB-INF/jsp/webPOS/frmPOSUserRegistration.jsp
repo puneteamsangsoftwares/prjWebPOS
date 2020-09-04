@@ -64,6 +64,7 @@ $(document).ready(function()
 				confirmDialog("Data Saved \n\n" + message);
 <%}
 			}%>
+			funLoadData();
 	});
 
 
@@ -651,10 +652,7 @@ $(document).ready(function()
 			        }
 		 });
 	}
-	
-	
 </script>
-
 
 </head>
 

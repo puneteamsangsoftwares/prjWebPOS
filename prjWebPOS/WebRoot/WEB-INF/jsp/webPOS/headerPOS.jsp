@@ -204,7 +204,7 @@ function stopRKey(evt) {
 
               	<img  src="" id="memImage" title="Client Logo" Style="width: 170px;height:45px;margin-top: 5px;">
 
-              	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;&nbsp;&nbsp;&nbsp;
+              	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				
 					
 				

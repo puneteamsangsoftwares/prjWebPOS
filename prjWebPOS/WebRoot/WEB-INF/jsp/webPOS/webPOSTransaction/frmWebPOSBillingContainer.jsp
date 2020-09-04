@@ -822,6 +822,71 @@ function funCalculationForCompItem()
     }
 
 
+	function funSetData(code){
+
+		switch(fieldName){
+
+			case 'POSWaiterMaster' : 
+				funSetWaiterNo(code);
+				break;
+		}
+	}
+	
+	
+
+
+	function funSetWaiterNo(code){
+
+		$("#txtWaiterNo").val(code);
+		var searchurl=getContextPath()+"/loadPOSWaiterMasterData.html?POSWaiterCode="+code;		
+		 $.ajax({
+		        type: "GET",
+		        url: searchurl,
+		        dataType: "json",
+		        success: function(response)
+		        {
+		        	if(response.strWaiterNo=='Invalid Code')
+		        	{
+		        		confirmDialog("Invalid Group Code");
+		        		$("#txtWaiterNo").val('');
+		        	}
+		        	else
+		        	{
+			        	
+			        	$("#txtWShortName").val(response.strWShortName);
+			        	$("#txtWFullName").val(response.strWFullName);
+			        	$("#txtDebitCardString").val(response.strWaiterName);
+			        	$("#txtWShortName").focus();
+			        	if(response.strOperational=='Y')
+		        		{
+			        		$("#chkOperational").prop('checked',true);
+		        		}
+			        	
+			        	$("#txtDebitCardString").val(response.strDebitCardString);
+			        	$("#txtPOSCode").val(response.strPOSCode);
+		        	}
+				},
+				error: function(jqXHR, exception) {
+		            if (jqXHR.status === 0) {
+		                alert('Not connect.n Verify Network.');
+		            } else if (jqXHR.status == 404) {
+		                alert('Requested page not found. [404]');
+		            } else if (jqXHR.status == 500) {
+		                alert('Internal Server Error [500].');
+		            } else if (exception === 'parsererror') {
+		                alert('Requested JSON parse failed.');
+		            } else if (exception === 'timeout') {
+		                alert('Time out error.');
+		            } else if (exception === 'abort') {
+		                alert('Ajax request aborted.');
+		            } else {
+		                alert('Uncaught Error.n' + jqXHR.responseText);
+		            }		            
+		        }
+	      });
+	}
+	
+	
 </script>
 
 

@@ -87,7 +87,7 @@ $(document).ready(function()
 	{
 		gMultiWaiterSelOnMakeKOT="N";
 	}
-	/* 
+	 
 	$("#txtItemSearch").keyup(function()
 			{
 				if(operationType=="DineIn"){
@@ -95,13 +95,49 @@ $(document).ready(function()
 					{
 						funFillGridData1($(this).val());
 					}else{
-						//searchTable($(this).val());
+						funFillGridData1($(this).val());
+						//searchTable($(this).val(),$('#tblMenuHeadDtl'));
 					}
 				}else{
 					funFillGridData1($(this).val());
 				}
 				
-			}); */
+			});
+	
+	//for category search
+	$("#txtCategorySearch").keyup(function()
+			{
+				if(operationType=="DineIn"){
+					if($("#txtTableNo").text()!='' && $("#txtWaiterName").text()!='' && $("#txtPaxNo").text()!='')
+					{
+						funFillGridData2($(this).val());
+					}else{
+						funFillGridData2($(this).val());
+						//searchTable($(this).val(),$('#tblMenuHeadDtl'));
+					}
+				}else{
+					funFillGridData2($(this).val());
+				}
+				
+			});
+	
+	//for category search
+	$("#txtCategorySearch").keyup(function()
+			{
+				if(operationType=="DineIn"){
+					if($("#txtTableNo").text()!='' && $("#txtWaiterName").text()!='' && $("#txtPaxNo").text()!='')
+					{
+						funFillGridData2($(this).val());
+					}else{
+						funFillGridData2($(this).val());
+						//searchTable($(this).val(),$('#tblMenuHeadDtl'));
+					}
+				}else{
+					funFillGridData2($(this).val());
+				}
+				
+			});
+	
 			// document.getElementById("divItemDtl").style.display='block';
 			// document.getElementById("divPLU").style.display='none';
 			 
@@ -3916,7 +3952,6 @@ $(document).ready(function()
 	function funFillGridData1(itemName)
 	{
 		
-		
 		var $rows = $('#tblMenuItemDtl').empty();
 		var tblMenuItemDtl=document.getElementById('tblMenuItemDtl');
 		flagPopular="menuhead";
@@ -3953,15 +3988,96 @@ $(document).ready(function()
 					insertCol++;
 				}	
 				itemPriceDtlList[index]=obj;
-			}
-				
-			
+			}			
 		});	
-
-
-
-
-}
+	}
+	
+	function funFillGridData2(itemName)
+	{
+		
+		var $rows = $('#tblMenuHeadDtl').empty();
+		var tblMenuItemDtl=document.getElementById('tblMenuHeadDtl');
+		flagPopular="menuhead";
+		var jsonArrForMenuItemPricing=${command.jsonArrForDirectBillerMenuHeads};	
+		var rowCount = tblMenuItemDtl.rows.length;	
+		itemPriceDtlList=new Array();
+		var insertCol=0;
+		var insertTR=tblMenuItemDtl.insertRow();
+		var index=0;
+		$.each(jsonArrForMenuItemPricing, function(i, obj) 
+		{		
+			if(obj.strMenuName.toLowerCase().includes(itemName.toLowerCase())){
+				
+				if(insertCol<tblMenuItemDtl_MAX_COL_SIZE)
+				{
+					index=rowCount*tblMenuItemDtl_MAX_COL_SIZE+insertCol;
+					var col=insertTR.insertCell(insertCol);
+					var tmpprice=Math.round(obj.strPriceMonday);
+					col.innerHTML = "<td><input type=\"button\" id='"+obj.strMenuCode+"' value='"+obj.strMenuName+"'  data-toggle=\"tooltip\" data-placement=\"top\" title='"+tmpprice+"'  style=\"width: 110px;height: 60px; white-space:normal;font-size: 11px; \"  onclick=\"funMenuItemClicked(this,"+index+")\" class=\"mdc-card info-card4 \" /></td>";
+					col.style.padding = "1px";
+					insertCol++;
+				}
+				else
+				{		
+					rowCount++;
+					insertTR=tblMenuItemDtl.insertRow();									
+					insertCol=0;
+					index=rowCount*tblMenuItemDtl_MAX_COL_SIZE+insertCol;
+					var tmpprice=Math.round(obj.strPriceMonday);
+					
+					var col=insertTR.insertCell(insertCol);
+					col.innerHTML = "<td><input type=\"button\" id='"+obj.strMenuCode+"' value='"+obj.strMenuName+"'  data-toggle=\"tooltip\" data-placement=\"top\" title='"+tmpprice+"'    style=\"width: 110px;height: 60px; white-space: normal;font-size: 11px;\"  onclick=\"funMenuItemClicked(this,"+index+")\" class=\"mdc-card info-card4\" /></td>";
+					col.style.padding = "1px";
+					insertCol++;
+				}	
+				itemPriceDtlList[index]=obj;
+			}
+		});	
+	}	
+	
+	function funFillGridData3(itemName)
+	{		
+		var jsonArrForMenuItemPricing=${command.jsonArrForDirectBillerMenuHeads};
+		var $rows = $('#tblMenuHeadDtl').empty();
+		var tblMenuItemDtl=document.getElementById('tblMenuHeadDtl');
+		flagPopular="menuhead";
+			
+		var rowCount = tblMenuItemDtl.rows.length;	
+		itemPriceDtlList=new Array();
+		var insertCol=0;
+		var insertTR=tblMenuItemDtl.insertRow();
+		var index=0;
+		$.each(jsonArrForMenuItemPricing, function(i, obj) 
+		{		
+			if(obj.strMenuName.toLowerCase().includes(itemName.toLowerCase())){
+				
+				if(insertCol<tblMenuItemDtl_MAX_COL_SIZE)
+				{
+					index=rowCount*tblMenuItemDtl_MAX_COL_SIZE+insertCol;
+					var col=insertTR.insertCell(insertCol);
+					var tmpprice=Math.round(obj.strPriceMonday);
+					col.innerHTML = "<td><input type=\"button\" id='"+obj.strMenuCode+"' value='"+obj.strMenuName+"'  data-toggle=\"tooltip\" data-placement=\"top\" title='"+tmpprice+"'  style=\"width: 110px;height: 60px; white-space:normal;font-size: 11px; \"  onclick=\"funMenuItemClicked(this,"+index+")\" class=\"mdc-card info-card4 \" /></td>";
+					col.style.padding = "1px";
+					insertCol++;
+				}
+				else
+				{		
+					rowCount++;
+					insertTR=tblMenuItemDtl.insertRow();									
+					insertCol=0;
+					index=rowCount*tblMenuItemDtl_MAX_COL_SIZE+insertCol;
+					var tmpprice=Math.round(obj.strPriceMonday);
+					
+					var col=insertTR.insertCell(insertCol);
+					col.innerHTML = "<td><input type=\"button\" id='"+obj.strMenuCode+"' value='"+obj.strMenuName+"'  data-toggle=\"tooltip\" data-placement=\"top\" title='"+tmpprice+"'    style=\"width: 110px;height: 60px; white-space: normal;font-size: 11px;\"  onclick=\"funMenuItemClicked(this,"+index+")\" class=\"mdc-card info-card4\" /></td>";
+					col.style.padding = "1px";
+					insertCol++;
+				}	
+				itemPriceDtlList[index]=obj;
+			}
+		});	
+	}
+	
 
 	function funPOSHome()
    	{
@@ -3993,8 +4109,70 @@ $(document).ready(function()
 		        cache: false
 		 });
 		$("#memImage").attr('src', searchUrl1);
-	}  
+	} 
+		
+	
+	function funSetData(code){
 
+		switch(fieldName){
+
+			case 'POSWaiterMaster' : 
+				funSetWaiterNo(code);
+				break;
+		}
+	}
+
+
+	function funSetWaiterNo(code){
+
+		$("#txtWaiterNo").val(code);
+		var searchurl=getContextPath()+"/loadPOSWaiterMasterData.html?POSWaiterCode="+code;		
+		 $.ajax({
+		        type: "GET",
+		        url: searchurl,
+		        dataType: "json",
+		        success: function(response)
+		        {
+		        	if(response.strWaiterNo=='Invalid Code')
+		        	{
+		        		confirmDialog("Invalid Group Code");
+		        		$("#txtWaiterNo").val('');
+		        	}
+		        	else
+		        	{
+			        	
+			        	$("#txtWShortName").val(response.strWShortName);
+			        	$("#txtWFullName").val(response.strWFullName);
+			        	$("#txtDebitCardString").val(response.strWaiterName);
+			        	$("#txtWShortName").focus();
+			        	if(response.strOperational=='Y')
+		        		{
+			        		$("#chkOperational").prop('checked',true);
+		        		}
+			        	
+			        	$("#txtDebitCardString").val(response.strDebitCardString);
+			        	$("#txtPOSCode").val(response.strPOSCode);
+		        	}
+				},
+				error: function(jqXHR, exception) {
+		            if (jqXHR.status === 0) {
+		                alert('Not connect.n Verify Network.');
+		            } else if (jqXHR.status == 404) {
+		                alert('Requested page not found. [404]');
+		            } else if (jqXHR.status == 500) {
+		                alert('Internal Server Error [500].');
+		            } else if (exception === 'parsererror') {
+		                alert('Requested JSON parse failed.');
+		            } else if (exception === 'timeout') {
+		                alert('Time out error.');
+		            } else if (exception === 'abort') {
+		                alert('Ajax request aborted.');
+		            } else {
+		                alert('Uncaught Error.n' + jqXHR.responseText);
+		            }		            
+		        }
+	      });
+	}
 </script>
   
 </head>
@@ -4012,7 +4190,7 @@ $(document).ready(function()
           <div class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
               <button class="mdc-button mdc-menu-button" style="margin-right: 59px;">
                 <span class="d-flex align-items-center">
-                  <span class="clent-name">Ninety degrees</span>
+                  <span class="clent-name">${gCompanyName}</span>
                 </span>
               </button>             
             <span class="mdc-top-app-bar__title"><img src="" id="memImage" Style="width: 184px;height:54px;margin-top: 8px;"></span>
@@ -4202,7 +4380,7 @@ $(document).ready(function()
                       </td>
                       <td width="50%">
                         <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none d-md-flex" style="background: #fff;border-radius: 6px;">
-                         <input class="mdc-text-field__input" id="text-field-hero-input">
+                         <input type="text" id="txtCategorySearch" path="" class="mdc-text-field__input" cssClass="searchTextBox jQKeyboard form-control">
                           <label for="text-field-hero-input" class="mdc-floating-label">Search Category</label>
                         </div>
                        </td>
@@ -4247,7 +4425,7 @@ $(document).ready(function()
                       <td width="30%">
                         <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none   d-md-flex" style="background: #fff;width:90%;border-radius: 6px;">
                           <%-- <s:input type="text"  id="txtItemSearch" path="" cssStyle="mdc-text-field__input"  onclick="funFillGridData('')" /> --%>
-                          <input type="text" id="txtItemSearch" path=""  class="mdc-text-field__input"  cssClass="searchTextBox jQKeyboard form-control" onclick="funFillGridData('') >   <!-- onclick="funFillGridData('') -->
+                          <input type="text" id="txtItemSearch" path=""  class="mdc-text-field__input"  cssClass="searchTextBox jQKeyboard form-control" onclick="funFillGridData('')" >   <!-- onclick="funFillGridData('') -->
                           <label for="txtItemSearch" class="mdc-floating-label">Search Items</label>
                            
                         </div> 

@@ -102,7 +102,7 @@
 					<div class="wrap-input100 validate-input" >
 						
 						<s:input cssClass="input100" name="usercode" placeholder="UserName"
-							path="strClientCode" autocomplete="off" id="username" required="true"
+							path="strClientCode" autocomplete="off" id="username" required="true" pattern='\S+@\S+\.\S+'
 							cssStyle="text-transform: uppercase;" /> 
 						<s:errors path="strClientCode"></s:errors>
 						
