@@ -66,60 +66,39 @@ $(document).ready(function()
 {
 	funloadClientPhoto();
 	var posDate="${gPOSDate}";
-		$("#lblPOSDate").text(posDate);
 	 // Get the input field
-/* 	var input = document.getElementById("Customer");
 
 	// Execute a function when the user releases a key on the keyboard
-	input.addEventListener("keyup", function(event)
-	{
-	  // Cancel the default action, if needed
-	  event.preventDefault();
-	  // Number 13 is the "Enter" key on the keyboard
-	  if (event.keyCode === 35) 
-	  {
-		  funCustomerBtnClicked();
-	  }
-	}); 
-	
- */	
+	/* $("#idtableSearch, #txtItemSearch").keypress(function (event) {
+                if (event.keyCode == 13) {
+                    event.preventDefault();
+                }
+     }); */
 	if(gMultiWaiterSelOnMakeKOT=="")
 	{
 		gMultiWaiterSelOnMakeKOT="N";
 	}
 	 
 	$("#txtItemSearch").keyup(function()
+	{
+
+		if(operationType=="DineIn"){
+			if($("#txtTableNo").text()!='' && $("#txtWaiterName").text()!='' && $("#txtPaxNo").text()!='')
 			{
-				if(operationType=="DineIn"){
-					if($("#txtTableNo").text()!='' && $("#txtWaiterName").text()!='' && $("#txtPaxNo").text()!='')
-					{
-						funFillGridData1($(this).val());
-					}else{
-						funFillGridData1($(this).val());
-						//searchTable($(this).val(),$('#tblMenuHeadDtl'));
-					}
-				}else{
-					funFillGridData1($(this).val());
-				}
-				
-			});
+				funFillGridData1($(this).val());
+			}else{
+				funFillGridData1($(this).val());
+				//searchTable($(this).val(),$('#tblMenuHeadDtl'));
+			}
+		}else{
+			funFillGridData1($(this).val());
+		}
+		
+	});
 	
 	//for category search
-	$("#txtCategorySearch").keyup(function()
-			{
-				if(operationType=="DineIn"){
-					if($("#txtTableNo").text()!='' && $("#txtWaiterName").text()!='' && $("#txtPaxNo").text()!='')
-					{
-						funFillGridData2($(this).val());
-					}else{
-						funFillGridData2($(this).val());
-						//searchTable($(this).val(),$('#tblMenuHeadDtl'));
-					}
-				}else{
-					funFillGridData2($(this).val());
-				}
-				
-			});
+	
+		
 	
 	//for category search
 	$("#txtCategorySearch").keyup(function()
@@ -147,11 +126,13 @@ $(document).ready(function()
 			 document.getElementById("divTopButtonDtl").style.display='block';
 			 document.getElementById("divMenuHeadDtl").style.display='block';
 		 */
-			if(operationType=="DineIn")
+			
+		 
+		 /* if(operationType=="DineIn")
 			{
 				funDineInButtonClicked();
-			}
-			
+			} */
+	funPopularItemButtonClicked();
 			
 			
 		});
@@ -705,7 +686,7 @@ $(document).ready(function()
 					}
 				}
 			}
-			else if (!(gCustomerCode.trim().length==0 && homeDeliveryForTax=="Y"))
+			else if (gCustomerCode != null && !(gCustomerCode.trim().length==0 && homeDeliveryForTax=="Y"))
 	        {
 	            var totalBillAmount = 0.00;
 			 	if ($("#txtTotal").val().trim().length > 0)
@@ -939,7 +920,7 @@ $(document).ready(function()
 			    		funRemoveTableRows("tblBillItemDtl");
 						$('#tblOldKOTItemDtl').empty();
 						funOpenKOTPrint(gAreaCode,gTableNo,$('#txtKOTNo').text());
-						location.reload();
+						//location.reload();
 		        	}
 		        	else
 		        	{	        		
@@ -1159,7 +1140,7 @@ $(document).ready(function()
 				
 				//funAddMenuHeadData(jsonArrForMenuHeads);
 				
-				funLoadPopularItems();
+				funPopularItemButtonClicked();
 		}
 		 
 		 
@@ -1189,7 +1170,7 @@ $(document).ready(function()
 						if(rowCount==0)
 						{
 							col1.style.padding = "1px";
-							col1.innerHTML= "<td><input readonly=\"readonly\" id='PopularItem' value='POPULAR'  data-toggle=\"tooltip\" data-placement=\"top\" title='POPULAR ITEM' style="+style+" onclick=\"funLoadPopularItems()\" class=\"mdc-card info-card4\" /></td>";
+							col1.innerHTML= "<td><input readonly=\"readonly\" id='PopularItem' value='POPULAR'  data-toggle=\"tooltip\" data-placement=\"top\" title='POPULAR ITEM' style="+style+" onclick=\"funPopularItemButtonClicked()\" class=\"mdc-card info-card4\" /></td>";
 							menuIndex=menuIndex-1;
 						}else{
 							
@@ -1649,6 +1630,8 @@ $(document).ready(function()
 		{
 			//document.getElementById("divBillItemDtl").style.height = "710px";
 			//document.getElementById("divDineInDetail").style.display='none';
+			document.getElementById("idAreaWiseTable").style.display='none';
+
 			var tblBillItemDtl = document.getElementById("tblBillItemDtl");
 			var tblOldKOTItemDtl=document.getElementById('tblOldKOTItemDtl');
 			
@@ -1679,25 +1662,18 @@ $(document).ready(function()
 			
 			$(objTakeAwayButton).addClass("active");		
 			$(objDnieInButton).removeClass("active");
-			$(objHomeDeliveryButton).removeClass("active");
-			
+			$(objHomeDeliveryButton).removeClass("active");			
 			operationType="TakeAway";
-			transactionType="Direct Biller";
-			
-			 homeDeliveryForTax = "N";		 		
-			 gTakeAway="Yes";
-			 
+			transactionType="Direct Biller";			
+			homeDeliveryForTax = "N";		 		
+			gTakeAway="Yes";		 
 			 //funDisplayPLUButton(false);
-			 funDisplayDoneButton(false);
-			 funDisplayMakeBillButton(false);
-			 //funDisplayPLUButton(false);
-				
+			funDisplayDoneButton(false);
+			funDisplayMakeBillButton(false);
+			//funDisplayPLUButton(false);				
 			//load menuheads
 			var $rows = $('#tblMenuItemDtl').empty();
 			funShowMenuHead();	
-				
-				
-			
 		}
 		
 
@@ -1705,6 +1681,8 @@ $(document).ready(function()
 		function funDineInButtonClicked()
 		{	
 			funOnCloseBtnClick();
+			document.getElementById("idAreaWiseTable").style.display='block';
+
 			var tblBillItemDtl = document.getElementById("tblBillItemDtl");
 			var tblOldKOTItemDtl=document.getElementById('tblOldKOTItemDtl');
 			
@@ -1746,7 +1724,9 @@ $(document).ready(function()
 			 gTakeAway="No";
 			
 			funResetDineInFields();
+	        var $rows = $('#tblMenuItemDtl').empty();
 			
+			funShowMenuHead();
 		//	funShowTables();
 			
 		}
@@ -1786,8 +1766,10 @@ $(document).ready(function()
 		
 		function funHomeDeliveryBtnClicked()
 		{
-			document.getElementById("divBillItemDtl").style.height = "710px";
-			document.getElementById("divDineInDetail").style.display='none';
+			//document.getElementById("divBillItemDtl").style.height = "710px";
+			//document.getElementById("divDineInDetail").style.display='none';
+			document.getElementById("idAreaWiseTable").style.display='none';
+			
 			var tblBillItemDtl = document.getElementById("tblBillItemDtl");
 			var tblOldKOTItemDtl=document.getElementById('tblOldKOTItemDtl');
 			
@@ -2723,7 +2705,7 @@ $(document).ready(function()
 			objIndex=objIndex1;
 			
 			funFillMapWithHappyHourItems();
-			itemPriceDtlList=${command.jsonArrForDirectBillerMenuItemPricing};
+			//itemPriceDtlList=${command.jsonArrForDirectBillerMenuItemPricing};
 			var objMenuItemPricingDtl=itemPriceDtlList[objIndex];
 			itemPrice = funGetFinalPrice(objMenuItemPricingDtl);
 			
@@ -2782,22 +2764,31 @@ $(document).ready(function()
 				
 				if(operationType=="DineIn")
 				{
-					if(rowCount==1)
+					if(gTableNo=="")
 					{
-						funGenerateKOTNo();
-						
-						var tblOldKOTItemDtl=document.getElementById('tblOldKOTItemDtl');
-						var oldKOTRowCount = tblOldKOTItemDtl.rows.length;
-						
-						if(oldKOTRowCount==0)
-						{
-							funDisplayNCKOTButton(true);						
-						}
-						funDisplayDoneButton(true);
-						funDisplayMakeBillButton(false);
+						alert("Please select Table Number");
 					}
+					else
+					{
+						if(rowCount==1)
+						{
+							funGenerateKOTNo();
+							
+							var tblOldKOTItemDtl=document.getElementById('tblOldKOTItemDtl');
+							var oldKOTRowCount = tblOldKOTItemDtl.rows.length;
+							
+							if(oldKOTRowCount==0)
+							{
+								funDisplayNCKOTButton(true);						
+							}
+							funDisplayDoneButton(true);
+							funDisplayMakeBillButton(false);
+						}
+						funFillTableBillItemDtl(objMenuItemPricingDtl,price,qty);	
+
+					}	
 					
-					funFillTableBillItemDtl(objMenuItemPricingDtl,price,qty);	
+					
 				}
 				else if(operationType=="HomeDelivery")
 				{
@@ -2883,11 +2874,11 @@ $(document).ready(function()
 			}
 		
 		//function on popular item button click
-		function funPopularItemButtonClicked(objButton)
+		function funPopularItemButtonClicked()
 		{
 			var $rows = $('#tblMenuItemDtl').empty();
 			var tblMenuItemDtl=document.getElementById('tblMenuItemDtl');
-			var selctedCode=objButton.id;
+		//	var selctedCode=objButton.id;
 			flagPopular="Popular";
 			//funFillTopButtonList(flagPopular);
 			var jsonArrForPopularItems=${command.jsonArrForPopularItems};	
@@ -2901,7 +2892,7 @@ $(document).ready(function()
 													
 					if(insertCol<tblMenuItemDtl_MAX_COL_SIZE)
 					{
-						index=rowCount*4+insertCol;
+						index=rowCount*tblMenuItemDtl_MAX_COL_SIZE+insertCol;
 						var col=insertTR.insertCell(insertCol);
 						
 						col.innerHTML = "<td  ><input type=\"button\" id='"+obj.strItemCode+"' value='"+obj.strItemName+"'    style=\"width: 110px;height: 60px; white-space:normal;font-size: 11px; \"  onclick=\"funMenuItemClicked(this,"+index+")\" class=\"btn btn-primary \" /></td>";
@@ -2914,7 +2905,7 @@ $(document).ready(function()
 						rowCount++;
 						insertTR=tblMenuItemDtl.insertRow();									
 						insertCol=0;
-						index=rowCount*4+insertCol;				
+						index=rowCount*tblMenuItemDtl_MAX_COL_SIZE+insertCol;
 						var col=insertTR.insertCell(insertCol);
 						
 						col.innerHTML = "<td><input type=\"button\" id='"+obj.strItemCode+"' value='"+obj.strItemName+"'    style=\"width: 110px;height: 60px; white-space:normal;font-size: 11px; \"  onclick=\"funMenuItemClicked(this,"+index+")\" class=\"btn btn-primary \" /></td>";
@@ -4112,7 +4103,7 @@ $(document).ready(function()
 	} 
 		
 	
-	function funSetData(code){
+	/* function funSetData(code){
 
 		switch(fieldName){
 
@@ -4121,11 +4112,12 @@ $(document).ready(function()
 				break;
 		}
 	}
-
+ */
 
 	function funSetWaiterNo(code){
 
 		$("#txtWaiterNo").val(code);
+		gWaiterNo=code;
 		var searchurl=getContextPath()+"/loadPOSWaiterMasterData.html?POSWaiterCode="+code;		
 		 $.ajax({
 		        type: "GET",
@@ -4177,24 +4169,26 @@ $(document).ready(function()
   
 </head>
 <body>
+	<s:form name="frmDirectBiller" method="POST" commandName="command" action="actionDirectBiller.html?saddr=${urlHits}" target="_blank" >			
+
 <script src="../assets/js/preloader.js"></script>
 <div class="body-wrapper">
    <div class="main-wrapper mdc-drawer-app-content">
       <!-- partial:partials/_navbar.html -->
     <header class="mdc-top-app-bar">
         <div class="mdc-top-app-bar__row">
-          <div class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+          <%-- <div class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
             <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button sidebar-toggler">menu</button>
             <span class="mdc-top-app-bar__title"><img src="../${pageContext.request.contextPath}/resources/newdesign/assets/images/sanguinelogo.jpg" style="height: 46px;width: 135px;"></span>
-          </div>
-          <div class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+          </div> --%>
+          <%-- <div class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
               <button class="mdc-button mdc-menu-button" style="margin-right: 59px;">
                 <span class="d-flex align-items-center">
                   <span class="clent-name">${gCompanyName}</span>
                 </span>
               </button>             
             <span class="mdc-top-app-bar__title"><img src="" id="memImage" Style="width: 184px;height:54px;margin-top: 8px;"></span>
-          </div>
+          </div> --%>
           
           <div class="menu-button-container menu-profile d-none d-md-block">
               <!-- <label id="customerName">Cust Name</label> -->
@@ -4224,8 +4218,7 @@ $(document).ready(function()
               </div>
               <div class="divider d-none d-md-block"></div>
               <div class="menu-button-container">
-			           <button class="mdc-button mdc-menu-button" onclick="funPOSHome()">
-                    <i class="mdi mdi-home"></i>                    
+                    <i class="mdi mdi-home"   style="font-size:25px;" onclick="funPOSHome()" ></i>                    
                  </button>
               </div>
           </div>
@@ -4265,7 +4258,7 @@ $(document).ready(function()
                           <div class="mdc-notched-outline">
                            <div class="mdc-notched-outline__leading"></div>
                             <div class="mdc-notched-outline__notch">
-                              <label for="text-field-hero-input" class="mdc-floating-label"  ondblclick="funTableHelp('POSTableMaster')">Search Tables</label>
+                              <label for="text-field-hero-input" class="mdc-floating-label" id="idtableSearch" ondblclick="funTableHelp('POSTableMaster')">Search Tables</label>
                             </div>
                             <div class="mdc-notched-outline__trailing"></div>
                           </div>
@@ -4305,7 +4298,7 @@ $(document).ready(function()
                 </div> --%>
               
               
-               <table width="100%" class="mdc-card info-card3">
+               <table width="100%" class="mdc-card info-card3" id="idAreaWiseTable">
                   <tr>        
                     <td class="bs-example">
                       <div class="accordion" id="accordionExample">
@@ -4321,7 +4314,6 @@ $(document).ready(function()
                                 
                             </div>
                             <div id="collapseOne${areaCount}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-                           <!--   <table id="tblMenuItemDtl"> --> 
                              <table >
                             <c:set var= "arrtable" value="${command.jsonArrForArea[areaCount].tables}"></c:set>
                             <c:set var="sizeOfTables" value="${fn:length(arrtable)}"></c:set>									   
@@ -4389,7 +4381,7 @@ $(document).ready(function()
                 <div id="divMenuHeadDtl" style="border: 1px solid rgb(204, 204, 204);height: 120px;overflow: auto;width: 680px;display: block; margin-top:0px;" >									
 				<table width="100%" class="mdc-card info-card3" id="tblMenuHeadDtl" > <!-- class="table table-striped table-bordered table-hover" -->
 									 <tr>
-									 <td><input type="button" id="PopularItem" value="POPULAR" onclick="funPopularItemButtonClicked(this)" style="width: 100px;height: 35px; white-space: normal;border-style:none;text-align:center ;" class="mdc-card info-card4"/></td>
+									 <td><input type="button" id="PopularItem" value="POPULAR" onclick="funPopularItemButtonClicked()" style="width: 100px;height: 35px; white-space: normal;border-style:none;text-align:center ;" class="mdc-card info-card4"/></td>
 									 </tr>
 									 <c:set var="sizeOfmenu" value="${fn:length(command.jsonArrForDirectBillerMenuHeads)}"></c:set>
 									 <c:set var="menuCount" value="${0}"></c:set>
@@ -4425,8 +4417,8 @@ $(document).ready(function()
                       <td width="30%">
                         <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none   d-md-flex" style="background: #fff;width:90%;border-radius: 6px;">
                           <%-- <s:input type="text"  id="txtItemSearch" path="" cssStyle="mdc-text-field__input"  onclick="funFillGridData('')" /> --%>
-                          <input type="text" id="txtItemSearch" path=""  class="mdc-text-field__input"  cssClass="searchTextBox jQKeyboard form-control" onclick="funFillGridData('')" >   <!-- onclick="funFillGridData('') -->
-                          <label for="txtItemSearch" class="mdc-floating-label">Search Items</label>
+                          <input type="text"  path=""  id="txtItemSearch"  class="mdc-text-field__input"  cssClass="searchTextBox jQKeyboard form-control" onclick="funFillGridData('')" >   <!-- onclick="funFillGridData('') -->
+                          <label  class="mdc-floating-label">Search Items</label>
                            
                         </div> 
                       </td>
@@ -4449,7 +4441,7 @@ $(document).ready(function()
 			<div id="divItemDtl" style="height: 465px;overflow: auto;width: 680px;display: block;" >
 				
 				<table width="100%" class="mdc-card info-card3" id="tblMenuItemDtl">
-            		<c:set var="sizeOfItem" value="${fn:length(command.jsonArrForDirectBillerMenuItemPricing)}"></c:set>
+            		<%-- <c:set var="sizeOfItem" value="${fn:length(command.jsonArrForDirectBillerMenuItemPricing)}"></c:set>
 					<c:set var="itemCount" value="${0}"></c:set>
 						<c:forEach var="objItemDtl" items="${command.jsonArrForDirectBillerMenuItemPricing}"  varStatus="varMenuHeadStatus">																																		
 						<tr>
@@ -4473,7 +4465,7 @@ $(document).ready(function()
 							}
 							%>										
 						</tr>																																
-						</c:forEach>	       
+						</c:forEach>	   --%>     
                   </table> 
              
              </div>
@@ -4486,9 +4478,9 @@ $(document).ready(function()
                         <label id="txtTableNo" class="tablehead"></label>
                          </h5>
                       </td>
-                      <td width="33%">
+                      <!-- <td width="33%">
                         <h5 class="tablehead" nowrap style="color: #399be2;font-weight:600;">00:00</h5>
-                      </td>
+                      </td> -->
                       <td width="33%">
                         <h5 class="tablehead" nowrap style="color: #399be2;font-weight: 600;">Total:    
                         <input  disabled type="text"  id="txtTotal" style="color: #399be2;font-weight: 600;    height: 26px;border: none;" />
@@ -4510,17 +4502,17 @@ $(document).ready(function()
 				
                  <table width="100%" class="mdc-card info-card3">
                     <tr>
-                      <td width="20%">
+                     <!--  <td width="20%">
                         <h5 class="tablehead" nowrap style="font-weight: 600;">KOT:<label id="txtKOTNo" style="width: 100%;text-align: center;" class="btn-link"></label></h5>
                       </td>
                       <td width="30%">
                         <h5 class="tablehead" nowrap style="font-weight: 600;">Time:00:00</h5>
-                      </td>
-                      <td width="2%">
+                      </td> -->
+                      <!-- <td width="2%">
                         <a href="javascript:void(0)" class="mdc-button mdc-button--raised mdc-ripple-upgraded" style="--mdc-ripple-fg-size:38px; --mdc-ripple-fg-scale:2.19553; --mdc-ripple-fg-translate-start:4.28125px, 4px; --mdc-ripple-fg-translate-end:13px, -1px; border-radius: 6px;">
                           REPRINT
                         </a>
-                      </td>
+                      </td> -->
 					</tr>
 					</table>
 
@@ -4632,5 +4624,6 @@ $(document).ready(function()
   <!-- Custom js for this page-->
   <script src="../assets/js/dashboard.js"></script>
   <!-- End custom js for this page-->
+  </s:form>
 </body>
 </html> 

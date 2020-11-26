@@ -204,10 +204,10 @@ var selectedRowIndex="";
 			  var $rows = $('#tblSettleItemTable').empty();	
 		 	 
 			  //invisible div Discount div
-			  document.getElementById("divDiscount").style.display='none'; 
+			//  document.getElementById("divDiscount").style.display='none'; 
 			  
 			  //invisible settlement amount div
-			  document.getElementById("divExtraFileds").style.display='none'; 
+			//  document.getElementById("divExtraFileds").style.display='none'; 
 		 	 
 		 	
 		 	 

@@ -874,7 +874,7 @@ public class clsPOSBillSettlementControllerForDirectBiller
 				userCode = "",
 				posClientCode = "";
 
-		clientCode = request.getSession().getAttribute("gClientCode").toString();
+		clientCode = request.getSession().getAttribute("g	ClientCode").toString();
 		POSCode = request.getSession().getAttribute("gPOSCode").toString();
 		POSDate = request.getSession().getAttribute("gPOSDate").toString().split(" ")[0];
 		userCode = request.getSession().getAttribute("gUserCode").toString();
@@ -1046,108 +1046,112 @@ public class clsPOSBillSettlementControllerForDirectBiller
 
 			/* To save normal bill */
 			objBillingAPI.funSaveBill(isBillSeries, "", listBillSeriesBillDtl, voucherNo, listOfWholeKOTItemDtl, objBean, request, hmPromoItem);
-            if(objBean.getIsSettleBill().equalsIgnoreCase("Y"))
+            if(objBean.getIsSettleBill()!=null)
             {
-    			StringBuilder hqlBuilder=new StringBuilder();
-    			hqlBuilder.append(" from clsBillHdModel where strBillNo='" + voucherNo + "' and strClientCode='" + clientCode + "' and dtBillDate='" + POSDate + "'  ");
-    			List<clsBillHdModel> listOfHd = objBaseService.funGetList(hqlBuilder, "hql");
+    			if(objBean.getIsSettleBill().equalsIgnoreCase("Y"))
+                {
+        			StringBuilder hqlBuilder=new StringBuilder();
+        			hqlBuilder.append(" from clsBillHdModel where strBillNo='" + voucherNo + "' and strClientCode='" + clientCode + "' and dtBillDate='" + POSDate + "'  ");
+        			List<clsBillHdModel> listOfHd = objBaseService.funGetList(hqlBuilder, "hql");
 
-    			clsBillHdModel objBillHdModel = listOfHd.get(0);
-    			List<clsBillDtlModel> listBillDtlModel = objBillHdModel.getListBillDtlModel();
+        			clsBillHdModel objBillHdModel = listOfHd.get(0);
+        			List<clsBillDtlModel> listBillDtlModel = objBillHdModel.getListBillDtlModel();
 
-    			objBillHdModel.setStrTransactionType(objBillHdModel.getStrTransactionType() + "," + "Settle Bill");
+        			objBillHdModel.setStrTransactionType(objBillHdModel.getStrTransactionType() + "," + "Settle Bill");
 
-            	List<clsPOSSettlementDtlsOnBill> listObjBillSettlementDtl = objBean.getListSettlementDtlOnBill();
+                	List<clsPOSSettlementDtlsOnBill> listObjBillSettlementDtl = objBean.getListSettlementDtlOnBill();
 
-    			List<clsBillSettlementDtlModel> listBillSettlementDtlModel = new ArrayList<clsBillSettlementDtlModel>();
+        			List<clsBillSettlementDtlModel> listBillSettlementDtlModel = new ArrayList<clsBillSettlementDtlModel>();
 
-    			boolean isComplementarySettle = false;
-    			if (listObjBillSettlementDtl.size() == 1 && listObjBillSettlementDtl.get(0).getStrSettelmentType().equalsIgnoreCase("Complementary"))
-    			{
-    				isComplementarySettle = true;
-    			}
-    			String strSettlement="";
-    			for (clsPOSSettlementDtlsOnBill objBillSettlementDtl : listObjBillSettlementDtl)
-    			{
-    				clsBillSettlementDtlModel objSettleModel = new clsBillSettlementDtlModel();
+        			boolean isComplementarySettle = false;
+        			if (listObjBillSettlementDtl.size() == 1 && listObjBillSettlementDtl.get(0).getStrSettelmentType().equalsIgnoreCase("Complementary"))
+        			{
+        				isComplementarySettle = true;
+        			}
+        			String strSettlement="";
+        			for (clsPOSSettlementDtlsOnBill objBillSettlementDtl : listObjBillSettlementDtl)
+        			{
+        				clsBillSettlementDtlModel objSettleModel = new clsBillSettlementDtlModel();
 
-    				if(objBillSettlementDtl.getStrSettelmentCode()!=null && objBillSettlementDtl.getDblPaidAmt()>0){
-    					strSettlement=objBillSettlementDtl.getStrSettelmentDesc();
-    					objSettleModel.setStrSettlementCode(objBillSettlementDtl.getStrSettelmentCode());
-    					if (isComplementarySettle)
-    					{
-    						objSettleModel.setDblSettlementAmt(0.00);
-    						objSettleModel.setDblPaidAmt(0.00);
-    						
-    						objSettleModel.setDblActualAmt(0.00);
-    						objSettleModel.setDblRefundAmt(0.00);
-    						
-    						objBillHdModel.setDblDeliveryCharges(0.00);
-    						objBillHdModel.setDblDiscountAmt(0);
-    						objBillHdModel.setDblDiscountPer(0);
-    						objBillHdModel.setDblGrandTotal(0);
-    						objBillHdModel.setDblRoundOff(0);
-    						objBillHdModel.setDblSubTotal(0);
-    						objBillHdModel.setDblTaxAmt(0);
-    						objBillHdModel.setDblTipAmount(0);
-    						
-    					}
-    					else
-    					{
-    						objSettleModel.setDblSettlementAmt(objBillSettlementDtl.getDblPaidAmt());
-    						objSettleModel.setDblPaidAmt(objBillSettlementDtl.getDblPaidAmt());
-    						
-    						objSettleModel.setDblActualAmt(objBillSettlementDtl.getDblActualAmt());
-    						objSettleModel.setDblRefundAmt(objBillSettlementDtl.getDblRefundAmt());
-    					}
-    					
-    					
-    					
-    					objSettleModel.setStrExpiryDate("");
-    					objSettleModel.setStrCardName("");
-    					objSettleModel.setStrRemark("");
-    					objSettleModel.setStrCustomerCode("");
-                        if(objBillSettlementDtl.getStrSettelmentType().equalsIgnoreCase("Credit"))
-                        {
-        					objSettleModel.setStrCustomerCode(objGlobalFunctions.funIfNull(objBean.getStrCustomerCode(), "", objBean.getStrCustomerCode()));
+        				if(objBillSettlementDtl.getStrSettelmentCode()!=null && objBillSettlementDtl.getDblPaidAmt()>0){
+        					strSettlement=objBillSettlementDtl.getStrSettelmentDesc();
+        					objSettleModel.setStrSettlementCode(objBillSettlementDtl.getStrSettelmentCode());
+        					if (isComplementarySettle)
+        					{
+        						objSettleModel.setDblSettlementAmt(0.00);
+        						objSettleModel.setDblPaidAmt(0.00);
+        						
+        						objSettleModel.setDblActualAmt(0.00);
+        						objSettleModel.setDblRefundAmt(0.00);
+        						
+        						objBillHdModel.setDblDeliveryCharges(0.00);
+        						objBillHdModel.setDblDiscountAmt(0);
+        						objBillHdModel.setDblDiscountPer(0);
+        						objBillHdModel.setDblGrandTotal(0);
+        						objBillHdModel.setDblRoundOff(0);
+        						objBillHdModel.setDblSubTotal(0);
+        						objBillHdModel.setDblTaxAmt(0);
+        						objBillHdModel.setDblTipAmount(0);
+        						
+        					}
+        					else
+        					{
+        						objSettleModel.setDblSettlementAmt(objBillSettlementDtl.getDblPaidAmt());
+        						objSettleModel.setDblPaidAmt(objBillSettlementDtl.getDblPaidAmt());
+        						
+        						objSettleModel.setDblActualAmt(objBillSettlementDtl.getDblActualAmt());
+        						objSettleModel.setDblRefundAmt(objBillSettlementDtl.getDblRefundAmt());
+        					}
+        					
+        					
+        					
+        					objSettleModel.setStrExpiryDate("");
+        					objSettleModel.setStrCardName("");
+        					objSettleModel.setStrRemark("");
+        					objSettleModel.setStrCustomerCode("");
+                            if(objBillSettlementDtl.getStrSettelmentType().equalsIgnoreCase("Credit"))
+                            {
+            					objSettleModel.setStrCustomerCode(objGlobalFunctions.funIfNull(objBean.getStrCustomerCode(), "", objBean.getStrCustomerCode()));
 
-                        }
-    					
-    					objSettleModel.setStrGiftVoucherCode("");
-    					objSettleModel.setStrDataPostFlag("");
+                            }
+        					
+        					objSettleModel.setStrGiftVoucherCode("");
+        					objSettleModel.setStrDataPostFlag("");
 
-    					objSettleModel.setStrFolioNo("");
-    					objSettleModel.setStrRoomNo("");
+        					objSettleModel.setStrFolioNo("");
+        					objSettleModel.setStrRoomNo("");
 
-    					listBillSettlementDtlModel.add(objSettleModel);
+        					listBillSettlementDtlModel.add(objSettleModel);
 
-    				}
-    				
-    			}
+        				}
+        				
+        			}
 
-    			objBillHdModel.setStrSettelmentMode("");
+        			objBillHdModel.setStrSettelmentMode("");
 
-    			if (listBillSettlementDtlModel != null && listBillSettlementDtlModel.size() == 0)
-    			{
-    				objBillHdModel.setStrSettelmentMode("");
-    			}
-    			else if (listBillSettlementDtlModel != null && listBillSettlementDtlModel.size() == 1)
-    			{
-    				objBillHdModel.setStrSettelmentMode(strSettlement);
-    			}
-    			else
-    			{
-    				objBillHdModel.setStrSettelmentMode("MultiSettle");
-    			}
+        			if (listBillSettlementDtlModel != null && listBillSettlementDtlModel.size() == 0)
+        			{
+        				objBillHdModel.setStrSettelmentMode("");
+        			}
+        			else if (listBillSettlementDtlModel != null && listBillSettlementDtlModel.size() == 1)
+        			{
+        				objBillHdModel.setStrSettelmentMode(strSettlement);
+        			}
+        			else
+        			{
+        				objBillHdModel.setStrSettelmentMode("MultiSettle");
+        			}
 
-    			objBillHdModel.setListBillSettlementDtlModel(listBillSettlementDtlModel);
-    			objBillHdModel.setStrCustomerCode(objGlobalFunctions.funIfNull(objBean.getStrCustomerCode(), "", objBean.getStrCustomerCode()));
-    			
-    			/* Save Bill HD */
-    			objBaseServiceImpl.funSave(objBillHdModel);
-    			objBillingAPI.funUpdateTableStatus(objBillHdModel.getStrTableNo(), "Normal",clientCode);
+        			objBillHdModel.setListBillSettlementDtlModel(listBillSettlementDtlModel);
+        			objBillHdModel.setStrCustomerCode(objGlobalFunctions.funIfNull(objBean.getStrCustomerCode(), "", objBean.getStrCustomerCode()));
+        			
+        			/* Save Bill HD */
+        			objBaseServiceImpl.funSave(objBillHdModel);
+        			objBillingAPI.funUpdateTableStatus(objBillHdModel.getStrTableNo(), "Normal",clientCode);
 
+                }
             }
+
 			/* printing bill............... */
 			objTextFileGeneration.funGenerateAndPrintBill(voucherNo, POSCode, clientCode);
 			

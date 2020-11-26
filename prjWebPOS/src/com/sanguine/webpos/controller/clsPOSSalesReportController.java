@@ -2075,6 +2075,7 @@ public class clsPOSSalesReportController {
 				,@RequestParam("areaCode") String areaCode,@RequestParam("operationType") String operationType,@RequestParam("gEnableShiftYN") String gEnableShiftYN,@RequestParam("shiftCode") String shiftCode,
 				HttpServletResponse resp,HttpServletRequest req)
 			{
+	 		
 	 		 	decimalFormat1 = new DecimalFormat("0.0");
 	 			decimalFormat2 = new DecimalFormat("0.00"); 
 				listSalesReport=new ArrayList<clsPOSSalesFlashReportsBean>();

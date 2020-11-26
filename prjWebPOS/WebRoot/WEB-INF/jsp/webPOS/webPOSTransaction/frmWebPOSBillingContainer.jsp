@@ -911,7 +911,7 @@ function funCalculationForCompItem()
   <s:select id="cmbReason" name="cmbReason" path=""  items="${reason}" style="height:20px;" />	
   </div>
   <div class="modal-footer">
-    <button class="btn" id ="btnOKReason" class="close" data-dismiss="modal" aria-hidden="true" >OK</button>
+    <button type="button" class="btn" id ="btnOKReason" class="close" data-dismiss="modal" aria-hidden="true" >OK</button>
   </div>
   </div>
   </div>
@@ -990,7 +990,7 @@ function funCalculationForCompItem()
 						      </c:when>
 													
 						      <c:otherwise>
-						      	<jsp:include page="frmBilling.jsp" />
+						      	<jsp:include page="frmNewBilling.jsp" />
 						      </c:otherwise>
 						      
 						    </c:choose>
@@ -1020,7 +1020,7 @@ function funCalculationForCompItem()
 			    </td>
 			   </tr>
 			    </table>
-			   
+			
 			    </s:form>
 			   
 </body>

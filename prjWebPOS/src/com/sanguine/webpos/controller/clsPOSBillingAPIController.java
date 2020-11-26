@@ -1233,30 +1233,30 @@ public class clsPOSBillingAPIController
 			objBillHd.setDblTaxAmt(totalTaxAmt);
 			objBillHd.setDblSubTotal(subTotalForTax);
 			objBillHd.setDblGrandTotal(grandTotal);
-			objBillHd.setStrTakeAway(rootBeanObjectForReference.getTakeAway());
-			objBillHd.setStrOperationType(rootBeanObjectForReference.getOperationType());//DineIn,HomeDelivery/TakeAway
+			objBillHd.setStrTakeAway(objGlobalFunctions.funIfNull(rootBeanObjectForReference.getTakeAway(),"",rootBeanObjectForReference.getTakeAway()));
+			objBillHd.setStrOperationType(objGlobalFunctions.funIfNull(rootBeanObjectForReference.getOperationType(),"",rootBeanObjectForReference.getOperationType()));//DineIn,HomeDelivery/TakeAway
 			objBillHd.setStrUserCreated(userCode);
 			objBillHd.setStrUserEdited(userCode);
 			objBillHd.setDteDateCreated(currentDateTime);
 			objBillHd.setDteDateEdited(currentDateTime);
 			objBillHd.setStrClientCode(clientCode);
-			objBillHd.setStrTableNo(rootBeanObjectForReference.getStrTableNo());
-			objBillHd.setStrWaiterNo(rootBeanObjectForReference.getStrWaiter());
-			objBillHd.setStrCustomerCode(rootBeanObjectForReference.getStrCustomerCode());
+			objBillHd.setStrTableNo(objGlobalFunctions.funIfNull(rootBeanObjectForReference.getStrTableNo(),"",rootBeanObjectForReference.getStrTableNo()));
+			objBillHd.setStrWaiterNo(objGlobalFunctions.funIfNull(rootBeanObjectForReference.getStrWaiter(),"",rootBeanObjectForReference.getStrWaiter()));
+			objBillHd.setStrCustomerCode(objGlobalFunctions.funIfNull(rootBeanObjectForReference.getStrCustomerCode(),"",rootBeanObjectForReference.getStrCustomerCode()));
 			objBillHd.setStrManualBillNo("");
 			objBillHd.setIntShiftCode(shiftCode);// /////////////////////////
 			objBillHd.setIntPaxNo(rootBeanObjectForReference.getIntPaxNo());
 			objBillHd.setStrDataPostFlag("N");
 			objBillHd.setStrReasonCode("");
-			objBillHd.setStrRemarks(rootBeanObjectForReference.getStrRemarks());
+			objBillHd.setStrRemarks(objGlobalFunctions.funIfNull(rootBeanObjectForReference.getStrRemarks(),"",rootBeanObjectForReference.getStrRemarks()));
 			objBillHd.setDblTipAmount(0.0);
 			objBillHd.setDteSettleDate(POSDate);
 			objBillHd.setStrCounterCode("");
 			objBillHd.setDblDeliveryCharges(rootBeanObjectForReference.getDblDeliveryCharges());
-			objBillHd.setStrAreaCode(rootBeanObjectForReference.getStrAreaCode());
+			objBillHd.setStrAreaCode(objGlobalFunctions.funIfNull(rootBeanObjectForReference.getStrAreaCode(), "", rootBeanObjectForReference.getStrAreaCode()));
 			objBillHd.setStrDiscountRemark("");
 			objBillHd.setStrTakeAwayRemarks("");
-			objBillHd.setStrTransactionType(rootBeanObjectForReference.getTransactionType());//Make KOT,Direct Biller,Modify Bill
+			objBillHd.setStrTransactionType(objGlobalFunctions.funIfNull(rootBeanObjectForReference.getTransactionType(),"",rootBeanObjectForReference.getTransactionType()));//Make KOT,Direct Biller,Modify Bill
 			objBillHd.setIntOrderNo(0);
 			objBillHd.setStrCouponCode("");
 			objBillHd.setStrJioMoneyRRefNo("");

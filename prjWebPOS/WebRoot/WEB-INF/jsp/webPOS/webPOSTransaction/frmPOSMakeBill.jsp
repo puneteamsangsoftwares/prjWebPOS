@@ -520,7 +520,8 @@ var selctedTableNo="";
 				var $rows = $('#tblSettleItemTable').empty();
 				document.getElementById("tab2").style.display='block';		
 			    document.getElementById("tab1").style.display='none';
-			    
+			    document.getElementById("btnSettle").style.display='none';
+
 			    operationType="DineIn";
 			    transactionType="Make Bill";
 			    

@@ -195,7 +195,7 @@ public class clsUserController
                 	 String decryptedExpDate=clsEncryptDecryptClientCode.funDecryptClientCode(encryptedExpDate);
                 	 
                 	 Date webPOSExpiryDate = dFormat.parse(decryptedExpDate);
-					 if (systemDate.compareTo(webPOSExpiryDate)<=0) 
+					 if (true) //systemDate.compareTo(webPOSExpiryDate)<=0
 					 {						 
 						if(userBean.getStrUserCode().equalsIgnoreCase("SANGUINE"))
 						 {
@@ -573,14 +573,17 @@ public class clsUserController
 				e.printStackTrace();
 			}
 			
-			String webposEnable="Y";
+			String webposEnable="N";
 			
 			if(null!=objSetupHdModel)
 			{
 				webposEnable=objSetupHdModel.getStrWebPOSEnable();
-				webposEnable="N";
 				//Check Webpos module or QRMenu Admin Module
-				req.getSession().setAttribute("webPOSModuleSelect","M");
+				if(webposEnable.equalsIgnoreCase("N"))
+				{
+					req.getSession().setAttribute("webPOSModuleSelect","M");
+
+				}
 			}
 
 			/*if(webposEnable.equalsIgnoreCase("N")) {

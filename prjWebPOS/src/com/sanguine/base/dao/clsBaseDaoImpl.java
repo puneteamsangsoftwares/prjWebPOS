@@ -29,6 +29,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sanguine.base.model.clsBaseModel;
 import com.sanguine.base.service.clsSetupService;
+import com.sanguine.model.clsCurrencyMasterModel;
 import com.sanguine.webpos.bean.clsPOSBillItemDtl;
 import com.sanguine.webpos.bean.clsPOSBillSettlementDtl;
 import com.sanguine.webpos.bean.clsPOSCommonBeanDtl;
@@ -36,7 +37,10 @@ import com.sanguine.webpos.bean.clsPOSGroupSubGroupWiseSales;
 import com.sanguine.webpos.bean.clsPOSOperatorDtl;
 import com.sanguine.webpos.bean.clsPOSSalesFlashReportsBean;
 import com.sanguine.webpos.controller.clsPOSGlobalFunctionsController;
+import com.sanguine.webpos.model.clsCustomerAreaMasterModel;
+import com.sanguine.webpos.model.clsCustomerMasterModel;
 import com.sanguine.webpos.model.clsPricingMasterHdModel;
+import com.sanguine.webpos.model.clsWaiterMasterModel;
 
 @Repository("intfBaseDao")
 @Transactional(value = "webPOSTransactionManager")
@@ -164,12 +168,26 @@ public class clsBaseDaoImpl implements intfBaseDao
 		}
 		List list = query.list();
 
-		clsBaseModel model = new clsBaseModel();
-		if (list.size() > 0)
+		clsBaseModel model=null;
+		if(sql.equals("getWaiterMaster"))
 		{
-			model = (clsBaseModel) list.get(0);
+			model = new clsWaiterMasterModel();
+			if (list.size() > 0)
+			{
+				model = (clsWaiterMasterModel) list.get(0);
 
+			}
 		}
+		else if(sql.equals("getCustomerMaster"))
+		{
+			 model = new clsCustomerMasterModel();
+			if (list.size() > 0)
+			{
+				model = (clsCustomerMasterModel) list.get(0);
+
+			}
+		}
+		
 		return model;
 	}
 

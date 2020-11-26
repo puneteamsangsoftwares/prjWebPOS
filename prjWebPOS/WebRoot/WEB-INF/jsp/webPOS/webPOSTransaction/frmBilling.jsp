@@ -211,6 +211,7 @@ var itemChangeQtySelected, itemPrice;
 			}
 			
 		});
+		
 		 document.getElementById("divItemDtl").style.display='block';
 		// document.getElementById("divPLU").style.display='none';
 		 
@@ -4120,7 +4121,7 @@ function funFillGridData1(itemName)
 	<label>Direct Biller</label>
 	</div> -->
 
-	<s:form name="frmDirectBiller" method="POST" commandName="command" action="actionDirectBiller.html?saddr=${urlHits}" target="_blank" >			
+	<s:form name="frmDirectBiller" method="POST" commandName="command" action="actionDirectBiller.html?saddr=${urlHits}" target="_blank" onSubmit="return false;" >			
 			
 			<div id="divMain" style=" margin-left: 1%; overflow:auto;"  class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >				
 				<table >

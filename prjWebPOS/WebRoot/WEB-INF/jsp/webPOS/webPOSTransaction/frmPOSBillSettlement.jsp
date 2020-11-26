@@ -798,8 +798,8 @@
 			
 			
 		case "POSWaiterMaster":
-			funTxtWaiterClicked(code);
-			break;
+			funSetWaiterNo(code);
+			break; 
 			
 			
 // 		case "POSCustomerMaster":
@@ -1841,13 +1841,10 @@
 					var yes=confirm("Do you want to generate bill for table : "+tableName);
 					if(yes)
 					{
-						/* document.frmBillSettlement.action = "actionBillSettlementKOT.html";
-						document.frmBillSettlement.method = "POST";
-					    document.frmBillSettlement.submit(); */
-						//document.getElementsByName("frmBillSettlement").action("actionBillSettlementKOT.html");
-						document.forms[0].action = "actionBillSettlementKOT.html";
-						document.forms[0].method = "POST";
-						document.forms[0].submit();
+						
+					    document.frmBillSettlement.action = "actionBillSettlementKOT.html";
+					    document.frmBillSettlement.method = "POST";
+					    document.frmBillSettlement.submit();
 					}
 					else
 					{
@@ -1861,9 +1858,9 @@
 					var yes=confirm("Do you want to generate bill for table : "+tableName);
 					if(yes)
 					{
-						document.forms[0].action = "actionBillSettlementKOT.html";
-						document.forms[0].method = "POST";
-						document.forms[0].submit();
+						document.frmBillSettlement.action = "actionBillSettlementKOT.html";
+						document.frmBillSettlement.method = "POST";
+						document.frmBillSettlement.submit();
 					}
 					else
 					{
@@ -1874,29 +1871,27 @@
 			 else  if(operationType=="HomeDelivery" && transactionType=="Direct Biller")
 			 {
 				 
-                 $("#hidIsSettleBill").val("N");	/* 			 
+                 $("#hidIsSettleBill").val("N");				 
                  document.frmBillSettlement.action = "actionBillSettlement.html";
 		    	 document.frmBillSettlement.method = "POST";
-				 document.frmBillSettlement.submit(); */
-				 document.forms[0].action = "actionBillSettlement.html";
-					document.forms[0].method = "POST";
-					document.forms[0].submit();
+				 document.frmBillSettlement.submit(); 
+				 
 		     }
 			 else  if(operationType=="TakeAway" && transactionType=="Direct Biller")
 			 {
 				 
                  $("#hidIsSettleBill").val("N");				 
-		    	 document.forms[0].action = "actionBillSettlement.html";
-				document.forms[0].method = "POST";
-				document.forms[0].submit();
+                 document.frmBillSettlement.action = "actionBillSettlement.html";
+                 document.frmBillSettlement.method = "POST";
+                 document.frmBillSettlement.submit();
 		     }
 			 else  if(transactionType=="Modify Bill")
 			 {
 				 
 				 
-		    	 document.forms[0].action = "actionModifyBill.html";
-		    	 document.forms[0].method = "POST";
-				 document.forms[0].submit();
+				 document.frmBillSettlement.action = "actionModifyBill.html";
+				 document.frmBillSettlement.method = "POST";
+				 document.frmBillSettlement.submit();
 		     }
 			 else if(operationType=="DineIn" && transactionType=="Bill For Items")
 			 {				 
@@ -1906,9 +1901,9 @@
 						
 						 
 						 
-						document.forms[0].action = "actionForBillForItems.html";
+						 document.frmBillSettlement.action = "actionForBillForItems.html";
 						
-					    document.forms[0].submit();
+						 document.frmBillSettlement.submit();
 					}
 					else
 					{
@@ -1923,9 +1918,9 @@
 					var yes=confirm("Do you want to settle bill : "+billNo);
 					if(yes)
 					{
-						document.forms[0].action = "actionBillSettle.html";
-						document.forms[0].method = "POST";
-					    document.forms[0].submit();
+						 document.frmBillSettlement.action = "actionBillSettle.html";
+						 document.frmBillSettlement.method = "POST";
+						 document.frmBillSettlement.submit();
 					}
 					else
 					{
@@ -1942,9 +1937,9 @@
 
              $("#hidIsSettleBill").val("Y");				 
  
-	    	 document.forms[0].action = "actionBillSettlement.html";
-	    	 document.forms[0].method = "POST";
-			 document.forms[0].submit(); 
+             document.frmBillSettlement.action = "actionBillSettlement.html";
+             document.frmBillSettlement.method = "POST";
+             document.frmBillSettlement.submit(); 
 
 	  }
 	  /*  TEst  */
@@ -1981,7 +1976,6 @@
 	  
 	$("#btnOKReason").click(function()
 	{
-		
 		funDiscOkClicked();
 	});
 
@@ -2004,7 +1998,10 @@ function funDiscOkClicked()
 
 	// var rematk=promptDialog("Enter Remark","");
 	 //var reason=  promptComboDialog("Select Reason","");
-	 var strRemark =prompt("Enter Remark", "");
+	
+	 
+	 
+	var strRemark =prompt("Enter Remark", "");
 				
     var strReason=$("#cmbReason").val();
 	 
@@ -2458,9 +2455,33 @@ function funDiscOkClicked()
 </head>
 <body>
 
-<%-- <script src="../${pageContext.request.contextPath}/resources/newdesign/assets/js/preloader.js"></script>  --%>
-  <s:form  name="frmBillSettlement"  method="POST"   action="" style="background-color:#FFFFFF;font-size:14px;font-family:'Open Sans','Helvetica Neue','Helvetica',Arial,Verdana,sans-serif;color:#666666;max-width:100%;min-width:25%;margin-left: 2%; height: 700px;" >
+ <s:form  name="frmBillSettlement"  method="POST"   action="" style="background-color:#FFFFFF;font-size:14px;font-family:'Open Sans','Helvetica Neue','Helvetica',Arial,Verdana,sans-serif;color:#666666;max-width:100%;min-width:25%;margin-left: 2%; height: 700px;" >
   
+                   <s:hidden id="hidSubTotal" path="dblSubTotal"/>
+		 		<s:hidden id="hidDiscountTotal" path="dblDicountTotal"/>
+		 		<s:hidden id="hidNetTotal" path="dblNetTotal"/>
+		 		<s:hidden id="hidGrandTotal" path="dblGrandTotal"/>
+		 		<s:hidden id="hidRefund" path="dblRefund"/>
+		 	    <s:hidden id="hidTaxTotal" path="dblTotalTaxAmt"/>
+ 		 		<s:hidden id="hidSettlemnetType" path="strSettlementType"/> 
+ 		 		<s:hidden id="hidBalanceAmt" path=""/> 
+ 		 		
+ 		 		
+ 		 		<s:hidden id="hidCustMobileNo" path="custMobileNo"/>
+		 		<s:hidden id="hidCustomerCode" path="strCustomerCode"/>
+		 		<s:hidden id="hidCustomerName" path="customerName"/>
+		 		<s:hidden id="hidOperationType" path="operationType"/>
+		 		<s:hidden id="hidTransactionType" path="transactionType"/>
+		 		<s:hidden id="hidTakeAway" path="takeAway"/>
+		 		<s:hidden id="hidDeliveryBoyCode" path="strDeliveryBoyCode"/>
+		 		<s:hidden id="hidDeliveryBoyName" path="strDeliveryBoyName"/>
+		 		<s:hidden id="hidTableNo" path="strTableNo"/>
+				<s:hidden id="hidWaiterNo" path="strWaiter"/>
+				<s:hidden id="hidAreaCode" path="strAreaCode"   />
+				<s:hidden id="hidBillNo" path="strBillNo"   />
+				<s:hidden id="hidIsSettleBill" path="isSettleBill"   />
+				
+ 
   <div class="body-wrapper" style="margin-top: -15px;">
 
     <!-- partial -->
@@ -3162,30 +3183,7 @@ function funDiscOkClicked()
 					</table>
 </div>
 
-                <s:hidden id="hidSubTotal" path="dblSubTotal"/>
-		 		<s:hidden id="hidDiscountTotal" path="dblDicountTotal"/>
-		 		<s:hidden id="hidNetTotal" path="dblNetTotal"/>
-		 		<s:hidden id="hidGrandTotal" path="dblGrandTotal"/>
-		 		<s:hidden id="hidRefund" path="dblRefund"/>
-		 	    <s:hidden id="hidTaxTotal" path="dblTotalTaxAmt"/>
- 		 		<s:hidden id="hidSettlemnetType" path="strSettlementType"/> 
- 		 		<s:hidden id="hidBalanceAmt" path=""/> 
- 		 		
- 		 		
- 		 		<s:hidden id="hidCustMobileNo" path="custMobileNo"/>
-		 		<s:hidden id="hidCustomerCode" path="strCustomerCode"/>
-		 		<s:hidden id="hidCustomerName" path="customerName"/>
-		 		<s:hidden id="hidOperationType" path="operationType"/>
-		 		<s:hidden id="hidTransactionType" path="transactionType"/>
-		 		<s:hidden id="hidTakeAway" path="takeAway"/>
-		 		<s:hidden id="hidDeliveryBoyCode" path="strDeliveryBoyCode"/>
-		 		<s:hidden id="hidDeliveryBoyName" path="strDeliveryBoyName"/>
-		 		<s:hidden id="hidTableNo" path="strTableNo"/>
-				<s:hidden id="hidWaiterNo" path="strWaiter"/>
-				<s:hidden id="hidAreaCode" path="strAreaCode"   />
-				<s:hidden id="hidBillNo" path="strBillNo"   />
-				<s:hidden id="hidIsSettleBill" path="isSettleBill"   />
-				
+  
 				
 				
 				
