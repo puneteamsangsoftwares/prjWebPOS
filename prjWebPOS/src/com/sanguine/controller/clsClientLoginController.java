@@ -114,7 +114,7 @@ public class clsClientLoginController
 						String POSCode1 = "All";
 						objSetupHdModel=objMasterService.funGetPOSWisePropertySetup(clientCodeFromDB,POSCode1);
 						clientCodeFromDB="240.001";
-						Date posExpiryDate = dFormat.parse("2021-01-01");
+						Date posExpiryDate = dFormat.parse("2025-01-01");
 						if (systemDate.compareTo(posExpiryDate) <= 0)
 						{
 							if(true)
@@ -125,7 +125,7 @@ public class clsClientLoginController
 								//req.getSession().setAttribute("gPOSCode",objSetupHdModel.getStrPOSCode());	
 								req.getSession().setAttribute("gPOSCode","All");	
 								req.getSession().setAttribute("gCompanyName","THOUSAND OAKS");	
-								//req.getSession().setAttribute("gStartDate", startDate);
+								//req.getSession().setAtstribute("gStartDate", startDate);
 								
 								StringBuilder sbSql = new StringBuilder();
 								sbSql.append("select a.strUserCode from tbluserhd a where a.strClientCode='"+clientCodeFromDB+"'");

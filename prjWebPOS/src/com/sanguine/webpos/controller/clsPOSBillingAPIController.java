@@ -875,7 +875,21 @@ public class clsPOSBillingAPIController
 
 			String areaCodeForTransaction = rootBeanObjectForReference.getStrAreaCode();
 			String operationTypeForBilling = rootBeanObjectForReference.getOperationType();
-
+			StringBuilder sqlBuilder=new StringBuilder();
+			if (areaCodeForTransaction.equals(""))
+			{
+				sqlBuilder.setLength(0);
+				sqlBuilder.append("select strDirectAreaCode from tblsetup where (strPOSCode='" + POSCode + "'  OR strPOSCode='All') and strClientCode='" + clientCode + "'");
+				List listAreCode = objBaseServiceImpl.funGetList(sqlBuilder, "sql");
+				if (listAreCode.size() > 0)
+				{
+					for (int cnt = 0; cnt < listAreCode.size(); cnt++)
+					{
+						Object obj = (Object) listAreCode.get(cnt);
+						areaCodeForTransaction = (obj.toString());
+					}
+				}
+			}
 			Date dt = new Date();
 			String currentDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(dt);
 			String dateTime = POSDate + " " + currentDateTime.split(" ")[1];

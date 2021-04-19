@@ -2487,7 +2487,7 @@ function funDiscOkClicked()
     <!-- partial -->
     <div class="main-wrapper mdc-drawer-app-content">
       <!-- partial:partials/_navbar.html -->
-      <header class="mdc-top-app-bar">
+<%--       <header class="mdc-top-app-bar">
         <div class="mdc-top-app-bar__row">
           <div class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start" style="margin-top: 30px;">
             <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button sidebar-toggler">menu</button>
@@ -2644,7 +2644,7 @@ function funDiscOkClicked()
             </div>
           </div>
         </div>
-      </header>
+      </header> --%>
       <!-- partial -->
       <div class="page-wrapper mdc-toolbar-fixed-adjust">
         <main class="content-wrapper">

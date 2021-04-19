@@ -35,21 +35,32 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
-  <style type="text/css">
-    .body-wrapper .main-wrapper .page-wrapper .content-wrapper {  padding: 16px 10px;}
+ <style type="text/css">
+/*     .body-wrapper .main-wrapper .page-wrapper .content-wrapper {  padding: 16px 10px;}
+ */    .body-wrapper .main-wrapper .page-wrapper .content-wrapper{padding: 0px 10px;}
+    
     span.price{font-size: 14px;text-align: right;display: block;color:#2180c3;}
     h5.tablehead2{ font-size: 12px !important;font-weight: 500;line-height: 1.5;width: 90%;}
-    .mdc-card .info-card4{width: 110px;}
+    .mdc-card .info-card4{
+    height: 68px;
+    white-space: normal;
+    border-style: none;
+    text-align: center;
+    font-size: 12px;}
     .mdc-card.info-card {padding: 2px 10px;}
     .mdc-card .info-card4:hover{background: #40a6ee;} 
     .mdc-card.info-card3 {margin-bottom: 0px;}
     .mdc-text-field--outlined .mdc-text-field__input{padding: 7px !important;}
     .mdc-text-field--with-leading-icon.mdc-text-field--outlined .mdc-floating-label{left: 12px;top: 10px;font-size: 13px;}
     .mdc-card.info-card{padding: 0px 9px;}
-    .body-wrapper .main-wrapper .page-wrapper .content-wrapper{padding: 1px 10px;}
+    .mdc-top-app-bar__section{align-items:top;padding:0px;}
     .mdc-top-app-bar .mdc-top-app-bar__section-right .menu-profile button .user-name{color: #399be2;}
     .mdc-top-app-bar .mdc-top-app-bar__section-right .menu-profile button .date{color: #399be2;font-weight: normal;}
     .img:hover{background: #e4e1e161;}
+    .active, .img:hover {
+  		background-color: #40a6ee;color: white;}
+  	.mdc-top-app-bar__row{height:20px;}
+    
   </style>
   
   
@@ -62,8 +73,19 @@ var NumPadDialogFor,itemCode;
 var itemChangeQtySelected, itemPrice;
 
 //start PLU Search funactionality
+ var mapTable=new Map();
+		
 $(document).ready(function()
 {
+	
+	 var jsonArrForTableDtl=${command.jsonArrForTableDtl};	
+	 
+		for(var i=0;i<jsonArrForTableDtl.length;i++)
+		{
+			 mapTable.set(jsonArrForTableDtl[i].strTableName,jsonArrForTableDtl[i].strTableNo);
+			
+		}
+		
 	funloadClientPhoto();
 	var posDate="${gPOSDate}";
 	 // Get the input field
@@ -98,7 +120,7 @@ $(document).ready(function()
 	
 	//for category search
 	
-		
+	
 	
 	//for category search
 	$("#txtCategorySearch").keyup(function()
@@ -1585,14 +1607,14 @@ $(document).ready(function()
 			gAreaCode=$("#txtAreaName").val();
 			
 			//$("#txtPaxNo").text(objselectedTableDtl.intPaxNo);
-			 if(gSkipWaiter!="Y")
+			/*  if(gSkipWaiter!="Y")
 			{
 				if ($("#txtWaiterName").text().trim().length==0)
 		        {
 					alert("Please select Waiter");
 		            return;
 		        }
-			}
+			} */
 			
 			
 			funChekTableDtl(tableNo);
@@ -2770,6 +2792,22 @@ $(document).ready(function()
 					}
 					else
 					{
+						if(gSkipWaiter!="Y"  )
+						{
+							if ($("#txtWaiterName").text().trim().length==0)
+					        {									
+								alert("Please select Waiter");
+					            return;
+					        }
+							else if(gMultiWaiterSelOnMakeKOT=="Y")
+							{
+								alert("Please select Waiter");
+					            return;
+							}
+							
+						}
+						
+						
 						if(rowCount==1)
 						{
 							funGenerateKOTNo();
@@ -2785,6 +2823,7 @@ $(document).ready(function()
 							funDisplayMakeBillButton(false);
 						}
 						funFillTableBillItemDtl(objMenuItemPricingDtl,price,qty);	
+						
 
 					}	
 					
@@ -3567,7 +3606,11 @@ $(document).ready(function()
 				$("#numpadValue").val('Enter Quantity');
 				funOpenNumPadDialog();
 			}else{
-				funChangeQty1(obj,1);
+				itemChangeQtySelected=obj;
+				NumPadDialogFor='ChangeItemQty';
+				$("#numpadValue").val('Enter Quantity');
+				funOpenNumPadDialog();
+				//funChangeQty1(obj,1);
 			}
 			
 			
@@ -4116,55 +4159,105 @@ $(document).ready(function()
 
 	function funSetWaiterNo(code){
 
-		$("#txtWaiterNo").val(code);
-		gWaiterNo=code;
-		var searchurl=getContextPath()+"/loadPOSWaiterMasterData.html?POSWaiterCode="+code;		
-		 $.ajax({
-		        type: "GET",
-		        url: searchurl,
-		        dataType: "json",
-		        success: function(response)
-		        {
-		        	if(response.strWaiterNo=='Invalid Code')
-		        	{
-		        		confirmDialog("Invalid Group Code");
-		        		$("#txtWaiterNo").val('');
-		        	}
-		        	else
-		        	{
-			        	
-			        	$("#txtWShortName").val(response.strWShortName);
-			        	$("#txtWFullName").val(response.strWFullName);
-			        	$("#txtDebitCardString").val(response.strWaiterName);
-			        	$("#txtWShortName").focus();
-			        	if(response.strOperational=='Y')
-		        		{
-			        		$("#chkOperational").prop('checked',true);
-		        		}
-			        	
-			        	$("#txtDebitCardString").val(response.strDebitCardString);
-			        	$("#txtPOSCode").val(response.strPOSCode);
-		        	}
-				},
-				error: function(jqXHR, exception) {
-		            if (jqXHR.status === 0) {
-		                alert('Not connect.n Verify Network.');
-		            } else if (jqXHR.status == 404) {
-		                alert('Requested page not found. [404]');
-		            } else if (jqXHR.status == 500) {
-		                alert('Internal Server Error [500].');
-		            } else if (exception === 'parsererror') {
-		                alert('Requested JSON parse failed.');
-		            } else if (exception === 'timeout') {
-		                alert('Time out error.');
-		            } else if (exception === 'abort') {
-		                alert('Ajax request aborted.');
-		            } else {
-		                alert('Uncaught Error.n' + jqXHR.responseText);
-		            }		            
-		        }
-	      });
+	     if(gTableNo=="")
+		 {
+			alert("Please select Table Number");
+		 }
+	     else
+		 {
+	    	 $("#txtWaiterNo").val(code);
+	 		gWaiterNo=code;
+	 		var searchurl=getContextPath()+"/loadPOSWaiterMasterData.html?POSWaiterCode="+code;		
+	 		 $.ajax({
+	 		        type: "GET",
+	 		        url: searchurl,
+	 		        dataType: "json",
+	 		        success: function(response)
+	 		        {
+	 		        	if(response.strWaiterNo=='Invalid Code')
+	 		        	{
+	 		        		confirmDialog("Invalid Group Code");
+	 		        		$("#txtWaiterNo").val('');
+	 		        	}
+	 		        	else
+	 		        	{
+	 			        	
+	 			        	$("#txtWShortName").val(response.strWShortName);
+	 			        	$("#txtWaiterName").text(response.strWFullName);
+	 			        	$("#txtDebitCardString").val(response.strWaiterName);
+	 			        	$("#txtWShortName").focus();
+	 			        	if(response.strOperational=='Y')
+	 		        		{
+	 			        		$("#chkOperational").prop('checked',true);
+	 		        		}
+	 			        	
+	 			        	$("#txtDebitCardString").val(response.strDebitCardString);
+	 			        	$("#txtPOSCode").val(response.strPOSCode);
+	 		        	}
+	 				},
+	 				error: function(jqXHR, exception) {
+	 		            if (jqXHR.status === 0) {
+	 		                alert('Not connect.n Verify Network.');
+	 		            } else if (jqXHR.status == 404) {
+	 		                alert('Requested page not found. [404]');
+	 		            } else if (jqXHR.status == 500) {
+	 		                alert('Internal Server Error [500].');
+	 		            } else if (exception === 'parsererror') {
+	 		                alert('Requested JSON parse failed.');
+	 		            } else if (exception === 'timeout') {
+	 		                alert('Time out error.');
+	 		            } else if (exception === 'abort') {
+	 		                alert('Ajax request aborted.');
+	 		            } else {
+	 		                alert('Uncaught Error.n' + jqXHR.responseText);
+	 		            }		            
+	 		        }
+	 	      });
+		 }
+		
 	}
+ 
+
+
+ 
+ function funGetKeyCode(event,controller) {
+	 var key = event.keyCode;
+	 if (controller=='tablemaster' && event.keyCode == 13) {		 
+		 funPreventEvent();
+		 var name=$("#idtableSearch").val();
+		 mapTable.forEach(function(value, key) {			 
+			 if(name==key){				
+				 $("#txtTableNo").text(name);
+					gTableNo=value;
+					gTableName=key;
+					globalTableNo=value;
+					/* $("#txtAreaName").val(objselectedTableDtl.strAreaCode);
+					var areaCode=$("#txtAreaName").val();
+					gAreaCode=$("#txtAreaName").val(); */
+					
+					//$("#txtPaxNo").text(objselectedTableDtl.intPaxNo);
+					/*  if(gSkipWaiter!="Y")
+					{
+						if ($("#txtWaiterName").text().trim().length==0)
+				        {
+							alert("Please select Waiter");
+				            return;
+				        }
+					} */	
+					funChekTableDtl(tableNo);
+					funChekReservation(tableNo);
+					funFillMapWithHappyHourItems(); 
+			 }			 
+		 });         
+     }	
+}
+ 
+ function funPreventEvent()
+ {
+	 event.preventDefault();
+ }
+ 
+
 </script>
   
 </head>
@@ -4176,7 +4269,7 @@ $(document).ready(function()
    <div class="main-wrapper mdc-drawer-app-content">
       <!-- partial:partials/_navbar.html -->
     <header class="mdc-top-app-bar">
-        <div class="mdc-top-app-bar__row">
+        <div class="mdc-top-app-bar__row" style="height:17px;">
           <%-- <div class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
             <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button sidebar-toggler">menu</button>
             <span class="mdc-top-app-bar__title"><img src="../${pageContext.request.contextPath}/resources/newdesign/assets/images/sanguinelogo.jpg" style="height: 46px;width: 135px;"></span>
@@ -4190,19 +4283,19 @@ $(document).ready(function()
             <span class="mdc-top-app-bar__title"><img src="" id="memImage" Style="width: 184px;height:54px;margin-top: 8px;"></span>
           </div> --%>
           
-          <div class="menu-button-container menu-profile d-none d-md-block">
-              <!-- <label id="customerName">Cust Name</label> -->
+         <!--  <div class="menu-button-container menu-profile d-none d-md-block">
+              <label id="customerName">Cust Name</label>
               <input readonly="readonly" id="customerName"></input>
               <input readonly="readonly" id="custMobileNo"></input>
               <input type="hidden" id="customerCode"></input>
               
-          </div>
+          </div> -->
           
           <div class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end mdc-top-app-bar__section-right">
-            <div class="menu-button-container menu-profile d-none d-md-block">
+            <%-- <div class="menu-button-container menu-profile d-none d-md-block">
               <button class="mdc-button mdc-menu-button">
                 <span class="d-flex align-items-center">
-                 <%--  <span class="user-name">Sumit1</span> --%>
+                  <span class="user-name">Sumit1</span>
                  <label style="margin-top:18px;color:rgba(31 35 38);text-transform: uppercase;font-size: 16px;">${gUserName}<!-- &nbsp;&nbsp; --></label>
                 </span>
               </button>
@@ -4211,11 +4304,11 @@ $(document).ready(function()
               <div class="menu-button-container menu-profile d-none d-md-block">
                 <button class="mdc-button mdc-menu-button">
                   <span class="d-flex align-items-center">
-                 <%--  <span class="date">12-02-2020</span> --%>
+                  <span class="date">12-02-2020</span>
                   <label id="lblPOSDate" style="margin-top:18px;color:rgba(83,159,225,1);font-family: trebuchet ms, Helvetica, sans-serif;font-weight: 100;font-size: 16px;"> &nbsp;&nbsp;</label>
                   </span>
                 </button>
-              </div>
+              </div> --%>
               <div class="divider d-none d-md-block"></div>
               <div class="menu-button-container">
                     <i class="mdi mdi-home"   style="font-size:25px;" onclick="funPOSHome()" ></i>                    
@@ -4309,7 +4402,7 @@ $(document).ready(function()
                             <div class="card-header" id="headingOne">
                                 <h2 class="mb-0">
                                     <i class="fa fa-plus"></i>
-                                   <input type="button"  id="${command.jsonArrForArea[areaCount].strAreaCode}" value="${command.jsonArrForArea[areaCount].strAreaName}"    class="btn btn-link" data-toggle="collapse" data-target="#collapseOne${areaCount}"  />
+                                   <input type="button"  id="${command.jsonArrForArea[areaCount].strAreaCode}" value="${command.jsonArrForArea[areaCount].strAreaName}"    class="btn btn-link"  style="font-size: 15px; color:#000;" data-toggle="collapse" data-target="#collapseOne${areaCount}"  />
   				                </h2>
                                 
                             </div>
@@ -4331,13 +4424,13 @@ $(document).ready(function()
 															<c:set var="tableCode" value="${arrtable[itemCounter].strTableName}"></c:set>
 															<c:choose>
 																<c:when test="${arrtable[itemCounter].strStatus == 'Normal'}">
-																	<input type="button" id="${arrtable[itemCounter].strTableNo}"  value="${arrtable[itemCounter].strTableName}" style="width: 60px; height: 30px; white-space: normal;border-radius: 30px;" class="btn btn-primary"  onclick="funTableNoClicked(this,${itemCounter})"  />
+																	<input type="button" id="${arrtable[itemCounter].strTableNo}"  value="${arrtable[itemCounter].strTableName}" style="width: 65px; height: 36px; white-space: normal;border-radius: 30px;" class="btn btn-primary"  onclick="funTableNoClicked(this,${itemCounter})"  />
 																</c:when>
 																<c:when test="${arrtable[itemCounter].strStatus == 'Occupied'}">
-																	<input type="button" id="${arrtable[itemCounter].strTableNo}"  value="${arrtable[itemCounter].strTableName}" style="width: 60px; height: 30px; white-space: normal;border-radius: 30px;" class="btn btn-danger"  onclick="funTableNoClicked(this,${itemCounter})"  />
+																	<input type="button" id="${arrtable[itemCounter].strTableNo}"  value="${arrtable[itemCounter].strTableName}" style="width: 65px; height: 36px; white-space: normal;border-radius: 30px;" class="btn btn-danger"  onclick="funTableNoClicked(this,${itemCounter})"  />
 																</c:when>
 																<c:when test="${arrtable[itemCounter].strStatus == 'Billed'}">
-																	<input type="button" id="${arrtable[itemCounter].strTableNo}"  value="${arrtable[itemCounter].strTableName}" style="width: 60px; height: 30px; white-space: normal;border-radius: 30px;" class="btn btn-info"  onclick="funTableNoClicked(this,${itemCounter})"  />
+																	<input type="button" id="${arrtable[itemCounter].strTableNo}"  value="${arrtable[itemCounter].strTableName}" style="width: 65px; height: 36px; white-space: normal;border-radius: 30px;" class="btn btn-info"  onclick="funTableNoClicked(this,${itemCounter})"  />
 																</c:when>
 															</c:choose>
 							
@@ -4372,16 +4465,17 @@ $(document).ready(function()
                       </td>
                       <td width="50%">
                         <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none d-md-flex" style="background: #fff;border-radius: 6px;">
-                         <input type="text" id="txtCategorySearch" path="" class="mdc-text-field__input" cssClass="searchTextBox jQKeyboard form-control">
-                          <label for="text-field-hero-input" class="mdc-floating-label">Search Category</label>
+                         
+                         <label for="text-field-hero-input" class="mdc-floating-label"></label><input type="text" id="txtCategorySearch"  placeholder="Search Category"  path="" class="mdc-text-field__input" cssClass="searchTextBox jQKeyboard form-control">
+                         
                         </div>
                        </td>
                       </tr>
                 </table>  
-                <div id="divMenuHeadDtl" style="border: 1px solid rgb(204, 204, 204);height: 120px;overflow: auto;width: 680px;display: block; margin-top:0px;" >									
+                <div id="divMenuHeadDtl" style="border: 1px solid rgb(204, 204, 204);height: 120px;overflow: auto;display: block; margin-top:0px;" >									
 				<table width="100%" class="mdc-card info-card3" id="tblMenuHeadDtl" > <!-- class="table table-striped table-bordered table-hover" -->
 									 <tr>
-									 <td><input type="button" id="PopularItem" value="POPULAR" onclick="funPopularItemButtonClicked()" style="width: 100px;height: 35px; white-space: normal;border-style:none;text-align:center ;" class="mdc-card info-card4"/></td>
+									 <td><input type="button" id="PopularItem" value="POPULAR" onclick="funPopularItemButtonClicked()" style="width: 100px;height: 35px; white-space: normal;border-style:none;font-size: 12px;text-align:center ;" class="mdc-card info-card4"/></td>
 									 </tr>
 									 <c:set var="sizeOfmenu" value="${fn:length(command.jsonArrForDirectBillerMenuHeads)}"></c:set>
 									 <c:set var="menuCount" value="${0}"></c:set>
@@ -4395,7 +4489,7 @@ $(document).ready(function()
 												
 												<c:if test="${menuCount lt sizeOfmenu}">
 													<td  style="padding: 3px;" >
-														<input type="button"  id="${command.jsonArrForDirectBillerMenuHeads[menuCount].strMenuCode}" value="${command.jsonArrForDirectBillerMenuHeads[menuCount].strMenuName}"    style="width: 100px;height: 35px; white-space: normal;border-style:none;text-align:center ;" class="mdc-card info-card4" onclick="funMenuHeadButtonClicked(this)"/>
+														<input type="button"  id="${command.jsonArrForDirectBillerMenuHeads[menuCount].strMenuCode}" value="${command.jsonArrForDirectBillerMenuHeads[menuCount].strMenuName}"    style="width: 100px;height: 50px; white-space: normal;border-style:none;text-align:center ;font-size: 12px;" class="mdc-card info-card4" onclick="funMenuHeadButtonClicked(this)"/>
 													</td>
 												<c:set var="menuCount" value="${menuCount +1}"></c:set>
 												</c:if>																						 													
@@ -4417,15 +4511,15 @@ $(document).ready(function()
                       <td width="30%">
                         <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none   d-md-flex" style="background: #fff;width:90%;border-radius: 6px;">
                           <%-- <s:input type="text"  id="txtItemSearch" path="" cssStyle="mdc-text-field__input"  onclick="funFillGridData('')" /> --%>
-                          <input type="text"  path=""  id="txtItemSearch"  class="mdc-text-field__input"  cssClass="searchTextBox jQKeyboard form-control" onclick="funFillGridData('')" >   <!-- onclick="funFillGridData('') -->
-                          <label  class="mdc-floating-label">Search Items</label>
+                          <input type="text"  path=""  id="txtItemSearch"  class="mdc-text-field__input"  placeholder="Search Items" cssClass="searchTextBox jQKeyboard form-control" onclick="funFillGridData('')" >   <!-- onclick="funFillGridData('') -->
+                          <label  class="mdc-floating-label"></label>
                            
                         </div> 
                       </td>
                       <td width="10%">
                           <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none  d-md-flex" style="background: #fff;width:90%;border-radius: 6px;">
-                            <input class="mdc-text-field__input" id="text-field-hero-input">
-                            <label for="text-field-hero-input" class="mdc-floating-label">QTY</label>
+                            <input class="mdc-text-field__input" id="text-field-hero-input" placeholder="QTY">
+                            <label for="text-field-hero-input" class="mdc-floating-label"></label>
                           </div> 
                       </td>
                       <td width="10%">
@@ -4438,7 +4532,7 @@ $(document).ready(function()
                 </table>
                 
                 
-			<div id="divItemDtl" style="height: 465px;overflow: auto;width: 680px;display: block;" >
+			<div id="divItemDtl" style="height: 465px;overflow: auto;border: 1px solid rgb(204, 204, 204);display: block;" >
 				
 				<table width="100%" class="mdc-card info-card3" id="tblMenuItemDtl">
             		<%-- <c:set var="sizeOfItem" value="${fn:length(command.jsonArrForDirectBillerMenuItemPricing)}"></c:set>
@@ -4483,8 +4577,8 @@ $(document).ready(function()
                       </td> -->
                       <td width="33%">
                         <h5 class="tablehead" nowrap style="color: #399be2;font-weight: 600;">Total:    
-                        <input  disabled type="text"  id="txtTotal" style="color: #399be2;font-weight: 600;    height: 26px;border: none;" />
-                         </h5>
+                         <input  disabled type="text"  id="txtTotal" style="font-weight: 600;border: none;width:84px;" />
+                      </h5>
                       </td>
                    </tr>
                  </table>
@@ -4516,7 +4610,8 @@ $(document).ready(function()
 					</tr>
 					</table>
 
-<!-- Item Table -->					
+<!-- Item Table -->	
+			<div  style="height: 430px;overflow: auto;border: 1px solid rgb(204, 204, 204);display: block;" >	
 				<table width="100%" class="mdc-card info-card3" id="tblBillItemDtl">
                      <tr class="trcolor">
                       <td width="55%" colspan="1">
@@ -4531,7 +4626,7 @@ $(document).ready(function()
                     </tr>
                     
                 </table>
-                
+              </div>		
                 <table id="tblOldKOTItemDtl" >
 				</table>
                    
@@ -4552,12 +4647,12 @@ $(document).ready(function()
               </td>
               <td width="10%" style="vertical-align: top;">
                  <table width="100%" class="mdc-card info-card3">
-                    <tr width="100%">
+                     <%-- <tr width="100%">
                        <td align="center" class="img" id="FIRE_KOT" onclick="funFooterButtonClicked(this)">
                           <img src="../${pageContext.request.contextPath}/resources/newdesign/assets/images/icon-kot.png" border="0" height="50px" width="50px"> 
                           <h5 class="tablehead" nowrap>KOT</h5> 
                       </td>
-                    </tr>
+                    </tr> --%> 
                      <tr width="100%">
                        <td align="center" class="img" id="Make Bill" onclick="funFooterButtonClicked(this)">
                           <img src="../${pageContext.request.contextPath}/resources/newdesign/assets/images/icon-bill.png" border="0" height="50px" width="50px"> 
@@ -4576,12 +4671,12 @@ $(document).ready(function()
                           <h5 class="tablehead" nowrap>WAITER</h5> 
                       </td>
                     </tr>
-                     <tr width="100%">
+                     <%-- <tr width="100%">
                        <td align="center" class="img" id="HO" onclick="funFooterButtonClicked(this)">
                           <img src="../${pageContext.request.contextPath}/resources/newdesign/assets/images/icon-HO.png" border="0" height="50px" width="50px"> 
                           <h5 class="tablehead" nowrap>HO</h5> 
                       </td>
-                    </tr>                    
+                    </tr>     --%>                
                     <tr width="100%">
                        <td align="center" class="img" id="Customer" onclick="funFooterButtonClicked(this)">
                           <img src="../${pageContext.request.contextPath}/resources/newdesign/assets/images/icon-customer.png" border="0" height="50px" width="50px"> 
@@ -4594,12 +4689,12 @@ $(document).ready(function()
                           <h5 class="tablehead" nowrap>DONE</h5> 
                       </td>
                     </tr>
-                     <tr width="100%">
+                     <%-- <tr width="100%">
                        <td align="center" class="img" id="Done" onclick="funFooterButtonClicked(this)">
                           <img src="../${pageContext.request.contextPath}/resources/newdesign/assets/images/icon-more.png" border="0" height="50px" width="50px"> 
                           <h5 class="tablehead" nowrap>OTHER</h5> 
                       </td>
-                    </tr>
+                    </tr> --%>
                   </table>
               </td>
           </tr>
@@ -4608,6 +4703,7 @@ $(document).ready(function()
      </div>
     </div>
   </div>
+
 
   <!-- plugins:js -->
   <script src="../assets/vendors/js/vendor.bundle.base.js"></script>

@@ -874,7 +874,7 @@ public class clsPOSBillSettlementControllerForDirectBiller
 				userCode = "",
 				posClientCode = "";
 
-		clientCode = request.getSession().getAttribute("g	ClientCode").toString();
+		clientCode = request.getSession().getAttribute("gClientCode").toString();
 		POSCode = request.getSession().getAttribute("gPOSCode").toString();
 		POSDate = request.getSession().getAttribute("gPOSDate").toString().split(" ")[0];
 		userCode = request.getSession().getAttribute("gUserCode").toString();
