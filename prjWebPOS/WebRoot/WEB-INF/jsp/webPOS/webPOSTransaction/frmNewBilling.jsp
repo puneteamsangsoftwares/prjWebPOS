@@ -875,6 +875,7 @@ $(document).ready(function()
 					var PaxNo=$("#txtPaxNo").text();
 					var kotNo=$("#txtKOTNo").text();
 					var WaiterNo=gWaiterNo;
+					
 					var singleObj = {}
 				    singleObj['itemName'] =itemName;
 				    singleObj['quantity'] =itemQty;
@@ -4596,17 +4597,18 @@ $(document).ready(function()
 				
                  <table width="100%" class="mdc-card info-card3">
                     <tr>
-                     <!--  <td width="20%">
-                        <h5 class="tablehead" nowrap style="font-weight: 600;">KOT:<label id="txtKOTNo" style="width: 100%;text-align: center;" class="btn-link"></label></h5>
-                      </td>
-                      <td width="30%">
-                        <h5 class="tablehead" nowrap style="font-weight: 600;">Time:00:00</h5>
-                      </td> -->
-                      <!-- <td width="2%">
-                        <a href="javascript:void(0)" class="mdc-button mdc-button--raised mdc-ripple-upgraded" style="--mdc-ripple-fg-size:38px; --mdc-ripple-fg-scale:2.19553; --mdc-ripple-fg-translate-start:4.28125px, 4px; --mdc-ripple-fg-translate-end:13px, -1px; border-radius: 6px;">
-                          REPRINT
-                        </a>
-                      </td> -->
+                    	<td width="20%">
+                        	<h5 class="tablehead" nowrap style="font-weight: 600;">KOT:<label id="txtKOTNo" style="width: 100%;text-align: center;" class="btn-link"></label></h5>
+                      	</td>
+                      	<td width="30%">
+                        	<h5 class="tablehead" nowrap style="font-weight: 600;">Time:00:00</h5>
+                      	</td>
+                      
+                      	<td width="2%">
+                        	<a href="javascript:void(0)" class="mdc-button mdc-button--raised mdc-ripple-upgraded" style="--mdc-ripple-fg-size:38px; 
+                        		--mdc-ripple-fg-scale:2.19553; --mdc-ripple-fg-translate-start:4.28125px, 4px; --mdc-ripple-fg-translate-end:13px, -1px; 
+                        		border-radius: 6px;"> REPRINT </a>
+                      	</td>
 					</tr>
 					</table>
 
